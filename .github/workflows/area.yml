@@ -1,11 +1,11 @@
-name: CI imageCompressor
+name: CI Area
 on:
   push:
     branches-ignore:
-      - feature/ignore
+      - feature/ignore/**
   pull_request:
     branches-ignore:
-      - feature/ignore
+      - feature/ignore/**
 
 env:
   MIRROR_URL: "git@github.com:EpitechPromo2026/B-DEV-500-BDX-5-1-area-guillaume.lebreton.git"
