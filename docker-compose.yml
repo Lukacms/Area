@@ -1,6 +1,6 @@
 services:
   server:
-    build: ./AREA ReST API/AREA ReST API
+    build: ./AREA_ReST_API/AREA_ReST_API
     ports:
       - "8080"
     restart: on-failure

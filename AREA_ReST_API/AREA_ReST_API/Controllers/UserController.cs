@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AREA_ReST_API.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/Users/")]
 
 public class UserController : ControllerBase
 {
@@ -17,7 +17,7 @@ public class UserController : ControllerBase
         return _context.Users.ToList();
     }
 
-    [HttpGet("/:id")]
+    [HttpGet("{id:int}")]
     public IQueryable<UserModel> GetUser(AppDbContext context, [AsParameters] int id)
     {
         _context = context;

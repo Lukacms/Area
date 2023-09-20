@@ -14,5 +14,5 @@ public class AreaModel
     public ActionModel Action { get; set; }
     
     [Required]
-    public ReactionModel Reaction { get; set; }
+    public ICollection<ReactionModel> Reaction { get; set; }
 }

@@ -53,9 +53,6 @@ namespace AREA_ReST_API.Migrations
                     b.Property<int>("ActionId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ReactionId")
-                        .HasColumnType("int");
-
                     b.Property<int>("User")
                         .HasColumnType("int");
 
@@ -66,8 +63,6 @@ namespace AREA_ReST_API.Migrations
 
                     b.HasIndex("ActionId");
 
-                    b.HasIndex("ReactionId");
-
                     b.HasIndex("UserModelId");
 
                     b.ToTable("Areas");
@@ -77,6 +72,9 @@ namespace AREA_ReST_API.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int?>("AreaModelId")
                         .HasColumnType("int");
 
                     b.Property<string>("Endpoint")
@@ -91,6 +89,8 @@ namespace AREA_ReST_API.Migrations
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AreaModelId");
 
                     b.ToTable("Reactions");
                 });
@@ -155,18 +155,22 @@ namespace AREA_ReST_API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AREA_ReST_API.Models.ReactionModel", "Reaction")
-                        .WithMany()
-                        .HasForeignKey("ReactionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("AREA_ReST_API.Models.UserModel", null)
                         .WithMany("Areas")
                         .HasForeignKey("UserModelId");
 
                     b.Navigation("Action");
+                });
 
+            modelBuilder.Entity("AREA_ReST_API.Models.ReactionModel", b =>
+                {
+                    b.HasOne("AREA_ReST_API.Models.AreaModel", null)
+                        .WithMany("Reaction")
+                        .HasForeignKey("AreaModelId");
+                });
+
+            modelBuilder.Entity("AREA_ReST_API.Models.AreaModel", b =>
+                {
                     b.Navigation("Reaction");
                 });
 
