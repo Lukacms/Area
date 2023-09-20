@@ -5,12 +5,13 @@ services:
       - "8080"
     restart: on-failure
 
-      #  client_web:
-      #    ports:
-      #      - "8081"
-      #    volumes:
-      #      - clients
-      #    restart: always
+  client_web:
+    build: ./client_web
+    ports:
+      - "8081"
+    volumes:
+      - clients
+    restart: always
 
       #  client_mobile:
       #    build: ./Mobile
