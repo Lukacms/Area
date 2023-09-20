@@ -1,0 +1,23 @@
+services:
+  server:
+    build: ./AREA ReST API/AREA ReST API
+    ports:
+      - "8080"
+    restart: on-failure
+
+      #  client_web:
+      #    ports:
+      #      - "8081"
+      #    volumes:
+      #      - clients
+      #    restart: always
+
+      #  client_mobile:
+      #    build: ./Mobile
+      #    volumes:
+      #      - clients
+      #    restart: always
+
+
+volumes:
+  clients:
