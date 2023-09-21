@@ -1,15 +1,13 @@
-FROM node:15.4 as build
+FROM node:14.9
 
-WORKDIR /react-app
-EXPOSE 8081
+WORKDIR /usr/src/app
 
-COPY package*.json .
+COPY package*.json ./
+
 RUN npm install
+
 COPY . .
 
-RUN npm start
+EXPOSE 8081
 
-FROM nginx:1.19
-
-COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
-COPY --from=build /react-app/build /usr/share/nginx/html
+CMD [ "npm", "start" ]

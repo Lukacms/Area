@@ -5,7 +5,7 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["AREA_ReST_API.csproj", "AREA_ReST_API/"]
+COPY ["AREA_ReST_API/AREA_ReST_API.csproj", "AREA_ReST_API/"]
 RUN dotnet restore "AREA_ReST_API/AREA_ReST_API.csproj"
 COPY . .
 WORKDIR "/src/AREA_ReST_API"

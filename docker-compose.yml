@@ -1,25 +1,31 @@
+version: '3.9'
+
 services:
   server:
-    build: ./AREA_ReST_API/AREA_ReST_API
+    build: ./AREA_ReST_API
     ports:
-      - "8080"
+      - 8080:8080
     restart: on-failure
-
-  client_web:
-    build: ./client_web
-    ports:
-      - "8081"
-    volumes:
-      - clients
-    restart: always
 
   client_mobile:
     build: ./mobile
     volumes:
-      - clients
+      - clients:/data
     restart: always
     image: 'flutter'
 
+  client_web:
+    build: ./client_web
+    ports:
+      - 8081:8081
+    volumes:
+      - clients:/data
+    restart: always
+    stdin_open: true
+    command: npm start
+    depends_on:
+      - server
+      - client_mobile
 
 volumes:
   clients:
