@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AREA ReST API", "AREA ReST API\AREA ReST API.csproj", "{24A6ACA6-76B0-4403-9A98-746E5B84D9A4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AREA_ReST_API", "AREA_ReST_API\AREA_ReST_API.csproj", "{24A6ACA6-76B0-4403-9A98-746E5B84D9A4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
