@@ -5,17 +5,17 @@ namespace AREA_ReST_API.Models;
 public class ActionModel
 {
     [Required]
-    public int Id { get; set; }
+    public required int Id { get; set; }
     
     [Required]
-    public int Service { get; set; }
+    public required int Service { get; set; }
     
     [Required]
-    public string Token { get; set; }
+    public required string Token { get; set; }
 
     [Required]
-    public string Endpoint { get; set; }
+    public required string Endpoint { get; set; }
     
     [Required]
-    public int Refresh { get; set; }
+    public required int Refresh { get; set; }
 }

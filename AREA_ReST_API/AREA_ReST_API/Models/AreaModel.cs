@@ -5,14 +5,14 @@ namespace AREA_ReST_API.Models;
 public class AreaModel
 {
     [Required]
-    public int Id { get; set; }
+    public required int Id { get; set; }
     
     [Required]
-    public int User { get; set; }
+    public required int User { get; set; }
 
     [Required]
-    public ActionModel Action { get; set; }
+    public required ActionModel Action { get; set; }
     
     [Required]
-    public ICollection<ReactionModel> Reaction { get; set; }
+    public required ICollection<ReactionModel> Reaction { get; set; }
 }

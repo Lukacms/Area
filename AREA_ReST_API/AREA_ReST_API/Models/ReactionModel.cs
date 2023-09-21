@@ -11,8 +11,8 @@ public class ReactionModel
     public int Service { get; set; }
     
     [Required]
-    public string Token { get; set; }
+    public required string Token { get; set; }
     
     [Required]
-    public string Endpoint { get; set; }
+    public required string Endpoint { get; set; }
 }

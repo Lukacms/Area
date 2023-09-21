@@ -5,17 +5,17 @@ namespace AREA_ReST_API.Models;
 public class ServiceModel
 {
     [Required]
-    public int Id { get; set; }
+    public required int Id { get; set; }
     
     [Required]
-    public int User { get; set; }
+    public required int User { get; set; }
     
     [Required]
-    public string AccessToken { get; set; }
+    public required string AccessToken { get; set; }
     
     [Required]
-    public string RefreshToken { get; set; }
+    public required string RefreshToken { get; set; }
     
     [Required]
-    public string Link { get; set; }
+    public required string Link { get; set; }
 }

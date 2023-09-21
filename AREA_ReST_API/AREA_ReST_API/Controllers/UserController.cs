@@ -1,26 +1,34 @@
 using AREA_ReST_API.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AREA_ReST_API.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/Users/")]
 
 public class UserController : ControllerBase
 {
-    private AppDbContext? _context; 
-    
-    [HttpGet("")]
-    public IEnumerable<UserModel> GetAllUsers(AppDbContext context)
+    private readonly AppDbContext _context;
+
+    public UserController(AppDbContext context)
     {
         _context = context;
-        return _context.Users.ToList();
+    }
+    
+    [HttpGet("")]
+    public ActionResult<IEnumerable<UserModel>> GetAllUsers()
+    {
+        return Ok(_context.Users.ToList());
     }
 
     [HttpGet("{id:int}")]
-    public IQueryable<UserModel> GetUser(AppDbContext context, [AsParameters] int id)
+    public ActionResult<UserModel?> GetUser([AsParameters] int id)
     {
-        _context = context;
-        return _context.Users.Where(user => user.Id == id);
+        var askedUser = _context.Users.FirstOrDefault(user => user.Id == id);
+        if (askedUser == null)
+            return NotFound("User not found");
+        return Ok(askedUser);
     }
 }
