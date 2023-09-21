@@ -13,11 +13,12 @@ services:
       - clients
     restart: always
 
-      #  client_mobile:
-      #    build: ./Mobile
-      #    volumes:
-      #      - clients
-      #    restart: always
+  client_mobile:
+    build: ./mobile
+    volumes:
+      - clients
+    restart: always
+    image: 'flutter'
 
 
 volumes:
