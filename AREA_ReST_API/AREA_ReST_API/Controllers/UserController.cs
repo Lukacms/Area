@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AREA_ReST_API.Controllers;
 
-[Authorize]
+// [Authorize]
 [ApiController]
 [Route("api/Users/")]
 
