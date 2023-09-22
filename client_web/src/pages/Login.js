@@ -1,11 +1,11 @@
 import '../styles/login.css';
 import useLogin from '../hooks/useLogin'
 
-function loginScreen ({navigation}) {
+function Login({navigation}) {
 
     return (
         <p>aaaak</p>
     )
 }
 
-export default loginScreen;
+export default Login;

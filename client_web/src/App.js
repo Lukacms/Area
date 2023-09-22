@@ -1,9 +1,14 @@
-import logo from "./logo.svg";
 import "./styles/App.css";
-import loginScreen from "./screens/loginScreen";
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Login from "./pages/Login";
+
 function App() {
   return (
-      <p>aaaaaaa</p>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Login />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
