@@ -20,12 +20,16 @@ services:
       - 8081:8081
     volumes:
       - clients:/data
+      - ./client_web:/usr/src/app/client_web
+      - /usr/src/app/client_web/node_modules
     restart: always
     stdin_open: true
     command: npm start
     depends_on:
       - server
       - client_mobile
+    environment:
+      - WATCHPACK_POLLING=true
 
 volumes:
   clients:
