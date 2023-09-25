@@ -10,4 +10,4 @@ COPY . /app
 
 EXPOSE 8081
 
-RUN npm start
+CMD ["npm", "start"]

@@ -1,11 +1,13 @@
 import '../styles/login.css';
 import useLogin from '../hooks/useLogin'
 
-function Login({navigation}) {
+function Login() {
+  const {} = useLogin();
 
-    return (
-        <p>aaaak</p>
-    )
+  return (
+    <div>
+    </div>
+  );
 }
 
 export default Login;
