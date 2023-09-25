@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/back/api.dart';
-import 'package:mobile/back/local_storage.dart';
 import 'package:mobile/components/background_gradient.dart';
 import 'package:mobile/main.dart';
-import 'package:mobile/screens/home_page_areas.dart';
+import 'package:mobile/screens/area_lists.dart';
 import 'package:mobile/theme/style.dart';
 
 class HomePage extends StatefulWidget {

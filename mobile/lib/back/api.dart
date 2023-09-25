@@ -40,6 +40,14 @@ List automatisations = [
     "reaction": "prout",
     "name": "action 3 a afficher(fav)",
     "favorite": true
+  },
+    {
+    "id": 4,
+    "user": "user",
+    "actionId": 2,
+    "reaction": "prout",
+    "name": "action 4 a afficher(fav)",
+    "favorite": true
   }
 ];
 
