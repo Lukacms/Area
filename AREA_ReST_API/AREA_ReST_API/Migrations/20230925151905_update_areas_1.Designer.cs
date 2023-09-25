@@ -3,6 +3,7 @@ using System;
 using AREA_ReST_API;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AREA_ReST_API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230925151905_update_areas_1")]
+    partial class update_areas_1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -23,12 +26,6 @@ namespace AREA_ReST_API.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("Area")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("AreaModelId")
                         .HasColumnType("int");
 
                     b.Property<string>("Endpoint")
@@ -47,8 +44,6 @@ namespace AREA_ReST_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AreaModelId");
-
                     b.ToTable("Actions");
                 });
 
@@ -58,8 +53,8 @@ namespace AREA_ReST_API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<bool>("Favorite")
-                        .HasColumnType("tinyint(1)");
+                    b.Property<int>("ActionId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -73,6 +68,8 @@ namespace AREA_ReST_API.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ActionId");
+
                     b.HasIndex("UserModelId");
 
                     b.ToTable("Areas");
@@ -82,9 +79,6 @@ namespace AREA_ReST_API.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("Area")
                         .HasColumnType("int");
 
                     b.Property<int?>("AreaModelId")
@@ -160,18 +154,19 @@ namespace AREA_ReST_API.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("AREA_ReST_API.Models.ActionModel", b =>
-                {
-                    b.HasOne("AREA_ReST_API.Models.AreaModel", null)
-                        .WithMany("Action")
-                        .HasForeignKey("AreaModelId");
-                });
-
             modelBuilder.Entity("AREA_ReST_API.Models.AreaModel", b =>
                 {
+                    b.HasOne("AREA_ReST_API.Models.ActionModel", "Action")
+                        .WithMany()
+                        .HasForeignKey("ActionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("AREA_ReST_API.Models.UserModel", null)
                         .WithMany("Areas")
                         .HasForeignKey("UserModelId");
+
+                    b.Navigation("Action");
                 });
 
             modelBuilder.Entity("AREA_ReST_API.Models.ReactionModel", b =>
@@ -183,8 +178,6 @@ namespace AREA_ReST_API.Migrations
 
             modelBuilder.Entity("AREA_ReST_API.Models.AreaModel", b =>
                 {
-                    b.Navigation("Action");
-
                     b.Navigation("Reaction");
                 });
 

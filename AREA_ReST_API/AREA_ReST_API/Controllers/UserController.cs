@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AREA_ReST_API.Controllers;
 
-// [Authorize]
+[Authorize]
 [ApiController]
 [Route("api/Users/")]
 
@@ -20,7 +20,7 @@ public class UserController : ControllerBase
     [HttpGet("")]
     public ActionResult<IEnumerable<UserModel>> GetAllUsers()
     {
-        return Ok(_context.Users.ToList());
+        return new OkObjectResult(_context.Users.ToList());
     }
 
     [HttpGet("{id:int}")]
@@ -28,7 +28,7 @@ public class UserController : ControllerBase
     {
         var askedUser = _context.Users.FirstOrDefault(user => user.Id == id);
         if (askedUser == null)
-            return NotFound("User not found");
-        return Ok(askedUser);
+            return new NotFoundObjectResult("User not found");
+        return new OkObjectResult(askedUser);
     }
 }

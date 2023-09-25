@@ -21,7 +21,7 @@ public class LoginController : ControllerBase
     {
         _context = context;
     }
-    
+
     [HttpPost("")]
     public ActionResult Login([FromBody] Credentials credentials, JwtOptions jwtOptions)
     {
@@ -29,12 +29,11 @@ public class LoginController : ControllerBase
         var password = credentials.Password;
         var askedUser = _context.Users.FirstOrDefault(user => user.Email == email);
         if (askedUser == null)
-            return NotFound("User not found");
+            return new NotFoundObjectResult(new JsonObject { { "message", "User not found" } });
         if (askedUser.Password != password)
-            return Unauthorized("Wrong password");
+            return new UnauthorizedObjectResult(new JsonObject {{"message", "Wrong password" }});
         var token = GenerateJwtToken(askedUser, jwtOptions);
-        var json = new JsonObject { { "access_token", token } };
-        return Ok(json);
+        return new OkObjectResult(new JsonObject { { "access_token", token } });
     }
 
     private string GenerateJwtToken(UserModel user, JwtOptions jwtOptions)
@@ -46,7 +45,8 @@ public class LoginController : ControllerBase
         {
             new Claim("username", user.Username),
             new Claim("email", user.Email),
-            new Claim("status", user.Admin.ToString())
+            new Claim("admin", user.Admin.ToString()),
+            new Claim("id", user.Id.ToString()),
         };
 
         var tokenDescriptor = new SecurityTokenDescriptor
