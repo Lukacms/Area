@@ -39,10 +39,12 @@ class _LoginTextFieldState extends State<LoginTextField> {
         SizedBox(
           width: blockWidth * 4,
           child: TextField(
+            style: TextStyle(color: AppColors.white),
+            controller: widget.controller,
             obscureText: widget.isPassword,
             decoration: InputDecoration(
-              labelText: widget.placeholder,
-              labelStyle: TextStyle(color: AppColors.white.withOpacity(0.5)),
+              hintText: widget.placeholder,
+              hintStyle: TextStyle(color: AppColors.white.withOpacity(0.5)),
               enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: AppColors.white.withOpacity(0.5)),
               ),

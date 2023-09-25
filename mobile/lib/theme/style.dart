@@ -14,7 +14,7 @@ class AppColors {
   static final purple = hexToColor('#45235B');
   static final grenat = hexToColor('#743252');
   static final white = hexToColor('#FFFAFB');
-  static const spotifyGreen = Color.fromRGBO(30, 215, 96, 1);
+  static final lightBlue = hexToColor("#54B6CC");
 }
 
 ThemeData appTheme() {

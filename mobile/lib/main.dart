@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/back/local_storage.dart';
+import 'package:mobile/screens/home_page.dart';
 import 'package:mobile/screens/login.dart';
 import 'package:mobile/theme/style.dart';
 
@@ -9,10 +11,25 @@ void main() {
 late Size screenSize;
 late double screenHeight, screenWidth, blockWidth, blockHeight;
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  String userToken = "";
+  @override
+  void initState() {
+    super.initState();
+    retrieveToken().then((value) {
+      setState(() {
+        userToken = value;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     screenSize = MediaQuery.of(context).size;
@@ -23,7 +40,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'FastR',
       theme: appTheme(),
-      home: const LoginScreen(),
+      home: userToken.isEmpty ? const LoginScreen() : HomePage(token: userToken),
     );
   }
 }
