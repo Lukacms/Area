@@ -28,20 +28,46 @@ class AreaLists extends StatelessWidget {
             ],
           ),
           GridView.count(
+            padding: EdgeInsets.only(top: blockHeight * 2),
+            physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             crossAxisCount: 2,
             children: List.generate(
               favorites.length,
               (index) {
-                return Container(
-                  width: blockWidth,
-                  height: blockHeight * 5,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: AppColors.white.withOpacity(0.1)),
-                  child: SizedBox(
-                    width: blockWidth * 0.7,
-                    child: Text(favorites[index]['name']),
+                return Padding(
+                  padding: index % 2 != 0
+                      ? EdgeInsets.only(bottom: blockHeight, left: blockHeight)
+                      : EdgeInsets.only(bottom: blockHeight),
+                  child: Container(
+                    width: blockWidth,
+                    height: blockHeight * 5,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: AppColors.white.withOpacity(0.1)),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            IconButton(
+                              icon: Icon(
+                                Icons.pending,
+                                color: AppColors.white,
+                              ),
+                              onPressed: () {},
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          width: blockWidth * 0.9,
+                          child: Text(
+                            favorites[index]['name'],
+                            style: TextStyle(color: AppColors.white),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },
