@@ -1,0 +1,14 @@
+.backButton {
+  margin-left: 3%;
+  margin-top: 2%;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.backButton:hover {
+  margin-left: 3%;
+  margin-top: 2%;
+  vertical-align: middle;
+  text-align: center;
+  cursor: grab;
+}

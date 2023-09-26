@@ -1,14 +1,15 @@
 import '../styles/login.css';
-import useLogin from '../hooks/useLogin';
+// import useLogin from '../hooks/useLogin';
 import '../styles/App.css';
 import {React, useState} from 'react';
-import { Divider } from 'primereact/divider';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
-  const {} = useLogin();
-    const [Email, setEmail] = useState("");
+  const navigate = useNavigate();
+  // const {} = useLogin();
+  const [Email, setEmail] = useState("");
 
   return (
     <div className="box">
@@ -27,6 +28,7 @@ function Login() {
             <InputText className='TextBox' value={Email} onChange={(e) => setEmail(e.target.value)}/>
           </label>
           <label className="PassBox">Password:</label>
+          <Button label='SignUp' onClick={() => navigate('/signup')} />
         </div>
       </div>
     </div>
