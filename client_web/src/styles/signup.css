@@ -12,3 +12,20 @@
   text-align: center;
   cursor: grab;
 }
+
+.body {
+  margin-left: 10%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 80%;
+}
+
+.app-logo {
+}
+
+.divider {
+  border: 1px solid #90A3B9;
+  margin-left: 20%;
+  height: 80%;
+}
