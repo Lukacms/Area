@@ -3,6 +3,7 @@ import 'package:mobile/back/api.dart';
 import 'package:mobile/components/background_gradient.dart';
 import 'package:mobile/main.dart';
 import 'package:mobile/screens/area_lists.dart';
+import 'package:mobile/screens/home_appbar.dart';
 import 'package:mobile/theme/style.dart';
 
 class HomePage extends StatefulWidget {
@@ -20,7 +21,6 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     areas = getAreas();
-
   }
 
   @override
@@ -33,26 +33,8 @@ class _HomePageState extends State<HomePage> {
     blockHeight = screenHeight / 100;
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.pending_outlined,
-              color: AppColors.lightBlue,
-              size: 30,
-            ),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: Icon(
-              Icons.add,
-              color: AppColors.lightBlue,
-              size: 30,
-            ),
-            onPressed: () {},
-          )
-        ],
+      appBar: HomeAppBar(
+        searchController: searchController,
       ),
       backgroundColor: AppColors.darkBlue,
       body: Stack(
@@ -64,38 +46,9 @@ class _HomePageState extends State<HomePage> {
               child: Column(
                 children: [
                   SizedBox(
-                    height: safePadding + AppBar().preferredSize.height,
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        "FastR",
-                        style: TextStyle(
-                          color: AppColors.white,
-                          fontSize: 50,
-                          fontFamily: "Roboto-Bold",
-                        ),
-                      ),
-                    ],
-                  ),
-                  TextField(
-                    controller: searchController,
-                    decoration: InputDecoration(
-                      hintText: "Recherche",
-                      hintStyle: TextStyle(
-                        color: AppColors.white.withOpacity(0.5),
-                      ),
-                      fillColor: AppColors.white.withOpacity(0.1),
-                      filled: true,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide.none,
-                      ),
-                      prefixIcon: Icon(
-                        Icons.search,
-                        color: AppColors.white.withOpacity(0.5),
-                      ),
-                    ),
+                    height: safePadding +
+                        AppBar().preferredSize.height +
+                        (blockHeight * 15),
                   ),
                   AreaLists(areas: areas),
                   TextButton(
