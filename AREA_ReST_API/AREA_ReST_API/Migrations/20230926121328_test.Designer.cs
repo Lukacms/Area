@@ -3,6 +3,7 @@ using System;
 using AREA_ReST_API;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AREA_ReST_API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230926121328_test")]
+    partial class test
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -23,6 +26,9 @@ namespace AREA_ReST_API.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int?>("AreaModelId")
                         .HasColumnType("int");
 
                     b.Property<string>("Endpoint")
@@ -40,6 +46,8 @@ namespace AREA_ReST_API.Migrations
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AreaModelId");
 
                     b.ToTable("Actions");
                 });
@@ -76,6 +84,9 @@ namespace AREA_ReST_API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<int?>("AreaModelId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Endpoint")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -88,6 +99,8 @@ namespace AREA_ReST_API.Migrations
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AreaModelId");
 
                     b.ToTable("Reactions");
                 });
@@ -144,11 +157,32 @@ namespace AREA_ReST_API.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("AREA_ReST_API.Models.ActionModel", b =>
+                {
+                    b.HasOne("AREA_ReST_API.Models.AreaModel", null)
+                        .WithMany("Action")
+                        .HasForeignKey("AreaModelId");
+                });
+
             modelBuilder.Entity("AREA_ReST_API.Models.AreaModel", b =>
                 {
                     b.HasOne("AREA_ReST_API.Models.UserModel", null)
                         .WithMany("Areas")
                         .HasForeignKey("UserModelId");
+                });
+
+            modelBuilder.Entity("AREA_ReST_API.Models.ReactionModel", b =>
+                {
+                    b.HasOne("AREA_ReST_API.Models.AreaModel", null)
+                        .WithMany("Reaction")
+                        .HasForeignKey("AreaModelId");
+                });
+
+            modelBuilder.Entity("AREA_ReST_API.Models.AreaModel", b =>
+                {
+                    b.Navigation("Action");
+
+                    b.Navigation("Reaction");
                 });
 
             modelBuilder.Entity("AREA_ReST_API.Models.UserModel", b =>

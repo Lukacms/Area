@@ -4,10 +4,7 @@ using Microsoft.EntityFrameworkCore;
 namespace AREA_ReST_API;
 public class AppDbContext : DbContext
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
-    {
-        
-    }
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
     
     public virtual DbSet<UserModel> Users { get; set; }
     
