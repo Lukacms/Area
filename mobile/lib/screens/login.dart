@@ -3,6 +3,7 @@ import 'package:mobile/components/loginTextField.dart';
 import 'package:mobile/main.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/components/backgroundCircles.dart';
+import 'package:mobile/screens/forgot_password.dart';
 import 'package:mobile/screens/home/home_page.dart';
 import 'package:mobile/theme/style.dart';
 import 'package:mobile/back/api.dart';
@@ -21,6 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final safePadding = MediaQuery.of(context).padding.top;
+    final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
     screenSize = MediaQuery.of(context).size;
     screenHeight = screenSize.height;
     screenWidth = screenSize.width;
@@ -28,6 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
     blockHeight = screenHeight / 100;
 
     return Scaffold(
+      key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.darkBlue,
       body: Stack(
@@ -70,11 +73,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   Padding(
                     padding: EdgeInsets.only(right: blockWidth * 0.5),
                     child: TextButton(
-                      child: const Text(
+                      child: Text(
                         "Forgot Password?",
-                        style: TextStyle(),
+                        style: TextStyle(color: AppColors.lightBlue),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        _scaffoldKey.currentState?.openEndDrawer();
+                      },
                     ),
                   ),
                 ],
@@ -118,6 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ],
       ),
+      endDrawer: ForgotPassword(),
     );
   }
 }
