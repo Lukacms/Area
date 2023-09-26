@@ -3,7 +3,7 @@ import 'package:mobile/components/loginTextField.dart';
 import 'package:mobile/main.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/components/backgroundCircles.dart';
-import 'package:mobile/screens/home_page.dart';
+import 'package:mobile/screens/home/home_page.dart';
 import 'package:mobile/theme/style.dart';
 import 'package:mobile/back/api.dart';
 
