@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/main.dart';
-import 'package:mobile/screens/area_card.dart';
+import 'package:mobile/screens/home/area_card.dart';
 import 'package:mobile/theme/style.dart';
 
 class AreaGroup extends StatelessWidget {

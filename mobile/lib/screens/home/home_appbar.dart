@@ -29,6 +29,9 @@ class HomeAppBar extends AppBar {
                   padding: EdgeInsets.symmetric(horizontal:blockWidth / 4),
                   child: TextField(
                     controller: searchController,
+                    style: TextStyle(
+                      color: AppColors.white,
+                    ),
                     decoration: InputDecoration(
                       hintText: "Recherche",
                       hintStyle: TextStyle(

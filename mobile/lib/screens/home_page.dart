@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mobile/back/api.dart';
 import 'package:mobile/components/background_gradient.dart';
 import 'package:mobile/main.dart';
-import 'package:mobile/screens/area_lists.dart';
-import 'package:mobile/screens/home_appbar.dart';
+import 'package:mobile/screens/home/area_lists.dart';
+import 'package:mobile/screens/home/home_appbar.dart';
 import 'package:mobile/theme/style.dart';
 
 class HomePage extends StatefulWidget {
@@ -32,6 +32,7 @@ class _HomePageState extends State<HomePage> {
     blockWidth = screenWidth / 5;
     blockHeight = screenHeight / 100;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
       appBar: HomeAppBar(
         searchController: searchController,
@@ -50,9 +51,9 @@ class _HomePageState extends State<HomePage> {
                         AppBar().preferredSize.height +
                         (blockHeight * 15),
                   ),
-                  AreaLists(areas: areas),
+                  AreaLists(areas: areas, searchText: searchController.text),
                   TextButton(
-                    child: Text("goBack"),
+                    child: const Text("goBack"),
                     onPressed: () {
                       Navigator.pop(context);
                     },
