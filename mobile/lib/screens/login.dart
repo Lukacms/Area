@@ -28,95 +28,96 @@ class _LoginScreenState extends State<LoginScreen> {
     blockHeight = screenHeight / 100;
 
     return Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: AppColors.darkBlue,
-        body: Stack(
-          children: [
-            const BackgroundCircles(),
-            Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(top: safePadding),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'assets/logoFastR.png',
-                        width: 300,
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: blockHeight * 5,
-                ),
-                LoginTextField(
-                    description: "E-Mail",
-                    placeholder: 'yourname@example.com',
-                    isPassword: false,
-                    controller: emailController),
-                SizedBox(
-                  height: blockHeight * 5,
-                ),
-                LoginTextField(
-                  description: "Password",
-                  placeholder: '********',
-                  isPassword: true,
-                  controller: passwordController,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+      resizeToAvoidBottomInset: false,
+      backgroundColor: AppColors.darkBlue,
+      body: Stack(
+        children: [
+          const BackgroundCircles(),
+          Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(top: safePadding),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Padding(
-                      padding: EdgeInsets.only(right: blockWidth * 0.5),
-                      child: TextButton(
-                        child: const Text(
-                          "Forgot Password?",
-                          style: TextStyle(),
-                        ),
-                        onPressed: () {},
-                      ),
+                    Image.asset(
+                      'assets/logoFastR.png',
+                      width: 300,
                     ),
                   ],
                 ),
-                Container(
-                  margin: EdgeInsets.only(top: blockHeight * 5),
-                  width: blockWidth * 3,
-                  height: blockHeight * 8,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: AppColors.greyBlue,
-                  ),
-                  child: TextButton(
-                    child: Text(
-                      "Sign In",
-                      style: TextStyle(
-                        color: AppColors.white,
-                        fontSize: 20,
+              ),
+              SizedBox(
+                height: blockHeight * 5,
+              ),
+              LoginTextField(
+                  description: "E-Mail",
+                  placeholder: 'yourname@example.com',
+                  isPassword: false,
+                  controller: emailController),
+              SizedBox(
+                height: blockHeight * 5,
+              ),
+              LoginTextField(
+                description: "Password",
+                placeholder: '********',
+                isPassword: true,
+                controller: passwordController,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(right: blockWidth * 0.5),
+                    child: TextButton(
+                      child: const Text(
+                        "Forgot Password?",
+                        style: TextStyle(),
                       ),
+                      onPressed: () {},
                     ),
-                    onPressed: () {
-                      List res =
-                          login(emailController.text, passwordController.text);
-                      if (res[0]) {
-                        saveToken(res[1]);
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => HomePage(token: res[1]),
-                        ));
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text("Login failed. Please try again."),
-                            duration: Duration(seconds: 2),
-                          ),
-                        );
-                      }
-                    },
                   ),
+                ],
+              ),
+              Container(
+                margin: EdgeInsets.only(top: blockHeight * 5),
+                width: blockWidth * 3,
+                height: blockHeight * 8,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: AppColors.greyBlue,
                 ),
-              ],
-            ),
-          ],
-        ));
+                child: TextButton(
+                  child: Text(
+                    "Sign In",
+                    style: TextStyle(
+                      color: AppColors.white,
+                      fontSize: 20,
+                    ),
+                  ),
+                  onPressed: () {
+                    List res =
+                        login(emailController.text, passwordController.text);
+                    if (res[0]) {
+                      saveToken(res[1]);
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => HomePage(token: res[1]),
+                      ));
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text("Login failed. Please try again."),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }

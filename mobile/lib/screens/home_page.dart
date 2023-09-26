@@ -60,50 +60,52 @@ class _HomePageState extends State<HomePage> {
           const BackgroundGradient(),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: blockWidth / 4),
-            child: Column(
-              children: [
-                SizedBox(
-                  height: safePadding + AppBar().preferredSize.height,
-                ),
-                Row(
-                  children: [
-                    Text(
-                      "FastR",
-                      style: TextStyle(
-                        color: AppColors.white,
-                        fontSize: 50,
-                        fontFamily: "Roboto-Bold",
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: safePadding + AppBar().preferredSize.height,
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        "FastR",
+                        style: TextStyle(
+                          color: AppColors.white,
+                          fontSize: 50,
+                          fontFamily: "Roboto-Bold",
+                        ),
+                      ),
+                    ],
+                  ),
+                  TextField(
+                    controller: searchController,
+                    decoration: InputDecoration(
+                      hintText: "Recherche",
+                      hintStyle: TextStyle(
+                        color: AppColors.white.withOpacity(0.5),
+                      ),
+                      fillColor: AppColors.white.withOpacity(0.1),
+                      filled: true,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide.none,
+                      ),
+                      prefixIcon: Icon(
+                        Icons.search,
+                        color: AppColors.white.withOpacity(0.5),
                       ),
                     ),
-                  ],
-                ),
-                TextField(
-                  controller: searchController,
-                  decoration: InputDecoration(
-                    hintText: "Recherche",
-                    hintStyle: TextStyle(
-                      color: AppColors.white.withOpacity(0.5),
-                    ),
-                    fillColor: AppColors.white.withOpacity(0.1),
-                    filled: true,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide.none,
-                    ),
-                    prefixIcon: Icon(
-                      Icons.search,
-                      color: AppColors.white.withOpacity(0.5),
-                    ),
                   ),
-                ),
-                AreaLists(areas: areas),
-                TextButton(
-                  child: Text("goBack"),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              ],
+                  AreaLists(areas: areas),
+                  TextButton(
+                    child: Text("goBack"),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ],
