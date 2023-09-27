@@ -3,7 +3,7 @@ import 'package:mobile/back/api.dart';
 import 'package:mobile/components/backgroundCircles.dart';
 import 'package:mobile/components/loginTextField.dart';
 import 'package:mobile/main.dart';
-import 'package:mobile/screens/sent_reset_password.dart';
+import 'package:mobile/screens/login/sent_reset_password.dart';
 import 'package:mobile/theme/style.dart';
 
 class ForgotPassword extends StatefulWidget {

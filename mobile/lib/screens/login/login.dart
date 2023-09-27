@@ -3,8 +3,7 @@ import 'package:mobile/components/loginTextField.dart';
 import 'package:mobile/main.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/components/backgroundCircles.dart';
-import 'package:mobile/screens/forgot_password.dart';
-import 'package:mobile/screens/home/home_page.dart';
+import 'package:mobile/screens/login/forgot_password.dart';
 import 'package:mobile/theme/style.dart';
 import 'package:mobile/back/api.dart';
 
@@ -22,7 +21,6 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final safePadding = MediaQuery.of(context).padding.top;
-    final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
     screenSize = MediaQuery.of(context).size;
     screenHeight = screenSize.height;
     screenWidth = screenSize.width;
@@ -30,7 +28,6 @@ class _LoginScreenState extends State<LoginScreen> {
     blockHeight = screenHeight / 100;
 
     return Scaffold(
-      key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.darkBlue,
       body: Stack(
@@ -122,9 +119,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         login(emailController.text, passwordController.text);
                     if (res[0]) {
                       saveToken(res[1]);
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => HomePage(token: res[1]),
-                      ));
+                      Navigator.of(context)
+                          .pushNamed('/home', arguments: {'token': res[1]});
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(

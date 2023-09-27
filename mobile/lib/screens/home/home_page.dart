@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/back/api.dart';
 import 'package:mobile/components/background_gradient.dart';
 import 'package:mobile/main.dart';
-import 'package:mobile/screens/home/add_area.dart';
+import 'package:mobile/screens/addingArea/area_build.dart';
 import 'package:mobile/screens/home/area_lists.dart';
 import 'package:mobile/screens/home/home_appbar.dart';
 import 'package:mobile/theme/style.dart';
@@ -39,21 +39,10 @@ class _HomePageState extends State<HomePage> {
         searchController: searchController,
         context: context,
         addArea: () {
-          showModalBottomSheet(
-            isScrollControlled: true,
-            context: context,
-            backgroundColor: AppColors.darkBlue,
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-              ),
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const AreaBuild(),
             ),
-            showDragHandle: true,
-            barrierColor: Colors.transparent,
-            builder: (BuildContext context) {
-              return const AddArea();
-            },
           );
         },
       ),

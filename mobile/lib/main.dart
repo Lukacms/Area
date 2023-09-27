@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/back/local_storage.dart';
 import 'package:mobile/screens/home/home_page.dart';
-import 'package:mobile/screens/login.dart';
+import 'package:mobile/screens/login/login.dart';
 import 'package:mobile/theme/style.dart';
 
 void main() {
