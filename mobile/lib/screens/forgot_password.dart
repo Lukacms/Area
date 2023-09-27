@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/back/api.dart';
 import 'package:mobile/components/backgroundCircles.dart';
 import 'package:mobile/components/loginTextField.dart';
 import 'package:mobile/main.dart';
+import 'package:mobile/screens/sent_reset_password.dart';
 import 'package:mobile/theme/style.dart';
 
 class ForgotPassword extends StatefulWidget {
@@ -13,10 +15,20 @@ class ForgotPassword extends StatefulWidget {
 
 class _ForgotPasswordState extends State<ForgotPassword> {
   TextEditingController emailController = TextEditingController();
+
+  bool isValidEmail(String email) {
+    // Regular expression to match email addresses
+    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+
+    // Check if the email matches the regular expression
+    return emailRegex.hasMatch(email);
+  }
+
   @override
   Widget build(BuildContext context) {
     final safePadding = MediaQuery.of(context).padding.top;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.darkBlue,
       body: Stack(
         children: [
@@ -24,7 +36,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           Column(
             children: [
               Padding(
-                padding: EdgeInsets.only(top: safePadding),
+                padding: EdgeInsets.only(top: safePadding + blockHeight * 8),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -32,8 +44,10 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon: Icon(Icons.arrow_back_ios,
-                          color: AppColors.lightBlue),
+                      icon: Icon(
+                        Icons.arrow_back_ios,
+                        color: AppColors.lightBlue,
+                      ),
                     ),
                     Text(
                       "Mot de passe oublié",
@@ -51,12 +65,14 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Center(
-                  child: LoginTextField(
-                description: "E-Mail",
-                placeholder: 'yourname@example.com',
-                isPassword: false,
-                controller: emailController,
-              )),
+                child: LoginTextField(
+                  description: "E-Mail",
+                  placeholder: 'yourname@example.com',
+                  isPassword: false,
+                  isEmail: true,
+                  controller: emailController,
+                ),
+              ),
             ],
           ),
           Column(
@@ -83,7 +99,32 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                             fontSize: 20,
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          if (!isValidEmail(emailController.text)) {
+                            return;
+                          }
+                          sendResetPassword();
+                          Navigator.of(context).pushReplacement(
+                            PageRouteBuilder(
+                              pageBuilder: (context, animation1, animation2) {
+                                return SentResetPassword(
+                                  mail: emailController.text,
+                                );
+                              },
+                              transitionDuration:
+                                  const Duration(milliseconds: 200),
+                              transitionsBuilder: (context, animation,
+                                      secondaryAnimation, child) =>
+                                  SlideTransition(
+                                position: Tween<Offset>(
+                                  begin: const Offset(1, 0),
+                                  end: Offset.zero,
+                                ).animate(animation),
+                                child: child,
+                              ),
+                            ),
+                          );
+                        },
                       ),
                     ),
                   ],

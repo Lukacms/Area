@@ -57,6 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   description: "E-Mail",
                   placeholder: 'yourname@example.com',
                   isPassword: false,
+                  isEmail: true,
                   controller: emailController),
               SizedBox(
                 height: blockHeight * 5,
@@ -78,7 +79,23 @@ class _LoginScreenState extends State<LoginScreen> {
                         style: TextStyle(color: AppColors.lightBlue),
                       ),
                       onPressed: () {
-                        _scaffoldKey.currentState?.openEndDrawer();
+                        Navigator.of(context).push(
+                          PageRouteBuilder(
+                            opaque: false,
+                            pageBuilder: (BuildContext context, _, __) =>
+                                const ForgotPassword(),
+                            transitionDuration:
+                                const Duration(milliseconds: 200),
+                            transitionsBuilder: (context, animation,
+                                    secondaryAnimation, child) =>
+                                SlideTransition(
+                                    position: Tween<Offset>(
+                                      begin: const Offset(0, 1),
+                                      end: Offset.zero,
+                                    ).animate(animation),
+                                    child: child),
+                          ),
+                        );
                       },
                     ),
                   ),
@@ -123,7 +140,6 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ],
       ),
-      endDrawer: ForgotPassword(),
     );
   }
 }

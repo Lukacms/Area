@@ -40,7 +40,13 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'FastR',
       theme: appTheme(),
-      home: !userToken.isEmpty ? const LoginScreen() : HomePage(token: userToken),
+      routes: {
+        '/': (context) => userToken.isNotEmpty
+            ? const LoginScreen()
+            : HomePage(token: userToken),
+        '/login': (context) => const LoginScreen(),
+        '/home': (context) => HomePage(token: userToken),
+      },
     );
   }
 }

@@ -62,3 +62,5 @@ List login(String user, String password) {
 List getAreas() {
   return automatisations;
 }
+
+void sendResetPassword() {}
