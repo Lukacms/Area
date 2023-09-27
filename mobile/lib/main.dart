@@ -41,7 +41,7 @@ class _MyAppState extends State<MyApp> {
       title: 'FastR',
       theme: appTheme(),
       routes: {
-        '/': (context) => userToken.isNotEmpty
+        '/': (context) => userToken.isEmpty
             ? const LoginScreen()
             : HomePage(token: userToken),
         '/login': (context) => const LoginScreen(),
