@@ -1,0 +1,57 @@
+.backButton {
+  margin-left: 3%;
+  margin-top: 2%;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.backButton:hover {
+  margin-left: 3%;
+  margin-top: 2%;
+  vertical-align: middle;
+  text-align: center;
+  cursor: grab;
+}
+
+.body {
+  margin-left: 10%;
+  display: flex;
+  flex-direction: row;
+  height: 80%;
+  flex: 1;
+}
+
+.logo {
+  margin-top: 10%;
+}
+
+.divider {
+  border: 1px solid #90A3B9;
+  margin-left: 20%;
+  height: 90%;
+  margin-right: 5%;
+}
+
+.register {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  text-align: center;
+}
+
+h1 {
+  font-size: 26px;
+  font-weight: 100;
+  text-align: left;
+  margin-left: 5%;
+  margin-bottom: 9%;
+}
+
+.names {
+  display: flex;
+  flex-direction: row;
+  width: 90%;
+  text-indent: 10%;
+  text-align: left;
+  margin-bottom: 5%;
+}

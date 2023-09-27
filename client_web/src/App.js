@@ -1,15 +1,15 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Login from './pages/Login';
-import Signup from './pages/Signup';
+import Register from './pages/Register';
 import 'primereact/resources/themes/mdc-dark-indigo/theme.css';
-import 'primeicons/primeicons.css'
+import 'primeicons/primeicons.css';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
+        <Route path='/' element={<Login />} />
+        <Route path='/register' element={<Register />} />
       </Routes>
     </BrowserRouter>
   );

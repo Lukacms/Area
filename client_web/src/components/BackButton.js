@@ -1,6 +1,6 @@
 import { Button } from 'primereact/button';
 import { useNavigate } from "react-router-dom";
-import '../styles/signup.css';
+import '../styles/register.css';
 
 const BackButton = ({ label }) => {
   const navigate = useNavigate();
