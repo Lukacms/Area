@@ -1,5 +1,5 @@
 import { Button } from 'primereact/button';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import '../styles/register.css';
 
 const BackButton = ({ label }) => {
@@ -9,7 +9,15 @@ const BackButton = ({ label }) => {
   };
 
   return (
-    <Button label={label} className='backButton' icon='pi pi-chevron-left' size='large' link rounded onClick={onBackClick}/>
+    <Button
+      label={label}
+      className='backButton'
+      icon='pi pi-chevron-left'
+      size='large'
+      link
+      rounded
+      onClick={onBackClick}
+    />
   );
 };
 
