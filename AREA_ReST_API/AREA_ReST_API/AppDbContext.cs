@@ -6,13 +6,13 @@ public class AppDbContext : DbContext
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
     
-    public virtual DbSet<UserModel> Users { get; set; }
     
-    public virtual DbSet<AreaModel> Areas { get; set; }
-    
-    public virtual DbSet<ActionModel> Actions { get; set; }
-    
-    public virtual DbSet<ReactionModel> Reactions { get; set; }
-    
-    public virtual DbSet<ServiceModel> Services { get; set; }
+    public virtual DbSet<UsersModel> Users { get; set; }
+    public virtual DbSet<UserServicesModel> UserServices { get; set; }
+    public virtual DbSet<ServicesModel> Services { get; set; }
+    public virtual DbSet<AreasModel> Areas { get; set; }
+    public virtual DbSet<UserActionsModel> UserActions { get; set; }
+    public virtual DbSet<ActionsModel> Actions { get; set; }
+    public virtual DbSet<UserReactionsModel> UserReactions { get; set; }
+    public virtual DbSet<ReactionsModel> Reactions { get; set; }
 }
