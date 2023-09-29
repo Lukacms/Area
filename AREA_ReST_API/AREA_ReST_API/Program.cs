@@ -39,9 +39,23 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         }
     );
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "Area",
+        policy  =>
+        {
+            policy.WithOrigins("http://localhost:8080",
+                "http://localhost:8081")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
+
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
+
+app.UseCors("Area");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
