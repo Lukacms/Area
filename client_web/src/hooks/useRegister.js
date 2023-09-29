@@ -26,11 +26,11 @@ const useRegister = () => {
 
   const register = async (values) => {
     const newUser = {
-      name : values.name,
+      name: values.name,
       surname: values.surname,
       password: values.password,
       username: values.username,
-      email: values.email
+      email: values.email,
     };
 
     try {

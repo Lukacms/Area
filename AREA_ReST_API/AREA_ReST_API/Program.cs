@@ -31,12 +31,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(x =>
         x.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidateIssuer = true, 
-            ValidateAudience = true, 
-            ValidateLifetime = true, 
-            ValidateIssuerSigningKey = true, 
-            ValidIssuer = jwtOptions.Issuer, 
-            ValidAudience = jwtOptions.Audience, 
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtOptions.Issuer,
+            ValidAudience = jwtOptions.Audience,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SigningKey))
         }
     );
@@ -57,11 +57,11 @@ builder.Services.AddAuthorization();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+/* if (app.Environment.IsDevelopment())
+{ */
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+// }
 
 app.UseHttpsRedirection();
 

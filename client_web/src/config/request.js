@@ -28,4 +28,7 @@ export const axiosInstance = (token, url) =>
 
 export const getUsers = (token) => axiosInstance(token, 'Users').get();
 
-export const login = (userData) => axios.post(API_URL + 'Users/register', userData);
+export const login = (userData) =>
+  axios.post(API_URL + 'Users/register', userData, {
+    headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Credentials': true },
+  });
