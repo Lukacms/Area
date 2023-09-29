@@ -3,16 +3,11 @@ import '../styles/components.css';
 
 const FormikPassword = ({ field, form, label, id, error, touched, ...props }) => {
   return (
-    <div className='gap-10'>
-      {label ? <label htmlFor={id}>{label}</label> : null}
-      <Password
-        id={id}
-        {...props}
-        promptLabel='Choose a password'
-        weakLabel='too weak'
-        mediumLabel='average'
-        strongLabel='Complex password'
-      />
+    <div className='flex flex-column gap-2'>
+      <span className='p-float-label'>
+        <Password id={id} {...props} />
+        {label ? <label htmlFor={id}>{label}</label> : null}
+      </span>
       {error && touched && <small className='p-error'>{error}</small>}
     </div>
   );

@@ -3,11 +3,13 @@ import '../styles/components.css';
 
 const FormikInputtext = ({ field, form, label, id, error, touched, ...props }) => {
   return (
-    <span className='gap-10'>
-      {label ? <label htmlFor={id}>{label}</label> : null}
-      <InputText id={id} {...props} />
+    <div className='flex flex-column gap-2'>
+      <span className='p-float-label'>
+        <InputText id={id} {...props} />
+        {label ? <label htmlFor={id}>{label}</label> : null}
+      </span>
       {error && touched && <small className='p-error'>{error}</small>}
-    </span>
+    </div>
   );
 };
 

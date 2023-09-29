@@ -77,6 +77,10 @@ function Register() {
                       toggleMask
                       error={props.errors?.passwordCheck}
                       touched={props.touched.password}
+                      promptLabel='Choose a password'
+                      weakLabel='too weak'
+                      mediumLabel='average'
+                      strongLabel='Complex password'
                     />
                     <Field
                       name='passwordCheck'
@@ -87,9 +91,10 @@ function Register() {
                       toggleMask
                       error={props.errors?.passwordCheck}
                       touched={props.touched.passwordCheck}
+                      feedback={false}
                     />
                   </div>
-                  <Button label='Register' type='submit' />
+                  <Button label='Register' type='submit' size='large' style={{paddingLeft: '10%', paddingRight: '10%'}} />
                 </Form>
               )}
             </Formik>

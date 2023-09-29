@@ -19,6 +19,7 @@
   flex-direction: row;
   height: 80%;
   flex: 1;
+  width: 85%;
 }
 
 .logo {
@@ -26,7 +27,7 @@
 }
 
 .divider {
-  border: 1px solid #90A3B9;
+  border: 1px solid #90a3b9;
   margin-left: 20%;
   height: 90%;
   margin-right: 5%;
@@ -50,8 +51,7 @@ h1 {
 .names {
   display: flex;
   flex-direction: row;
-  width: 90%;
-  text-indent: 10%;
+  justify-content: space-between;
   text-align: left;
   margin-bottom: 5%;
 }
