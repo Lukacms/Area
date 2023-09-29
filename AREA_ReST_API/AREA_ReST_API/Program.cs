@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var _AreaPolicy = "AreaPolicy";
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -41,11 +43,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: "Area",
+    options.AddPolicy(name: _AreaPolicy,
         policy  =>
         {
-            policy.WithOrigins("http://localhost:8080",
-                "http://localhost:8081")
+            policy.AllowAnyOrigin()
                 .AllowAnyHeader()
                 .AllowAnyMethod();
         });
@@ -54,8 +55,6 @@ builder.Services.AddCors(options =>
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
-
-app.UseCors("Area");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -66,9 +65,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication();
-app.UseAuthorization();
+app.UseCors(_AreaPolicy);
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
