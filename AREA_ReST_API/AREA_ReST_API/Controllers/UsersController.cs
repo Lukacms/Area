@@ -77,6 +77,8 @@ public class UsersController : ControllerBase
             Username = userInfo.Username,
             Email = userInfo.Email,
             Password = userInfo.Password,
+            Name = userInfo.Name,
+            Surname = userInfo.Surname,
             Admin = false,
         };
         _context.Users.Add(newUser);
