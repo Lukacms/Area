@@ -1,6 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Login from './pages/Login';
-import Register from './pages/Register';
+import { Login, Register } from './pages';
 import 'primereact/resources/themes/mdc-dark-indigo/theme.css';
 import 'primeicons/primeicons.css';
 

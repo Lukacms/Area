@@ -1,14 +1,11 @@
 import React from 'react';
-import BackButton from '../components/BackButton';
-import Background from '../components/Background';
 import { Image } from 'primereact/image';
-import '../styles/App.css';
-import '../styles/register.css';
-import useRegister from '../hooks/useRegister';
 import { Formik, Form, Field } from 'formik';
 import { Button } from 'primereact/button';
-import FormikInputtext from '../components/FormikInputtext';
-import FormikPassword from '../components/FormikPassword';
+import { FormikPassword, FormikPassword, BackButton, Background } from '../components';
+import { useRegister } from '../hooks';
+import '../styles/App.css';
+import '../styles/register.css';
 
 function Register() {
   const { initialValues, validate, register } = useRegister();
