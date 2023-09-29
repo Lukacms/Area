@@ -2,13 +2,15 @@ import React from 'react';
 import { Image } from 'primereact/image';
 import { Formik, Form, Field } from 'formik';
 import { Button } from 'primereact/button';
-import { FormikPassword, FormikPassword, BackButton, Background } from '../components';
+import { Divider } from 'primereact/divider';
+import { Dialog } from 'primereact/dialog';
+import { FormikPassword, FormikInputtext, BackButton, Background } from '../components';
 import { useRegister } from '../hooks';
 import '../styles/App.css';
 import '../styles/register.css';
 
 function Register() {
-  const { initialValues, validate, register } = useRegister();
+  const { initialValues, validate, register, dialogue, setDialogue } = useRegister();
 
   return (
     <Background>
@@ -16,7 +18,7 @@ function Register() {
         <BackButton label='Home' />
         <div className='body'>
           <Image src={process.env.PUBLIC_URL + 'icon.png'} width={400} className='logo' />
-          <hr className='divider' />
+          <Divider layout='vertical' align='center' className='divider' />
           <div className='register'>
             <h1>Register</h1>
             <Formik initialValues={initialValues} validationSchema={validate} onSubmit={register}>
@@ -72,7 +74,7 @@ function Register() {
                       label='Password'
                       placeholder='Secure password'
                       toggleMask
-                      error={props.errors?.passwordCheck}
+                      error={props.errors?.password}
                       touched={props.touched.password}
                       promptLabel='Choose a password'
                       weakLabel='too weak'
@@ -91,10 +93,18 @@ function Register() {
                       feedback={false}
                     />
                   </div>
-                  <Button label='Register' type='submit' size='large' style={{paddingLeft: '10%', paddingRight: '10%'}} />
+                  <Button
+                    label='Register'
+                    type='submit'
+                    size='large'
+                    style={{ paddingLeft: '10%', paddingRight: '10%' }}
+                  />
                 </Form>
               )}
             </Formik>
+            <Dialog header='Failure' visible={dialogue} onHide={() => setDialogue(false)}>
+              <p>Failed to create your account. Try again in a few minutes.</p>
+            </Dialog>
           </div>
         </div>
       </div>

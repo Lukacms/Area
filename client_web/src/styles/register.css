@@ -27,10 +27,8 @@
 }
 
 .divider {
-  border: 1px solid #90a3b9;
-  margin-left: 20%;
-  height: 90%;
-  margin-right: 5%;
+  margin-left: 15%;
+  margin-right: 10%;
 }
 
 .register {

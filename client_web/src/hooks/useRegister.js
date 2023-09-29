@@ -1,6 +1,9 @@
+import { useState } from 'react';
 import * as Yup from 'yup';
+import { login } from '../config/request';
 
 const useRegister = () => {
+  const [dialogue, setDialogue] = useState(false);
   const initialValues = {
     name: '',
     surname: '',
@@ -21,15 +24,25 @@ const useRegister = () => {
     email: Yup.string().email('Invalid email').required('Required'),
   });
 
-  const register = (values) => {
-    console.log(values);
+  const register = async (values) => {
+    const newUser = {
+      name : values.name,
+      surname: values.surname,
+      password: values.password,
+      username: values.username,
+      email: values.email
+    };
+
+    try {
+      const datas = await login(newUser);
+      console.log('Success', datas);
+    } catch (error) {
+      console.log('Failure', error);
+      setDialogue(true);
+    }
   };
 
-  return {
-    initialValues,
-    validate,
-    register,
-  };
+  return { initialValues, validate, register, dialogue, setDialogue };
 };
 
 export default useRegister;
