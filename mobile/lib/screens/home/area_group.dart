@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/back/services.dart';
 import 'package:mobile/main.dart';
 import 'package:mobile/screens/home/area_card.dart';
 import 'package:mobile/theme/style.dart';
 
 class AreaGroup extends StatelessWidget {
-  final List group;
+  final List<Area> group;
   final String groupName;
-  const AreaGroup({super.key, required this.group, this.groupName = ""});
+  final Function editAreaCallback;
+  const AreaGroup({
+    super.key,
+    required this.group,
+    this.groupName = "",
+    required this.editAreaCallback,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +42,8 @@ class AreaGroup extends StatelessWidget {
               return SizedBox(
                 height: 50,
                 child: AreaCard(
-                  name: group[index]['name'],
+                  area: group[index],
+                  editAreaCallback: editAreaCallback,
                 ),
               );
             },

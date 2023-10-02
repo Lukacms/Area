@@ -8,9 +8,11 @@ import 'package:mobile/theme/style.dart';
 
 class AddArea extends StatefulWidget {
   final BuildContext parentContext;
+  final Function addActionCallback;
   const AddArea({
     super.key,
     required this.parentContext,
+    required this.addActionCallback,
   });
 
   @override
@@ -104,6 +106,7 @@ class _AddAreaState extends State<AddArea> {
         endDrawer: ActionReactionLists(
           category: selectedCategory,
           parentContext: widget.parentContext,
+          addActionCallback: widget.addActionCallback,
         ),
       ),
     );

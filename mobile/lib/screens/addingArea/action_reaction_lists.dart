@@ -7,10 +7,12 @@ import 'package:mobile/theme/style.dart';
 class ActionReactionLists extends StatelessWidget {
   final String category;
   final BuildContext parentContext;
+  final Function addActionCallback;
   const ActionReactionLists({
     super.key,
     required this.category,
     required this.parentContext,
+    required this.addActionCallback,
   });
 
   List<Widget> getCategoryServices() {
@@ -52,7 +54,11 @@ class ActionReactionLists extends StatelessWidget {
                         padding: EdgeInsets.only(left: blockWidth / 4),
                         child: TextButton(
                           onPressed: () {
-                            Navigator.of(context, rootNavigator: true).pop();
+                            addActionCallback(AreaAction(
+                                service: service,
+                                name: service.actions[index]));
+                            int count = 0;
+                            Navigator.of(context).popUntil((_) => count++ >= 2);
                           },
                           child: Row(
                             children: [

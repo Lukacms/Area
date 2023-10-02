@@ -17,6 +17,30 @@ class Service {
   });
 }
 
+class AreaAction {
+  final Service service;
+  final String name;
+
+  AreaAction({
+    required this.service,
+    required this.name,
+  });
+}
+
+class Area {
+  String user;
+  List<AreaAction> actions;
+  String name;
+  bool favorite;
+
+  Area({
+    required this.user,
+    required this.actions,
+    required this.name,
+    this.favorite = false,
+  });
+}
+
 /* class Connectors {
   final String name;
   final IconData icon;

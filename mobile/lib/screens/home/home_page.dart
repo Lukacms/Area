@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/back/api.dart';
+import 'package:mobile/back/services.dart';
 import 'package:mobile/components/background_gradient.dart';
 import 'package:mobile/main.dart';
 import 'package:mobile/screens/addingArea/area_build.dart';
@@ -17,7 +18,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   TextEditingController searchController = TextEditingController();
-  List areas = [];
+  List<Area> areas = [];
   @override
   void initState() {
     super.initState();
@@ -41,7 +42,16 @@ class _HomePageState extends State<HomePage> {
         addArea: () {
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => const AreaBuild(),
+              builder: (context) => AreaBuild(
+                isEdit: false,
+                areaAdd: (Area value) {
+                  setState(
+                    () {
+                      areas = getAreas();
+                    },
+                  );
+                },
+              ),
             ),
           );
         },
@@ -60,7 +70,15 @@ class _HomePageState extends State<HomePage> {
                         AppBar().preferredSize.height +
                         (blockHeight * 15),
                   ),
-                  AreaLists(areas: areas, searchText: searchController.text),
+                  AreaLists(
+                    areas: areas,
+                    searchText: searchController.text,
+                    editAreaCallback: (value) {
+                      setState(() {
+                        areas = getAreas();
+                      });
+                    },
+                  ),
                   TextButton(
                     child: const Text("goBack"),
                     onPressed: () {

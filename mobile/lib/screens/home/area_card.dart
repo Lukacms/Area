@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/back/services.dart';
 import 'package:mobile/main.dart';
+import 'package:mobile/screens/addingArea/area_build.dart';
 import 'package:mobile/theme/style.dart';
 
 class AreaCard extends StatelessWidget {
-  final String name;
-  const AreaCard({super.key, required this.name});
+  final Area area;
+  final Function editAreaCallback;
+  const AreaCard(
+      {super.key, required this.area, required this.editAreaCallback});
 
   @override
   Widget build(BuildContext context) {
@@ -12,8 +16,9 @@ class AreaCard extends StatelessWidget {
       width: blockWidth,
       height: blockHeight * 0.5,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: AppColors.white.withOpacity(0.1)),
+        borderRadius: BorderRadius.circular(20),
+        color: AppColors.white.withOpacity(0.1),
+      ),
       child: Column(
         children: [
           Row(
@@ -24,7 +29,17 @@ class AreaCard extends StatelessWidget {
                   Icons.pending,
                   color: AppColors.white,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => AreaBuild(
+                        isEdit: true,
+                        areaAdd: editAreaCallback,
+                        area: area,
+                      ),
+                    ),
+                  );
+                },
               )
             ],
           ),
@@ -33,8 +48,11 @@ class AreaCard extends StatelessWidget {
               top: blockHeight * 2,
             ),
             child: Text(
-              " $name",
-              style: TextStyle(color: AppColors.white, overflow: TextOverflow.ellipsis),
+              " ${area.name}",
+              style: TextStyle(
+                color: AppColors.white,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
           ),
         ],

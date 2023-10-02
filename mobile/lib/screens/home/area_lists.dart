@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/back/services.dart';
 import 'package:mobile/main.dart';
 import 'package:mobile/screens/home/area_group.dart';
 
 class AreaLists extends StatefulWidget {
-  final List areas;
+  final List<Area> areas;
+  final Function editAreaCallback;
   final String searchText;
   const AreaLists({
     super.key,
     required this.areas,
     required this.searchText,
+    required this.editAreaCallback,
   });
 
   @override
@@ -16,10 +19,10 @@ class AreaLists extends StatefulWidget {
 }
 
 class _AreaListsState extends State<AreaLists> {
-  List searchAreas() {
-    List searchAreas = [];
+  List<Area> searchAreas() {
+    List<Area> searchAreas = [];
     for (var area in widget.areas) {
-      if (area['name'].contains(widget.searchText)) {
+      if (area.name.contains(widget.searchText)) {
         searchAreas.add(area);
       }
     }
@@ -28,9 +31,9 @@ class _AreaListsState extends State<AreaLists> {
 
   @override
   Widget build(BuildContext context) {
-    List favorites = [];
+    List<Area> favorites = [];
     for (var area in widget.areas) {
-      if (area['favorite']) {
+      if (area.favorite) {
         favorites.add(area);
       }
     }
@@ -42,10 +45,12 @@ class _AreaListsState extends State<AreaLists> {
                 AreaGroup(
                   group: favorites,
                   groupName: "Mes Favoris",
+                  editAreaCallback: widget.editAreaCallback,
                 ),
                 AreaGroup(
                   group: widget.areas,
                   groupName: "Mes Areas",
+                  editAreaCallback: widget.editAreaCallback,
                 )
               ],
             )
@@ -54,6 +59,7 @@ class _AreaListsState extends State<AreaLists> {
                 AreaGroup(
                   group: searchAreas(),
                   groupName: "Recherche",
+                  editAreaCallback: widget.editAreaCallback,
                 ),
               ],
             ),
