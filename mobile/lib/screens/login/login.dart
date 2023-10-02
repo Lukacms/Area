@@ -3,8 +3,7 @@ import 'package:mobile/components/loginTextField.dart';
 import 'package:mobile/main.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/components/backgroundCircles.dart';
-import 'package:mobile/screens/home_page.dart';
-import 'package:mobile/screens/register.dart';
+import 'package:mobile/screens/login/forgot_password.dart';
 import 'package:mobile/theme/style.dart';
 import 'package:mobile/back/api.dart';
 
@@ -55,6 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   description: "E-Mail",
                   placeholder: 'yourname@example.com',
                   isPassword: false,
+                  isEmail: true,
                   controller: emailController),
               SizedBox(
                 height: blockHeight * 5,
@@ -71,11 +71,29 @@ class _LoginScreenState extends State<LoginScreen> {
                   Padding(
                     padding: EdgeInsets.only(right: blockWidth * 0.5),
                     child: TextButton(
-                      child: const Text(
+                      child: Text(
                         "Forgot Password?",
-                        style: TextStyle(),
+                        style: TextStyle(color: AppColors.lightBlue),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          PageRouteBuilder(
+                            opaque: false,
+                            pageBuilder: (BuildContext context, _, __) =>
+                                const ForgotPassword(),
+                            transitionDuration:
+                                const Duration(milliseconds: 200),
+                            transitionsBuilder: (context, animation,
+                                    secondaryAnimation, child) =>
+                                SlideTransition(
+                                    position: Tween<Offset>(
+                                      begin: const Offset(0, 1),
+                                      end: Offset.zero,
+                                    ).animate(animation),
+                                    child: child),
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ],
@@ -101,9 +119,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         login(emailController.text, passwordController.text);
                     if (res[0]) {
                       saveToken(res[1]);
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => HomePage(token: res[1]),
-                      ));
+                      Navigator.of(context)
+                          .pushNamed('/home', arguments: {'token': res[1]});
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
@@ -113,47 +130,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       );
                     }
                   },
-                ),
-              ),
-              Padding(padding: EdgeInsets.only(top: blockHeight * 3)),
-              Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(left: blockWidth),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Don't have an account?",
-                            style: TextStyle(
-                              color: AppColors.white,
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(right: blockWidth * 1.5),
-                            child: TextButton(
-                              style: TextButton.styleFrom(
-                                padding: EdgeInsets.zero,
-                              ),
-                              child: const Text(
-                                "Register Now",
-                                style: TextStyle(),
-                              ),
-                              onPressed: () {
-                                print("Register");
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => const RegisterScreen(),
-                                ));
-                                print("Register 2");
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
                 ),
               ),
             ],

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/back/api.dart';
+import 'package:mobile/back/services.dart';
 import 'package:mobile/components/background_gradient.dart';
 import 'package:mobile/main.dart';
+import 'package:mobile/screens/addingArea/area_build.dart';
 import 'package:mobile/screens/home/area_lists.dart';
 import 'package:mobile/screens/home/home_appbar.dart';
 import 'package:mobile/theme/style.dart';
@@ -16,7 +18,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   TextEditingController searchController = TextEditingController();
-  List areas = [];
+  List<Area> areas = [];
   @override
   void initState() {
     super.initState();
@@ -36,6 +38,23 @@ class _HomePageState extends State<HomePage> {
       extendBodyBehindAppBar: true,
       appBar: HomeAppBar(
         searchController: searchController,
+        context: context,
+        addArea: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => AreaBuild(
+                isEdit: false,
+                areaAdd: (Area value) {
+                  setState(
+                    () {
+                      areas = getAreas();
+                    },
+                  );
+                },
+              ),
+            ),
+          );
+        },
       ),
       backgroundColor: AppColors.darkBlue,
       body: Stack(
@@ -51,7 +70,15 @@ class _HomePageState extends State<HomePage> {
                         AppBar().preferredSize.height +
                         (blockHeight * 15),
                   ),
-                  AreaLists(areas: areas, searchText: searchController.text),
+                  AreaLists(
+                    areas: areas,
+                    searchText: searchController.text,
+                    editAreaCallback: (value) {
+                      setState(() {
+                        areas = getAreas();
+                      });
+                    },
+                  ),
                   TextButton(
                     child: const Text("goBack"),
                     onPressed: () {

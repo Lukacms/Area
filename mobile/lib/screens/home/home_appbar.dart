@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/components/search_field.dart';
 import 'package:mobile/main.dart';
 import 'package:mobile/theme/style.dart';
 
 class HomeAppBar extends AppBar {
   final TextEditingController searchController;
-  HomeAppBar({super.key, required this.searchController})
-      : super(
+  final BuildContext context;
+  final Function addArea;
+  HomeAppBar({
+    super.key,
+    required this.searchController,
+    required this.context,
+    required this.addArea,
+  }) : super(
+          automaticallyImplyLeading: false,
           bottom: PreferredSize(
             preferredSize: Size.fromHeight(blockHeight * 15),
             child: Column(
@@ -25,31 +33,8 @@ class HomeAppBar extends AppBar {
                     ],
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal:blockWidth / 4),
-                  child: TextField(
-                    controller: searchController,
-                    style: TextStyle(
-                      color: AppColors.white,
-                    ),
-                    decoration: InputDecoration(
-                      hintText: "Recherche",
-                      hintStyle: TextStyle(
-                        color: AppColors.white.withOpacity(0.5),
-                      ),
-                      fillColor: AppColors.white.withOpacity(0.1),
-                      filled: true,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide.none,
-                      ),
-                      prefixIcon: Icon(
-                        Icons.search,
-                        color: AppColors.white.withOpacity(0.5),
-                      ),
-                    ),
-                  ),
-                ),
+                SearchField(
+                    searchController: searchController, padding: blockWidth / 4)
               ],
             ),
           ),
@@ -69,7 +54,9 @@ class HomeAppBar extends AppBar {
                 color: AppColors.lightBlue,
                 size: 30,
               ),
-              onPressed: () {},
+              onPressed: () {
+                addArea();
+              },
             )
           ],
         );

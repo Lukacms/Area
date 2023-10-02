@@ -6,6 +6,7 @@ class LoginTextField extends StatefulWidget {
   final String description;
   final String placeholder;
   final bool isPassword;
+  final bool isEmail;
   final TextEditingController controller;
   const LoginTextField({
     super.key,
@@ -13,6 +14,7 @@ class LoginTextField extends StatefulWidget {
     required this.placeholder,
     required this.isPassword,
     required this.controller,
+    this.isEmail = false,
   });
 
   @override
@@ -20,6 +22,15 @@ class LoginTextField extends StatefulWidget {
 }
 
 class _LoginTextFieldState extends State<LoginTextField> {
+  bool isEmailValid = true;
+  bool isValidEmail(String email) {
+    // Regular expression to match email addresses
+    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+
+    // Check if the email matches the regular expression
+    return emailRegex.hasMatch(email);
+  }
+
   @override
   Widget build(BuildContext context) {
     screenSize = MediaQuery.of(context).size;
@@ -48,7 +59,24 @@ class _LoginTextFieldState extends State<LoginTextField> {
               enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: AppColors.white.withOpacity(0.5)),
               ),
+              errorText: isEmailValid ? null : 'Invalid email address',
+              errorStyle: const TextStyle(
+                color: Colors.red,
+                decoration: TextDecoration.underline,
+              ),
             ),
+            onChanged: (value) {
+              print(value);
+              if (value.isEmpty) {
+                setState(() {
+                  isEmailValid = true;
+                });
+              } else if (widget.isEmail) {
+                setState(() {
+                  isEmailValid = isValidEmail(value);
+                });
+              }
+            },
           ),
         ),
       ],

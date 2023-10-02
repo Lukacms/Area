@@ -2,6 +2,8 @@
 
 // OFFLINE
 
+import 'package:mobile/back/services.dart';
+
 class Automatisation {
   int id;
   String user;
@@ -16,39 +18,11 @@ class Automatisation {
   });
 }
 
-List automatisations = [
-  {
-    "id": 0,
-    "user": "user",
-    "actionId": 0,
-    "reaction": "reaction",
-    "name": "action 1 a afficher (fav)",
-    "favorite": true
-  },
-  {
-    "id": 2,
-    "user": "user",
-    "actionId": 3,
-    "reaction": "prout",
-    "name": "action 2 a afficher(pas fav)",
-    "favorite": false
-  },
-  {
-    "id": 1,
-    "user": "user",
-    "actionId": 2,
-    "reaction": "prout",
-    "name": "action 3 a afficher(fav)",
-    "favorite": true
-  },
-    {
-    "id": 4,
-    "user": "user",
-    "actionId": 2,
-    "reaction": "prout",
-    "name": "action 4 a afficher(fav)",
-    "favorite": true
-  }
+List<Area> automatisations = [
+  Area(user: "user", actions: [], name: "area 1 a afficher", favorite: true),
+  Area(user: "user", actions: [], name: "area 2 a pas afficher"),
+  Area(user: "user", actions: [], name: "area 3 a pas afficher"),
+  Area(user: "user", actions: [], name: "area 4 a afficher", favorite: true),
 ];
 
 List login(String user, String password) {
@@ -59,6 +33,21 @@ List login(String user, String password) {
   return [false, ""];
 }
 
-List getAreas() {
+List<Area> getAreas() {
   return automatisations;
 }
+
+void addArea(Area area, String user) {
+  area.user = user;
+  automatisations.add(area);
+}
+
+void editArea(Area area, Area savedArea) {
+  for (var automatisation in automatisations) {
+    if (automatisation == savedArea) {
+      automatisation = area;
+    }
+  }
+}
+
+void sendResetPassword() {}
