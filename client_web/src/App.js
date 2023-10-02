@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Home, Login, MailVerif, Register } from './pages';
+import { Home, Login, MailVerif, Register, SettingServices } from './pages';
 import 'primeicons/primeicons.css';
 import 'primereact/resources/themes/mdc-dark-deeppurple/theme.css'
 
@@ -13,9 +13,13 @@ function App() {
           <Route path='verify' element={<MailVerif />} />
         </Route>
         <Route path="/home" element={<Home />} />
+        <Route path='/settings'>
+          <Route path='services' element={<SettingServices />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
+  // <Route index element={<SettingUser />} />
 }
 
 export default App;

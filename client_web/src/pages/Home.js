@@ -5,7 +5,7 @@ import { PanelMenu } from 'primereact/panelmenu';
 import { Divider } from 'primereact/divider';
 import '../styles/home.css';
 
-function Home() {
+function Home({children}) {
   const {} = useHome();
   const [addAct, setaddAct] = useState(false);
   const [area, setArea] = useState([{ action: '', reaction: '' }]);
@@ -160,6 +160,7 @@ function Home() {
       </div>
       <div className='middleDiv'></div>
       <div className='rightDiv'></div>
+      {children}
     </div>
   );
 }

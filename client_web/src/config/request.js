@@ -4,13 +4,12 @@ import { API_URL } from './constants';
 // used to refresh token when getting 403 error
 // const refreshToken = () => {};
 
-export const axiosInstance = (token, url) =>
+export const axiosInstance = (token) =>
   axios.create({
     headers: {
       Authorization: `Bearer ${token}`,
     },
     baseURL: API_URL,
-    url: url,
   });
 
 // causing the pages to crash, idk why
@@ -32,3 +31,7 @@ export const login = (userData) =>
   axios.post(API_URL + 'Users/register', userData, {
     headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Credentials': true },
   });
+
+export const getServices = (token) => axiosInstance(token).get(API_URL + 'Services');
+
+export const getUserServices = (token, id) => axiosInstance(token).get(API_URL + `UserServices/${id}`);
