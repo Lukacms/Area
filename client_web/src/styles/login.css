@@ -60,14 +60,23 @@
   transform-origin: center;
 }
 
+.topLeft {
+    display: flex;
+    gap: 3vw;
+}
+
+.buttonSettings {
+    padding-left: 2vw;
+}
+
 .CircleHollow2 {
   height: 300px;
   width: 300px;
   left: calc(100vw - 150px);
   top: 20vh;
   z-index: 1;
-  background-color: rgba(69, 35, 81, 1);
   border-radius: 50%;
+  background-color: rgba(69, 35, 81, 1);
   display: inside-block;
   filter: blur(100px);
   position: fixed;
