@@ -4,7 +4,27 @@ const useHome = () => {
   const [addAct, setaddAct] = useState(false);
   const [area, setArea] = useState([{ action: '', reaction: '', name: '' }]);
   const [tmpAct, setTmp] = useState('');
-  const [selectedArea, setSelectedArea] = useState({action: '', reaction: ''});
+  const [selectedArea, setSelectedArea] = useState({ action: '', reaction: '' });
+  const [areas, setAreas] = useState([
+    {
+      label: 'fav',
+      items: [
+        {
+          label: '',
+          data: { action: '', reaction: '' },
+        },
+      ],
+    },
+    {
+      label: 'not fav',
+      items: [
+        {
+          label: '',
+          data: { action: '', reaction: '' },
+        },
+      ],
+    },
+  ]);
 
   const clickAct = (eventName) => {
     if (addAct) {
@@ -17,34 +37,36 @@ const useHome = () => {
 
   const clickReact = (eventName) => {
     if (!addAct) {
-      console.log("Please select an action first");
+      /*console.log("Please select an action first");*/
       return;
     }
-    area.push({ action: tmpAct, reaction: eventName, name: "act" });
+      console.log("test");
+    area.push({ action: tmpAct, reaction: eventName, name: 'act' });
+    addToAreas({
+      act: String(area[area.length - 1].action),
+      name: String(area[area.length - 1].name),
+      react: String(area[area.length - 1].reaction),
+    });
     setaddAct(false);
   };
 
   useEffect(() => {
-    const tmpActMod = () => {
-      console.log(tmpAct);
-    };
-    const addActMod = () => {
-      console.log(addAct);
-    };
-    tmpActMod();
-    addActMod();
-  }, [clickAct]);
-
-  useEffect(() => {
-    const areaMod = () => {
-        console.log("area: ", area);
+    const areasMod = () => {
+      console.log("area: ", area);
       /*for (let i = 0; i < area.length; i++)
         console.log('ff:', area[i].action, ' ', 'gg: ', area[i].reaction);*/
     };
-    areaMod();
-    addToAreas(area[area.length - 1]);
-  }, [clickReact]);
+    areasMod();
+  }, [area]);
 
+  useEffect(() => {
+    const areasMod = () => {
+      console.log("areas: ", areas);
+      /*for (let i = 0; i < area.length; i++)
+        console.log('ff:', area[i].action, ' ', 'gg: ', area[i].reaction);*/
+    };
+    areasMod();
+  }, [areas]);
   const items = [
     {
       label: 'discord',
@@ -52,13 +74,13 @@ const useHome = () => {
         {
           label: 'action disc 1',
           command: (event) => {
-            clickAct(items[0].items[0].label);
+            event.originalEvent.currentTarget.click(clickAct(items[0].items[0].label));
           },
         },
         {
           label: 'action disc 2',
           command: (event) => {
-            clickAct(items[0].items[1].label);
+            event.originalEvent.currentTarget.click(clickAct(items[0].items[1].label));
           },
         },
       ],
@@ -69,13 +91,13 @@ const useHome = () => {
         {
           label: 'action mail1',
           command: (event) => {
-            clickAct(items[1].items[0].label);
+            event.originalEvent.currentTarget.click(clickAct(items[1].items[0].label));
           },
         },
         {
           label: 'action mail2',
           command: (event) => {
-            clickAct(items[1].items[1].label);
+            event.originalEvent.currentTarget.click(clickAct(items[1].items[1].label));
           },
         },
       ],
@@ -89,13 +111,13 @@ const useHome = () => {
         {
           label: 'reaction disc 1',
           command: (event) => {
-            clickReact(items2[0].items[0].label);
+            event.originalEvent.currentTarget.click(clickReact(items2[0].items[0].label));
           },
         },
         {
           label: 'reaction disc 2',
           command: (event) => {
-            clickReact(items2[0].items[1].label);
+            event.originalEvent.currentTarget.click(clickReact(items2[0].items[1].label));
           },
         },
       ],
@@ -106,49 +128,24 @@ const useHome = () => {
         {
           label: 'reaction mail1',
           command: (event) => {
-            clickReact(items2[1].items[0].label);
+            event.originalEvent.currentTarget.click(clickReact(items2[1].items[0].label));
           },
         },
         {
           label: 'reaction mail2',
           command: (event) => {
-            clickReact(items2[1].items[1].label);
+            event.originalEvent.currentTarget.click(clickReact(items2[1].items[1].label));
           },
         },
       ],
     },
   ];
 
-  const areas = [
-      {
-          label: "fav",
-          items: [
-              {
-                  label: "",
-                  data: {action: "", reaction: ""}
-              }
-          ]
-      },
-      {
-          label: "not fav",
-          items: [
-              {
-                  label: "",
-                  data: {action: "", reaction: ""}
-              }
-          ]
-      }
-  ]
-
-    const addToAreas = ({act, react, name}) => {
-        if (areas[1].items[0].label === "") {
-            areas[1].items.pop();
-            areas[1].items.push({label: name, data: {action: act, reaction: react}});
-        } else {
-            areas[1].items.push({label: name, data: {action: act, reaction: react}});
-        }
-    }
-
+  const addToAreas = ({ act, react, name }) => {
+    console.log('act: ', act, ' react: ', react, ' name: ', name);
+    if (act === '' || react === '' || name === '') return;
+    areas[1].items.push({ label: name, data: { action: act, reaction: react } });
+  };
   const [items3, setItems] = useState(items);
 
   const dispAct = () => {

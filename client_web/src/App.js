@@ -1,7 +1,7 @@
 import "./styles/App.css";
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Login from "./pages/Login";
-import Home from "./pages/home";
+import Home from "./pages/Home";
 import 'primeicons/primeicons.css';
 import 'primereact/resources/primereact.css';
 import 'primereact/resources/themes/mdc-dark-deeppurple/theme.css'
