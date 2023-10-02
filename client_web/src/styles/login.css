@@ -1,17 +1,17 @@
 .box {
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    display: flex;
-    width: 100vw;
-    background-color: #1B1A2A;
-    overflow: hidden;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  display: flex;
+  width: 100vw;
+  background-color: #1b1a2a;
+  overflow: hidden;
 }
 
 .App {
   background-color: rgba(255, 250, 251, 0.1);
-  align-items: center;
-  justify-content: center;
+  align-items: left;
+  display: flex;
   width: 80vw;
   border-radius: 50px;
   height: 80vh;
@@ -30,7 +30,6 @@
   filter: blur(100px);
   position: fixed;
   transform-origin: center;
-  overflow: hidden;
 }
 
 .CircleBlu2 {
@@ -45,9 +44,7 @@
   filter: blur(100px);
   position: fixed;
   transform-origin: center;
-  overflow: hidden;
 }
-
 
 .CircleHollow {
   height: 351px;
@@ -61,7 +58,6 @@
   filter: blur(100px);
   position: fixed;
   transform-origin: center;
-  overflow: hidden;
 }
 
 .CircleHollow2 {
@@ -75,10 +71,8 @@
   display: inside-block;
   filter: blur(100px);
   position: fixed;
-  overflow: hidden;
   transform-origin: center;
 }
-
 
 .CirclePink {
   height: 465px;
@@ -92,7 +86,6 @@
   filter: blur(100px);
   position: fixed;
   transform-origin: center;
-  overflow: hidden;
 }
 .CirclePink2 {
   height: 465px;
@@ -106,41 +99,100 @@
   filter: blur(100px);
   position: fixed;
   transform-origin: center;
-  overflow: hidden;
 }
 
-
-
 .Text {
-    color: white;
-    justify-content: center;
-    margin-left: 50px;
+  color: white;
+  justify-content: center;
+  margin-left: 50px;
 }
 
 .EmailBox {
-    color: #FFFFFF;
-    left: 18vw;
-    top: 45vh;
-    border-color: red;
-    border: 2px solid green;
-    position: fixed;
-    display: flex;
-    gap: 10px;
-    flex-direction: column;
-}
-
-.TextBox {
-    border-radius: 10px;
+  color: #ffffff;
+  left: 20vw;
+  top: 50vh;
+  border-color: red;
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  margin-bottom: 2vh;
 }
 
 .PassBox {
-    color: #FFFFFF;
-    left: 18vw;
-    top: 60vh;
-    border-color: red;
-    border: 2px solid green;
-    position: absolute;
+  color: #ffffff;
+  left: 20vw;
+  top: 60vh;
+  border-color: red;
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
 }
 
+.TextBox {
+  color: #ffffff;
+  border-bottom: 1px #ffffff solid;
+  width: 20vw;
+}
 
+.hrMidle {
+  border: 1px solid #90a3b9;
+  height: 65vh;
+  width: 1px;
+  position: fixed;
+  border-radius: 5px;
+}
 
+.divLogin {
+  margin-top: 10vh;
+  margin-left: 5vw;
+  padding: 5vh;
+}
+
+.buttonDiv {
+  width: 10vw;
+  height: 5vh;
+  left: 5vw;
+}
+
+.fPassword {
+  width: 10vw;
+  height: 5vh;
+  right: 1vw;
+  border: none;
+  background-color: 'red';
+}
+
+.divDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 8vw;
+}
+
+.divSignin {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 40vw;
+}
+
+.title {
+  font-size: 30px;
+}
+
+.subTitle {
+  font-size: 18px;
+}
+
+.buttonDiv2 {
+  width: 10vw;
+  height: 5vh;
+}
+
+.img {
+  align-self: center;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 5vh;
+}

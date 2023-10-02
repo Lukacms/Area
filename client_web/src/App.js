@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Login, MailVerif, Register } from './pages';
-import 'primereact/resources/themes/mdc-dark-indigo/theme.css';
+import { Home, Login, MailVerif, Register } from './pages';
 import 'primeicons/primeicons.css';
+import 'primereact/resources/themes/mdc-dark-deeppurple/theme.css'
 
 function App() {
   return (
@@ -12,6 +12,7 @@ function App() {
           <Route index element={<Register />} />
           <Route path='verify' element={<MailVerif />} />
         </Route>
+        <Route path="/home" element={<Home />} />
       </Routes>
     </BrowserRouter>
   );

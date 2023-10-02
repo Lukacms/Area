@@ -6,7 +6,7 @@ import { Divider } from 'primereact/divider';
 import { Dialog } from 'primereact/dialog';
 import { FormikPassword, FormikInputtext, BackButton, Background } from '../components';
 import { useRegister } from '../hooks';
-import '../styles/App.css';
+import '../styles/components.css';
 import '../styles/register.css';
 
 function Register() {
@@ -14,7 +14,7 @@ function Register() {
 
   return (
     <Background>
-      <div className='App'>
+      <div className='app'>
         <BackButton label='Home' />
         <div className='body'>
           <Image src={process.env.PUBLIC_URL + 'icon.png'} width={400} className='logo' />

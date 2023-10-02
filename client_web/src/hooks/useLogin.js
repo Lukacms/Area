@@ -1,5 +1,13 @@
+import { useNavigate } from "react-router-dom";
+
 const useLogin = () => {
-  return {};
+  const navigate = useNavigate();
+
+  const login = () => {
+    navigate('/home');
+  };
+
+  return { login, navigate };
 }
 
 export default useLogin;

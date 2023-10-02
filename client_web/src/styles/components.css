@@ -1,3 +1,13 @@
 .help {
   margin: 50%;
 }
+
+.app {
+  background-color: rgba(255, 250, 251, 0.1);
+  align-items: center;
+  justify-content: center;
+  width: 80vw;
+  border-radius: 50px;
+  height: 80vh;
+  z-index: 2;
+}
