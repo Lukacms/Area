@@ -1,18 +1,25 @@
-import '../styles/home.css';
-import { Button } from 'primereact/button';
-import { PanelMenu } from 'primereact/panelmenu';
-import { Divider } from 'primereact/divider';
-import { useNavigate } from 'react-router-dom';
-import AreaCard from '../components/AreaCard';
-import useHome from '../hooks/useHome';
-import { styled } from '@mui/material/styles';
-import { ToggleButton, ToggleButtonGroup, IconButton, TextField } from '@mui/material';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import InputAdornment from '@mui/material/InputAdornment';
-import SearchIcon from '@mui/icons-material/Search';
-import FolderIcon from '@mui/icons-material/Folder';
-import { useEffect, useState } from 'react';
-import React from 'react';
+import "../styles/home.css";
+import { Button } from "primereact/button";
+import { ToolBar } from "primereact/toolbar";
+import { PanelMenu } from "primereact/panelmenu";
+import { Divider } from "primereact/divider";
+import { useNavigate } from "react-router-dom";
+import AreaCard from "../components/AreaCard";
+import useHome from "../hooks/useHome";
+import { styled } from "@mui/material/styles";
+import {
+  ToggleButton,
+  ToggleButtonGroup,
+  IconButton,
+  TextField,
+  AppBar,
+} from "@mui/material";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import InputAdornment from "@mui/material/InputAdornment";
+import SearchIcon from "@mui/icons-material/Search";
+import FolderIcon from "@mui/icons-material/Folder";
+import { useEffect, useState } from "react";
+import React from "react";
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   '& .MuiToggleButtonGroup-grouped': {
@@ -45,12 +52,11 @@ const Home = () => {
   };
 
   return (
-    <div className='globalDiv'>
-      <div className='leftDiv'>
-        <div className='topLeft'>
-          <b className='fastrText' style={{ paddingLeft: '5%' }}>
-            {' '}
-            FastR{' '}
+    <div className="globalDiv">
+      <div className="leftDiv">
+        <div className="topLeft">
+          <b className="fastrText" style={{ paddingLeft: "5%" }}>
+            FastR
           </b>
           <IconButton
             label='setting'
@@ -91,8 +97,10 @@ const Home = () => {
           style={{ backgroundColor: 'transparent' }}
         />
       </div>
-      <div className='middleDiv'></div>
-      <AreaCard area={selectedArea} />
+      <div className="middleDiv" style={{ flex: 2 }}>
+        <div style={{ height: "10%", backgroundColor: "blue" }}></div>
+        <AreaCard area={selectedArea} />
+      </div>
       <div
         className='rightDiv'
         style={{
