@@ -32,7 +32,7 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
 }));
 
 const Home = () => {
-  const { dispAct, dispReac, items3, areas, selectedArea } = useHome();
+  const { dispAct, dispReac, actionOrReaction, panelAreas, selectedArea } = useHome();
   const [displayedCategory, setDisplayedCategory] = useState('actions');
   const navigate = useNavigate();
   const handleChange = (event, newSelectedValue) => {
@@ -86,7 +86,7 @@ const Home = () => {
         </div>
         <Divider />
         <PanelMenu
-          model={items3}
+          model={actionOrReaction}
           className='pannelMenu'
           style={{ backgroundColor: 'transparent' }}
         />
@@ -124,7 +124,7 @@ const Home = () => {
           variant='standard'
         />
         <PanelMenu
-          model={areas}
+          model={panelAreas}
           className='pannelMenu'
           style={{
             backgroundColor: 'transparent',
