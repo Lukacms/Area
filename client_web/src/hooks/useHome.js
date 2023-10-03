@@ -2,6 +2,13 @@ import { useEffect, useState } from 'react';
 
 const useHome = () => {
   let nbArea = 0;
+
+  const [blankArea, setBlankArea] = useState({
+    label: '',
+    icon: '',
+    data: { action: '', reaction: [''], id: 0 },
+    command: () => {},
+  });
   const [addAct, setaddAct] = useState(false);
   const [areas, setArea] = useState([{ action: '', reaction: [''], name: '' }]);
   const [tmpAct, setTmp] = useState('');
@@ -136,14 +143,13 @@ const useHome = () => {
     }
     setaddAct(false);
     areas.push({ action: tmpAct, reaction: eventName, name: 'act' });
-    addToAreas({
+    addToPanelArea({
       act: String(areas[areas.length - 1].action),
       name: String(areas[areas.length - 1].name),
       react: String(areas[areas.length - 1].reaction),
     });
   };
-
-  const addToAreas = ({ act, react, name }) => {
+  const addToPanelArea = ({ act, react, name }) => {
     if (panelAreas[1].items[0].label === '') {
       panelAreas[1].items.pop();
       panelAreas[1].items.push({
@@ -172,6 +178,38 @@ const useHome = () => {
   const dispReac = () => {
     setItems(reactionList);
   };
+
+  const addNameToBlankArea = ({ name }) => {
+    var tmp = blankArea;
+    blankArea.label = name;
+    setBlankArea(tmp);
+  };
+
+  const addActionToBlankArea = ({ action }) => {
+    var tmp = blankArea;
+    blankArea.action = action;
+    setBlankArea(tmp);
+  };
+
+  const addReactionToBlankArea = ({ Reaction }) => {
+    var tmp = blankArea;
+    blankArea.Reaction = Reaction;
+    setBlankArea(tmp);
+  };
+
+  const addCreatedAreaToAreas = () => {
+    areas.push({
+      action: blankArea.data.action,
+      reaction: blankArea.data.action,
+      name: blankArea.label,
+    });
+    addToPanelArea({
+      act: String(areas[areas.length - 1].action),
+      name: String(areas[areas.length - 1].name),
+      react: String(areas[areas.length - 1].reaction),
+    });
+  };
+
   return { dispAct, dispReac, actionOrReaction, panelAreas, selectedArea };
 };
 
