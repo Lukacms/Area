@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 const useHome = () => {
   let nbArea = 0;
@@ -9,6 +9,7 @@ const useHome = () => {
   const [areas, setAreas] = useState([
     {
       label: 'favorite',
+      icon: "pi pi-fw pi-folder",
       items: [
         {
           label: '',
@@ -21,7 +22,8 @@ const useHome = () => {
       ],
     },
     {
-      label: 'lambda',
+      label: 'Not Favorites',
+            icon: "pi pi-fw pi-folder",
       items: [
         {
           label: '',
@@ -80,7 +82,8 @@ const useHome = () => {
   }, [areas]);
   const items = [
     {
-      label: 'discord',
+      label: "discord",
+      icon: "pi pi-fw pi-folder",
       items: [
         {
           label: 'action disc 1',
@@ -97,7 +100,8 @@ const useHome = () => {
       ],
     },
     {
-      label: 'microsoft',
+      label: "microsoft",
+      icon: "pi pi-fw pi-folder",
       items: [
         {
           label: 'action mail1',
@@ -117,7 +121,7 @@ const useHome = () => {
 
   const items2 = [
     {
-      label: 'discord',
+      label: "discord",
       items: [
         {
           label: 'reaction disc 1',
@@ -134,7 +138,7 @@ const useHome = () => {
       ],
     },
     {
-      label: 'microsoft',
+      label: "microsoft",
       items: [
         {
           label: 'reaction mail1',

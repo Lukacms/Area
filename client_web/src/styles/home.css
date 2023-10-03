@@ -32,15 +32,10 @@
 .fastrText {
     font-size: 50px;
     align-self: start;
-    margin: 0px;
 }
 
 .selectButton {
     display: flex;
-    size: 50px;
-    width: 15vw;
-    padding-left: 2vw;
-    gap: 1vw;
 }
 
 .pannelMenu {
@@ -51,3 +46,6 @@
     margin: 0px;
 }
 
+.buttonText {
+    color: #FFFFFF;
+}
