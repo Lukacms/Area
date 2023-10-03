@@ -1,5 +1,6 @@
 import "../styles/home.css";
 import { Button } from "primereact/button";
+import { ToolBar } from "primereact/toolbar";
 import { PanelMenu } from "primereact/panelmenu";
 import { Divider } from "primereact/divider";
 import { useNavigate } from "react-router-dom";
@@ -11,6 +12,7 @@ import {
   ToggleButtonGroup,
   IconButton,
   TextField,
+  AppBar,
 } from "@mui/material";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -54,8 +56,7 @@ const Home = () => {
       <div className="leftDiv">
         <div className="topLeft">
           <b className="fastrText" style={{ paddingLeft: "5%" }}>
-            {" "}
-            FastR{" "}
+            FastR
           </b>
           <IconButton
             label="setting"
@@ -100,8 +101,10 @@ const Home = () => {
           style={{ backgroundColor: "transparent" }}
         />
       </div>
-      <div className="middleDiv"></div>
-      <AreaCard area={selectedArea} />
+      <div className="middleDiv" style={{ flex: 2 }}>
+        <div style={{ height: "10%", backgroundColor: "blue" }}></div>
+        <AreaCard area={selectedArea} />
+      </div>
       <div
         className="rightDiv"
         style={{
