@@ -1,4 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Mail;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json.Nodes;
@@ -7,11 +8,13 @@ using AREA_ReST_API.Classes.Login;
 using AREA_ReST_API.Classes.Register;
 using AREA_ReST_API.Middleware;
 using AREA_ReST_API.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
 namespace AREA_ReST_API.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 
@@ -27,7 +30,7 @@ public class UsersController : ControllerBase
     [HttpGet("")]
     public ActionResult<IEnumerable<UsersModel>> GetAllUsers([FromHeader] string authorization)
     {
-        var decodedUser = JwtDecoder.JwtDecode(authorization);
+        var decodedUser = JwtDecoder.Decode(authorization);
         if (decodedUser.Admin != true)
             return new UnauthorizedObjectResult(new JsonObject{{"message", "Not authorize to get data"}});
         return new OkObjectResult(_context.Users.ToList());
@@ -36,7 +39,7 @@ public class UsersController : ControllerBase
     [HttpGet("{id:int}")]
     public ActionResult<UsersModel?> GetUser([AsParameters] int id, [FromHeader] string authorization)
     {
-        var decodedUser = JwtDecoder.JwtDecode(authorization);
+        var decodedUser = JwtDecoder.Decode(authorization);
         if (decodedUser.Admin != true)
             return new UnauthorizedObjectResult(new JsonObject{{"message", "Not authorize to get data"}});
         var requestedUser = _context.Users.FirstOrDefault(user => user.Id == id);
@@ -48,7 +51,7 @@ public class UsersController : ControllerBase
     [HttpGet("me")]
     public ActionResult<UsersModel?> GetMe([FromHeader] string authorization)
     {
-        var decodedUser = JwtDecoder.JwtDecode(authorization);
+        var decodedUser = JwtDecoder.Decode(authorization);
         var requestedUser = _context.Users.FirstOrDefault(user => user.Id == decodedUser.Id);
         if (requestedUser == null)
             return new NotFoundObjectResult(new JsonObject { { "message", "User not found" } });
@@ -66,26 +69,41 @@ public class UsersController : ControllerBase
         return new OkObjectResult(new JsonObject {{"message", "User successfully deleted"}});
     }
     
+    [AllowAnonymous]
     [HttpPost("register")]
     public ActionResult CreateNewUser([FromBody] RegisterClass userInfo)
     {
         var checkedUser = _context.Users.FirstOrDefault(user => user.Email == userInfo.Email);
         if (checkedUser != null)
             return new ConflictObjectResult(new JsonObject { { "message", "Email is already used" } });
+        if (!IsUserValid(userInfo))
+            return new BadRequestObjectResult(new JsonObject { { "message", "Request is not valid" } });
+        var hashPassword = BCrypt.Net.BCrypt.EnhancedHashPassword(userInfo.Password, 13);
         var newUser = new UsersModel
         {
             Username = userInfo.Username,
             Email = userInfo.Email,
-            Password = userInfo.Password,
+            Password = hashPassword,
             Name = userInfo.Name,
             Surname = userInfo.Surname,
             Admin = false,
         };
-        _context.Users.Add(newUser);
+        var user = _context.Users.Add(newUser);
         _context.SaveChanges(); 
-        return new CreatedResult("URI", newUser);
+        return new CreatedResult("URI", user.Entity);
+    }
+
+    private static bool IsUserValid(RegisterClass newUser)
+    {
+        try {
+            var addr = new MailAddress(newUser.Email);
+        } catch {
+            return false;
+        }
+        return !newUser.Username.IsNullOrEmpty() && !newUser.Name.IsNullOrEmpty() && !newUser.Password.IsNullOrEmpty();
     }
     
+    [AllowAnonymous]
     [HttpPost("login")]
     public ActionResult LoginUser([FromBody] Credentials credentials, JwtOptions jwtOptions)
     {
@@ -94,13 +112,15 @@ public class UsersController : ControllerBase
         var requestedUser = _context.Users.FirstOrDefault(user => user.Email == email);
         if (requestedUser == null)
             return new NotFoundObjectResult(new JsonObject { { "message", "User not found" } });
-        if (requestedUser.Password != password)
+        if (email.IsNullOrEmpty() || password.IsNullOrEmpty())
+            return new BadRequestObjectResult(new JsonObject { { "message", "Request is not valid" } });
+        if (BCrypt.Net.BCrypt.EnhancedVerify(password, requestedUser.Password) == false)
             return new UnauthorizedObjectResult(new JsonObject {{"message", "Wrong password" }});
         var token = GenerateJwtToken(requestedUser, jwtOptions);
         return new OkObjectResult(new JsonObject { { "access_token", token } });
     }
     
-    private string GenerateJwtToken(UsersModel user, JwtOptions jwtOptions)
+    private static string GenerateJwtToken(UsersModel user, JwtOptions jwtOptions)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.UTF8.GetBytes(jwtOptions.SigningKey);

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AREA_ReST_API.Controllers;
 
-/*[Authorize]*/
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 
@@ -29,7 +29,7 @@ public class UserServicesController
     [HttpDelete("{userServiceId:int}")]
     public ActionResult DeleteUserServiceById([AsParameters] int userServiceId, [FromHeader] string authorization)
     {
-        var decodedUser = JwtDecoder.JwtDecode(authorization);
+        var decodedUser = JwtDecoder.Decode(authorization);
         var deletedUserService = _context.UserServices.FirstOrDefault(userService => userService.Id == userServiceId);
         if (deletedUserService == null)
             return new NotFoundObjectResult(new JsonObject { { "message", "UserService not found" } });
