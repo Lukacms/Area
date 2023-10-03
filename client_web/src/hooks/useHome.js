@@ -1,26 +1,31 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 const useHome = () => {
   const [addAct, setaddAct] = useState(false);
-  const [area, setArea] = useState([{ action: '', reaction: '', name: '' }]);
-  const [tmpAct, setTmp] = useState('');
-  const [selectedArea, setSelectedArea] = useState({ action: '', reaction: '' });
+  const [area, setArea] = useState([{ action: "", reaction: "", name: "" }]);
+  const [tmpAct, setTmp] = useState("");
+  const [selectedArea, setSelectedArea] = useState({
+    action: "",
+    reaction: "",
+  });
   const [areas, setAreas] = useState([
     {
-      label: 'fav',
+      label: "fav",
+      icon: "pi pi-fw pi-folder",
       items: [
         {
-          label: '',
-          data: { action: '', reaction: '' },
+          label: "",
+          data: { action: "", reaction: "" },
         },
       ],
     },
     {
-      label: 'not fav',
+      label: "not fav",
+      icon: "pi pi-fw pi-folder",
       items: [
         {
-          label: '',
-          data: { action: '', reaction: '' },
+          label: "",
+          data: { action: "", reaction: "" },
         },
       ],
     },
@@ -40,8 +45,8 @@ const useHome = () => {
       /*console.log("Please select an action first");*/
       return;
     }
-      console.log("test");
-    area.push({ action: tmpAct, reaction: eventName, name: 'act' });
+    console.log("test");
+    area.push({ action: tmpAct, reaction: eventName, name: "act" });
     addToAreas({
       act: String(area[area.length - 1].action),
       name: String(area[area.length - 1].name),
@@ -69,35 +74,45 @@ const useHome = () => {
   }, [areas]);
   const items = [
     {
-      label: 'discord',
+      label: "discord",
+      icon: "pi pi-fw pi-folder",
       items: [
         {
-          label: 'action disc 1',
+          label: "action disc 1",
           command: (event) => {
-            event.originalEvent.currentTarget.click(clickAct(items[0].items[0].label));
+            event.originalEvent.currentTarget.click(
+              clickAct(items[0].items[0].label)
+            );
           },
         },
         {
-          label: 'action disc 2',
+          label: "action disc 2",
           command: (event) => {
-            event.originalEvent.currentTarget.click(clickAct(items[0].items[1].label));
+            event.originalEvent.currentTarget.click(
+              clickAct(items[0].items[1].label)
+            );
           },
         },
       ],
     },
     {
-      label: 'microsoft',
+      label: "microsoft",
+      icon: "pi pi-fw pi-folder",
       items: [
         {
-          label: 'action mail1',
+          label: "action mail1",
           command: (event) => {
-            event.originalEvent.currentTarget.click(clickAct(items[1].items[0].label));
+            event.originalEvent.currentTarget.click(
+              clickAct(items[1].items[0].label)
+            );
           },
         },
         {
-          label: 'action mail2',
+          label: "action mail2",
           command: (event) => {
-            event.originalEvent.currentTarget.click(clickAct(items[1].items[1].label));
+            event.originalEvent.currentTarget.click(
+              clickAct(items[1].items[1].label)
+            );
           },
         },
       ],
@@ -106,35 +121,43 @@ const useHome = () => {
 
   const items2 = [
     {
-      label: 'discord',
+      label: "discord",
       items: [
         {
-          label: 'reaction disc 1',
+          label: "reaction disc 1",
           command: (event) => {
-            event.originalEvent.currentTarget.click(clickReact(items2[0].items[0].label));
+            event.originalEvent.currentTarget.click(
+              clickReact(items2[0].items[0].label)
+            );
           },
         },
         {
-          label: 'reaction disc 2',
+          label: "reaction disc 2",
           command: (event) => {
-            event.originalEvent.currentTarget.click(clickReact(items2[0].items[1].label));
+            event.originalEvent.currentTarget.click(
+              clickReact(items2[0].items[1].label)
+            );
           },
         },
       ],
     },
     {
-      label: 'microsoft',
+      label: "microsoft",
       items: [
         {
-          label: 'reaction mail1',
+          label: "reaction mail1",
           command: (event) => {
-            event.originalEvent.currentTarget.click(clickReact(items2[1].items[0].label));
+            event.originalEvent.currentTarget.click(
+              clickReact(items2[1].items[0].label)
+            );
           },
         },
         {
-          label: 'reaction mail2',
+          label: "reaction mail2",
           command: (event) => {
-            event.originalEvent.currentTarget.click(clickReact(items2[1].items[1].label));
+            event.originalEvent.currentTarget.click(
+              clickReact(items2[1].items[1].label)
+            );
           },
         },
       ],
@@ -142,9 +165,12 @@ const useHome = () => {
   ];
 
   const addToAreas = ({ act, react, name }) => {
-    console.log('act: ', act, ' react: ', react, ' name: ', name);
-    if (act === '' || react === '' || name === '') return;
-    areas[1].items.push({ label: name, data: { action: act, reaction: react } });
+    console.log("act: ", act, " react: ", react, " name: ", name);
+    if (act === "" || react === "" || name === "") return;
+    areas[1].items.push({
+      label: name,
+      data: { action: act, reaction: react },
+    });
   };
   const [items3, setItems] = useState(items);
 
