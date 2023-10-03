@@ -3,10 +3,9 @@ import 'package:mobile/back/api.dart';
 import 'package:mobile/back/services.dart';
 import 'package:mobile/components/background_gradient.dart';
 import 'package:mobile/main.dart';
-import 'package:mobile/screens/addingArea/area_build.dart';
-import 'package:mobile/screens/home/area_lists.dart';
-import 'package:mobile/screens/home/home_appbar.dart';
 import 'package:mobile/theme/style.dart';
+import 'package:mobile/back/services.dart';
+import 'package:flutter/cupertino.dart';
 
 class SettingsPage extends StatefulWidget {
   final String token;
@@ -19,6 +18,8 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   TextEditingController searchController = TextEditingController();
   List<Area> areas = [];
+  String selectedSegment = "Services";
+
   @override
   void initState() {
     super.initState();
@@ -36,57 +37,59 @@ class _SettingsPageState extends State<SettingsPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
-      appBar: HomeAppBar(
-        searchController: searchController,
-        context: context,
-        addArea: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => AreaBuild(
-                isEdit: false,
-                areaAdd: (Area value) {
-                  setState(
-                    () {
-                      areas = getAreas();
-                    },
-                  );
-                },
-              ),
-            ),
-          );
-        },
-      ),
       backgroundColor: AppColors.darkBlue,
       body: Stack(
         children: [
-          const BackgroundGradient(),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: blockWidth / 4),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: safePadding +
-                        AppBar().preferredSize.height +
-                        (blockHeight * 15),
-                  ),
-                  AreaLists(
-                    areas: areas,
-                    searchText: searchController.text,
-                    editAreaCallback: (value) {
-                      setState(() {
-                        areas = getAreas();
-                      });
-                    },
-                  ),
-                  TextButton(
-                    child: const Text("goBack"),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                ],
-              ),
+          SingleChildScrollView(
+            child: Column(
+              children: [
+          Padding(padding: EdgeInsets.only(top: blockHeight * 5)),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: blockHeight * 2),
+                      child: CupertinoSlidingSegmentedControl(
+                          groupValue: selectedSegment,
+                          children: {
+                            "Services": Text(
+                              "Services",
+                              style: TextStyle(
+                                  color: selectedSegment == "Services"
+                                      ? Colors.black
+                                      : AppColors.white),
+                            ),
+                            "Reglages": Text(
+                              "Reglages",
+                              style: TextStyle(
+                                  color: selectedSegment == "Reglages"
+                                      ? Colors.black
+                                      : AppColors.white),
+                            ),
+                          },
+                          onValueChanged: (value) {
+                            setState(() {
+                              selectedSegment = value.toString();
+                            });
+                          }),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        TextButton(
+                          child: Text(
+                            AppServices().services[0].name,
+                            style: TextStyle(color: AppColors.lightBlue),
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         ],

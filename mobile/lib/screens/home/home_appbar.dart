@@ -8,11 +8,13 @@ class HomeAppBar extends AppBar {
   final TextEditingController searchController;
   final BuildContext context;
   final Function addArea;
+  final Function settings;
   HomeAppBar({
     super.key,
     required this.searchController,
     required this.context,
     required this.addArea,
+    required this.settings,
   }) : super(
           automaticallyImplyLeading: false,
           bottom: PreferredSize(
@@ -48,9 +50,7 @@ class HomeAppBar extends AppBar {
                 size: 30,
               ),
               onPressed: () {
-                // MaterialPageRoute(
-                  // builder: (context) => const SettingsPage(context: context),
-                // );
+                settings();
               },
             ),
             IconButton(

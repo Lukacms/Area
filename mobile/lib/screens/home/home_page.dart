@@ -7,6 +7,7 @@ import 'package:mobile/screens/addingArea/area_build.dart';
 import 'package:mobile/screens/home/area_lists.dart';
 import 'package:mobile/screens/home/home_appbar.dart';
 import 'package:mobile/theme/style.dart';
+import 'package:mobile/screens/settings/settings_page.dart';
 
 class HomePage extends StatefulWidget {
   final String token;
@@ -51,6 +52,15 @@ class _HomePageState extends State<HomePage> {
                     },
                   );
                 },
+              ),
+            ),
+          );
+        },
+        settings: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const SettingsPage(
+                token: ' ',
               ),
             ),
           );

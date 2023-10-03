@@ -103,8 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ],
               ),
-                  Padding(padding: EdgeInsets.only(top: blockHeight * 2)),
-
+              Padding(padding: EdgeInsets.only(top: blockHeight * 2)),
               Container(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
