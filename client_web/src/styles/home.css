@@ -4,17 +4,18 @@
     height: 100vh;
     background-color: #1B1A2A;
 }
-
 .leftDiv {
     display: flex;
     border: 5px solid red;
     width: 15vw;
-     background-color: rgba(255, 250, 251, 0.1);
+    background-color: rgba(255, 250, 251, 0.1);
     flex-direction: column;
 }
 
 .middleDiv {
     display: flex;
+    align-items: center;
+    justify-content: center;
     border-top: 5px solid green;
     border-bottom: 5px solid green;
     width: 70vw;
@@ -25,6 +26,7 @@
     border: 5px solid blue;
     width: 15vw;
     background-color: rgba(255, 250, 251, 0.1);
+    flex-direction: column;
 }
 
 .fastrText {

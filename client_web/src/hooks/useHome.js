@@ -1,30 +1,44 @@
 import { useEffect, useState } from 'react';
 
 const useHome = () => {
+  let nbArea = 0;
   const [addAct, setaddAct] = useState(false);
-  const [area, setArea] = useState([{ action: '', reaction: '', name: '' }]);
+  const [area, setArea] = useState([{ action: '', reaction: [''], name: '' }]);
   const [tmpAct, setTmp] = useState('');
-  const [selectedArea, setSelectedArea] = useState({ action: '', reaction: '' });
+  const [selectedArea, setSelectedArea] = useState({ action: '', reaction: [''], name: '' });
   const [areas, setAreas] = useState([
     {
-      label: 'fav',
+      label: 'favorite',
       items: [
         {
           label: '',
-          data: { action: '', reaction: '' },
+          data: { action: '', reaction: [''], id: 0},
+          command: () => {
+               clickArea({areaSelected: areas[0].items[0]});
+          },
+
         },
       ],
     },
     {
-      label: 'not fav',
+      label: 'lambda',
       items: [
         {
           label: '',
-          data: { action: '', reaction: '' },
+           command: () => {
+               clickArea({areaSelected: areas[1].items[0]});
+          },
+            data: { action: '', reaction: [''], id: 0 },
         },
       ],
     },
   ]);
+
+
+    const clickArea = ({areaSelected}) => {
+        console.log("clickArea: ", areaSelected);
+        setSelectedArea({name: areaSelected.label, action: areaSelected.data.action, reaction: areaSelected.data.reaction})
+    }
 
   const clickAct = (eventName) => {
     if (addAct) {
@@ -40,19 +54,17 @@ const useHome = () => {
       /*console.log("Please select an action first");*/
       return;
     }
-      console.log("test");
+    setaddAct(false);
     area.push({ action: tmpAct, reaction: eventName, name: 'act' });
     addToAreas({
       act: String(area[area.length - 1].action),
       name: String(area[area.length - 1].name),
       react: String(area[area.length - 1].reaction),
     });
-    setaddAct(false);
   };
 
   useEffect(() => {
     const areasMod = () => {
-      console.log("area: ", area);
       /*for (let i = 0; i < area.length; i++)
         console.log('ff:', area[i].action, ' ', 'gg: ', area[i].reaction);*/
     };
@@ -61,7 +73,6 @@ const useHome = () => {
 
   useEffect(() => {
     const areasMod = () => {
-      console.log("areas: ", areas);
       /*for (let i = 0; i < area.length; i++)
         console.log('ff:', area[i].action, ' ', 'gg: ', area[i].reaction);*/
     };
@@ -73,14 +84,14 @@ const useHome = () => {
       items: [
         {
           label: 'action disc 1',
-          command: (event) => {
-            event.originalEvent.currentTarget.click(clickAct(items[0].items[0].label));
+          command: () => {
+            clickAct(items[0].items[0].label);
           },
         },
         {
           label: 'action disc 2',
-          command: (event) => {
-            event.originalEvent.currentTarget.click(clickAct(items[0].items[1].label));
+          command: () => {
+            clickAct(items[0].items[1].label);
           },
         },
       ],
@@ -90,14 +101,14 @@ const useHome = () => {
       items: [
         {
           label: 'action mail1',
-          command: (event) => {
-            event.originalEvent.currentTarget.click(clickAct(items[1].items[0].label));
+          command: () => {
+            clickAct(items[1].items[0].label);
           },
         },
         {
           label: 'action mail2',
-          command: (event) => {
-            event.originalEvent.currentTarget.click(clickAct(items[1].items[1].label));
+          command: () => {
+            clickAct(items[1].items[1].label);
           },
         },
       ],
@@ -110,14 +121,14 @@ const useHome = () => {
       items: [
         {
           label: 'reaction disc 1',
-          command: (event) => {
-            event.originalEvent.currentTarget.click(clickReact(items2[0].items[0].label));
+          command: () => {
+            clickReact(items2[0].items[0].label);
           },
         },
         {
           label: 'reaction disc 2',
-          command: (event) => {
-            event.originalEvent.currentTarget.click(clickReact(items2[0].items[1].label));
+          command: () => {
+            clickReact(items2[0].items[1].label);
           },
         },
       ],
@@ -127,14 +138,14 @@ const useHome = () => {
       items: [
         {
           label: 'reaction mail1',
-          command: (event) => {
-            event.originalEvent.currentTarget.click(clickReact(items2[1].items[0].label));
+          command: () => {
+            clickReact(items2[1].items[0].label);
           },
         },
         {
           label: 'reaction mail2',
-          command: (event) => {
-            event.originalEvent.currentTarget.click(clickReact(items2[1].items[1].label));
+          command: () => {
+            clickReact(items2[1].items[1].label);
           },
         },
       ],
@@ -142,9 +153,19 @@ const useHome = () => {
   ];
 
   const addToAreas = ({ act, react, name }) => {
-    console.log('act: ', act, ' react: ', react, ' name: ', name);
-    if (act === '' || react === '' || name === '') return;
-    areas[1].items.push({ label: name, data: { action: act, reaction: react } });
+    if (areas[1].items[0].label === '') {
+      areas[1].items.pop();
+      areas[1].items.push({ label: name, data: { action: act, reaction: react }, command: () => {
+               clickArea({areaSelected: areas[1].items[0]});
+      } }
+      )
+        ;
+    } else {
+        nbArea++;
+      areas[1].items.push({ label: name, data: { action: act, reaction: react }, command: () => {
+               clickArea({areaSelected: areas[1].items[nbArea]});
+      }});
+    }
   };
   const [items3, setItems] = useState(items);
 

@@ -1,0 +1,9 @@
+.ItemCardDiv {
+    display: flex;
+    width: 5vw;
+    height: 5vh;
+    border: 1px solid rgba(255, 250, 251, 0.1);
+    justify-content: center;
+    border-radius: 20px;
+    background-color: rgba(255, 250, 251, 0.1);
+}
