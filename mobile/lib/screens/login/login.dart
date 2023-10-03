@@ -6,6 +6,7 @@ import 'package:mobile/components/backgroundCircles.dart';
 import 'package:mobile/screens/login/forgot_password.dart';
 import 'package:mobile/theme/style.dart';
 import 'package:mobile/back/api.dart';
+import 'package:mobile/screens/register.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -65,12 +66,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 isPassword: true,
                 controller: passwordController,
               ),
+              Padding(padding: EdgeInsets.only(top: blockHeight * 2)),
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(right: blockWidth * 0.5),
+                    padding: EdgeInsets.only(left: blockWidth * 0.5),
                     child: TextButton(
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.zero,
+                      ),
                       child: Text(
                         "Forgot Password?",
                         style: TextStyle(color: AppColors.lightBlue),
@@ -97,6 +102,46 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ],
+              ),
+                  Padding(padding: EdgeInsets.only(top: blockHeight * 2)),
+
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(left: blockWidth * 0.5),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Don't have an account?",
+                            style: TextStyle(
+                              color: AppColors.white,
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(right: blockWidth * 1.5),
+                            child: TextButton(
+                              style: TextButton.styleFrom(
+                                padding: EdgeInsets.zero,
+                              ),
+                              child: Text(
+                                "Register Now",
+                                style: TextStyle(color: AppColors.lightBlue),
+                              ),
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => const RegisterScreen(),
+                                ));
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
               Container(
                 margin: EdgeInsets.only(top: blockHeight * 5),

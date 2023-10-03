@@ -3,7 +3,7 @@ import 'package:mobile/components/halfloginTextField.dart';
 import 'package:mobile/main.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/components/backgroundCircles.dart';
-import 'package:mobile/screens/login.dart';
+import 'package:mobile/screens/login/login.dart';
 import 'package:mobile/theme/style.dart';
 
 class RegisterScreen extends StatefulWidget {

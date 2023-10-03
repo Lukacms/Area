@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/components/search_field.dart';
 import 'package:mobile/main.dart';
 import 'package:mobile/theme/style.dart';
+import 'package:mobile/screens/settings/settings_page.dart';
 
 class HomeAppBar extends AppBar {
   final TextEditingController searchController;
@@ -46,7 +47,11 @@ class HomeAppBar extends AppBar {
                 color: AppColors.lightBlue,
                 size: 30,
               ),
-              onPressed: () {},
+              onPressed: () {
+                // MaterialPageRoute(
+                  // builder: (context) => const SettingsPage(context: context),
+                // );
+              },
             ),
             IconButton(
               icon: Icon(
