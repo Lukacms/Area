@@ -13,7 +13,6 @@ function Home({children}) {
 
   const clickAct = (eventName) => {
     if (addAct) {
-      console.log('Please select a reaction');
       return;
     }
     setTmp(eventName);
@@ -22,7 +21,6 @@ function Home({children}) {
 
   const clickReact = (eventName) => {
     if (!addAct) {
-      console.log('Please select an action first');
       return;
     }
     area.push({ action: tmpAct, reaction: eventName });
@@ -31,10 +29,10 @@ function Home({children}) {
 
   useEffect(() => {
     const tmpActMod = () => {
-      console.log(tmpAct);
+      // console.log(tmpAct);
     };
     const addActMod = () => {
-      console.log(addAct);
+      // console.log(addAct);
     };
     tmpActMod();
     addActMod();
@@ -42,10 +40,10 @@ function Home({children}) {
 
   useEffect(() => {
     const areaMod = () => {
-      console.log(area);
+      /* console.log(area);
       console.log('area length: ', area.length);
       for (let i = 0; i < area.length; i++)
-        console.log('ff:', area[i].action, ' ', 'gg: ', area[i].reaction);
+        console.log('ff:', area[i].action, ' ', 'gg: ', area[i].reaction); */
     };
     areaMod();
   }, [clickReact]);

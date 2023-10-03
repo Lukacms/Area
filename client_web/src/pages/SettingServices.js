@@ -1,26 +1,49 @@
-import { Dialog } from 'primereact/dialog';
-import { useNavigate } from 'react-router';
-import Home from './Home';
-import { useSettingServices } from '../hooks';
 import { Button } from 'primereact/button';
+import { Dialog } from 'primereact/dialog';
+import { Image } from 'primereact/image';
+import { Home } from '.';
+import { useSettingServices } from '../hooks';
 
 function SettingServices() {
-  const navigate = useNavigate();
-  const { services } = useSettingServices();
+  const { services, navigate } = useSettingServices();
 
   const header = () => {
     return (
-      <div className='flex flex-row' style={{width: '110%'}}>
-        <Button label='Services' disabled text />
-        <Button label='Settings' onClick={() => navigate('/settings')} text />
+      <div className='flex flex-row' style={{ width: '110%' }}>
+        <Button label='Services' disabled text severity='info' />
+        <Button label='Settings' onClick={() => navigate('/settings')} text severity='info' />
+      </div>
+    );
+  };
+
+  const renderItem = (item) => {
+    return (
+      <div style={{ display: 'flex', marginBottom: '10px' }}>
+        <Button
+          severity='info'
+          icon={item.userConnected ? 'pi pi-check' : 'pi pi-times'}
+          className='gap-10'
+          style={{ minWidth: '50%', gap: '5%', justifyContent: 'space-evenly' }}
+          raised
+          text
+          onClick={() => navigate('/settings/services/' + item.id, { state: { item } })}>
+          <Image src={item.logo} width={50} alt='logo' />
+          <span>{item.name}</span>
+          <i className='pi pi-chevron-right' />
+        </Button>
       </div>
     );
   };
 
   return (
     <Home>
-      <Dialog header={header} visible onHide={() => navigate('/home')} maximizable>
-        <p>OUIIIIIIIIIIIIIIIIIIIIIIIIIIII</p>
+      <Dialog
+        header={header}
+        style={{ minWidth: '30%', minHeight: '40%' }}
+        visible
+        onHide={() => navigate('/home')}
+        maximizable>
+        {services.map((item) => renderItem(item))}
       </Dialog>
     </Home>
   );

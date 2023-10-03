@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Home, Login, MailVerif, Register, SettingServices } from './pages';
+import { Home, Login, MailVerif, Register, SettingServices, SpecificService } from './pages';
 import 'primeicons/primeicons.css';
 import 'primereact/resources/themes/mdc-dark-deeppurple/theme.css'
 
@@ -15,6 +15,7 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path='/settings'>
           <Route path='services' element={<SettingServices />} />
+          <Route path='services/:id' element={<SpecificService />} />
         </Route>
       </Routes>
     </BrowserRouter>
