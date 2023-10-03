@@ -8,9 +8,14 @@ const AreaCard = ({ area }) => {
     value.push(<ItemCard value={'Si'} />);
     value.push(<ItemCard value={area.action} />);
 
-    for (let i = 0; i < area.reaction.length; i++) {
-      value.push(<ItemCard value={'Alors'} />);
-      value.push(<ItemCard value={area.reaction[i]} />);
+    if (typeof area.reaction !== 'string') {
+      for (let i = 0; i < area.reaction.length; i++) {
+        value.push(<ItemCard value={'Alors'} />);
+        value.push(<ItemCard value={area.reaction[i]} />);
+      }
+    } else {
+        value.push(<ItemCard value={'Alors'} />);
+        value.push(<ItemCard value={area.reaction} />);
     }
   }
 
