@@ -6,7 +6,7 @@ namespace AREA_ReST_API.Middleware;
 
 public class JwtDecoder
 {
-    public static DecodedUser JwtDecode(string token)
+    public static DecodedUser Decode(string token)
     {
         var rawToken = token.Split(' ')[1];
         var handler = new JwtSecurityTokenHandler();

@@ -1,9 +1,11 @@
 using System.Text.Json.Nodes;
 using AREA_ReST_API.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AREA_ReST_API.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 
@@ -28,8 +30,19 @@ public class UserActionsController
     [HttpPost("")]
     public ActionResult CreateNewUserAction([FromBody] UserActionsModel newUserAction)
     {
-        _context.UserActions.Add(newUserAction);
+        var userAction = _context.UserActions.Add(newUserAction);
         _context.SaveChanges();
-        return new OkObjectResult(new JsonObject { { "message", "UserAction successfully created" } });
+        return new CreatedResult("UserAction successfully created", userAction.Entity);
+    }
+
+    [HttpDelete("{userActionId:int}")]
+    public ActionResult DeleteUserAction([AsParameters] int userActionId)
+    {
+        var deletedUserAction = _context.UserActions.FirstOrDefault(userAction => userAction.Id == userActionId);
+        if (deletedUserAction == null)
+            return new NotFoundObjectResult(new JsonObject { { "message", "UserAction not found" } });
+        _context.UserActions.Remove(deletedUserAction);
+        _context.SaveChanges();
+        return new OkObjectResult(new JsonObject { { "message", "UserAction successfully deleted" } });
     }
 }
