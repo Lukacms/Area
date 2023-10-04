@@ -9,6 +9,15 @@ const useHome = () => {
     data: { action: '', reaction: [''], id: 0 },
     command: () => {},
   });
+
+  const [currentState, setCurrentState] = useState(
+    'Si vous voulez ajouter une area, clicker sur add area',
+  );
+  /*  const currentStatee = [
+    'Please enter a name to the area',
+    'Please select an action for the area',
+    'Select your reactions, and when you are finished click on save Area',
+  ];*/
   const [addAct, setaddAct] = useState(false);
   const [areas, setArea] = useState([{ action: '', reaction: [''], name: '' }]);
   const [tmpAct, setTmp] = useState('');
@@ -181,7 +190,7 @@ const useHome = () => {
 
   const addNameToBlankArea = ({ name }) => {
     var tmp = blankArea;
-    blankArea.label = name;
+    blankArea.label = String(name);
     setBlankArea(tmp);
   };
 
@@ -210,7 +219,26 @@ const useHome = () => {
     });
   };
 
-  return { dispAct, dispReac, actionOrReaction, panelAreas, selectedArea };
+  const onClickForCreateArea = () => {
+    setCurrentState('Please enter a name to the area');
+  };
+
+  const onEnterNameArea = () => {
+    setCurrentState('Please select an action for the area');
+  };
+
+  return {
+    dispAct,
+    dispReac,
+    actionOrReaction,
+    panelAreas,
+    selectedArea,
+    addNameToBlankArea,
+    addCreatedAreaToAreas,
+    onClickForCreateArea,
+    currentState,
+    onEnterNameArea,
+  };
 };
 
 export default useHome;

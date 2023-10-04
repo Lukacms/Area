@@ -16,6 +16,7 @@
     align-items: center;
     justify-content: center;
     width: 70vw;
+    flex-direction: column;
 }
 
 .rightDiv {
