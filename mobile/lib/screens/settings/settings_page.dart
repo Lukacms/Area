@@ -48,94 +48,93 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ),
           ),
-          SingleChildScrollView(
-            child: Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(top: blockHeight * 5),
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: blockHeight * 2),
-                      child: SizedBox(
-                        width: screenWidth * 0.9,
-                        child: CupertinoSlidingSegmentedControl(
-                          groupValue: selectedSegment,
-                          children: {
-                            "Services": Text(
-                              "Services",
-                              style: TextStyle(
-                                  color: selectedSegment == "Services"
-                                      ? Colors.black
-                                      : AppColors.white),
-                            ),
-                            "Reglages": Text(
-                              "Reglages",
-                              style: TextStyle(
-                                  color: selectedSegment == "Reglages"
-                                      ? Colors.black
-                                      : AppColors.white),
-                            ),
-                          },
-                          onValueChanged: (value) {
-                            setState(
-                              () {
-                                selectedSegment = value.toString();
-                              },
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                    Container(
-                      height: 1,
-                      decoration: BoxDecoration(
-                        color: AppColors.white,
-                      ),
-                    ),
-                    selectedSegment == "Services" ? SizedBox(
+          Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(top: blockHeight * 5),
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: blockHeight * 2),
+                    child: SizedBox(
                       width: screenWidth * 0.9,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: AppServices().services.length,
-                        itemBuilder: (context, index) {
-                          return TextButton(
-                            child: SizedBox(
-                              height: blockHeight * 6,
-                              child: Row(
-                                children: [
-                                  SizedBox(
-                                    height: 24,
-                                    width: 24,
-                                    child: SvgPicture.asset(
-                                      AppServices().services[index].svgIcon,
-                                      color: AppServices()
-                                          .services[index]
-                                          .iconColor,
-                                    ),
-                                  ),
-                                  SizedBox(width: blockHeight * 2),
-                                  Text(
-                                    AppServices().services[index].name,
-                                    style:
-                                        TextStyle(color: AppColors.lightBlue),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context);
+                      child: CupertinoSlidingSegmentedControl(
+                        groupValue: selectedSegment,
+                        children: {
+                          "Services": Text(
+                            "Services",
+                            style: TextStyle(
+                                color: selectedSegment == "Services"
+                                    ? Colors.black
+                                    : AppColors.white),
+                          ),
+                          "Reglages": Text(
+                            "Reglages",
+                            style: TextStyle(
+                                color: selectedSegment == "Reglages"
+                                    ? Colors.black
+                                    : AppColors.white),
+                          ),
+                        },
+                        onValueChanged: (value) {
+                          setState(
+                            () {
+                              selectedSegment = value.toString();
                             },
                           );
                         },
                       ),
-                    ) : const SizedBox.shrink(),
-                  ],
-                ),
-              ],
-            ),
+                    ),
+                  ),
+                  Container(
+                    height: 1,
+                    decoration: BoxDecoration(
+                      color: AppColors.white,
+                    ),
+                  ),
+                  selectedSegment == "Services" ? SizedBox(
+                    width: screenWidth * 0.9,
+                    child: ListView.builder(
+                      physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
+                      shrinkWrap: true,
+                      itemCount: AppServices().services.length,
+                      itemBuilder: (context, index) {
+                        return TextButton(
+                          child: SizedBox(
+                            height: blockHeight * 6,
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                  height: 24,
+                                  width: 24,
+                                  child: SvgPicture.asset(
+                                    AppServices().services[index].svgIcon,
+                                    color: AppServices()
+                                        .services[index]
+                                        .iconColor,
+                                  ),
+                                ),
+                                SizedBox(width: blockHeight * 2),
+                                Text(
+                                  AppServices().services[index].name,
+                                  style:
+                                      TextStyle(color: AppColors.lightBlue),
+                                ),
+                              ],
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        );
+                      },
+                    ),
+                  ) : const SizedBox.shrink(),
+                ],
+              ),
+            ],
           ),
         ],
       ),
