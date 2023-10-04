@@ -19,6 +19,18 @@ const useSettingServices = () => {
     return false;
   };
 
+  const findUserServiceId = (user, id) => {
+    if (!user) {
+      return -1;
+    }
+    user?.forEach((item) => {
+      if (item.serviceId === id) {
+        return item.id;
+      }
+    });
+    return -1;
+  };
+
   /* const fromBase64ToImage = (data) => {
     const fileReader = new FileReader();
     fileReader.readAsDataURL(data);
@@ -41,6 +53,7 @@ const useSettingServices = () => {
           name: item.name,
           logo: item.logo,
           userConnected: isUserConnected(userConnected.data, item.id),
+          userServiceId: findUserServiceId(userConnected.data, item.id),
           connectionLink: item.connectionLink,
           endpoint: item.endpoint,
         });

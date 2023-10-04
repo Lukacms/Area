@@ -4,7 +4,7 @@ import { useSpecificService } from '../hooks/';
 import { Home } from '.';
 
 function SpecificService() {
-  const { navigate, item } = useSpecificService();
+  const { navigate, item, connect, changeAccount, disconnect } = useSpecificService();
 
   const header = () => {
     return (
@@ -25,24 +25,32 @@ function SpecificService() {
         maximizable>
         <Button
           style={{ marginLeft: -10 }}
-          label={item.name}
+          label={item?.name ? item?.name : 'No item found'}
           icon='pi pi-chevron-left'
           text
           severity='info'
           onClick={() => navigate(-1)}
         />
-        {item.userConnected ? (
+        {item?.userConnected ? (
           <p>You are connected to this service.</p>
         ) : (
           <p>You are not connected.</p>
         )}
-        {item.userConnected ? (
-          <Button label='Change account' text severity='info' size='small' />
+        {item?.userConnected ? (
+          <Button
+            label='Change account'
+            text
+            severity='info'
+            size='small'
+            onClick={changeAccount}
+          />
         ) : (
-          <Button label='Connect' text severity='info' size='small' />
+          <Button label='Connect' text severity='info' size='small' onClick={connect} />
         )}
         <br />
-        {item.userConnected ? <Button label='Log out' text severity='info' size='small' /> : null}
+        {item?.userConnected ? (
+          <Button label='Log out' text severity='info' size='small' onClick={disconnect} />
+        ) : null}
       </Dialog>
     </Home>
   );
