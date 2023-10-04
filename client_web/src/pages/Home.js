@@ -51,6 +51,8 @@ const Home = () => {
     addNameToBlankArea,
     addCreatedAreaToAreas,
     currentState,
+    currentSelectedCategory,
+    updateCurrentSelectedCategory,
     onClickForCreateArea,
     onEnterNameArea,
   } = useHome();
@@ -58,13 +60,16 @@ const Home = () => {
   const navigate = useNavigate();
   const handleChange = (event, newSelectedValue) => {
     setDisplayedCategory(newSelectedValue);
+    updateCurrentSelectedCategory(newSelectedValue);
     if (newSelectedValue == "actions") {
       dispAct();
     } else {
       dispReac();
     }
   };
-
+  if (currentSelectedCategory !== displayedCategory) {
+    handleChange(null, currentSelectedCategory);
+  }
   return (
     <div className="globalDiv">
       <div className="leftDiv">
@@ -109,6 +114,7 @@ const Home = () => {
           </StyledToggleButtonGroup>
         </div>
         <Divider />
+        <b style={{alignSelf:"center", marginBottom:"5%"}}>{currentSelectedCategory.toUpperCase()}</b>
         <PanelMenu
           model={actionOrReaction}
           className="pannelMenu"

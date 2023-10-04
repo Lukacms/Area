@@ -9,6 +9,12 @@ const useHome = () => {
     data: { action: "", reaction: [""], id: 0 },
     command: () => {},
   });
+  const [currentSelectedCategory, setCurrentSelectedCategory] =
+    useState("actions");
+
+  const updateCurrentSelectedCategory = (category) => {
+    setCurrentSelectedCategory(category);
+  };
 
   const [currentState, setCurrentState] = useState(
     "Si vous voulez ajouter une area, clicker sur add area"
@@ -73,6 +79,7 @@ const useHome = () => {
           label: "action disc 1",
           command: () => {
             //clickAct(actionList[0].items[0].label);
+            setCurrentSelectedCategory("reactions");
             addActionToBlankArea({ action: actionList[0].items[0].label });
             onAddActionArea();
           },
@@ -80,6 +87,7 @@ const useHome = () => {
         {
           label: "action disc 2",
           command: () => {
+            setCurrentSelectedCategory("reactions");
             //clickAct(actionList[0].items[1].label);
             addActionToBlankArea({ action: actionList[0].items[1].label });
             onAddActionArea();
@@ -94,6 +102,7 @@ const useHome = () => {
         {
           label: "action mail1",
           command: () => {
+            setCurrentSelectedCategory("reactions");
             //clickAct(actionList[1].items[0].label);
             addActionToBlankArea({ action: actionList[1].items[0].label });
             onAddActionArea();
@@ -102,6 +111,7 @@ const useHome = () => {
         {
           label: "action mail2",
           command: () => {
+            setCurrentSelectedCategory("reactions");
             //clickAct(actionList[1].items[1].label);
             addActionToBlankArea({ action: actionList[1].items[1].label });
             onAddActionArea();
@@ -129,6 +139,7 @@ const useHome = () => {
   const reactionList = [
     {
       label: "discord",
+      icon: "pi pi-fw pi-folder",
       items: [
         {
           label: "reaction disc 1",
@@ -154,6 +165,7 @@ const useHome = () => {
     },
     {
       label: "microsoft",
+      icon: "pi pi-fw pi-folder",
       items: [
         {
           label: "reaction mail1",
@@ -228,8 +240,6 @@ const useHome = () => {
     setBlankArea(tmp);
   };
 
-
-
   const addReactionToBlankArea = ({ Reaction }) => {
     var tmp = blankArea;
     tmp.data.reaction = Reaction;
@@ -258,8 +268,10 @@ const useHome = () => {
   };
 
   const onAddActionArea = () => {
-    setCurrentState("Select your reactions, and when you are finished click on save Area");
-  }
+    setCurrentState(
+      "Select your reactions, and when you are finished click on save Area"
+    );
+  };
 
   return {
     dispAct,
@@ -271,6 +283,8 @@ const useHome = () => {
     addCreatedAreaToAreas,
     onClickForCreateArea,
     currentState,
+    currentSelectedCategory,
+    updateCurrentSelectedCategory,
     onEnterNameArea,
   };
 };
