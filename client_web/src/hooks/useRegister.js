@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import * as Yup from 'yup';
-import { login } from '../config/request';
+import { register } from '../config/request';
 
 const useRegister = () => {
   const [dialogue, setDialogue] = useState(false);
@@ -24,7 +24,7 @@ const useRegister = () => {
     email: Yup.string().email('Invalid email').required('Required'),
   });
 
-  const register = async (values) => {
+  const registerUser = async (values) => {
     const newUser = {
       name: values.name,
       surname: values.surname,
@@ -34,7 +34,7 @@ const useRegister = () => {
     };
 
     try {
-      const datas = await login(newUser);
+      const datas = await register(newUser);
       console.log('Success', datas);
     } catch (error) {
       console.log('Failure', error);
@@ -42,7 +42,7 @@ const useRegister = () => {
     }
   };
 
-  return { initialValues, validate, register, dialogue, setDialogue };
+  return { initialValues, validate, registerUser, dialogue, setDialogue };
 };
 
 export default useRegister;

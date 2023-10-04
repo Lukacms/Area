@@ -10,7 +10,7 @@ import '../styles/components.css';
 import '../styles/register.css';
 
 function Register() {
-  const { initialValues, validate, register, dialogue, setDialogue } = useRegister();
+  const { initialValues, validate, registerUser, dialogue, setDialogue } = useRegister();
 
   return (
     <Background>
@@ -21,7 +21,7 @@ function Register() {
           <Divider layout='vertical' align='center' className='divider' />
           <div className='register'>
             <h1>Register</h1>
-            <Formik initialValues={initialValues} validationSchema={validate} onSubmit={register}>
+            <Formik initialValues={initialValues} validationSchema={validate} onSubmit={registerUser}>
               {(props) => (
                 <Form>
                   <div className='names'>

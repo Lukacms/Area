@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import {
   Error,
   Home,
@@ -13,8 +13,6 @@ import 'primeicons/primeicons.css';
 import 'primereact/resources/themes/mdc-dark-deeppurple/theme.css';
 
 function App() {
-  const navigate = useNavigate();
-
   return (
     <Routes>
       <Route path='/' element={<Login />} />
