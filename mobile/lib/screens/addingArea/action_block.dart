@@ -41,6 +41,8 @@ class ActionBlock extends StatelessWidget {
                 children: [
                   SvgPicture.asset(
                     action.service.svgIcon,
+                    width: 24,
+                    height: 24,
                     color: action.service.iconColor,
                   ),
                   SizedBox(

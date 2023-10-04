@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:mobile/back/api.dart';
 import 'package:mobile/back/services.dart';
-import 'package:mobile/components/background_gradient.dart';
 import 'package:mobile/main.dart';
 import 'package:mobile/theme/style.dart';
 import 'package:mobile/back/services.dart';
@@ -25,10 +25,8 @@ class _SettingsPageState extends State<SettingsPage> {
     super.initState();
     areas = getAreas();
   }
-
   @override
   Widget build(BuildContext context) {
-    final safePadding = MediaQuery.of(context).padding.top;
     screenSize = MediaQuery.of(context).size;
     screenHeight = screenSize.height;
     screenWidth = screenSize.width;
@@ -40,16 +38,30 @@ class _SettingsPageState extends State<SettingsPage> {
       backgroundColor: AppColors.darkBlue,
       body: Stack(
         children: [
+          Padding(
+            padding: EdgeInsets.only(left: blockHeight * 2),
+            child: Text(
+              "Parametres",
+              style: TextStyle(
+                color: AppColors.lightBlue,
+                fontSize: 30,
+              ),
+            ),
+          ),
           SingleChildScrollView(
             child: Column(
               children: [
-          Padding(padding: EdgeInsets.only(top: blockHeight * 5)),
+                Padding(
+                  padding: EdgeInsets.only(top: blockHeight * 5),
+                ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: blockHeight * 2),
-                      child: CupertinoSlidingSegmentedControl(
+                      child: SizedBox(
+                        width: screenWidth * 0.9,
+                        child: CupertinoSlidingSegmentedControl(
                           groupValue: selectedSegment,
                           children: {
                             "Services": Text(
@@ -68,25 +80,58 @@ class _SettingsPageState extends State<SettingsPage> {
                             ),
                           },
                           onValueChanged: (value) {
-                            setState(() {
-                              selectedSegment = value.toString();
-                            });
-                          }),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        TextButton(
-                          child: Text(
-                            AppServices().services[0].name,
-                            style: TextStyle(color: AppColors.lightBlue),
-                          ),
-                          onPressed: () {
-                            Navigator.pop(context);
+                            setState(
+                              () {
+                                selectedSegment = value.toString();
+                              },
+                            );
                           },
                         ),
-                      ],
+                      ),
                     ),
+                    Container(
+                      height: 1,
+                      decoration: BoxDecoration(
+                        color: AppColors.white,
+                      ),
+                    ),
+                    selectedSegment == "Services" ? SizedBox(
+                      width: screenWidth * 0.9,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: AppServices().services.length,
+                        itemBuilder: (context, index) {
+                          return TextButton(
+                            child: SizedBox(
+                              height: blockHeight * 6,
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    height: 24,
+                                    width: 24,
+                                    child: SvgPicture.asset(
+                                      AppServices().services[index].svgIcon,
+                                      color: AppServices()
+                                          .services[index]
+                                          .iconColor,
+                                    ),
+                                  ),
+                                  SizedBox(width: blockHeight * 2),
+                                  Text(
+                                    AppServices().services[index].name,
+                                    style:
+                                        TextStyle(color: AppColors.lightBlue),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          );
+                        },
+                      ),
+                    ) : const SizedBox.shrink(),
                   ],
                 ),
               ],

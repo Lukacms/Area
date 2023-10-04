@@ -38,34 +38,48 @@ class _HomePageState extends State<HomePage> {
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
       appBar: HomeAppBar(
-        searchController: searchController,
-        context: context,
-        addArea: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => AreaBuild(
-                isEdit: false,
-                areaAdd: (Area value) {
-                  setState(
-                    () {
-                      areas = getAreas();
-                    },
-                  );
-                },
+          searchController: searchController,
+          context: context,
+          addArea: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => AreaBuild(
+                  isEdit: false,
+                  areaAdd: (Area value) {
+                    setState(
+                      () {
+                        areas = getAreas();
+                      },
+                    );
+                  },
+                ),
               ),
-            ),
-          );
-        },
-        settings: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => const SettingsPage(
-                token: ' ',
+            );
+          },
+          settings: () {
+            showModalBottomSheet(
+              useRootNavigator: true,
+              isScrollControlled: true,
+              context: context,
+              backgroundColor: AppColors.darkBlue,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                ),
               ),
-            ),
-          );
-        },
-      ),
+              showDragHandle: true,
+              barrierColor: Colors.transparent,
+              builder: (BuildContext context) {
+                return SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.8,
+                  child: SettingsPage(
+                    token: widget.token,
+                  ),
+                );
+              },
+            );
+          }),
       backgroundColor: AppColors.darkBlue,
       body: Stack(
         children: [
