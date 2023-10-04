@@ -6,6 +6,7 @@ import 'package:mobile/main.dart';
 import 'package:mobile/theme/style.dart';
 import 'package:mobile/back/services.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:mobile/screens/settings/webview/discord_webview.dart';
 
 class SettingsPage extends StatefulWidget {
   final String token;
@@ -126,7 +127,11 @@ class _SettingsPageState extends State<SettingsPage> {
                             ),
                           ),
                           onPressed: () {
-                            Navigator.pop(context);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DiscordWebView(url: "https://discord.com/api/oauth2/authorize?client_id=1158738215704985681&permissions=8&redirect_uri=http%3A%2F%2Flocalhost%3A8081%2Fsettings%2Fservices&response_type=code&scope=bot")
+                              ),);
                           },
                         );
                       },
