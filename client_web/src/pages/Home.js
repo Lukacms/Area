@@ -1,11 +1,11 @@
-import '../styles/home.css';
-import { ToolBar } from 'primereact/toolbar';
-import { PanelMenu } from 'primereact/panelmenu';
-import { Divider } from 'primereact/divider';
-import { useNavigate } from 'react-router-dom';
-import AreaCard from '../components/AreaCard';
-import useHome from '../hooks/useHome';
-import { styled } from '@mui/material/styles';
+import "../styles/home.css";
+import { ToolBar } from "primereact/toolbar";
+import { PanelMenu } from "primereact/panelmenu";
+import { Divider } from "primereact/divider";
+import { useNavigate } from "react-router-dom";
+import AreaBuild from "../components/AreaBuild";
+import useHome from "../hooks/useHome";
+import { styled } from "@mui/material/styles";
 import {
   Button,
   ToggleButton,
@@ -14,28 +14,27 @@ import {
   TextField,
   AppBar,
   Stack,
-} from '@mui/material';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import InputAdornment from '@mui/material/InputAdornment';
-import SaveIcon from '@mui/icons-material/Save';
-import SearchIcon from '@mui/icons-material/Search';
-import AddIcon from '@mui/icons-material/Add';
-import { useEffect, useState } from 'react';
-import React from 'react';
-import HomeToolbar from '../components/HomeToolBar';
+} from "@mui/material";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import InputAdornment from "@mui/material/InputAdornment";
+import SaveIcon from "@mui/icons-material/Save";
+import SearchIcon from "@mui/icons-material/Search";
+import AddIcon from "@mui/icons-material/Add";
+import { useEffect, useState } from "react";
+import React from "react";
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
-  '& .MuiToggleButtonGroup-grouped': {
+  "& .MuiToggleButtonGroup-grouped": {
     margin: theme.spacing(0.5),
-    color: 'white',
+    color: "white",
     border: 0,
-    '&.Mui-disabled': {
+    "&.Mui-disabled": {
       border: 0,
     },
-    '&:not(:first-of-type)': {
+    "&:not(:first-of-type)": {
       borderRadius: theme.shape.borderRadius,
     },
-    '&:first-of-type': {
+    "&:first-of-type": {
       borderRadius: theme.shape.borderRadius,
     },
   },
@@ -55,11 +54,11 @@ const Home = () => {
     onClickForCreateArea,
     onEnterNameArea,
   } = useHome();
-  const [displayedCategory, setDisplayedCategory] = useState('actions');
+  const [displayedCategory, setDisplayedCategory] = useState("actions");
   const navigate = useNavigate();
   const handleChange = (event, newSelectedValue) => {
     setDisplayedCategory(newSelectedValue);
-    if (newSelectedValue == 'actions') {
+    if (newSelectedValue == "actions") {
       dispAct();
     } else {
       dispReac();
@@ -67,40 +66,44 @@ const Home = () => {
   };
 
   return (
-    <div className='globalDiv'>
-      <div className='leftDiv'>
-        <div className='topLeft'>
-          <b className='fastrText' style={{ paddingLeft: '5%' }}>
+    <div className="globalDiv">
+      <div className="leftDiv">
+        <div className="topLeft">
+          <b className="fastrText" style={{ paddingLeft: "5%" }}>
             FastR
           </b>
           <IconButton
-            label='setting'
-            style={{ border: '1%', color: 'white', borderRadius: '50%' }}
-            onClick={() => navigate('/settings')}>
-            <MoreHorizIcon style={{ color: 'white' }} />
+            label="setting"
+            style={{ border: "1%", color: "white", borderRadius: "50%" }}
+            onClick={() => navigate("/settings")}
+          >
+            <MoreHorizIcon style={{ color: "white" }} />
           </IconButton>
         </div>
-        <div className='selectButton'>
+        <div className="selectButton">
           <StyledToggleButtonGroup
             exclusive
             value={displayedCategory}
             onChange={handleChange}
-            aria-label='categories'
+            aria-label="categories"
             style={{
-              width: '100%',
-              backgroundColor: 'rgba(255, 250, 251, 0.1)',
-              borderRadius: '10px',
-            }}>
+              width: "100%",
+              backgroundColor: "rgba(255, 250, 251, 0.1)",
+              borderRadius: "10px",
+            }}
+          >
             <ToggleButton
-              value='actions'
-              style={{ color: 'white', width: '50%' }}
-              aria-label='category'>
+              value="actions"
+              style={{ color: "white", width: "50%" }}
+              aria-label="category"
+            >
               Actions
             </ToggleButton>
             <ToggleButton
-              value='reactions'
-              style={{ color: 'white', width: '50%' }}
-              aria-label='category'>
+              value="reactions"
+              style={{ color: "white", width: "50%" }}
+              aria-label="category"
+            >
               Reactions
             </ToggleButton>
           </StyledToggleButtonGroup>
@@ -108,62 +111,60 @@ const Home = () => {
         <Divider />
         <PanelMenu
           model={actionOrReaction}
-          className='pannelMenu'
-          style={{ backgroundColor: 'transparent' }}
+          className="pannelMenu"
+          style={{ backgroundColor: "transparent" }}
         />
       </div>
-      <Stack>
-        <HomeToolbar
-          saveBoolean={canSave}
-          addNameToBlankArea={addNameToBlankArea}
-          addCreatedAreaToAreas={addCreatedAreaToAreas}
-          onClickForCreateArea={onClickForCreateArea}
-          onEnterNameArea={onEnterNameArea}
-        />
-        <div className='middleDiv' style={{ flex: 2 }}>
-          <p> {currentState} </p>
-          <AreaCard area={selectedArea} />
-        </div>
-      </Stack>
+      <AreaBuild
+        canSave={canSave}
+        selectedArea={selectedArea}
+        currentState={currentState}
+        addNameToBlankArea={addNameToBlankArea}
+        addCreatedAreaToAreas={addCreatedAreaToAreas}
+        onClickForCreateArea={onClickForCreateArea}
+        onEnterNameArea={onEnterNameArea}
+      />
       <div
-        className='rightDiv'
+        className="rightDiv"
         style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}>
-        <b style={{ marginTop: '10%', fontSize: 25 }}>Areas</b>
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <b style={{ marginTop: "10%", fontSize: 25 }}>Areas</b>
         <TextField
-          id='input-with-icon-textfield'
+          id="input-with-icon-textfield"
           InputProps={{
             startAdornment: (
-              <InputAdornment position='start'>
+              <InputAdornment position="start">
                 <SearchIcon
                   style={{
-                    color: 'rgba(255, 250, 251, 0.5)',
-                    marginLeft: '10%',
+                    color: "rgba(255, 250, 251, 0.5)",
+                    marginLeft: "10%",
                   }}
                 />
                 <b
                   style={{
-                    color: 'rgba(255, 250, 251, 0.5)',
-                  }}>
+                    color: "rgba(255, 250, 251, 0.5)",
+                  }}
+                >
                   Rechercher
                 </b>
               </InputAdornment>
             ),
           }}
-          variant='standard'
+          variant="standard"
         />
         <PanelMenu
           model={panelAreas}
-          className='pannelMenu'
+          className="pannelMenu"
           style={{
-            backgroundColor: 'transparent',
-            marginTop: '10%',
-            width: '100%',
+            backgroundColor: "transparent",
+            marginTop: "10%",
+            width: "100%",
           }}
-          p-menuitem-icon='pi pi-folder'
+          p-menuitem-icon="pi pi-folder"
         />
       </div>
     </div>

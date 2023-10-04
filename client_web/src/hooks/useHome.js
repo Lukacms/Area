@@ -1,17 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 const useHome = () => {
   let nbArea = 0;
 
   const [blankArea, setBlankArea] = useState({
-    label: '',
-    icon: '',
-    data: { action: '', reaction: [''], id: 0 },
+    label: "",
+    icon: "",
+    data: { action: "", reaction: [""], id: 0 },
     command: () => {},
   });
 
   const [currentState, setCurrentState] = useState(
-    'Si vous voulez ajouter une area, clicker sur add area',
+    "Si vous voulez ajouter une area, clicker sur add area"
   );
   /*  const currentStatee = [
     'Please enter a name to the area',
@@ -19,17 +19,21 @@ const useHome = () => {
     'Select your reactions, and when you are finished click on save Area',
   ];*/
   const [addAct, setaddAct] = useState(false);
-  const [areas, setArea] = useState([{ action: '', reaction: [''], name: '' }]);
-  const [tmpAct, setTmp] = useState('');
-  const [selectedArea, setSelectedArea] = useState({ action: '', reaction: [''], name: '' });
+  const [areas, setArea] = useState([{ action: "", reaction: [""], name: "" }]);
+  const [tmpAct, setTmp] = useState("");
+  const [selectedArea, setSelectedArea] = useState({
+    action: "",
+    reaction: [""],
+    name: "",
+  });
   const [panelAreas, setPanelAreas] = useState([
     {
-      label: 'favorite',
-      icon: 'pi pi-fw pi-folder',
+      label: "favorite",
+      icon: "pi pi-fw pi-folder",
       items: [
         {
-          label: '',
-          data: { action: '', reaction: [''], id: 0 },
+          label: "",
+          data: { action: "", reaction: [""], id: 0 },
           command: () => {
             clickArea({ areaSelected: panelAreas[0].items[0] });
           },
@@ -37,22 +41,22 @@ const useHome = () => {
       ],
     },
     {
-      label: 'Not Favorites',
-      icon: 'pi pi-fw pi-folder',
+      label: "Not Favorites",
+      icon: "pi pi-fw pi-folder",
       items: [
         {
-          label: '',
+          label: "",
           command: () => {
             clickArea({ areaSelected: panelAreas[1].items[0] });
           },
-          data: { action: '', reaction: [''], id: 0 },
+          data: { action: "", reaction: [""], id: 0 },
         },
       ],
     },
   ]);
 
   const clickArea = ({ areaSelected }) => {
-    console.log('clickArea: ', areaSelected);
+    console.log("clickArea: ", areaSelected);
     setSelectedArea({
       name: areaSelected.label,
       action: areaSelected.data.action,
@@ -62,42 +66,56 @@ const useHome = () => {
 
   const actionList = [
     {
-      label: 'discord',
-      icon: 'pi pi-fw pi-folder',
+      label: "discord",
+      icon: "pi pi-fw pi-folder",
       items: [
         {
-          label: 'action disc 1',
+          label: "action disc 1",
           command: () => {
-            clickAct(actionList[0].items[0].label);
+            //clickAct(actionList[0].items[0].label);
+            addActionToBlankArea({ action: actionList[0].items[0].label });
+            onAddActionArea();
           },
         },
         {
-          label: 'action disc 2',
+          label: "action disc 2",
           command: () => {
-            clickAct(actionList[0].items[1].label);
+            //clickAct(actionList[0].items[1].label);
+            addActionToBlankArea({ action: actionList[0].items[1].label });
+            onAddActionArea();
           },
         },
       ],
     },
     {
-      label: 'microsoft',
-      icon: 'pi pi-fw pi-folder',
+      label: "microsoft",
+      icon: "pi pi-fw pi-folder",
       items: [
         {
-          label: 'action mail1',
+          label: "action mail1",
           command: () => {
-            clickAct(actionList[1].items[0].label);
+            //clickAct(actionList[1].items[0].label);
+            addActionToBlankArea({ action: actionList[1].items[0].label });
+            onAddActionArea();
           },
         },
         {
-          label: 'action mail2',
+          label: "action mail2",
           command: () => {
-            clickAct(actionList[1].items[1].label);
+            //clickAct(actionList[1].items[1].label);
+            addActionToBlankArea({ action: actionList[1].items[1].label });
+            onAddActionArea();
           },
         },
       ],
     },
   ];
+
+  const addActionToBlankArea = ({ action }) => {
+    var tmp = blankArea;
+    tmp.data.action = action;
+    setBlankArea(tmp);
+  };
 
   const clickAct = (eventName) => {
     if (addAct) {
@@ -110,35 +128,51 @@ const useHome = () => {
 
   const reactionList = [
     {
-      label: 'discord',
+      label: "discord",
       items: [
         {
-          label: 'reaction disc 1',
+          label: "reaction disc 1",
           command: () => {
-            clickReact(reactionList[0].items[0].label);
+            //clickReact(reactionList[0].items[0].label);
+            addReactionToBlankArea({
+              reaction: reactionList[0].items[0].label,
+            });
+            addCreatedAreaToAreas();
           },
         },
         {
-          label: 'reaction disc 2',
+          label: "reaction disc 2",
           command: () => {
-            clickReact(reactionList[0].items[1].label);
+            //clickReact(reactionList[0].items[1].label);
+            addReactionToBlankArea({
+              reaction: reactionList[0].items[1].label,
+            });
+            addCreatedAreaToAreas();
           },
         },
       ],
     },
     {
-      label: 'microsoft',
+      label: "microsoft",
       items: [
         {
-          label: 'reaction mail1',
+          label: "reaction mail1",
           command: () => {
-            clickReact(reactionList[1].items[0].label);
+            //clickReact(reactionList[1].items[0].label);
+            addReactionToBlankArea({
+              reaction: reactionList[1].items[0].label,
+            });
+            addCreatedAreaToAreas();
           },
         },
         {
-          label: 'reaction mail2',
+          label: "reaction mail2",
           command: () => {
-            clickReact(reactionList[1].items[1].label);
+            //clickReact(reactionList[1].items[1].label);
+            addReactionToBlankArea({
+              reaction: reactionList[1].items[1].label,
+            });
+            addCreatedAreaToAreas();
           },
         },
       ],
@@ -151,7 +185,7 @@ const useHome = () => {
       return;
     }
     setaddAct(false);
-    areas.push({ action: tmpAct, reaction: eventName, name: 'act' });
+    areas.push({ action: tmpAct, reaction: eventName, name: "act" });
     addToPanelArea({
       act: String(areas[areas.length - 1].action),
       name: String(areas[areas.length - 1].name),
@@ -159,7 +193,7 @@ const useHome = () => {
     });
   };
   const addToPanelArea = ({ act, react, name }) => {
-    if (panelAreas[1].items[0].label === '') {
+    if (panelAreas[1].items[0].label === "") {
       panelAreas[1].items.pop();
       panelAreas[1].items.push({
         label: name,
@@ -194,15 +228,11 @@ const useHome = () => {
     setBlankArea(tmp);
   };
 
-  const addActionToBlankArea = ({ action }) => {
-    var tmp = blankArea;
-    blankArea.action = action;
-    setBlankArea(tmp);
-  };
+
 
   const addReactionToBlankArea = ({ Reaction }) => {
     var tmp = blankArea;
-    blankArea.Reaction = Reaction;
+    tmp.data.reaction = Reaction;
     setBlankArea(tmp);
   };
 
@@ -220,12 +250,16 @@ const useHome = () => {
   };
 
   const onClickForCreateArea = () => {
-    setCurrentState('Please enter a name to the area');
+    setCurrentState("Please enter a name to the area");
   };
 
   const onEnterNameArea = () => {
-    setCurrentState('Please select an action for the area');
+    setCurrentState("Please select an action for the area");
   };
+
+  const onAddActionArea = () => {
+    setCurrentState("Select your reactions, and when you are finished click on save Area");
+  }
 
   return {
     dispAct,
@@ -242,3 +276,11 @@ const useHome = () => {
 };
 
 export default useHome;
+
+export class Area {
+  constructor(label, icon, data) {
+    this.label = label;
+    this.icon = icon;
+    this.data = data;
+  }
+}
