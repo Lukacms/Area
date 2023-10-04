@@ -2,10 +2,10 @@ import { Button } from 'primereact/button';
 import { useNavigate } from 'react-router-dom';
 import '../styles/register.css';
 
-const BackButton = ({ label }) => {
+const BackButton = ({ label, path }) => {
   const navigate = useNavigate();
   const onBackClick = () => {
-    navigate(-1);
+    navigate(path ? path : -1);
   };
 
   return (

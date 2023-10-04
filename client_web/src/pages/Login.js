@@ -44,7 +44,7 @@ function Login() {
             />
             <p className='fPassword' onClick={() => navigate('/')}>
               {' '}
-              Forget password ?
+              Forgot your password ?
             </p>
           </label>
           <Button label='Login' className='buttonDiv' left='' onClick={() => login()} />

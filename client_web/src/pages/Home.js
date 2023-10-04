@@ -8,7 +8,7 @@ import '../styles/home.css';
 function Home({children}) {
   const {} = useHome();
   const [addAct, setaddAct] = useState(false);
-  const [area, setArea] = useState([{ action: '', reaction: '' }]);
+  const [area, /* setArea */] = useState([{ action: '', reaction: '' }]);
   const [tmpAct, setTmp] = useState('');
 
   const clickAct = (eventName) => {
@@ -54,13 +54,13 @@ function Home({children}) {
       items: [
         {
           label: 'action disc 1',
-          command: (event) => {
+          command: () => {
             clickAct(items[0].items[0].label);
           },
         },
         {
           label: 'action disc 2',
-          command: (event) => {
+          command: () => {
             clickAct(items[0].items[1].label);
           },
         },
@@ -71,13 +71,13 @@ function Home({children}) {
       items: [
         {
           label: 'action mail1',
-          command: (event) => {
+          command: () => {
             clickAct(items[1].items[0].label);
           },
         },
         {
           label: 'action mail2',
-          command: (event) => {
+          command: () => {
             clickAct(items[1].items[1].label);
           },
         },
@@ -85,9 +85,9 @@ function Home({children}) {
     },
   ];
 
-  function fffff() {
+  /* function fffff() {
     console.log('gg');
-  }
+  } */
 
   const items2 = [
     {
@@ -95,13 +95,13 @@ function Home({children}) {
       items: [
         {
           label: 'reaction disc 1',
-          command: (event) => {
+          command: () => {
             clickReact(items2[0].items[0].label);
           },
         },
         {
           label: 'reaction disc 2',
-          command: (event) => {
+          command: () => {
             clickReact(items2[0].items[1].label);
           },
         },
@@ -112,13 +112,13 @@ function Home({children}) {
       items: [
         {
           label: 'reaction mail1',
-          command: (event) => {
+          command: () => {
             clickReact(items2[1].items[0].label);
           },
         },
         {
           label: 'reaction mail2',
-          command: (event) => {
+          command: () => {
             clickReact(items2[1].items[1].label);
           },
         },
