@@ -30,6 +30,7 @@ public class UserActionsController
     [HttpPost("")]
     public ActionResult CreateNewUserAction([FromBody] UserActionsModel newUserAction)
     {
+        newUserAction.Countdown = newUserAction.Timer;
         var userAction = _context.UserActions.Add(newUserAction);
         _context.SaveChanges();
         return new CreatedResult("UserAction successfully created", userAction.Entity);
