@@ -1,8 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from 'react';
+import {
+  getServices,
+  getUserServices,
+  getActions,
+  getActionsByServiceId,
+  getReactions,
+  getReactionsByServiceId,
+} from '../config/request';
+import secureLocalStorage from 'react-secure-storage';
+import { useNavigate } from 'react-router';
 
 const useHome = () => {
   let nbArea = 0;
-
+  const navigate = useNavigate();
   const [canSave, setCanSave] = useState(false);
   const [blankArea, setBlankArea] = useState({
     label: '',
@@ -279,6 +289,60 @@ const useHome = () => {
   const onAddActionArea = () => {
     setCurrentState('Select your reactions, and when you are finished click on save Area');
   };
+
+  const addServicesToUser = ({ actions, reactions, name }) => {
+    var tmpActionList = actionList;
+    var tmpReactionList = reactionList;
+
+    if (actions !== []) {
+      if (tmpActionList[0].label === '') tmpActionList.pop();
+      tmpActionList.push({ label: name });
+      for (let i = 0; i < actions.length; i++) {
+        tmpActionList[tmpActionList.length - 1].items.push({
+          label: actions[i].name,
+          command: () => {
+            setCurrentSelectedCategory('reactions');
+            addActionToBlankArea({ action: actions[i].name });
+            onAddActionArea();
+          },
+        });
+      }
+    }
+    if (reactions !== []) {
+      if (tmpReactionList[0].label === '') tmpReactionList.pop();
+      tmpReactionList.push({ label: name });
+      for (let i = 0; i < reactions.length; i++) {
+        tmpReactionList[tmpReactionList.length - 1].items.push({
+          label: actions[i].name,
+          command: () => {
+            setCurrentSelectedCategory('reactions');
+            addReactionToBlankArea({ reaction: reactions[i].name });
+          },
+        });
+      }
+    }
+  };
+
+  useEffect(async () => {
+    try {
+      const userId = secureLocalStorage.getItem('userId');
+      const services = await getServices();
+      const userServices = await getUserServices(userId);
+
+      for (let i = 0; i < services.data.length; i++) {
+        for (let j = 0; j < userServices.data.length; j++)
+          if (services.data[i].id === userServices.data[j].id) {
+            addServicesToUser({
+              actions: await getActionsByServiceId(services.data[i].id),
+              reactions: await getReactionsByServiceId(services.data[i].id),
+              name: services.data[i].name,
+            });
+          }
+      }
+    } catch (e) {
+      navigate('/error', { state: { message: e.message } });
+    }
+  }, []);
 
   return {
     dispAct,

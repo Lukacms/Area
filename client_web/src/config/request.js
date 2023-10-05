@@ -42,7 +42,16 @@ export const getServices = () => axiosInstance.get(API_URL + 'Services');
 
 export const getUserServices = (id) => axiosInstance.get(API_URL + `UserServices/${id}`);
 
+
 export const getMyProfile = () => axiosInstance.get(API_URL + 'Users/me');
+
+export const getActions = () => axiosInstance.get(API_URL + 'api/Actions');
+
+export const getActionsByServiceId = (id) => axiosInstance.get(API_URL + `api/Actions/${id}`);
+
+export const getReactions = () => axiosInstance.get(API_URL + 'api/Reactions');
+
+export const getReactionsByServiceId = (id) => axiosInstance.get(API_URL + `api/Reactions/${id}`);
 
 export const disconnectUserService = (id) => axiosInstance.delete(API_URL + `UserServices/${id}`);
 
