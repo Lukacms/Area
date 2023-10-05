@@ -3,7 +3,7 @@ import { useMailVerif } from '../hooks';
 import '../styles/App.css';
 
 function MailVerif() {
-  const { verified, id } = useMailVerif();
+  const { /* verified, */ id } = useMailVerif();
 
   return (
     <Background>
