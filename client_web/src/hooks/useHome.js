@@ -323,25 +323,28 @@ const useHome = () => {
     }
   };
 
-  useEffect(async () => {
-    try {
-      const userId = secureLocalStorage.getItem('userId');
-      const services = await getServices();
-      const userServices = await getUserServices(userId);
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const userId = secureLocalStorage.getItem('userId');
+        const services = await getServices();
+        const userServices = await getUserServices(userId);
 
-      for (let i = 0; i < services.data.length; i++) {
-        for (let j = 0; j < userServices.data.length; j++)
-          if (services.data[i].id === userServices.data[j].id) {
-            addServicesToUser({
-              actions: await getActionsByServiceId(services.data[i].id),
-              reactions: await getReactionsByServiceId(services.data[i].id),
-              name: services.data[i].name,
-            });
-          }
+        for (let i = 0; i < services.data.length; i++) {
+          for (let j = 0; j < userServices.data.length; j++)
+            if (services.data[i].id === userServices.data[j].id) {
+              addServicesToUser({
+                actions: await getActionsByServiceId(services.data[i].id),
+                reactions: await getReactionsByServiceId(services.data[i].id),
+                name: services.data[i].name,
+              });
+            }
+        }
+      } catch (e) {
+        navigate('/error', { state: { message: e.message } });
       }
-    } catch (e) {
-      navigate('/error', { state: { message: e.message } });
-    }
+    };
+    loadData();
   }, []);
 
   return {
