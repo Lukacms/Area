@@ -20,6 +20,7 @@ const HomeToolbar = ({
 }) => {
   const [isAddClicked, setIsAddClicked] = useState(false);
   const [isNextStep, setisNextStep] = useState(true);
+
   const addClick = () => {
     onClickForCreateArea();
     console.log(isNextStep);
@@ -27,6 +28,7 @@ const HomeToolbar = ({
     if (isAddClicked === true) setIsAddClicked(false);
     else setIsAddClicked(true);
   };
+
   return (
     <div
       style={{
