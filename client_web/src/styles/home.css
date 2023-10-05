@@ -1,0 +1,48 @@
+.globalDiv {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    background-color: #1B1A2A;
+}
+.leftDiv {
+    display: flex;
+    width: 15vw;
+    background-color: rgba(255, 250, 251, 0.1);
+    flex-direction: column;
+}
+
+.middleDiv {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 70vw;
+    flex-direction: column;
+}
+
+.rightDiv {
+    display: flex;
+    width: 15vw;
+    background-color: rgba(255, 250, 251, 0.1);
+    flex-direction: column;
+}
+
+.fastrText {
+    font-size: 50px;
+    align-self: start;
+}
+
+.selectButton {
+    display: flex;
+}
+
+.pannelMenu {
+    background-color: #54B6CC;
+}
+
+.divider {
+    margin: 0px;
+}
+
+.buttonText {
+    color: #FFFFFF;
+}

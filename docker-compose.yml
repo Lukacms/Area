@@ -1,0 +1,63 @@
+version: '3.9'
+
+services:
+  server:
+    build: ./AREA_ReST_API
+    ports:
+      - "8080:8080"
+    restart: on-failure
+    depends_on:
+      - database
+    networks:
+      - backend
+
+  database:
+    image: "mariadb"
+    hostname: "area_db"
+    ports:
+      - "8082:8082"
+    environment:
+      MARIADB_ROOT_PASSWORD: "password"
+      MARIADB_DATABASE: "area_db_test"
+      MARIADB_USER: "area"
+      MARIADB_PASSWORD: "area"
+      MYSQL_TCP_PORT: 8082
+    volumes:
+      - db:/var/lib/mysql
+    expose:
+      - 8082
+    networks:
+      - backend
+
+  client_mobile:
+    build: ./mobile
+    volumes:
+      - clients:/data
+    restart: always
+    image: 'flutter'
+
+  client_web:
+    build: ./client_web
+    hostname: "area_web"
+    ports:
+      - "8081:8081"
+    volumes:
+      - clients:/data
+      - ./client_web:/app
+      - ./client_web:/app/client_web/node_modules
+    restart: always
+    stdin_open: true
+    command: npm start
+    depends_on:
+      - server
+      - client_mobile
+    environment:
+      - WATCHPACK_POLLING=true
+
+volumes:
+  clients:
+  db:
+
+networks:
+  backend:
+    driver: bridge
