@@ -1,4 +1,3 @@
-using System.Net.Mime;
 using System.Text.Json.Nodes;
 using AREA_ReST_API.Classes;
 using AREA_ReST_API.Middleware;
@@ -17,7 +16,7 @@ public class DiscordController
 {
     private readonly AppDbContext _context;
     private readonly HttpService _client;
-    
+
     public DiscordController(AppDbContext context)
     {
         _context = context;
@@ -28,7 +27,7 @@ public class DiscordController
     public async Task<ActionResult> RequestDiscordToken([FromBody] DiscordModel discordCode ,[FromHeader] string authorization)
     {
         var decodedUser = JwtDecoder.Decode(authorization);
-        var callbackUri = "http://localhost:8080/api/oauth/Discord/callback/" + decodedUser.Id;
+        var callbackUri = "http://localhost:8080/oauth/Discord/callback/" + decodedUser.Id;
         var json = new JsonObject
         {
             { "code", discordCode.Code },
@@ -38,7 +37,7 @@ public class DiscordController
         var result = _client.PostAsync(callbackUri, json.ToString(), "application/x-www-form-urlencoded");
         return new OkResult();
     }
-    
+
     [AllowAnonymous]
     [HttpPost("callback/{userId:int}")]
     public ActionResult CreateDiscordToken([AsParameters] int userId, [FromBody] DiscordCallbackModel discordResponse)
