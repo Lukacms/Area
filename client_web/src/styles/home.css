@@ -4,43 +4,45 @@
     height: 100vh;
     background-color: #1B1A2A;
 }
-
 .leftDiv {
     display: flex;
-    border: 5px solid red;
     width: 15vw;
-     background-color: rgba(255, 250, 251, 0.1);
+    background-color: rgba(255, 250, 251, 0.1);
     flex-direction: column;
 }
 
 .middleDiv {
     display: flex;
-    border-top: 5px solid green;
-    border-bottom: 5px solid green;
+    align-items: center;
+    justify-content: center;
     width: 70vw;
+    flex-direction: column;
 }
 
 .rightDiv {
     display: flex;
-    border: 5px solid blue;
     width: 15vw;
     background-color: rgba(255, 250, 251, 0.1);
+    flex-direction: column;
 }
 
 .fastrText {
     font-size: 50px;
     align-self: start;
-    margin: 0px;
 }
 
 .selectButton {
     display: flex;
-    size: 50px;
-    width: 15vw;
-    padding-left: 2vw;
-    gap: 1vw;
 }
 
 .pannelMenu {
     background-color: #54B6CC;
+}
+
+.divider {
+    margin: 0px;
+}
+
+.buttonText {
+    color: #FFFFFF;
 }

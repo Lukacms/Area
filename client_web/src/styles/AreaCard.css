@@ -1,0 +1,9 @@
+.areaCardMainDiv {
+    display: flex;
+    border: 2px red solid;
+    width: 50vw;
+    height: 60vh;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}

@@ -1,166 +1,174 @@
-import useHome from '../hooks/useHome';
-import { useEffect, useState } from 'react';
-import { Button } from 'primereact/button';
-import { PanelMenu } from 'primereact/panelmenu';
-import { Divider } from 'primereact/divider';
-import '../styles/home.css';
+import "../styles/home.css";
+import { PanelMenu } from "primereact/panelmenu";
+import { Divider } from "primereact/divider";
+import { useNavigate } from "react-router-dom";
+import AreaBuild from "../components/AreaBuild";
+import useHome from "../hooks/useHome";
+import { styled } from "@mui/material/styles";
+import {
+  ToggleButton,
+  ToggleButtonGroup,
+  IconButton,
+  TextField,
+} from "@mui/material";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import InputAdornment from "@mui/material/InputAdornment";
+import SearchIcon from "@mui/icons-material/Search";
+import { useState } from "react";
+import React from "react";
 
-function Home({children}) {
-  const {} = useHome();
-  const [addAct, setaddAct] = useState(false);
-  const [area, /* setArea */] = useState([{ action: '', reaction: '' }]);
-  const [tmpAct, setTmp] = useState('');
+const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
+  "& .MuiToggleButtonGroup-grouped": {
+    margin: theme.spacing(0.5),
+    color: "white",
+    border: 0,
+    "&.Mui-disabled": {
+      border: 0,
+    },
+    "&:not(:first-of-type)": {
+      borderRadius: theme.shape.borderRadius,
+    },
+    "&:first-of-type": {
+      borderRadius: theme.shape.borderRadius,
+    },
+  },
+}));
 
-  const clickAct = (eventName) => {
-    if (addAct) {
-      return;
+const Home = () => {
+  const [canSave, setCanSave] = useState(false);
+  const {
+    dispAct,
+    dispReac,
+    actionOrReaction,
+    panelAreas,
+    selectedArea,
+    addNameToBlankArea,
+    addCreatedAreaToAreas,
+    currentState,
+    currentSelectedCategory,
+    updateCurrentSelectedCategory,
+    onClickForCreateArea,
+    onEnterNameArea,
+  } = useHome();
+  const [displayedCategory, setDisplayedCategory] = useState("actions");
+  const navigate = useNavigate();
+  const handleChange = (event, newSelectedValue) => {
+    setDisplayedCategory(newSelectedValue);
+    updateCurrentSelectedCategory(newSelectedValue);
+    if (newSelectedValue == "actions") {
+      dispAct();
+    } else {
+      dispReac();
     }
-    setTmp(eventName);
-    setaddAct(true);
   };
-
-  const clickReact = (eventName) => {
-    if (!addAct) {
-      return;
-    }
-    area.push({ action: tmpAct, reaction: eventName });
-    setaddAct(false);
-  };
-
-  useEffect(() => {
-    const tmpActMod = () => {
-      // console.log(tmpAct);
-    };
-    const addActMod = () => {
-      // console.log(addAct);
-    };
-    tmpActMod();
-    addActMod();
-  }, [clickAct]);
-
-  useEffect(() => {
-    const areaMod = () => {
-      /* console.log(area);
-      console.log('area length: ', area.length);
-      for (let i = 0; i < area.length; i++)
-        console.log('ff:', area[i].action, ' ', 'gg: ', area[i].reaction); */
-    };
-    areaMod();
-  }, [clickReact]);
-
-  const items = [
-    {
-      label: 'discord',
-      items: [
-        {
-          label: 'action disc 1',
-          command: () => {
-            clickAct(items[0].items[0].label);
-          },
-        },
-        {
-          label: 'action disc 2',
-          command: () => {
-            clickAct(items[0].items[1].label);
-          },
-        },
-      ],
-    },
-    {
-      label: 'microsoft',
-      items: [
-        {
-          label: 'action mail1',
-          command: () => {
-            clickAct(items[1].items[0].label);
-          },
-        },
-        {
-          label: 'action mail2',
-          command: () => {
-            clickAct(items[1].items[1].label);
-          },
-        },
-      ],
-    },
-  ];
-
-  /* function fffff() {
-    console.log('gg');
-  } */
-
-  const items2 = [
-    {
-      label: 'discord',
-      items: [
-        {
-          label: 'reaction disc 1',
-          command: () => {
-            clickReact(items2[0].items[0].label);
-          },
-        },
-        {
-          label: 'reaction disc 2',
-          command: () => {
-            clickReact(items2[0].items[1].label);
-          },
-        },
-      ],
-    },
-    {
-      label: 'microsoft',
-      items: [
-        {
-          label: 'reaction mail1',
-          command: () => {
-            clickReact(items2[1].items[0].label);
-          },
-        },
-        {
-          label: 'reaction mail2',
-          command: () => {
-            clickReact(items2[1].items[1].label);
-          },
-        },
-      ],
-    },
-  ];
-
-  const [items3, setItems] = useState(items);
-
-  function dispAct() {
-    setItems(items);
+  if (currentSelectedCategory !== displayedCategory) {
+    handleChange(null, currentSelectedCategory);
   }
-  function dispReac() {
-    setItems(items2);
-  }
-
-  function onDragEnd(e) {
-    console.log(e);
-  }
-
   return (
-    <div className='globalDiv'>
-      <div className='leftDiv'>
-        <b className='fastrText'> FastR </b>
-        <div className='selectButton'>
-          <Button label='Actions' onClick={dispAct} />
-          <Button label='Reactions' onClick={dispReac} />
+    <div className="globalDiv">
+      <div className="leftDiv">
+        <div className="topLeft">
+          <b className="fastrText" style={{ paddingLeft: "5%" }}>
+            FastR
+          </b>
+          <IconButton
+            label="setting"
+            style={{ border: "1%", color: "white", borderRadius: "50%" }}
+            onClick={() => navigate("/settings")}
+          >
+            <MoreHorizIcon style={{ color: "white" }} />
+          </IconButton>
+        </div>
+        <div className="selectButton">
+          <StyledToggleButtonGroup
+            exclusive
+            value={displayedCategory}
+            onChange={handleChange}
+            aria-label="categories"
+            style={{
+              width: "100%",
+              backgroundColor: "rgba(255, 250, 251, 0.1)",
+              borderRadius: "10px",
+            }}
+          >
+            <ToggleButton
+              value="actions"
+              style={{ color: "white", width: "50%" }}
+              aria-label="category"
+            >
+              Actions
+            </ToggleButton>
+            <ToggleButton
+              value="reactions"
+              style={{ color: "white", width: "50%" }}
+              aria-label="category"
+            >
+              Reactions
+            </ToggleButton>
+          </StyledToggleButtonGroup>
         </div>
         <Divider />
+        <b style={{alignSelf:"center", marginBottom:"5%"}}>{currentSelectedCategory.toUpperCase()}</b>
         <PanelMenu
-          model={items3}
-          className='pannelMenu'
-          onDragEnd={(e) => {
-            onDragEnd(e.target.dispatchEvent);
-          }}
+          model={actionOrReaction}
+          className="pannelMenu"
+          style={{ backgroundColor: "transparent" }}
         />
       </div>
-      <div className='middleDiv'></div>
-      <div className='rightDiv'></div>
-      {children}
+      <AreaBuild
+        canSave={canSave}
+        selectedArea={selectedArea}
+        currentState={currentState}
+        addNameToBlankArea={addNameToBlankArea}
+        addCreatedAreaToAreas={addCreatedAreaToAreas}
+        onClickForCreateArea={onClickForCreateArea}
+        onEnterNameArea={onEnterNameArea}
+      />
+      <div
+        className="rightDiv"
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <b style={{ marginTop: "10%", fontSize: 25 }}>Areas</b>
+        <TextField
+          id="input-with-icon-textfield"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon
+                  style={{
+                    color: "rgba(255, 250, 251, 0.5)",
+                    marginLeft: "10%",
+                  }}
+                />
+                <b
+                  style={{
+                    color: "rgba(255, 250, 251, 0.5)",
+                  }}
+                >
+                  Rechercher
+                </b>
+              </InputAdornment>
+            ),
+          }}
+          variant="standard"
+        />
+        <PanelMenu
+          model={panelAreas}
+          className="pannelMenu"
+          style={{
+            backgroundColor: "transparent",
+            marginTop: "10%",
+            width: "100%",
+          }}
+          p-menuitem-icon="pi pi-folder"
+        />
+      </div>
     </div>
   );
-}
+};
 
 export default Home;
