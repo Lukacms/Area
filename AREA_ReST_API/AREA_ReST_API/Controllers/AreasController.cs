@@ -20,7 +20,7 @@ public class AreasController
     }
     
     [HttpGet("{userId:int}")]
-    public ActionResult<AreaWithActionReaction> GetAllAreasByUserId([AsParameters] int userId)
+    public ActionResult<List<AreaWithActionReaction>> GetAllAreasByUserId([AsParameters] int userId)
     {
         var requestedArea = _context.Areas.Where(area => area.UserId == userId).ToList();
         var areasWithId = requestedArea.Select(areasModel => new AreaWithActionReaction 
