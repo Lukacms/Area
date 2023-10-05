@@ -6,6 +6,7 @@ import secureLocalStorage from 'react-secure-storage';
 const useSettingServices = () => {
   const [services, setServices] = useState([]);
   const navigate = useNavigate();
+  const [loaded, setLoaded] = useState(false);
 
   const isUserConnected = (user, id) => {
     if (!user) {
@@ -59,12 +60,13 @@ const useSettingServices = () => {
         });
       });
       setServices(tmpServices);
+      setLoaded(true);
     } catch (e) {
       navigate('/error', { state: { message: e.message } });
     }
   }, []);
 
-  return { services, navigate };
+  return { services, navigate, loaded };
 };
 
 export default useSettingServices;

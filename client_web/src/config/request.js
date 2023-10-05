@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { API_URL } from './constants';
+import { API_URL, OAUTH_URL } from './constants';
 import secureLocalStorage from 'react-secure-storage';
 
 // used to refresh token when getting 403 error
@@ -44,4 +44,7 @@ export const getUserServices = (id) => axiosInstance.get(API_URL + `UserServices
 
 export const getMyProfile = () => axiosInstance.get(API_URL + 'Users/me');
 
-export const disconnectUserService = (id) => {};
+export const disconnectUserService = (id) => axiosInstance.delete(API_URL + `UserServices/${id}`);
+
+// services callbacks
+export const serviceCallbackDiscord = (datas) => axiosInstance.post(OAUTH_URL + 'Discord', datas);

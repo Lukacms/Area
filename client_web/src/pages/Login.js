@@ -33,6 +33,7 @@ function Login() {
                     placeholder='Your email'
                     error={props.errors?.email}
                     touched={props.touched?.email}
+                    icon='pi pi-envelope'
                   />
                 </div>
                 <div className='textBox'>
@@ -42,6 +43,7 @@ function Login() {
                     as={FormikPassword}
                     label='Password'
                     placeholder='Your password'
+                    toggleMask
                     feedback={false}
                     error={props.errors?.password}
                     touched={props.touched?.password}

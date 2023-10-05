@@ -1,5 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import {
+  CallBackDiscord,
+  CallbackGoogle,
   Error,
   Home,
   Login,
@@ -22,8 +24,12 @@ function App() {
       </Route>
       <Route path='/home' element={<Home />} />
       <Route path='/settings'>
-        <Route path='services' element={<SettingServices />} />
-        <Route path='services/:id' element={<SpecificService />} />
+        <Route path='services'>
+          <Route index element={<SettingServices />} />
+          <Route path=':id' element={<SpecificService />} />
+          <Route path='discord' element={<CallBackDiscord />} />
+          <Route path='google' element={<CallbackGoogle />} />
+        </Route>
       </Route>
       <Route path='/error' element={<Error />} />
       <Route path='/notfound' element={<NotFound />} />
