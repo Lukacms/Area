@@ -138,6 +138,7 @@ public class UsersController : ControllerBase
             Subject = new ClaimsIdentity(claims),
             Issuer = jwtOptions.Issuer,
             Audience = jwtOptions.Audience,
+            Expires = DateTime.Now.AddYears(1),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
         };
         var token = tokenHandler.CreateToken(tokenDescriptor);
