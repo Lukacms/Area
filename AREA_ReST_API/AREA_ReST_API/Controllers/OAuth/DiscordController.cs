@@ -17,7 +17,8 @@ public class DiscordController
 {
     private readonly AppDbContext _context;
     private readonly HttpService _client;
-    
+    private readonly string _discordUri = "https://discord.com/api/oauth2/token";
+
     public DiscordController(AppDbContext context)
     {
         _context = context;
@@ -25,7 +26,7 @@ public class DiscordController
     }
 
     [HttpPost("")]
-    public async Task<ActionResult> RequestDiscordToken([FromBody] DiscordModel discordCode ,[FromHeader] string authorization)
+    public async Task<ActionResult> RequestDiscordToken([FromBody] DiscordModel discordCode, [FromHeader] string authorization)
     {
         var decodedUser = JwtDecoder.Decode(authorization);
         var callbackUri = "http://localhost:8080/api/oauth/Discord/callback/" + decodedUser.Id;
@@ -35,10 +36,10 @@ public class DiscordController
             { "grant_type", "authorization_code" },
             { "redirect_uri", callbackUri}
         };
-        var result = _client.PostAsync(callbackUri, json.ToString(), "application/x-www-form-urlencoded");
+        var result = _client.PostAsync(_discordUri, json.ToString(), "application/x-www-form-urlencoded");
         return new OkResult();
     }
-    
+
     [AllowAnonymous]
     [HttpPost("callback/{userId:int}")]
     public ActionResult CreateDiscordToken([AsParameters] int userId, [FromBody] DiscordCallbackModel discordResponse)
