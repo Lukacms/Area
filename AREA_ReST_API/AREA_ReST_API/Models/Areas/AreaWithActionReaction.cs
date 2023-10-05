@@ -8,6 +8,6 @@ public class AreaWithActionReaction
     [Required] public required int UserId { get; set; }
     [Required] public required string Name { get; set; }
     [Required] public required bool Favorite { get; set; }
-    [Required] public UserActionsModel UserAction { get; set; } = null!;
+    [Required] public UserActionsModel? UserAction { get; set; } = null!;
     [Required] public List<UserReactionsModel> UserReactions { get; set; } = null!;
 }

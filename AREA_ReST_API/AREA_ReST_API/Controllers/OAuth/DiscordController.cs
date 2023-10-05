@@ -1,3 +1,7 @@
+using System.Net.Mime;
+using System.Text.Json.Nodes;
+using AREA_ReST_API.Classes;
+using AREA_ReST_API.Middleware;
 using AREA_ReST_API.Models;
 using AREA_ReST_API.Models.OAuth.Discord;
 using Microsoft.AspNetCore.Authorization;
@@ -12,25 +16,38 @@ namespace AREA_ReST_API.Controllers.OAuth;
 public class DiscordController
 {
     private readonly AppDbContext _context;
+    private readonly HttpService _client;
+    private readonly string _discordUri = "https://discord.com/api/oauth2/token";
 
     public DiscordController(AppDbContext context)
     {
         _context = context;
+        _client = new HttpService();
     }
 
     [HttpPost("")]
-    public ActionResult RequestDiscordToken()
+    public async Task<ActionResult> RequestDiscordToken([FromBody] DiscordModel discordCode, [FromHeader] string authorization)
     {
+        var decodedUser = JwtDecoder.Decode(authorization);
+        var callbackUri = "http://localhost:8080/api/oauth/Discord/callback/" + decodedUser.Id;
+        var json = new JsonObject
+        {
+            { "code", discordCode.Code },
+            { "grant_type", "authorization_code" },
+            { "redirect_uri", callbackUri}
+        };
+        var result = _client.PostAsync(_discordUri, json.ToString(), "application/x-www-form-urlencoded");
         return new OkResult();
     }
-    
-    [HttpPost("callback")]
-    public ActionResult CreateDiscordToken([FromBody] DiscordCallbackModel discordResponse)
+
+    [AllowAnonymous]
+    [HttpPost("callback/{userId:int}")]
+    public ActionResult CreateDiscordToken([AsParameters] int userId, [FromBody] DiscordCallbackModel discordResponse)
     {
         var userService = new UserServicesModel
         {
             ServiceId = _context.Services.First(service => service.Name == "Discord").Id,
-            UserId = 0,
+            UserId = userId,
             AccessToken = discordResponse.AccessToken,
             RefreshToken = discordResponse.RefreshToken,
         };
