@@ -27,7 +27,8 @@ public class HttpService
     {
         var requestMessage = new HttpRequestMessage(HttpMethod.Post, uri);
 
-        requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Basic", authentication);
+        if (authentication.Length > 0)
+            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Basic", authentication);
         requestMessage.Content = new FormUrlEncodedContent(data);
         var response = await _client.SendAsync(requestMessage);
         return await response.Content.ReadAsStringAsync();

@@ -1,5 +1,3 @@
-using System.Text.Json;
-using System.Text.Json.Nodes;
 using AREA_ReST_API.Classes;
 using AREA_ReST_API.Middleware;
 using AREA_ReST_API.Models;
@@ -44,36 +42,16 @@ public class DiscordController
         };
         var result = await _client.PostAsync(_discordUri, data, "application/x-www-forms-urlencoded", base64str);
         var jsonRes = JObject.Parse(result);
-        Console.WriteLine("OUI AU MOINS");
-        Console.WriteLine(jsonRes.ToString());
         var userService = new UserServicesModel
         {
             ServiceId = _context.Services.First(service => service.Name == "Discord").Id,
             UserId = decodedUser.Id,
-            AccessToken = jsonRes["access_token"].ToString(),
-            RefreshToken = jsonRes["refresh_token"].ToString(),
+            AccessToken = jsonRes["access_token"]!.ToString(),
+            RefreshToken = jsonRes["refresh_token"]!.ToString(),
+            ExpiresIn = (int)jsonRes["expires_in"]!,
         };
         _context.UserServices.Add(userService);
-        _context.SaveChangesAsync();
-        Console.WriteLine("ET EN FAIT OUI HAHA");
-        return new OkResult();
-    }
-
-    [AllowAnonymous]
-    [HttpPost("callback")]
-    public ActionResult CreateDiscordToken([FromBody] DiscordCallbackModel discordResponse)
-    {
-        Console.WriteLine("EN FAIT PEUT ÊTRE NON");
-        var userService = new UserServicesModel
-        {
-            ServiceId = _context.Services.First(service => service.Name == "Discord").Id,
-            UserId = 1,
-            AccessToken = discordResponse.AccessToken,
-            RefreshToken = discordResponse.RefreshToken,
-        };
-        _context.UserServices.Add(userService);
-        _context.SaveChanges();
-        Console.WriteLine("ET EN FAIT OUI HAHA");
+        await _context.SaveChangesAsync();
         return new OkResult();
     }
 }

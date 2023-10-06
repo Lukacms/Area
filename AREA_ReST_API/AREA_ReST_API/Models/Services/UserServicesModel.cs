@@ -10,4 +10,5 @@ public class UserServicesModel
     [Required] public required int UserId { get; set; }
     [Required] public required string AccessToken { get; set; }
     [Required] public required string RefreshToken { get; set; }
+    [Required] public required int ExpiresIn { get; set; }
 }
