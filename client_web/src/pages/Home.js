@@ -34,7 +34,7 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   },
 }));
 
-const Home = () => {
+const Home = ({children}) => {
   const [canSave, setCanSave] = useState(false);
   const {
     dispAct,
@@ -166,6 +166,7 @@ const Home = () => {
           }}
           p-menuitem-icon="pi pi-folder"
         />
+      {children}
       </div>
     </div>
   );

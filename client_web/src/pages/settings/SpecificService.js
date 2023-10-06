@@ -1,7 +1,7 @@
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
-import { useSpecificService } from '../hooks/';
-import { Home } from '.';
+import { useSpecificService } from '../../hooks';
+import { Home } from '..';
 
 function SpecificService() {
   const { navigate, item, connect, changeAccount, disconnect } = useSpecificService();

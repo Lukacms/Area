@@ -1,15 +1,8 @@
 import AreaCard from "../components/AreaCard";
 import {
-  Button,
-  ToggleButton,
-  ToggleButtonGroup,
-  IconButton,
-  TextField,
-  AppBar,
   Stack,
 } from "@mui/material";
 import HomeToolbar from "../components/HomeToolBar";
-import { useEffect, useState } from "react";
 
 const AreaBuild = ({
   canSave,

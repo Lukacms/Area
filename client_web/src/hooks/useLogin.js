@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
-import { getMyProfile, login } from '../config/request';
+import { getFirstInfos, login } from '../config/request';
 import secureLocalStorage from 'react-secure-storage';
 
 const useLogin = () => {
@@ -23,7 +23,7 @@ const useLogin = () => {
     try {
       const data = await login(values);
       secureLocalStorage.setItem('token', data.data.access_token);
-      const user = await getMyProfile();
+      const user = await getFirstInfos(data.data.access_token);
       secureLocalStorage.setItem('userId', user.data.id);
       navigate('/home');
     } catch (error) {

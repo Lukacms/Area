@@ -2,8 +2,8 @@ import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
 import { Image } from 'primereact/image';
 import { ProgressSpinner } from 'primereact/progressspinner';
-import { Home } from '.';
-import { useSettingServices } from '../hooks';
+import { Home } from '..';
+import { useSettingServices } from '../../hooks';
 
 function SettingServices() {
   const { services, navigate, loaded } = useSettingServices();

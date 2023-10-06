@@ -38,6 +38,15 @@ export const login = (userData) =>
     headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Credentials': true },
   });
 
+export const getFirstInfos = (token) =>
+  axios.get(API_URL + 'Users/me', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    },
+  });
+
 export const getServices = () => axiosInstance.get(API_URL + 'Services');
 
 export const getUserServices = (id) => axiosInstance.get(API_URL + `UserServices/${id}`);
@@ -48,3 +57,4 @@ export const disconnectUserService = (id) => axiosInstance.delete(API_URL + `Use
 
 // services callbacks
 export const serviceCallbackDiscord = (datas) => axiosInstance.post(OAUTH_URL + 'Discord', datas);
+export const serviceCallbackGoogle = (datas) => axiosInstance.post(OAUTH_URL + 'Google', datas);

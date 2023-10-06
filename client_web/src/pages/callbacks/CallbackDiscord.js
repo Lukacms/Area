@@ -42,6 +42,14 @@ function CallBackDiscord() {
         style={{ minWidth: '30%', minHeight: '40%' }}
         visible
         onHide={() => navigate('/home')}>
+        <Button
+          style={{ marginLeft: -10 }}
+          label='Discord'
+          icon='pi pi-chevron-left'
+          text
+          severity='info'
+          onClick={() => navigate('/settings/services')}
+        />
         {loading ? <ProgressSpinner /> : showInfos()}
       </Dialog>
     </Home>
