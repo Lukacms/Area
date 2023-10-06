@@ -1,5 +1,5 @@
 using System.Net;
-using System.Text;
+using System.Net.Http.Headers;
 
 namespace AREA_ReST_API.Classes;
 
@@ -23,18 +23,13 @@ public class HttpService
         return await response.Content.ReadAsStringAsync();
     }
 
-    public async Task<string> PostAsync(string uri, string data, string contentType)
+    public async Task<string> PostAsync(string uri, Dictionary<string, string> data, string contentType, string authentication)
     {
-        using var content = new StringContent(data, Encoding.UTF8, contentType);
+        var requestMessage = new HttpRequestMessage(HttpMethod.Post, uri);
 
-        var request = new HttpRequestMessage
-        {
-            Content = content,
-            Method = HttpMethod.Post,
-            RequestUri = new Uri(uri)
-        };
-        using var response = await _client.SendAsync(request);
-
+        requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Basic", authentication);
+        requestMessage.Content = new FormUrlEncodedContent(data);
+        var response = await _client.SendAsync(requestMessage);
         return await response.Content.ReadAsStringAsync();
     }
 }
