@@ -1,38 +1,16 @@
-import "../styles/home.css";
-import { PanelMenu } from "primereact/panelmenu";
-import { Divider } from "primereact/divider";
-import { useNavigate } from "react-router-dom";
-import AreaBuild from "../components/AreaBuild";
-import useHome from "../hooks/useHome";
-import { styled } from "@mui/material/styles";
-import {
-  ToggleButton,
-  ToggleButtonGroup,
-  IconButton,
-  TextField,
-} from "@mui/material";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import InputAdornment from "@mui/material/InputAdornment";
-import SearchIcon from "@mui/icons-material/Search";
-import { useState } from "react";
-import React from "react";
-
-const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
-  '& .MuiToggleButtonGroup-grouped': {
-    margin: theme.spacing(0.5),
-    color: 'white',
-    border: 0,
-    '&.Mui-disabled': {
-      border: 0,
-    },
-    '&:not(:first-of-type)': {
-      borderRadius: theme.shape.borderRadius,
-    },
-    '&:first-of-type': {
-      borderRadius: theme.shape.borderRadius,
-    },
-  },
-}));
+import '../styles/home.css';
+import { PanelMenu } from 'primereact/panelmenu';
+import { Divider } from 'primereact/divider';
+import { useNavigate } from 'react-router-dom';
+import { AreaBuild } from '../components';
+import { useHome } from '../hooks';
+import { styled } from '@mui/material/styles';
+import { ToggleButton, ToggleButtonGroup, IconButton, TextField } from '@mui/material';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import InputAdornment from '@mui/material/InputAdornment';
+import SearchIcon from '@mui/icons-material/Search';
+import { useState } from 'react';
+import React from 'react';
 
 const Home = () => {
   const {
@@ -45,13 +23,16 @@ const Home = () => {
     addCreatedAreaToAreas,
     currentState,
     currentSelectedCategory,
-      onClickForCreateArea,
+    onClickForCreateArea,
     updateCurrentSelectedCategory,
     onEnterNameArea,
     canSave,
   } = useHome();
-    const navigate = useNavigate();
+
+  const navigate = useNavigate();
+
   const [displayedCategory, setDisplayedCategory] = useState('actions');
+
   const handleChange = (event, newSelectedValue) => {
     setDisplayedCategory(newSelectedValue);
     updateCurrentSelectedCategory(newSelectedValue);
@@ -168,3 +149,20 @@ const Home = () => {
 };
 
 export default Home;
+
+const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
+  '& .MuiToggleButtonGroup-grouped': {
+    margin: theme.spacing(0.5),
+    color: 'white',
+    border: 0,
+    '&.Mui-disabled': {
+      border: 0,
+    },
+    '&:not(:first-of-type)': {
+      borderRadius: theme.shape.borderRadius,
+    },
+    '&:first-of-type': {
+      borderRadius: theme.shape.borderRadius,
+    },
+  },
+}));

@@ -55,5 +55,7 @@ export const getReactionsByServiceId = (id) => axiosInstance.get(API_URL + `api/
 
 export const disconnectUserService = (id) => axiosInstance.delete(API_URL + `UserServices/${id}`);
 
+export const getUsersAreas = (id) => axiosInstance.get(API_URL + `api/Areas/${id}`);
+
 // services callbacks
 export const serviceCallbackDiscord = (datas) => axiosInstance.post(OAUTH_URL + 'Discord', datas);

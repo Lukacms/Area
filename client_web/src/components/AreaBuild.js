@@ -1,4 +1,4 @@
-import AreaCard from "../components/AreaCard";
+import {AreaCard, HomeToolbar} from "../components";
 import {
   Button,
   ToggleButton,
@@ -8,7 +8,6 @@ import {
   AppBar,
   Stack,
 } from "@mui/material";
-import HomeToolbar from "../components/HomeToolBar";
 import { useEffect, useState } from "react";
 
 const AreaBuild = ({

@@ -6,12 +6,14 @@ import {
   getActionsByServiceId,
   getReactions,
   getReactionsByServiceId,
+  getUsersAreas,
 } from '../config/request';
 import secureLocalStorage from 'react-secure-storage';
 import { useNavigate } from 'react-router';
 
 const useHome = () => {
   let nbArea = 0;
+  const [stateOfCreation, setStateOfCreation] = useState('Not');
   const navigate = useNavigate();
   const [canSave, setCanSave] = useState(false);
   const [blankArea, setBlankArea] = useState({
@@ -23,12 +25,11 @@ const useHome = () => {
   const [currentSelectedCategory, setCurrentSelectedCategory] = useState('actions');
 
   const updateCurrentSelectedCategory = (category) => {
+    if (category === null) return;
     setCurrentSelectedCategory(category);
   };
 
-  const [currentState, setCurrentState] = useState(
-    'Si vous voulez ajouter une area, clicker sur add area',
-  );
+  const [currentState, setCurrentState] = useState('If you want to add an area, click on new area');
   /*  const currentStatee = [
     'Please enter a name to the area',
     'Please select an action for the area',
@@ -89,18 +90,14 @@ const useHome = () => {
           label: 'action disc 1',
           command: () => {
             //clickAct(actionList[0].items[0].label);
-            setCurrentSelectedCategory('reactions');
             addActionToBlankArea({ action: actionList[0].items[0].label });
-            onAddActionArea();
           },
         },
         {
           label: 'action disc 2',
           command: () => {
-            setCurrentSelectedCategory('reactions');
             //clickAct(actionList[0].items[1].label);
             addActionToBlankArea({ action: actionList[0].items[1].label });
-            onAddActionArea();
           },
         },
       ],
@@ -112,19 +109,15 @@ const useHome = () => {
         {
           label: 'action mail1',
           command: () => {
-            setCurrentSelectedCategory('reactions');
             //clickAct(actionList[1].items[0].label);
             addActionToBlankArea({ action: actionList[1].items[0].label });
-            onAddActionArea();
           },
         },
         {
           label: 'action mail2',
           command: () => {
-            setCurrentSelectedCategory('reactions');
             //clickAct(actionList[1].items[1].label);
             addActionToBlankArea({ action: actionList[1].items[1].label });
-            onAddActionArea();
           },
         },
       ],
@@ -132,10 +125,13 @@ const useHome = () => {
   ];
 
   const addActionToBlankArea = ({ action }) => {
-    console.log('actiontoblk: ', action);
+    if (stateOfCreation !== 'action') return;
     var tmp = blankArea;
     tmp.data.action = action;
     setBlankArea(tmp);
+    setCurrentSelectedCategory('reactions');
+    setStateOfCreation('reaction');
+    onAddActionArea();
   };
 
   const clickAct = (eventName) => {
@@ -250,19 +246,19 @@ const useHome = () => {
   };
 
   const addReactionToBlankArea = ({ reaction }) => {
+    if (stateOfCreation !== 'reaction' && stateOfCreation !== '1reaction') return;
     var tmp = blankArea;
-
     console.log('reaction:fff', reaction);
     if (tmp.data.reaction[0] === '') {
       tmp.data.reaction[0] = reaction;
     } else tmp.data.reaction.push(reaction);
     setBlankArea(tmp);
     setCanSave(true);
+    setStateOfCreation('1reaction');
   };
 
   const addCreatedAreaToAreas = () => {
-    console.log('action: ', blankArea.data.action);
-    console.log('reaction: ', String(blankArea.data.reaction[0]));
+    if (stateOfCreation !== '1reaction') return;
     areas.push({
       action: blankArea.data.action,
       reaction: blankArea.data.reaction,
@@ -275,15 +271,24 @@ const useHome = () => {
       react: String(areas[areas.length - 1].reaction),
     });
     setCanSave(false);
-    setCurrentState('Si vous voulez ajouter une area, clicker sur add area');
+    setCurrentState('If you want to add an area, clik on new area');
+    setBlankArea({
+      label: '',
+      icon: '',
+      data: { action: '', reaction: [''], id: 0 },
+      command: () => {},
+    });
+    setStateOfCreation('Not');
   };
 
   const onClickForCreateArea = () => {
     setCurrentState('Please enter a name to the area');
+    setStateOfCreation('name');
   };
 
   const onEnterNameArea = () => {
     setCurrentState('Please select an action for the area');
+    setStateOfCreation('action');
   };
 
   const onAddActionArea = () => {
@@ -323,12 +328,21 @@ const useHome = () => {
     }
   };
 
+  const addAreaFromServerToUser = async ({ name, action, reactions, id, favorite }) => {
+    let favoriteNb = 1;
+
+    if (favorite === true) favoriteNb = 0;
+    areas.push({});
+  };
+
   useEffect(() => {
-    const loadData = async () => {
+    const userId = secureLocalStorage.getItem('userId');
+
+    const loadDatas = async () => {
       try {
-        const userId = secureLocalStorage.getItem('userId');
         const services = await getServices();
         const userServices = await getUserServices(userId);
+        /*    const usersAreas = await getUsersAreas(userId);*/
 
         for (let i = 0; i < services.data.length; i++) {
           for (let j = 0; j < userServices.data.length; j++)
@@ -340,12 +354,26 @@ const useHome = () => {
               });
             }
         }
+        /*
+        if (usersAreas !== []) {
+          for (let i = 0; i < usersAreas.length; i++) {
+            addAreaFromServerToUser({
+              name: usersAreas[i].name,
+              action: usersAreas[i].action,
+              reaction: usersAreas[i].reaction,
+              id: usersAreas[i].id,
+              favorite: usersAreas[i].favorite,
+            });
+          }
+        }
+        */
       } catch (e) {
         navigate('/error', { state: { message: e.message } });
       }
     };
-    loadData();
+    loadDatas();
   }, []);
+  console.log(stateOfCreation);
 
   return {
     dispAct,
