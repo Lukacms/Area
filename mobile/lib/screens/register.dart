@@ -1,3 +1,5 @@
+import 'package:mobile/back/api.dart';
+import 'package:mobile/back/local_storage.dart';
 import 'package:mobile/components/loginTextField.dart';
 import 'package:mobile/components/halfloginTextField.dart';
 import 'package:mobile/main.dart';
@@ -18,7 +20,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController surnameController = TextEditingController();
-  TextEditingController pseudoController = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -45,9 +47,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     TextButton.icon(
                       onPressed: () {
                         print("Login");
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const LoginScreen(),
-                        ));
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const LoginScreen(),
+                          ),
+                        );
                       },
                       icon: Icon(
                         Icons.chevron_left,
@@ -96,7 +100,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   description: "Nom d'utilisateur",
                   placeholder: 'Votre Pseudonyme',
                   isPassword: false,
-                  controller: pseudoController),
+                  controller: usernameController),
               SizedBox(
                 height: blockHeight * 5,
               ),
@@ -105,6 +109,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 placeholder: 'votreadresse@example.com',
                 isPassword: false,
                 controller: emailController,
+                isEmail: true,
               ),
               SizedBox(
                 height: blockHeight * 5,
@@ -131,7 +136,34 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       fontSize: 20,
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () async {
+                    bool res = false;
+                    await serverRegister(
+                      emailController.text,
+                      passwordController.text,
+                      nameController.text,
+                      surnameController.text,
+                      usernameController.text,
+                    ).then((value) {
+                      res = value;
+                    });
+                    if (res) {
+                      Navigator.of(context).pop();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text("Successfully registered, please login."),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text("Register failed. Please try again."),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                    }
+                  },
                 ),
               ),
             ],
