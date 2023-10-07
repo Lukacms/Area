@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/back/api.dart';
+import 'package:mobile/back/local_storage.dart';
 import 'package:mobile/back/services.dart';
 import 'package:mobile/components/background_gradient.dart';
 import 'package:mobile/main.dart';
@@ -34,6 +35,12 @@ class _HomePageState extends State<HomePage> {
     screenWidth = screenSize.width;
     blockWidth = screenWidth / 5;
     blockHeight = screenHeight / 100;
+    print(widget.token);
+    retrieveToken().then((value) {
+      if (widget.token.isEmpty && value.isEmpty) {
+        Navigator.of(context).pushReplacementNamed('/login');
+      }
+    });
     return Scaffold(
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
@@ -84,32 +91,33 @@ class _HomePageState extends State<HomePage> {
       body: Stack(
         children: [
           const BackgroundGradient(),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: blockWidth / 4),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: safePadding +
-                        AppBar().preferredSize.height +
-                        (blockHeight * 15),
-                  ),
-                  AreaLists(
-                    areas: areas,
-                    searchText: searchController.text,
-                    editAreaCallback: (value) {
-                      setState(() {
-                        areas = getAreas();
-                      });
-                    },
-                  ),
-                  TextButton(
-                    child: const Text("goBack"),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                ],
+          Container(
+            margin: EdgeInsets.only(
+              top: safePadding +
+                  AppBar().preferredSize.height +
+                  (blockHeight * 15),
+            ),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: blockWidth / 4),
+              child: SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(
+                    parent: BouncingScrollPhysics()),
+                child: Column(
+                  children: [
+                    AreaLists(
+                      areas: areas,
+                      searchText: searchController.text,
+                      editAreaCallback: (value) {
+                        setState(() {
+                          areas = getAreas();
+                        });
+                      },
+                    ),
+                    SizedBox(
+                      height: blockHeight * 15,
+                    )
+                  ],
+                ),
               ),
             ),
           ),

@@ -26,6 +26,7 @@ class _MyAppState extends State<MyApp> {
     retrieveToken().then((value) {
       setState(() {
         userToken = value;
+        //userToken = "";
       });
     });
   }

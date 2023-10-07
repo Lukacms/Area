@@ -68,10 +68,10 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               Padding(padding: EdgeInsets.only(top: blockHeight * 2)),
               Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(left: blockWidth * 0.5),
+                    padding: EdgeInsets.only(right: blockWidth * 0.5),
                     child: TextButton(
                       style: TextButton.styleFrom(
                         padding: EdgeInsets.zero,
@@ -104,43 +104,41 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
               ),
               Padding(padding: EdgeInsets.only(top: blockHeight * 2)),
-              Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(left: blockWidth * 0.5),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Don't have an account?",
-                            style: TextStyle(
-                              color: AppColors.white,
-                            ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: blockWidth * 0.5),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Don't have an account?",
+                          style: TextStyle(
+                            color: AppColors.white,
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(right: blockWidth * 1.5),
-                            child: TextButton(
-                              style: TextButton.styleFrom(
-                                padding: EdgeInsets.zero,
-                              ),
-                              child: Text(
-                                "Register Now",
-                                style: TextStyle(color: AppColors.lightBlue),
-                              ),
-                              onPressed: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => const RegisterScreen(),
-                                ));
-                              },
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(right: blockWidth * 1.5),
+                          child: TextButton(
+                            style: TextButton.styleFrom(
+                              padding: EdgeInsets.zero,
                             ),
+                            child: Text(
+                              "Register Now",
+                              style: TextStyle(color: AppColors.lightBlue),
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => const RegisterScreen(),
+                              ));
+                            },
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
               Container(
                 margin: EdgeInsets.only(top: blockHeight * 5),
@@ -158,9 +156,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       fontSize: 20,
                     ),
                   ),
-                  onPressed: () {
-                    List res =
-                        login(emailController.text, passwordController.text);
+                  onPressed: () async {
+                    List res = [];
+                    await serverLogin(
+                            emailController.text, passwordController.text)
+                        .then((value) {
+                      res = value;
+                    });
                     if (res[0]) {
                       saveToken(res[1]);
                       Navigator.of(context)

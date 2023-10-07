@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mobile/back/api.dart';
+import 'package:mobile/back/local_storage.dart';
 import 'package:mobile/back/services.dart';
 import 'package:mobile/main.dart';
+import 'package:mobile/screens/login/login.dart';
 import 'package:mobile/theme/style.dart';
-import 'package:mobile/back/services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:mobile/screens/settings/webview/oauth_webview.dart';
 
@@ -115,6 +116,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                         width: 24,
                                         child: SvgPicture.asset(
                                           AppServices().services[index].svgIcon,
+                                          // ignore: deprecated_member_use
                                           color: AppServices()
                                               .services[index]
                                               .iconColor,
@@ -137,7 +139,9 @@ class _SettingsPageState extends State<SettingsPage> {
                                       MaterialPageRoute(
                                           builder: (context) => OauthWebView(
                                               index: index,
-                                              url: AppServices().services[index].oAuth)),
+                                              url: AppServices()
+                                                  .services[index]
+                                                  .oAuth)),
                                     );
                                   }
                                 },
@@ -145,7 +149,43 @@ class _SettingsPageState extends State<SettingsPage> {
                             },
                           ),
                         )
-                      : const SizedBox.shrink(),
+                      : SizedBox(
+                          width: screenWidth * 0.9,
+                          child: ListView(
+                            shrinkWrap: true,
+                            children: [
+                              TextButton(
+                                onPressed: () => showDialog<String>(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      AlertDialog(
+                                    title: const Text('Êtes-vous sûr? ?'),
+                                    content: const Text(
+                                        'Vous devrez vous reconnecter pour utiliser l\'application.'),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () => Navigator.pop(context),
+                                        child: const Text('Annuler'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          saveToken('');
+                                          Navigator.pushNamedAndRemoveUntil(
+                                            context,
+                                            '/login',
+                                            (route) => false,
+                                          );
+                                        },
+                                        child: const Text('Confirmer'),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                child: const Text("Deconnexion"),
+                              ),
+                            ],
+                          ),
+                        ),
                 ],
               ),
             ],

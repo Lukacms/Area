@@ -1,8 +1,58 @@
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
+import 'package:mobile/back/services.dart';
+
 // ONLINE
 
-// OFFLINE
+Future<List> serverLogin(String mail, String password) async {
+  var url = Uri(
+      scheme: 'http',
+      host: '192.168.122.1',
+      port: 8090,
+      path: '/api/Users/login');
+  var headers = {
+    'Content-Type': 'application/json',
+    'accept': '*/*',
+  };
+  var body = jsonEncode({'email': mail, 'password': password});
+  var response = await http.post(url, headers: headers, body: body);
+  if (response.statusCode == 200) {
+    var jsonResponse = jsonDecode(response.body);
+    var accessToken = jsonResponse['access_token'];
+    return [true, accessToken];
+  }
+  return [false, ''];
+}
 
-import 'package:mobile/back/services.dart';
+Future<bool> serverRegister(
+  String mail,
+  String password,
+  String name,
+  String surname,
+  String username,
+) async {
+  var url = Uri(scheme: 'http', host: '192.168.122.1', port: 8090, path: '/api/Users/register');
+  var headers = {
+    'Content-Type': 'application/json',
+    'accept': '*/*',
+  };
+  var body = jsonEncode({
+    'email': mail,
+    'password': password,
+    'username': username,
+    'name': name,
+    'surname': surname,
+  });
+  var response = await http.post(url, headers: headers, body: body);
+  if (response.statusCode == 201) {
+    return true;
+  }
+  return false;
+}
+
+
+// OFFLINE
 
 class Automatisation {
   int id;
