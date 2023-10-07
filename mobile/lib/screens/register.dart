@@ -1,5 +1,4 @@
 import 'package:mobile/back/api.dart';
-import 'package:mobile/back/local_storage.dart';
 import 'package:mobile/components/loginTextField.dart';
 import 'package:mobile/components/halfloginTextField.dart';
 import 'package:mobile/main.dart';
