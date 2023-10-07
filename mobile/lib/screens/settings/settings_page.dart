@@ -6,6 +6,7 @@ import 'package:mobile/main.dart';
 import 'package:mobile/theme/style.dart';
 import 'package:mobile/back/services.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:mobile/screens/settings/webview/oauth_webview.dart';
 
 class SettingsPage extends StatefulWidget {
   final String token;
@@ -25,6 +26,7 @@ class _SettingsPageState extends State<SettingsPage> {
     super.initState();
     areas = getAreas();
   }
+
   @override
   Widget build(BuildContext context) {
     screenSize = MediaQuery.of(context).size;
@@ -94,44 +96,56 @@ class _SettingsPageState extends State<SettingsPage> {
                       color: AppColors.white,
                     ),
                   ),
-                  selectedSegment == "Services" ? SizedBox(
-                    width: screenWidth * 0.9,
-                    child: ListView.builder(
-                      physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
-                      shrinkWrap: true,
-                      itemCount: AppServices().services.length,
-                      itemBuilder: (context, index) {
-                        return TextButton(
-                          child: SizedBox(
-                            height: blockHeight * 6,
-                            child: Row(
-                              children: [
-                                SizedBox(
-                                  height: 24,
-                                  width: 24,
-                                  child: SvgPicture.asset(
-                                    AppServices().services[index].svgIcon,
-                                    color: AppServices()
-                                        .services[index]
-                                        .iconColor,
+                  selectedSegment == "Services"
+                      ? SizedBox(
+                          width: screenWidth * 0.9,
+                          child: ListView.builder(
+                            physics: const AlwaysScrollableScrollPhysics(
+                                parent: BouncingScrollPhysics()),
+                            shrinkWrap: true,
+                            itemCount: AppServices().services.length,
+                            itemBuilder: (context, index) {
+                              return TextButton(
+                                child: SizedBox(
+                                  height: blockHeight * 6,
+                                  child: Row(
+                                    children: [
+                                      SizedBox(
+                                        height: 24,
+                                        width: 24,
+                                        child: SvgPicture.asset(
+                                          AppServices().services[index].svgIcon,
+                                          color: AppServices()
+                                              .services[index]
+                                              .iconColor,
+                                        ),
+                                      ),
+                                      SizedBox(width: blockHeight * 2),
+                                      Text(
+                                        AppServices().services[index].name,
+                                        style: TextStyle(
+                                            color: AppColors.lightBlue),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                SizedBox(width: blockHeight * 2),
-                                Text(
-                                  AppServices().services[index].name,
-                                  style:
-                                      TextStyle(color: AppColors.lightBlue),
-                                ),
-                              ],
-                            ),
+                                onPressed: () {
+                                  if (AppServices().services[index].oAuth !=
+                                      "null") {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => OauthWebView(
+                                              index: index,
+                                              url: AppServices().services[index].oAuth)),
+                                    );
+                                  }
+                                },
+                              );
+                            },
                           ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        );
-                      },
-                    ),
-                  ) : const SizedBox.shrink(),
+                        )
+                      : const SizedBox.shrink(),
                 ],
               ),
             ],
