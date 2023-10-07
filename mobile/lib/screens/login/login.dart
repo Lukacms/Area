@@ -165,6 +165,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     });
                     if (res[0]) {
                       saveToken(res[1]);
+                      print(res[1]);
                       Navigator.of(context)
                           .pushNamed('/home', arguments: {'token': res[1]});
                     } else {

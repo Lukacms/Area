@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mobile/back/api.dart';
 import 'package:mobile/back/local_storage.dart';
 import 'package:mobile/back/services.dart';
@@ -21,6 +22,32 @@ class _SettingsPageState extends State<SettingsPage> {
   TextEditingController searchController = TextEditingController();
   List<Area> areas = [];
   String selectedSegment = "Services";
+
+  Future handleSignIn() async {
+    print("AOJODOJDOEK");
+    try {
+      final GoogleSignIn _googleSignIn = GoogleSignIn(
+        scopes: [
+          'email',
+          'https://www.googleapis.com/auth/gmail.modify',
+        ],
+        clientId: '315267877885-lkqq49r6v587fi9pduggbdh9dr1j69me.apps.googleusercontent.com'
+      );
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      print("CCCCC");
+      if (googleUser != null) {
+        final GoogleSignInAuthentication googleAuth =
+            await googleUser.authentication;
+        final String? token = googleAuth.accessToken;
+        print("AAAAAAAAA");
+        print(token);
+      } else {
+        print('User not signed in');
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 
   @override
   void initState() {
@@ -132,18 +159,21 @@ class _SettingsPageState extends State<SettingsPage> {
                                   ),
                                 ),
                                 onPressed: () {
-                                  if (AppServices().services[index].oAuth !=
+                                  /*  if (AppServices().services[index].oAuth !=
                                       "null") {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => OauthWebView(
-                                              index: index,
-                                              url: AppServices()
-                                                  .services[index]
-                                                  .oAuth)),
+                                        builder: (context) => OauthWebView(
+                                          index: index,
+                                          url: AppServices()
+                                              .services[index]
+                                              .oAuth,
+                                        ),
+                                      ),
                                     );
-                                  }
+                                  } */
+                                  handleSignIn();
                                 },
                               );
                             },

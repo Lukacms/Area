@@ -7,7 +7,7 @@ class OauthWebView extends StatelessWidget {
   final String url;
   final int index;
 
-  OauthWebView({Key? key, required this.url, required this.index}) : super(key: key);
+  const OauthWebView({Key? key, required this.url, required this.index}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

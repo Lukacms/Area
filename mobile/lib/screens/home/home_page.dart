@@ -35,12 +35,13 @@ class _HomePageState extends State<HomePage> {
     screenWidth = screenSize.width;
     blockWidth = screenWidth / 5;
     blockHeight = screenHeight / 100;
+    print("AAAAA");
     print(widget.token);
-    retrieveToken().then((value) {
+    /* retrieveToken().then((value) {
       if (widget.token.isEmpty && value.isEmpty) {
         Navigator.of(context).pushReplacementNamed('/login');
       }
-    });
+    }); */
     return Scaffold(
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
