@@ -37,6 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   shared_preferences: ^2.2.1
   flutter_svg: ^2.0.7
+  webview_flutter: ^2.0.13
 
 
 dev_dependencies:
@@ -70,6 +71,7 @@ flutter:
     - assets/serviceIcons/linkedin.svg
     - assets/serviceIcons/spotify.svg
     - assets/serviceIcons/connectors.svg
+    - assets/serviceIcons/google.svg
   fonts:
     - family: Roboto
       fonts:
