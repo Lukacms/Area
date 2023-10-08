@@ -24,26 +24,41 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    areas = getAreas();
   }
 
   @override
   Widget build(BuildContext context) {
     final Map args = ModalRoute.of(context)!.settings.arguments as Map;
     final String token = args['token'] as String;
+    final Map<String, dynamic> user = args['user'] as Map<String, dynamic>;
     final safePadding = MediaQuery.of(context).padding.top;
-    dynamic user;
     screenSize = MediaQuery.of(context).size;
     screenHeight = screenSize.height;
     screenWidth = screenSize.width;
     blockWidth = screenWidth / 5;
     blockHeight = screenHeight / 100;
-    user = serverGetSelfInfos(token);
     /* retrieveToken().then((value) {
       if (widget.token.isEmpty && value.isEmpty) {
         Navigator.of(context).pushReplacementNamed('/login');
       }
     }); */
+    //serverAddArea(token, user['id'], 0, "Areatest");
+
+    if (areas.isEmpty) {
+      serverGetAreas(user['id'], token).then((value) {
+        setState(() {
+          for (var area in value) {
+            areas.add(Area(
+              userId: area['userId'],
+              action: area['userAction'],
+              reactions: area['userReaction'] ?? [],
+              name: area['name'],
+              favorite: area['favorite'],
+            ));
+          }
+        });
+      });
+    }
     return Scaffold(
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,

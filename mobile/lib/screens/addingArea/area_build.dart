@@ -24,7 +24,7 @@ class AreaBuild extends StatefulWidget {
 
 class _AreaBuildState extends State<AreaBuild> {
   TextEditingController areaNameController = TextEditingController();
-  Area newArea = Area(actions: [], name: "", user: "");
+  Area newArea = Area(action: null, reactions: [], name: "", userId: -1);
   List actionsList = [];
   Area? savedArea;
 
@@ -89,7 +89,7 @@ class _AreaBuildState extends State<AreaBuild> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: newArea.actions.isEmpty
+      floatingActionButton: newArea.action == null
           ? null
           : TextButton(
               onPressed: () {
@@ -99,7 +99,7 @@ class _AreaBuildState extends State<AreaBuild> {
                 }
                 widget.areaAdd(newArea);
                 if (!widget.isEdit) {
-                  addArea(newArea, "user");
+                  addArea(newArea, 1);
                 } else {
                   editArea(newArea, savedArea!);
                 }
@@ -122,21 +122,21 @@ class _AreaBuildState extends State<AreaBuild> {
             children: [
               Padding(
                 padding: EdgeInsets.only(top: safePadding + blockHeight * 11),
-                child: newArea.actions.isEmpty
+                child: newArea.action == null
                     ? AddActionButton(
                         addActionCallback: (value) {
                           setState(() {
-                            newArea.actions.add(value);
+                            newArea.action = value;
                           });
                         },
                       )
                     : Column(
                         children: [
-                          ActionBlockList(actions: newArea.actions),
+                          ActionBlockList(action: newArea.action!),
                           SizedBox(height: blockHeight * 4),
                           AddActionButton(addActionCallback: (value) {
                             setState(() {
-                              newArea.actions.add(value);
+                              newArea.action = value;
                             });
                           })
                         ],

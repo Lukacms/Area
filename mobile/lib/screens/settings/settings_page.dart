@@ -31,8 +31,8 @@ class _SettingsPageState extends State<SettingsPage> {
         'openid',
         'https://Fwww.googleapis.com/Fauth/calendar',
       ],
-      /* clientId: */
-      /*     '315267877885-2np97bt3qq9s6er73549ldrfme2b67pi.apps.googleusercontent.com', */
+      serverClientId:
+          '315267877885-2np97bt3qq9s6er73549ldrfme2b67pi.apps.googleusercontent.com',
     );
     try {
       final googleUser = await googleSignIn.signIn();

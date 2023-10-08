@@ -164,9 +164,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       res = value;
                     });
                     if (res[0]) {
-                      saveToken(res[1]);
-                      Navigator.of(context)
-                          .pushNamed('/home', arguments: {'token': res[1]});
+                      Map<String, dynamic>? user;
+                      await saveToken(res[1]);
+                      await serverGetSelfInfos(res[1]).then((value) {
+                        saveUser(value);
+                        user = value;
+                      });
+                      Navigator.of(context).pushNamed('/home',
+                          arguments: {'token': res[1], 'user': user});
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(

@@ -29,14 +29,16 @@ class AreaAction {
 }
 
 class Area {
-  String user;
-  List<AreaAction> actions;
+  int userId;
+  AreaAction? action;
+  List<AreaAction> reactions;
   String name;
   bool favorite;
 
   Area({
-    required this.user,
-    required this.actions,
+    required this.userId,
+    required this.action,
+    required this.reactions,
     required this.name,
     this.favorite = false,
   });

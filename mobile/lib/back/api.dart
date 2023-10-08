@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
@@ -6,27 +8,36 @@ import 'package:mobile/back/services.dart';
 String CURRENT_IP = '192.168.122.1';
 // ONLINE
 
+/// Sends a login request to the server with the specified email and password.
+///
+/// Returns a list containing a boolean value indicating whether the login was successful,
+/// and an access token string if the login was successful, or an empty string if the login failed.
+///
+/// Throws an exception if there was an error sending the login request.
 Future<List> serverLogin(String mail, String password) async {
   var url = Uri(
-      scheme: 'http',
-      host: CURRENT_IP,
-      port: 8090,
-      path: '/api/Users/login');
+      scheme: 'http', host: CURRENT_IP, port: 8080, path: '/api/Users/login');
   var headers = {
     'Content-Type': 'application/json',
     'accept': '*/*',
   };
   var body = jsonEncode({'email': mail, 'password': password});
   var response = await http.post(url, headers: headers, body: body);
-  print("Login status code: " + response.statusCode.toString());
+  print("Login status code: ${response.statusCode}");
   if (response.statusCode == 200) {
     var jsonResponse = jsonDecode(response.body);
     var accessToken = jsonResponse['access_token'];
+    print("User access token $accessToken");
     return [true, accessToken];
   }
   return [false, ''];
 }
 
+/// Sends a registration request to the server with the specified email, password, name, surname, and username.
+///
+/// Returns a boolean value indicating whether the registration was successful.
+///
+/// Throws an exception if there was an error sending the registration request.
 Future<bool> serverRegister(
   String mail,
   String password,
@@ -37,7 +48,7 @@ Future<bool> serverRegister(
   var url = Uri(
       scheme: 'http',
       host: CURRENT_IP,
-      port: 8090,
+      port: 8080,
       path: '/api/Users/register');
   var headers = {
     'Content-Type': 'application/json',
@@ -57,9 +68,23 @@ Future<bool> serverRegister(
   return false;
 }
 
+Future serverGetSelfInfos(String token) async {
+  var url =
+      Uri(scheme: 'http', host: CURRENT_IP, port: 8080, path: '/api/Users/me');
+  var headers = {
+    'accept': '*/*',
+    'Authorization': 'Bearer $token',
+  };
+  var response = await http.get(url, headers: headers);
+  if (response.statusCode == 200) {
+    var jsonResponse = jsonDecode(response.body);
+    return jsonResponse;
+  }
+}
+
 Future serverGoogleAuth(String token, String scope) async {
-  var url = Uri(
-      scheme: 'http', host: CURRENT_IP, port: 8090, path: 'oauth/Google');
+  var url =
+      Uri(scheme: 'http', host: CURRENT_IP, port: 8080, path: '/oauth/Google');
   var headers = {
     'Content-Type': 'application/json',
     'accept': '*/*',
@@ -71,41 +96,56 @@ Future serverGoogleAuth(String token, String scope) async {
   return response;
 }
 
-Future serverGetSelfInfos(String token) async {
+Future<List> serverGetAreas(int id, String token) async {
+  print("hey");
+  print(id);
+  print(token);
   var url = Uri(
-      scheme: 'http', host: CURRENT_IP, port: 8090, path: '/api/Users/me');
+    scheme: 'http',
+    host: CURRENT_IP,
+    port: 8080,
+    path: '/api/Areas/$id',
+  );
   var headers = {
-    'Content-Type': 'application/json',
     'accept': '*/*',
+    'Authorization': 'Bearer $token',
   };
   var response = await http.get(url, headers: headers);
+  print("AAAAAA");
   print(response.body);
+  print("Get areas status code ${response.statusCode}");
   if (response.statusCode == 200) {
     var jsonResponse = jsonDecode(response.body);
-    print(jsonResponse);
-    var user = jsonResponse['user'];
-    return user;
-  }
-}
-
-Future<List> serverGetAreas(dynamic id) async {
-  var url = Uri(
-      scheme: 'http',
-      host: CURRENT_IP,
-      port: 8090,
-      path: '/api/Automatisations');
-  var headers = {
-    'Content-Type': 'application/json',
-    'accept': '*/*',
-  };
-  var response = await http.get(url, headers: headers);
-  print(response.body);
-  if (response.statusCode == 200) {
-    var jsonResponse = jsonDecode(response.body);
-    var areas = jsonResponse['automatisations'];
-    return areas;
+    return jsonResponse;
   }
   return [];
+}
+
+Future<bool> serverAddArea(
+    String token, int userId, int id, String name) async {
+  var url = Uri(
+    scheme: 'http',
+    host: CURRENT_IP,
+    port: 8080,
+    path: '/api/Areas',
+  );
+  var headers = {
+    'Content-Type': 'application/json',
+    'accept': '*/*',
+    'Authorization': 'Bearer $token',
+  };
+  var body = jsonEncode({
+    'id': id,
+    'name': name,
+    'userId': userId,
+    'favorite': false,
+  });
+  var response = await http.post(url, headers: headers, body: body);
+  print("Add area status code ${response.statusCode}");
+  if (response.statusCode == 201 || response.statusCode == 200) {
+    return true;
+  }
+  return false;
 }
 
 // OFFLINE
@@ -125,10 +165,20 @@ class Automatisation {
 }
 
 List<Area> automatisations = [
-  Area(user: "user", actions: [], name: "area 1 a afficher", favorite: true),
-  Area(user: "user", actions: [], name: "area 2 a pas afficher"),
-  Area(user: "user", actions: [], name: "area 3 a pas afficher"),
-  Area(user: "user", actions: [], name: "area 4 a afficher", favorite: true),
+  Area(
+      userId: 1,
+      action: null,
+      reactions: [],
+      name: "area 1 a afficher",
+      favorite: true),
+  Area(userId: 1, action: null, reactions: [], name: "area 2 a pas afficher"),
+  Area(userId: 1, action: null, reactions: [], name: "area 3 a pas afficher"),
+  Area(
+      userId: 1,
+      action: null,
+      reactions: [],
+      name: "area 4 a afficher",
+      favorite: true),
 ];
 
 List login(String user, String password) {
@@ -143,8 +193,8 @@ List<Area> getAreas() {
   return automatisations;
 }
 
-void addArea(Area area, String user) {
-  area.user = user;
+void addArea(Area area, int user) {
+  area.userId = user;
   automatisations.add(area);
 }
 

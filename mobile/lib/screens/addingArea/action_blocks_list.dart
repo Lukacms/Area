@@ -5,10 +5,10 @@ import 'package:mobile/screens/addingArea/action_block.dart';
 import 'package:mobile/theme/style.dart';
 
 class ActionBlockList extends StatefulWidget {
-  final List<AreaAction> actions;
+  final AreaAction action;
   const ActionBlockList({
     super.key,
-    required this.actions,
+    required this.action,
   });
 
   @override
@@ -24,25 +24,21 @@ class _ActionBlockListState extends State<ActionBlockList> {
         SizedBox(
           width: 300,
           child: ListView.builder(
-            itemCount: widget.actions.length,
+            itemCount: 1,
             shrinkWrap: true,
             itemBuilder: (context, index) {
-              return index != widget.actions.length - 1
-                  ? Column(
-                      children: [
-                        ActionBlock(
-                          action: widget.actions[index],
-                        ),
-                        Container(
-                          height: blockHeight * 2,
-                          width: blockHeight,
-                          color: AppColors.white.withOpacity(0.1),
-                        )
-                      ],
-                    )
-                  : ActionBlock(
-                      action: widget.actions[index],
-                    );
+              return Column(
+                children: [
+                  ActionBlock(
+                    action: widget.action,
+                  ),
+                  Container(
+                    height: blockHeight * 2,
+                    width: blockHeight,
+                    color: AppColors.white.withOpacity(0.1),
+                  )
+                ],
+              );
             },
           ),
         ),
