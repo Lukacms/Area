@@ -17,6 +17,7 @@ Future<List> serverLogin(String mail, String password) async {
   };
   var body = jsonEncode({'email': mail, 'password': password});
   var response = await http.post(url, headers: headers, body: body);
+  print("Login status code: " + response.statusCode.toString());
   if (response.statusCode == 200) {
     var jsonResponse = jsonDecode(response.body);
     var accessToken = jsonResponse['access_token'];
@@ -32,7 +33,11 @@ Future<bool> serverRegister(
   String surname,
   String username,
 ) async {
-  var url = Uri(scheme: 'http', host: '192.168.122.1', port: 8090, path: '/api/Users/register');
+  var url = Uri(
+      scheme: 'http',
+      host: '192.168.122.1',
+      port: 8090,
+      path: '/api/Users/register');
   var headers = {
     'Content-Type': 'application/json',
     'accept': '*/*',
@@ -51,6 +56,56 @@ Future<bool> serverRegister(
   return false;
 }
 
+Future serverGoogleAuth(String token, String scope) async {
+  var url = Uri(
+      scheme: 'http', host: '192.168.122.1', port: 8090, path: 'oauth/Google');
+  var headers = {
+    'Content-Type': 'application/json',
+    'accept': '*/*',
+  };
+  var body = jsonEncode({'code': token, 'scope': scope});
+  var response = await http
+      .post(url, headers: headers, body: body)
+      .then((value) => print(value.body));
+  return response;
+}
+
+Future serverGetSelfInfos(String token) async {
+  var url = Uri(
+      scheme: 'http', host: '192.168.122.1', port: 8090, path: '/api/Users/me');
+  var headers = {
+    'Content-Type': 'application/json',
+    'accept': '*/*',
+  };
+  var response = await http.get(url, headers: headers);
+  print(response.body);
+  if (response.statusCode == 200) {
+    var jsonResponse = jsonDecode(response.body);
+    print(jsonResponse);
+    var user = jsonResponse['user'];
+    return user;
+  }
+}
+
+Future<List> serverGetAreas(dynamic id) async {
+  var url = Uri(
+      scheme: 'http',
+      host: '192.168.122.1',
+      port: 8090,
+      path: '/api/Automatisations');
+  var headers = {
+    'Content-Type': 'application/json',
+    'accept': '*/*',
+  };
+  var response = await http.get(url, headers: headers);
+  print(response.body);
+  if (response.statusCode == 200) {
+    var jsonResponse = jsonDecode(response.body);
+    var areas = jsonResponse['automatisations'];
+    return areas;
+  }
+  return [];
+}
 
 // OFFLINE
 
