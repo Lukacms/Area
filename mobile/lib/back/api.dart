@@ -3,12 +3,13 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:mobile/back/services.dart';
 
+String CURRENT_IP = '192.168.122.1';
 // ONLINE
 
 Future<List> serverLogin(String mail, String password) async {
   var url = Uri(
       scheme: 'http',
-      host: '192.168.122.1',
+      host: CURRENT_IP,
       port: 8090,
       path: '/api/Users/login');
   var headers = {
@@ -35,7 +36,7 @@ Future<bool> serverRegister(
 ) async {
   var url = Uri(
       scheme: 'http',
-      host: '192.168.122.1',
+      host: CURRENT_IP,
       port: 8090,
       path: '/api/Users/register');
   var headers = {
@@ -58,7 +59,7 @@ Future<bool> serverRegister(
 
 Future serverGoogleAuth(String token, String scope) async {
   var url = Uri(
-      scheme: 'http', host: '192.168.122.1', port: 8090, path: 'oauth/Google');
+      scheme: 'http', host: CURRENT_IP, port: 8090, path: 'oauth/Google');
   var headers = {
     'Content-Type': 'application/json',
     'accept': '*/*',
@@ -72,7 +73,7 @@ Future serverGoogleAuth(String token, String scope) async {
 
 Future serverGetSelfInfos(String token) async {
   var url = Uri(
-      scheme: 'http', host: '192.168.122.1', port: 8090, path: '/api/Users/me');
+      scheme: 'http', host: CURRENT_IP, port: 8090, path: '/api/Users/me');
   var headers = {
     'Content-Type': 'application/json',
     'accept': '*/*',
@@ -90,7 +91,7 @@ Future serverGetSelfInfos(String token) async {
 Future<List> serverGetAreas(dynamic id) async {
   var url = Uri(
       scheme: 'http',
-      host: '192.168.122.1',
+      host: CURRENT_IP,
       port: 8090,
       path: '/api/Automatisations');
   var headers = {
