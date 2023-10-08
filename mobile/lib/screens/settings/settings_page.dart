@@ -27,12 +27,12 @@ class _SettingsPageState extends State<SettingsPage> {
     print("AOJODOJDOEK");
     try {
       final GoogleSignIn _googleSignIn = GoogleSignIn(
-        scopes: [
-          'email',
-          'https://www.googleapis.com/auth/gmail.modify',
-        ],
-        clientId: '315267877885-lkqq49r6v587fi9pduggbdh9dr1j69me.apps.googleusercontent.com'
-      );
+          scopes: [
+            'email',
+            'https://www.googleapis.com/auth/gmail.modify',
+          ],
+          clientId:
+              '315267877885-lkqq49r6v587fi9pduggbdh9dr1j69me.apps.googleusercontent.com');
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       print("CCCCC");
       if (googleUser != null) {
@@ -184,12 +184,47 @@ class _SettingsPageState extends State<SettingsPage> {
                           child: ListView(
                             shrinkWrap: true,
                             children: [
+                              Row(
+                                children: [
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      TextButton(
+                                        onPressed: () {},
+                                        style: ButtonStyle(
+                                          foregroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                                  AppColors.lightBlue),
+                                        ),
+                                        child: const Align(
+                                          alignment: Alignment.centerLeft,
+                                          child:
+                                              Text("Modifier mon mot de passe"),
+                                        ),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {},
+                                        style: ButtonStyle(
+                                          foregroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                                  AppColors.lightBlue),
+                                        ),
+                                        child: const Align(
+                                          alignment: Alignment.centerLeft,
+                                          child:
+                                              Text("Gérer mes notifications"),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                               TextButton(
                                 onPressed: () => showDialog<String>(
                                   context: context,
                                   builder: (BuildContext context) =>
                                       AlertDialog(
-                                    title: const Text('Êtes-vous sûr? ?'),
+                                    title: const Text('Êtes-vous sûr.e ?'),
                                     content: const Text(
                                         'Vous devrez vous reconnecter pour utiliser l\'application.'),
                                     actions: <Widget>[
@@ -211,7 +246,21 @@ class _SettingsPageState extends State<SettingsPage> {
                                     ],
                                   ),
                                 ),
-                                child: const Text("Deconnexion"),
+                                style: ButtonStyle(
+                                  foregroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Colors.red),
+                                ),
+                                child: SizedBox(
+                                  width: blockWidth * 2,
+                                  height: blockHeight * 6,
+                                  child: Center(
+                                    child: Text(
+                                      "Deconnexion",
+                                      style: TextStyle(fontSize: 20),
+                                    ),
+                                  ),
+                                ),
                               ),
                             ],
                           ),
