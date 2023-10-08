@@ -1,4 +1,6 @@
+import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import secureLocalStorage from "react-secure-storage";
 import * as Yup from 'yup';
 
 const useSettingsUser = () => {
@@ -7,6 +9,7 @@ const useSettingsUser = () => {
     password: '',
     passwordCheck: ''
   };
+  const buttonEl = useRef(null);
 
   const validation = Yup.object().shape({
     password: Yup.string().min(8, 'Must be 8 characters minimum').required('Required'),
@@ -17,7 +20,13 @@ const useSettingsUser = () => {
 
   const changePassword = async (values) => {};
 
-  return { navigate, passwordValues, validation, changePassword };
+  const logout = () => {
+    secureLocalStorage.removeItem("token");
+    secureLocalStorage.removeItem("userId");
+    navigate('/');
+  };
+
+  return { navigate, passwordValues, validation, changePassword, logout, buttonEl };
 };
 
 export default useSettingsUser;
