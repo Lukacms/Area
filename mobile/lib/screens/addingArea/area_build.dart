@@ -138,6 +138,7 @@ class _AreaBuildState extends State<AreaBuild> {
                 padding: EdgeInsets.only(top: safePadding + blockHeight * 11),
                 child: newArea.action == null
                     ? AddActionButton(
+                      isReaction: false,
                         addActionCallback: (value) {
                           setState(
                             () {
@@ -148,13 +149,17 @@ class _AreaBuildState extends State<AreaBuild> {
                       )
                     : Column(
                         children: [
-                          ActionBlockList(action: newArea.action!),
+                          ActionBlockList(
+                            action: newArea.action!,
+                            reactions: newArea.reactions,
+                          ),
                           SizedBox(height: blockHeight * 4),
                           AddActionButton(
+                            isReaction: true,
                             addActionCallback: (value) {
                               setState(
                                 () {
-                                  newArea.action = value;
+                                  newArea.reactions.add(value);
                                 },
                               );
                             },
