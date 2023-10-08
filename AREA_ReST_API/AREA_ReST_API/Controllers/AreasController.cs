@@ -2,6 +2,7 @@ using System.Text.Json.Nodes;
 using AREA_ReST_API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.IdentityModel.Tokens;
 
 namespace AREA_ReST_API.Controllers;
@@ -29,7 +30,7 @@ public class AreasController
                 Name = areasModel.Name,
                 UserId = areasModel.UserId,
                 Favorite = areasModel.Favorite,
-                UserAction = _context.UserActions.First(userAction => userAction.AreaId == areasModel.Id),
+                UserAction = _context.UserActions.FirstOrDefault(userAction => userAction.AreaId == areasModel.Id),
                 UserReactions = _context.UserReactions.Where(userReaction => userReaction.AreaId == areasModel.Id).ToList()
             }).ToList();
         return new OkObjectResult(areasWithId);
@@ -45,6 +46,39 @@ public class AreasController
         return new CreatedResult("Area successfully created", area.Entity);
     }
 
+    [HttpPost("full")]
+    public ActionResult CreateNewAreaWithActionAndReaction([FromBody] AreaWithActionReaction newArea)
+    {
+        if (newArea.Name.IsNullOrEmpty())
+            return new BadRequestObjectResult(new JsonObject { { "message", "Name cannot be null" } });
+        var onlyArea = new AreasModel
+        {
+            Name = newArea.Name,
+            Favorite = newArea.Favorite,
+            UserId = newArea.UserId
+        };
+        var registeredArea = _context.Areas.Add(onlyArea).Entity;
+        UserActionsModel registeredAction = null;
+        if (newArea.UserAction != null)
+        {
+            registeredAction = _context.UserActions.Add(newArea.UserAction).Entity;
+        }
+        var registeredReaction = newArea.UserReactions.Select(
+            reaction => _context.UserReactions.Add(reaction).Entity
+            ).ToList();
+        _context.SaveChanges();
+        var createdArea = new AreaWithActionReaction
+        {
+            Id = registeredArea.Id,
+            Name = registeredArea.Name,
+            Favorite = registeredArea.Favorite,
+            UserId = registeredArea.UserId,
+            UserAction = registeredAction,
+            UserReactions = registeredReaction,
+        };
+        return new CreatedResult("Area successfully created", createdArea);
+    }
+    
     [HttpDelete("{areaId:int}")]
     public ActionResult DeleteAreaWithActionAndReaction([AsParameters] int areaId)
     {
