@@ -17,8 +17,6 @@ const useCallbackDiscord = () => {
         permissions: getByValue(searchParams, "permissions")
       };
 
-      console.log(data);
-      console.log(searchParams);
       try {
         const res = await serviceCallbackDiscord(data);
         if (res.status.toString().startsWith('2')) {

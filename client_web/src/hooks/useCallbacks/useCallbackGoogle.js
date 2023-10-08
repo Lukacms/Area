@@ -16,7 +16,6 @@ const useCallbackGoogle = () => {
         scope: getByValue(searchParams, 'scope'),
       };
 
-      console.log(data);
       try {
         const res = await serviceCallbackGoogle(data);
         if (res.status.toString().startsWith('2')) {

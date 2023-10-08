@@ -40,7 +40,6 @@ const useRegister = () => {
       await register(newUser);
       setSuccessDialog(true);
     } catch (error) {
-      console.log('Failure', error);
       setDialogue(true);
     }
   };

@@ -4,6 +4,7 @@ import {
   getUserServices,
   getActionsByServiceId,
   getReactionsByServiceId,
+  getUsersAreas,
 } from '../config/request';
 import secureLocalStorage from 'react-secure-storage';
 import { useNavigate } from 'react-router';
@@ -33,7 +34,7 @@ const useHome = () => {
     'Select your reactions, and when you are finished click on save Area',
   ];*/
   const [addAct, setaddAct] = useState(false);
-  const [areas, setArea] = useState([{ action: '', reaction: [''], name: '' }]);
+  const [areas, setAreas] = useState([{ action: '', reaction: [''], name: '' }]);
   const [tmpAct, setTmp] = useState('');
   const [selectedArea, setSelectedArea] = useState({
     action: '',
@@ -49,7 +50,7 @@ const useHome = () => {
           label: '',
           data: { action: '', reaction: [''], id: 0 },
           command: () => {
-            clickArea({ areaSelected: panelAreas[0].items[0] });
+            clickArea({ areaSelected: 0, favorite: 0 });
           },
         },
       ],
@@ -61,7 +62,7 @@ const useHome = () => {
         {
           label: '',
           command: () => {
-            clickArea({ areaSelected: panelAreas[1].items[0] });
+            clickArea({ areaSelected: 0, favorite: 1 });
           },
           data: { action: '', reaction: [''], id: 0 },
         },
@@ -69,12 +70,16 @@ const useHome = () => {
     },
   ]);
 
-  const clickArea = ({ areaSelected }) => {
-    console.log('clickArea: ', areaSelected);
-    setSelectedArea({
-      name: areaSelected.label,
-      action: areaSelected.data.action,
-      reaction: areaSelected.data.reaction,
+  const clickArea = ({ areaSelected, favorite }) => {
+    panelAreas[favorite].items.forEach((item) => {
+      if (item && item.data.id === areaSelected) {
+        console.log(item.data);
+        setSelectedArea({
+          name: item.label,
+          action: item.data.action,
+          reaction: item.data.reaction,
+        });
+      }
     });
   };
 
@@ -133,7 +138,6 @@ const useHome = () => {
 
   const clickAct = (eventName) => {
     if (addAct) {
-      /*console.log("Please select a reaction");*/
       return;
     }
     setTmp(eventName);
@@ -149,7 +153,6 @@ const useHome = () => {
           label: 'reaction disc 1',
           command: () => {
             //clickReact(reactionList[0].items[0].label);
-            console.log('GGGGGGGG: ', reactionList[0].items[0].label);
             addReactionToBlankArea({
               reaction: reactionList[0].items[0].label,
             });
@@ -194,7 +197,6 @@ const useHome = () => {
 
   const clickReact = (eventName) => {
     if (!addAct) {
-      /*console.log("Please select an action first");*/
       return;
     }
     setaddAct(false);
@@ -205,9 +207,9 @@ const useHome = () => {
       react: String(areas[areas.length - 1].reaction),
     });
   };
+
   const addToPanelArea = ({ act, react, name }) => {
     if (panelAreas[1].items[0].label === '') {
-      console.log('addtoPAnelARea: ', act, ' ', react, ' ', name);
       panelAreas[1].items.pop();
       panelAreas[1].items.push({
         label: name,
@@ -245,7 +247,6 @@ const useHome = () => {
   const addReactionToBlankArea = ({ reaction }) => {
     if (stateOfCreation !== 'reaction' && stateOfCreation !== '1reaction') return;
     var tmp = blankArea;
-    console.log('reaction:fff', reaction);
     if (tmp.data.reaction[0] === '') {
       tmp.data.reaction[0] = reaction;
     } else tmp.data.reaction.push(reaction);
@@ -261,7 +262,6 @@ const useHome = () => {
       reaction: blankArea.data.reaction,
       name: blankArea.label,
     });
-    console.log('addCreatedArea: ', areas[areas.length - 1]);
     addToPanelArea({
       act: String(areas[areas.length - 1].action),
       name: String(areas[areas.length - 1].name),
@@ -292,85 +292,80 @@ const useHome = () => {
     setCurrentState('Select your reactions, and when you are finished click on save Area');
   };
 
-  const addServicesToUser = ({ actions, reactions, name }) => {
-    var tmpActionList = actionList;
-    var tmpReactionList = reactionList;
-
-    if (!actions.empty()) {
-      if (tmpActionList[0].label === '') tmpActionList.pop();
-      tmpActionList.push({ label: name });
-      for (let i = 0; i < actions.length; i++) {
-        tmpActionList[tmpActionList.length - 1].items.push({
-          label: actions[i].name,
+  const addServicesToUser = ({ actions, reactions, name, logo }) => {
+    if (actions.data && actions.data.length) {
+      if (actionList[0].label === '') actionList.pop();
+      actionList.push({ label: name, icon: logo, items: [] });
+      for (let i = 0; i < actions.data.length; i++) {
+        actionList[actionList.length - 1].items.push({
+          label: actions.data[i].name,
           command: () => {
             setCurrentSelectedCategory('reactions');
-            addActionToBlankArea({ action: actions[i].name });
+            addActionToBlankArea({ action: actions.data[i].name });
             onAddActionArea();
           },
         });
       }
     }
-    if (!reactions.empty()) {
-      if (tmpReactionList[0].label === '') tmpReactionList.pop();
-      tmpReactionList.push({ label: name });
-      for (let i = 0; i < reactions.length; i++) {
-        tmpReactionList[tmpReactionList.length - 1].items.push({
-          label: actions[i].name,
+    if (reactions.data && reactions.data.length) {
+      if (reactionList[0].label === '') reactionList.pop();
+      reactionList.push({ label: name, icon: logo, items: [] });
+      for (let i = 0; i < reactions.data.length; i++) {
+        reactionList[reactionList.length - 1].items.push({
+          label: actions.data[i].name,
           command: () => {
             setCurrentSelectedCategory('reactions');
-            addReactionToBlankArea({ reaction: reactions[i].name });
+            addReactionToBlankArea({ reaction: reactions.data[i].name });
           },
         });
       }
     }
   };
 
-  const addAreaFromServerToUser = async ({ name, action, reactions, id, favorite }) => {
-    let favoriteNb = 1;
-
-    if (favorite === true) favoriteNb = 0;
-    areas.push({});
-  };
-
   useEffect(() => {
-    const userId = secureLocalStorage.getItem('userId');
-
     const loadDatas = async () => {
+      const userId = secureLocalStorage.getItem('userId');
+
       try {
         const services = await getServices();
         const userServices = await getUserServices(userId);
-        /*    const usersAreas = await getUsersAreas(userId);*/
+        const usersAreas = await getUsersAreas(userId);
 
         for (let i = 0; i < services.data.length; i++) {
-          for (let j = 0; j < userServices.data.length; j++)
-            if (services.data[i].id === userServices.data[j].id) {
+          for (let j = 0; j < userServices.data.length; j++) {
+            if (services.data[i].id === userServices.data[j].serviceId) {
               addServicesToUser({
                 actions: await getActionsByServiceId(services.data[i].id),
                 reactions: await getReactionsByServiceId(services.data[i].id),
                 name: services.data[i].name,
+                logo: services.data[i].logo,
               });
             }
-        }
-        /*
-        if (usersAreas !== []) {
-          for (let i = 0; i < usersAreas.length; i++) {
-            addAreaFromServerToUser({
-              name: usersAreas[i].name,
-              action: usersAreas[i].action,
-              reaction: usersAreas[i].reaction,
-              id: usersAreas[i].id,
-              favorite: usersAreas[i].favorite,
-            });
           }
         }
-        */
+        if (usersAreas && usersAreas.data.length) {
+          usersAreas.data.forEach((item) => {
+            if (item.favorite) {
+              panelAreas[0].items.push({
+                label: item.name,
+                data: { action: item.action, reaction: item.reaction, id: item.id },
+                command: () => clickArea({ areaSelected: item.id, favorite: 0 }),
+              });
+            } else {
+              panelAreas[1].items.push({
+                label: item.name,
+                data: { action: item.action, reaction: item.reaction, id: item.id },
+                command: () => clickArea({ areaSelected: item.id, favorite: 1 }),
+              });
+            }
+          });
+        }
       } catch (e) {
         navigate('/error', { state: { message: e.message } });
       }
     };
     loadDatas();
   }, []);
-  console.log(stateOfCreation);
 
   return {
     dispAct,

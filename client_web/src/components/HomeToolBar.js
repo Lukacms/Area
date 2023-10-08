@@ -15,7 +15,6 @@ const HomeToolbar = ({
 
   const addClick = () => {
     onClickForCreateArea();
-    console.log(isNextStep);
     if (isNextStep === false) setisNextStep(true);
     if (isAddClicked === true) setIsAddClicked(false);
     else setIsAddClicked(true);
@@ -36,13 +35,11 @@ const HomeToolbar = ({
           placeholder='Area Name'
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
-              console.log('ENTER');
               setisNextStep(false);
               onEnterNameArea();
             }
           }}
           onChange={(e) => {
-            console.log('gg');
             addNameToBlankArea({ name: e.target.value });
           }}
           sx={{ input: { color: 'white' }, borderColor: 'white' }}

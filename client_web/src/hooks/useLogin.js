@@ -27,7 +27,6 @@ const useLogin = () => {
       secureLocalStorage.setItem('userId', user.data.id);
       navigate('/home');
     } catch (error) {
-      console.log(error.message);
       setError(error.message);
     }
     setLoading(false);

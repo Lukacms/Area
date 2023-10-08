@@ -36,7 +36,7 @@ const Home = ({children}) => {
   const handleChange = (event, newSelectedValue) => {
     setDisplayedCategory(newSelectedValue);
     updateCurrentSelectedCategory(newSelectedValue);
-    if (newSelectedValue == 'actions') {
+    if (newSelectedValue === 'actions') {
       dispAct();
     } else {
       dispReac();
