@@ -20,6 +20,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   String userToken = "";
+  Map<String, dynamic> user = {};
   @override
   void initState() {
     super.initState();
@@ -27,6 +28,11 @@ class _MyAppState extends State<MyApp> {
       setState(() {
         //userToken = value;
         userToken = "";
+      });
+    });
+    retrieveUser().then((value) {
+      setState(() {
+        user = value;
       });
     });
   }
@@ -44,9 +50,9 @@ class _MyAppState extends State<MyApp> {
       routes: {
         '/': (context) => userToken.isEmpty
             ? const LoginScreen()
-            : HomePage(token: userToken),
+            : HomePage(token: userToken, user: user),
         '/login': (context) => const LoginScreen(),
-        '/home': (context) => HomePage(token: userToken),
+        '/home': (context) => HomePage(token: userToken, user: user),
       },
     );
   }

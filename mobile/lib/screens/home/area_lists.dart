@@ -7,11 +7,17 @@ class AreaLists extends StatefulWidget {
   final List<Area> areas;
   final Function editAreaCallback;
   final String searchText;
+  final String token;
+  final int userId;
+  final int areasLength;
   const AreaLists({
     super.key,
     required this.areas,
     required this.searchText,
     required this.editAreaCallback,
+    required this.token,
+    required this.userId,
+    required this.areasLength,
   });
 
   @override
@@ -43,11 +49,17 @@ class _AreaListsState extends State<AreaLists> {
           ? Column(
               children: [
                 AreaGroup(
+                  token: widget.token,
+                  userId: widget.userId,
+                  areasLength: widget.areasLength,
                   group: favorites,
                   groupName: "Mes Favoris",
                   editAreaCallback: widget.editAreaCallback,
                 ),
                 AreaGroup(
+                  token: widget.token,
+                  userId: widget.userId,
+                  areasLength: widget.areasLength,
                   group: widget.areas,
                   groupName: "Mes Areas",
                   editAreaCallback: widget.editAreaCallback,
@@ -57,6 +69,9 @@ class _AreaListsState extends State<AreaLists> {
           : Column(
               children: [
                 AreaGroup(
+                  token: widget.token,
+                  userId: widget.userId,
+                  areasLength: widget.areasLength,
                   group: searchAreas(),
                   groupName: "Recherche",
                   editAreaCallback: widget.editAreaCallback,

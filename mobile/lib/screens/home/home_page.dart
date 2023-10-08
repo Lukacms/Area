@@ -12,7 +12,8 @@ import 'package:mobile/screens/settings/settings_page.dart';
 
 class HomePage extends StatefulWidget {
   final String token;
-  const HomePage({super.key, required this.token});
+  final Map<String, dynamic> user;
+  const HomePage({super.key, required this.token, required this.user});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -24,13 +25,28 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    loadAreas(widget.user['id'], widget.token);
+  }
+
+  Future<void> loadAreas(int id, String token) async {
+    List<Area> tmp = [];
+    var areasData = await serverGetAreas(id, token);
+    for (var area in areasData) {
+      tmp.add(Area(
+        userId: area['userId'],
+        action: area['userAction'],
+        reactions: area['userReaction'] ?? [],
+        name: area['name'],
+        favorite: area['favorite'],
+      ));
+    }
+    setState(() {
+      areas = tmp;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final Map args = ModalRoute.of(context)!.settings.arguments as Map;
-    final String token = args['token'] as String;
-    final Map<String, dynamic> user = args['user'] as Map<String, dynamic>;
     final safePadding = MediaQuery.of(context).padding.top;
     screenSize = MediaQuery.of(context).size;
     screenHeight = screenSize.height;
@@ -44,21 +60,6 @@ class _HomePageState extends State<HomePage> {
     }); */
     //serverAddArea(token, user['id'], 0, "Areatest");
 
-    if (areas.isEmpty) {
-      serverGetAreas(user['id'], token).then((value) {
-        setState(() {
-          for (var area in value) {
-            areas.add(Area(
-              userId: area['userId'],
-              action: area['userAction'],
-              reactions: area['userReaction'] ?? [],
-              name: area['name'],
-              favorite: area['favorite'],
-            ));
-          }
-        });
-      });
-    }
     return Scaffold(
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
@@ -69,11 +70,14 @@ class _HomePageState extends State<HomePage> {
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) => AreaBuild(
+                  token: widget.token,
+                  userId: widget.user['id'],
+                  areasLenght: areas.length,
                   isEdit: false,
                   areaAdd: (Area value) {
                     setState(
                       () {
-                        areas = getAreas();
+                        loadAreas(widget.user['id'], widget.token);
                       },
                     );
                   },
@@ -123,12 +127,13 @@ class _HomePageState extends State<HomePage> {
                 child: Column(
                   children: [
                     AreaLists(
+                      token: widget.token,
+                      userId: widget.user['id'],
+                      areasLength: areas.length,
                       areas: areas,
                       searchText: searchController.text,
                       editAreaCallback: (value) {
-                        setState(() {
-                          areas = getAreas();
-                        });
+                        loadAreas(widget.user['id'], widget.token);
                       },
                     ),
                     SizedBox(

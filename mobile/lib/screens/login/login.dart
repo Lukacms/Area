@@ -3,6 +3,7 @@ import 'package:mobile/components/loginTextField.dart';
 import 'package:mobile/main.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/components/backgroundCircles.dart';
+import 'package:mobile/screens/home/home_page.dart';
 import 'package:mobile/screens/login/forgot_password.dart';
 import 'package:mobile/theme/style.dart';
 import 'package:mobile/back/api.dart';
@@ -164,14 +165,18 @@ class _LoginScreenState extends State<LoginScreen> {
                       res = value;
                     });
                     if (res[0]) {
-                      Map<String, dynamic>? user;
+                      Map<String, dynamic> user = {};
                       await saveToken(res[1]);
                       await serverGetSelfInfos(res[1]).then((value) {
                         saveUser(value);
                         user = value;
                       });
-                      Navigator.of(context).pushNamed('/home',
-                          arguments: {'token': res[1], 'user': user});
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => HomePage(
+                          user: user,
+                          token: res[1],
+                        ),
+                      ));
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(

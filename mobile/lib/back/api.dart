@@ -68,6 +68,12 @@ Future<bool> serverRegister(
   return false;
 }
 
+/// Sends a login request to the server with the specified email and password.
+///
+/// Returns a list containing a boolean value indicating whether the login was successful,
+/// and an access token string if the login was successful, or an empty string if the login failed.
+///
+///Throws an exception if there was an error sending the login request.
 Future serverGetSelfInfos(String token) async {
   var url =
       Uri(scheme: 'http', host: CURRENT_IP, port: 8080, path: '/api/Users/me');
@@ -96,10 +102,13 @@ Future serverGoogleAuth(String token, String scope) async {
   return response;
 }
 
+/// Sends a GET request to the server to retrieve information about the area with the specified `id`.
+///
+/// Returns a JSON-encoded object containing information about the area with the specified `id`,
+/// or an empty list if there was an error.
+///
+/// Throws an exception if there was an error sending the request.
 Future<List> serverGetAreas(int id, String token) async {
-  print("hey");
-  print(id);
-  print(token);
   var url = Uri(
     scheme: 'http',
     host: CURRENT_IP,
@@ -111,8 +120,6 @@ Future<List> serverGetAreas(int id, String token) async {
     'Authorization': 'Bearer $token',
   };
   var response = await http.get(url, headers: headers);
-  print("AAAAAA");
-  print(response.body);
   print("Get areas status code ${response.statusCode}");
   if (response.statusCode == 200) {
     var jsonResponse = jsonDecode(response.body);
@@ -121,6 +128,12 @@ Future<List> serverGetAreas(int id, String token) async {
   return [];
 }
 
+/// Sends a GET request to the server to retrieve information about the area with the specified `id`.
+///
+/// Returns a JSON-encoded object containing information about the area with the specified `id`,
+/// or an empty list if there was an error.
+///
+/// Throws an exception if there was an error sending the request.
 Future<bool> serverAddArea(
     String token, int userId, int id, String name) async {
   var url = Uri(

@@ -11,11 +11,17 @@ class AreaBuild extends StatefulWidget {
   final Area? area;
   final Function areaAdd;
   final bool isEdit;
+  final String token;
+  final int userId;
+  final int areasLenght;
   const AreaBuild({
     super.key,
     this.area,
     required this.areaAdd,
     required this.isEdit,
+    required this.token,
+    required this.userId,
+    required this.areasLenght,
   });
 
   @override
@@ -27,6 +33,7 @@ class _AreaBuildState extends State<AreaBuild> {
   Area newArea = Area(action: null, reactions: [], name: "", userId: -1);
   List actionsList = [];
   Area? savedArea;
+  bool isNamed = true;
 
   @override
   void initState() {
@@ -48,6 +55,9 @@ class _AreaBuildState extends State<AreaBuild> {
   @override
   Widget build(BuildContext context) {
     final safePadding = MediaQuery.of(context).padding.top;
+    if (newArea.name.isNotEmpty) {
+      isNamed = true;
+    }
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: AppColors.darkBlue,
@@ -84,6 +94,7 @@ class _AreaBuildState extends State<AreaBuild> {
                 borderRadius: BorderRadius.circular(10),
                 borderSide: BorderSide.none,
               ),
+              errorText: !isNamed ? "Veuillez nommer votre Area" : null,
             ),
           ),
         ),
@@ -94,12 +105,15 @@ class _AreaBuildState extends State<AreaBuild> {
           : TextButton(
               onPressed: () {
                 if (newArea.name.isEmpty) {
-                  print("NON");
+                  setState(() {
+                    isNamed = false;
+                  });
                   return;
                 }
                 widget.areaAdd(newArea);
                 if (!widget.isEdit) {
-                  addArea(newArea, 1);
+                  serverAddArea(widget.token, widget.userId,
+                      widget.areasLenght - 1, newArea.name);
                 } else {
                   editArea(newArea, savedArea!);
                 }
@@ -125,20 +139,26 @@ class _AreaBuildState extends State<AreaBuild> {
                 child: newArea.action == null
                     ? AddActionButton(
                         addActionCallback: (value) {
-                          setState(() {
-                            newArea.action = value;
-                          });
+                          setState(
+                            () {
+                              newArea.action = value;
+                            },
+                          );
                         },
                       )
                     : Column(
                         children: [
                           ActionBlockList(action: newArea.action!),
                           SizedBox(height: blockHeight * 4),
-                          AddActionButton(addActionCallback: (value) {
-                            setState(() {
-                              newArea.action = value;
-                            });
-                          })
+                          AddActionButton(
+                            addActionCallback: (value) {
+                              setState(
+                                () {
+                                  newArea.action = value;
+                                },
+                              );
+                            },
+                          )
                         ],
                       ),
               ),
