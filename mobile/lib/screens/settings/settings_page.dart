@@ -25,21 +25,21 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Future handleSignIn() async {
     print("AOJODOJDOEK");
+    final GoogleSignIn googleSignIn = GoogleSignIn(
+      scopes: [
+        'https://www.googleapis.com/auth/gmail.modify',
+        'openid',
+        'https://Fwww.googleapis.com/Fauth/calendar',
+      ],
+      /* clientId: */
+      /*     '315267877885-2np97bt3qq9s6er73549ldrfme2b67pi.apps.googleusercontent.com', */
+    );
     try {
-      final GoogleSignIn _googleSignIn = GoogleSignIn(
-        scopes: [
-          'email',
-          'https://www.googleapis.com/auth/gmail.modify',
-        ],
-        clientId: '315267877885-lkqq49r6v587fi9pduggbdh9dr1j69me.apps.googleusercontent.com'
-      );
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      print("CCCCC");
-      if (googleUser != null) {
-        final GoogleSignInAuthentication googleAuth =
-            await googleUser.authentication;
+      final googleUser = await googleSignIn.signIn();
+      final googleAuth = await googleUser?.authentication;
+      if (googleAuth != null) {
+        print(googleAuth.accessToken);
         final String? token = googleAuth.accessToken;
-        print("AAAAAAAAA");
         print(token);
       } else {
         print('User not signed in');

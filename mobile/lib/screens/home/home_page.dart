@@ -29,14 +29,16 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final Map args = ModalRoute.of(context)!.settings.arguments as Map;
+    final String token = args['token'] as String;
     final safePadding = MediaQuery.of(context).padding.top;
+    dynamic user;
     screenSize = MediaQuery.of(context).size;
     screenHeight = screenSize.height;
     screenWidth = screenSize.width;
     blockWidth = screenWidth / 5;
     blockHeight = screenHeight / 100;
-    print("AAAAA");
-    print(widget.token);
+    user = serverGetSelfInfos(token);
     /* retrieveToken().then((value) {
       if (widget.token.isEmpty && value.isEmpty) {
         Navigator.of(context).pushReplacementNamed('/login');
