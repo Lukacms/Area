@@ -9,10 +9,12 @@ import 'package:mobile/theme/style.dart';
 class AddArea extends StatefulWidget {
   final BuildContext parentContext;
   final Function addActionCallback;
+  final bool isReaction;
   const AddArea({
     super.key,
     required this.parentContext,
     required this.addActionCallback,
+    required this.isReaction,
   });
 
   @override
@@ -25,6 +27,9 @@ class _AddAreaState extends State<AddArea> {
   String selectedCategory = "";
   @override
   Widget build(BuildContext context) {
+    if(widget.isReaction){
+      selectedSegment = "Reactions";
+    }
     return SizedBox(
       height: screenHeight * 0.85,
       child: Scaffold(
@@ -100,7 +105,41 @@ class _AddAreaState extends State<AddArea> {
                       },
                     ),
                   )
-                : const SizedBox.shrink()
+                : GridView.count(
+                    shrinkWrap: true,
+                    crossAxisCount: 1,
+                    childAspectRatio: blockWidth / (blockHeight * 2),
+                    padding: EdgeInsets.only(
+                        left: blockHeight * 2, top: blockHeight),
+                    children: List.generate(
+                      AppServices().categories.length,
+                      (index) {
+                        return Builder(builder: (context) {
+                          return TextButton(
+                            style:
+                                TextButton.styleFrom(padding: EdgeInsets.zero),
+                            onPressed: () {
+                              setState(() {
+                                selectedCategory =
+                                    AppServices().categories[index][0];
+                              });
+                              Scaffold.of(context).openEndDrawer();
+                            },
+                            child: Row(
+                              children: [
+                                AppServices().categories[index][1],
+                                SizedBox(width: blockHeight),
+                                Text(
+                                  AppServices().categories[index][0],
+                                  style: TextStyle(color: AppColors.lightBlue),
+                                ),
+                              ],
+                            ),
+                          );
+                        });
+                      },
+                    ),
+                  )
           ],
         ),
         endDrawer: ActionReactionLists(

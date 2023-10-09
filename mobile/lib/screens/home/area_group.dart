@@ -8,11 +8,17 @@ class AreaGroup extends StatelessWidget {
   final List<Area> group;
   final String groupName;
   final Function editAreaCallback;
+  final String token;
+  final int userId;
+  final int areasLength;
   const AreaGroup({
     super.key,
     required this.group,
     this.groupName = "",
     required this.editAreaCallback,
+    required this.token,
+    required this.userId,
+    required this.areasLength,
   });
 
   @override
@@ -44,6 +50,9 @@ class AreaGroup extends StatelessWidget {
                 child: AreaCard(
                   area: group[index],
                   editAreaCallback: editAreaCallback,
+                  token: token,
+                  userId: userId,
+                  areasLength: areasLength,
                 ),
               );
             },

@@ -11,11 +11,17 @@ class AreaBuild extends StatefulWidget {
   final Area? area;
   final Function areaAdd;
   final bool isEdit;
+  final String token;
+  final int userId;
+  final int areasLenght;
   const AreaBuild({
     super.key,
     this.area,
     required this.areaAdd,
     required this.isEdit,
+    required this.token,
+    required this.userId,
+    required this.areasLenght,
   });
 
   @override
@@ -24,9 +30,10 @@ class AreaBuild extends StatefulWidget {
 
 class _AreaBuildState extends State<AreaBuild> {
   TextEditingController areaNameController = TextEditingController();
-  Area newArea = Area(actions: [], name: "", user: "");
+  Area newArea = Area(action: null, reactions: [], name: "", userId: -1);
   List actionsList = [];
   Area? savedArea;
+  bool isNamed = true;
 
   @override
   void initState() {
@@ -48,6 +55,9 @@ class _AreaBuildState extends State<AreaBuild> {
   @override
   Widget build(BuildContext context) {
     final safePadding = MediaQuery.of(context).padding.top;
+    if (newArea.name.isNotEmpty) {
+      isNamed = true;
+    }
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: AppColors.darkBlue,
@@ -84,22 +94,33 @@ class _AreaBuildState extends State<AreaBuild> {
                 borderRadius: BorderRadius.circular(10),
                 borderSide: BorderSide.none,
               ),
+              errorText: !isNamed ? "Veuillez nommer votre Area" : null,
             ),
           ),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: newArea.actions.isEmpty
+      floatingActionButton: newArea.action == null
           ? null
           : TextButton(
               onPressed: () {
                 if (newArea.name.isEmpty) {
-                  print("NON");
+                  setState(() {
+                    isNamed = false;
+                  });
                   return;
                 }
                 widget.areaAdd(newArea);
                 if (!widget.isEdit) {
-                  addArea(newArea, "user");
+                  /* serverAddFullArea(
+                      widget.token,
+                      widget.userId,
+                      widget.areasLenght - 1,
+                      newArea.name,
+                      newArea.action!,
+                      newArea.reactions); */
+                  serverAddArea(widget.token, widget.userId,
+                      widget.areasLenght - 1, newArea.name);
                 } else {
                   editArea(newArea, savedArea!);
                 }
@@ -122,23 +143,34 @@ class _AreaBuildState extends State<AreaBuild> {
             children: [
               Padding(
                 padding: EdgeInsets.only(top: safePadding + blockHeight * 11),
-                child: newArea.actions.isEmpty
+                child: newArea.action == null
                     ? AddActionButton(
+                        isReaction: false,
                         addActionCallback: (value) {
-                          setState(() {
-                            newArea.actions.add(value);
-                          });
+                          setState(
+                            () {
+                              newArea.action = value;
+                            },
+                          );
                         },
                       )
                     : Column(
                         children: [
-                          ActionBlockList(actions: newArea.actions),
+                          ActionBlockList(
+                            action: newArea.action!,
+                            reactions: newArea.reactions,
+                          ),
                           SizedBox(height: blockHeight * 4),
-                          AddActionButton(addActionCallback: (value) {
-                            setState(() {
-                              newArea.actions.add(value);
-                            });
-                          })
+                          AddActionButton(
+                            isReaction: true,
+                            addActionCallback: (value) {
+                              setState(
+                                () {
+                                  newArea.reactions.add(value);
+                                },
+                              );
+                            },
+                          )
                         ],
                       ),
               ),

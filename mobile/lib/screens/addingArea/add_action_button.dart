@@ -4,9 +4,11 @@ import 'package:mobile/theme/style.dart';
 
 class AddActionButton extends StatelessWidget {
   final Function addActionCallback;
+  final bool isReaction;
   const AddActionButton({
     super.key,
     required this.addActionCallback,
+    required this.isReaction,
   });
 
   @override
@@ -36,6 +38,7 @@ class AddActionButton extends StatelessWidget {
                   return AddArea(
                     parentContext: context,
                     addActionCallback: addActionCallback,
+                    isReaction: isReaction,
                   );
                 },
               );

@@ -6,9 +6,18 @@ import 'package:mobile/theme/style.dart';
 
 class AreaCard extends StatelessWidget {
   final Area area;
+  final String token;
+  final int userId;
+  final int areasLength;
   final Function editAreaCallback;
-  const AreaCard(
-      {super.key, required this.area, required this.editAreaCallback});
+  const AreaCard({
+    super.key,
+    required this.area,
+    required this.editAreaCallback,
+    required this.token,
+    required this.userId,
+    required this.areasLength,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +42,9 @@ class AreaCard extends StatelessWidget {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => AreaBuild(
+                        token: token,
+                        userId: userId,
+                        areasLenght: areasLength,
                         isEdit: true,
                         areaAdd: editAreaCallback,
                         area: area,

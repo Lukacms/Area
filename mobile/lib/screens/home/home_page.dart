@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/back/api.dart';
+import 'package:mobile/back/local_storage.dart';
 import 'package:mobile/back/services.dart';
 import 'package:mobile/components/background_gradient.dart';
 import 'package:mobile/main.dart';
@@ -11,7 +12,8 @@ import 'package:mobile/screens/settings/settings_page.dart';
 
 class HomePage extends StatefulWidget {
   final String token;
-  const HomePage({super.key, required this.token});
+  final Map<String, dynamic> user;
+  const HomePage({super.key, required this.token, required this.user});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -23,7 +25,24 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    areas = getAreas();
+    loadAreas(widget.user['id'], widget.token);
+  }
+
+  Future<void> loadAreas(int id, String token) async {
+    List<Area> tmp = [];
+    var areasData = await serverGetAreas(id, token);
+    for (var area in areasData) {
+      tmp.add(Area(
+        userId: area['userId'],
+        action: area['userAction'],
+        reactions: area['userReaction'] ?? [],
+        name: area['name'],
+        favorite: area['favorite'],
+      ));
+    }
+    setState(() {
+      areas = tmp;
+    });
   }
 
   @override
@@ -34,6 +53,13 @@ class _HomePageState extends State<HomePage> {
     screenWidth = screenSize.width;
     blockWidth = screenWidth / 5;
     blockHeight = screenHeight / 100;
+    /* retrieveToken().then((value) {
+      if (widget.token.isEmpty && value.isEmpty) {
+        Navigator.of(context).pushReplacementNamed('/login');
+      }
+    }); */
+    //serverAddArea(token, user['id'], 0, "Areatest");
+    getActions(widget.token);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
@@ -44,11 +70,14 @@ class _HomePageState extends State<HomePage> {
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) => AreaBuild(
+                  token: widget.token,
+                  userId: widget.user['id'],
+                  areasLenght: areas.length,
                   isEdit: false,
                   areaAdd: (Area value) {
                     setState(
                       () {
-                        areas = getAreas();
+                        loadAreas(widget.user['id'], widget.token);
                       },
                     );
                   },
@@ -84,32 +113,34 @@ class _HomePageState extends State<HomePage> {
       body: Stack(
         children: [
           const BackgroundGradient(),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: blockWidth / 4),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: safePadding +
-                        AppBar().preferredSize.height +
-                        (blockHeight * 15),
-                  ),
-                  AreaLists(
-                    areas: areas,
-                    searchText: searchController.text,
-                    editAreaCallback: (value) {
-                      setState(() {
-                        areas = getAreas();
-                      });
-                    },
-                  ),
-                  TextButton(
-                    child: const Text("goBack"),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                ],
+          Container(
+            margin: EdgeInsets.only(
+              top: safePadding +
+                  AppBar().preferredSize.height +
+                  (blockHeight * 15),
+            ),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: blockWidth / 4),
+              child: SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(
+                    parent: BouncingScrollPhysics()),
+                child: Column(
+                  children: [
+                    AreaLists(
+                      token: widget.token,
+                      userId: widget.user['id'],
+                      areasLength: areas.length,
+                      areas: areas,
+                      searchText: searchController.text,
+                      editAreaCallback: (value) {
+                        loadAreas(widget.user['id'], widget.token);
+                      },
+                    ),
+                    SizedBox(
+                      height: blockHeight * 15,
+                    )
+                  ],
+                ),
               ),
             ),
           ),
