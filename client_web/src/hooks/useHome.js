@@ -10,8 +10,6 @@ import secureLocalStorage from 'react-secure-storage';
 import { useNavigate } from 'react-router';
 
 const useHome = () => {
-  let nbArea = 0;
-  let nbAreaFav = 0;
   const [stateOfCreation, setStateOfCreation] = useState('Not');
   const navigate = useNavigate();
   const [canSave, setCanSave] = useState(false);
@@ -72,19 +70,18 @@ const useHome = () => {
   ]);
 
   const clickArea = ({ areaSelected, favorite }) => {
-    panelAreas[favorite].items.forEach((item) => {
+    panelAreas[favorite]?.items.forEach((item) => {
       if (item && item.data.id === areaSelected) {
-        console.log(item.data);
         setSelectedArea({
-          name: item.label,
-          action: item.data.action,
-          reaction: item.data.reaction,
+          name: String(item.label),
+          action: String(item.data.action),
+          reaction: String(item.data.reaction),
         });
       }
     });
   };
 
-  const actionList = [
+  const [actionList, setActionList] = useState([
     {
       label: 'discord',
       icon: 'pi pi-fw pi-folder',
@@ -125,10 +122,10 @@ const useHome = () => {
         },
       ],
     },
-  ];
+  ]);
 
   const addActionToBlankArea = ({ action }) => {
-    if (stateOfCreation !== 'action') return;
+    // if (stateOfCreation !== 'action') return;
     var tmp = blankArea;
     tmp.data.action = action;
     setBlankArea(tmp);
@@ -145,7 +142,7 @@ const useHome = () => {
     setaddAct(true);
   };
 
-  const reactionList = [
+  const [reactionList, setReactionList] = useState([
     {
       label: 'discord',
       icon: 'pi pi-fw pi-folder',
@@ -194,7 +191,7 @@ const useHome = () => {
         },
       ],
     },
-  ];
+  ]);
 
   const clickReact = (eventName) => {
     if (!addAct) {
@@ -209,47 +206,39 @@ const useHome = () => {
     });
   };
 
-  const addToPanelArea = ({ act, react, name }) => {
+  const addToPanelArea = ({ act, react, name, id }) => {
     if (panelAreas[1].items[0].label === '') {
       panelAreas[1].items.pop();
-      panelAreas[1].items.push({
-        label: name,
-        data: { action: act, reaction: react },
-        command: () => {
-          clickArea({ areaSelected: panelAreas[1].items[0] });
-        },
-      });
-    } else {
-      nbArea++;
-      panelAreas[1].items.push({
-        label: name,
-        data: { action: act, reaction: react },
-        command: () => {
-          clickArea({ areaSelected: panelAreas[1].items[nbArea] });
-        },
-      });
     }
+    panelAreas[1].items.push({
+      label: name,
+      data: {
+        action: act,
+        reaction: react,
+        id: id,
+      },
+      command: () => {
+        clickArea({ areaSelected: id, favorite: 1 });
+      },
+    });
   };
-  const addToPanelFavArea = ({ act, react, name }) => {
+  const addToPanelFavArea = ({ act, react, name, id }) => {
     if (panelAreas[0].items[0].label === '') {
       panelAreas[0].items.pop();
-      panelAreas[0].items.push({
-        label: name,
-        data: { action: act, reaction: react },
-        command: () => {
-          clickArea({ areaSelected: panelAreas[1].items[0] });
-        },
-      });
-    } else {
-      nbAreaFav++;
-      panelAreas[0].items.push({
-        label: name,
-        data: { action: act, reaction: react },
-        command: () => {
-          clickArea({ areaSelected: panelAreas[0].items[nbAreaFav] });
-        },
-      });
     }
+    panelAreas[0].items.push({
+      label: name,
+      data: {
+        action: act,
+        reaction: react.map((item) => {
+          return item.configuration;
+        }),
+        id: id,
+      },
+      command: () => {
+        clickArea({ areaSelected: id, favorite: 0 });
+      },
+    });
   };
 
   const [actionOrReaction, setItems] = useState(actionList);
@@ -267,7 +256,7 @@ const useHome = () => {
   };
 
   const addReactionToBlankArea = ({ reaction }) => {
-    if (stateOfCreation !== 'reaction' && stateOfCreation !== '1reaction') return;
+    // if (stateOfCreation !== 'reaction' && stateOfCreation !== '1reaction') return;
     var tmp = blankArea;
     if (tmp.data.reaction[0] === '') {
       tmp.data.reaction[0] = reaction;
@@ -334,9 +323,8 @@ const useHome = () => {
       reactionList.push({ label: name, icon: logo, items: [] });
       for (let i = 0; i < reactions.data.length; i++) {
         reactionList[reactionList.length - 1].items.push({
-          label: actions.data[i].name,
+          label: reactions.data[i].name,
           command: () => {
-            setCurrentSelectedCategory('reactions');
             addReactionToBlankArea({ reaction: reactions.data[i].name });
           },
         });
@@ -368,14 +356,24 @@ const useHome = () => {
         if (usersAreas && usersAreas.data.length) {
           usersAreas.data.forEach((item) => {
             if (item.favorite) {
-              addToPanelFavArea({ act: item.action, react: item.reaction, name: item.name });
+              addToPanelFavArea({
+                act: item.userAction?.configuration,
+                react: item.reaction.map((react) => react.configuration),
+                name: item.name,
+                id: item.id,
+              });
               /*panelAreas[0].items.push({
                 label: item.name,
                 data: { action: item.action, reaction: item.reaction, id: item.id },
                 command: () => clickArea({ areaSelected: item.id, favorite: 0 }),
               });*/
             } else {
-              addToPanelArea({ act: item.action, react: item.reaction, name: item.name });
+              addToPanelArea({
+                act: item.userAction?.configuration,
+                react: item.reaction?.map((react) => react.configuration),
+                name: item.name,
+                id: item.id,
+              });
               /*panelAreas[1].items.push({
                 label: item.name,
                 data: { action: item.action, reaction: item.reaction, id: item.id },

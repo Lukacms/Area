@@ -51,7 +51,6 @@ export const getServices = () => axiosInstance.get(API_URL + 'Services');
 
 export const getUserServices = (id) => axiosInstance.get(API_URL + `UserServices/${id}`);
 
-
 export const getMyProfile = () => axiosInstance.get(API_URL + 'Users/me');
 
 export const getActions = () => axiosInstance.get(API_URL + 'Actions');
