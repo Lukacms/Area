@@ -161,6 +161,53 @@ Future<bool> serverAddArea(
   return false;
 }
 
+Future<bool> serverAddFullArea(String token, int userId, int id, String name,
+    AreaAction action, List<AreaAction> reactions) async {
+  List<Map<String, dynamic>> bodyReactions = [];
+  var i = 0;
+  for (var reaction in reactions) {
+    bodyReactions.add({
+      'id': i,
+      'actionId': i,
+      'areaId': id,
+      'configuration': "",
+    });
+    i++;
+  }
+  var url = Uri(
+    scheme: 'http',
+    host: CURRENT_IP,
+    port: 8080,
+    path: '/api/Areas/full',
+  );
+  var headers = {
+    'Content-Type': 'application/json',
+    'accept': '*/*',
+    'Authorization': 'Bearer $token',
+  };
+  var body = jsonEncode({
+    'id': id,
+    'name': name,
+    'userId': userId,
+    'favorite': false,
+    'userAction': {
+      'id': 0,
+      'actionId': 0,
+      'areaId': id,
+      'configuration': "",
+      'timer': 0,
+      'countdown': 0,
+    },
+    'userReactions': bodyReactions,
+  });
+  var response = await http.post(url, headers: headers, body: body);
+  print("Add area status code ${response.statusCode}");
+  if (response.statusCode == 201 || response.statusCode == 200) {
+    return true;
+  }
+  return false;
+}
+
 Future<bool> serverEditArea(
     String token, int userId, int id, String name) async {
   return false;

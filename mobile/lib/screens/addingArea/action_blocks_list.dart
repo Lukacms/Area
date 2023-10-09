@@ -26,7 +26,7 @@ class _ActionBlockListState extends State<ActionBlockList> {
         SizedBox(
           width: 300,
           child: ListView.builder(
-            itemCount: widget.reactions.isNotEmpty ? widget.reactions.length : 1,
+            itemCount: widget.reactions.isNotEmpty ?  widget.reactions.length + 1 : 1,
             shrinkWrap: true,
             itemBuilder: (context, index) {
               print(index);
@@ -48,9 +48,9 @@ class _ActionBlockListState extends State<ActionBlockList> {
                   : Column(
                       children: [
                         ActionBlock(
-                          action: widget.reactions[index],
+                          action: widget.reactions[index - 1],
                         ),
-                        index == widget.reactions.length - 1
+                        index == widget.reactions.length
                             ? Container()
                             : Container(
                                 height: blockHeight * 2,
