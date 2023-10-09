@@ -58,7 +58,7 @@ public class AreasController
             UserId = newArea.UserId
         };
         var registeredArea = _context.Areas.Add(onlyArea).Entity;
-        UserActionsModel registeredAction = null;
+        UserActionsModel registeredAction = null!;
         if (newArea.UserAction != null)
         {
             registeredAction = _context.UserActions.Add(newArea.UserAction).Entity;
