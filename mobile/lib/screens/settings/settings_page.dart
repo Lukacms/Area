@@ -235,6 +235,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                       TextButton(
                                         onPressed: () {
                                           saveToken('');
+                                          saveUser({});
                                           Navigator.pushNamedAndRemoveUntil(
                                             context,
                                             '/login',
@@ -249,12 +250,13 @@ class _SettingsPageState extends State<SettingsPage> {
                                 style: ButtonStyle(
                                   foregroundColor:
                                       MaterialStateProperty.all<Color>(
-                                          Colors.red),
+                                    Colors.red,
+                                  ),
                                 ),
                                 child: SizedBox(
                                   width: blockWidth * 2,
                                   height: blockHeight * 6,
-                                  child: Center(
+                                  child: const Center(
                                     child: Text(
                                       "Deconnexion",
                                       style: TextStyle(fontSize: 20),

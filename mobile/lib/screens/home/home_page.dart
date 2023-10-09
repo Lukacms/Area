@@ -59,7 +59,7 @@ class _HomePageState extends State<HomePage> {
       }
     }); */
     //serverAddArea(token, user['id'], 0, "Areatest");
-
+    getActions(widget.token);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,

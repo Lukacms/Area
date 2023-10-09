@@ -161,6 +161,31 @@ Future<bool> serverAddArea(
   return false;
 }
 
+Future<bool> serverEditArea(
+    String token, int userId, int id, String name) async {
+  return false;
+}
+
+Future getActions(String token) async {
+  var url = Uri(
+    scheme: 'http',
+    host: CURRENT_IP,
+    port: 8080,
+    path: '/api/Actions/0',
+  );
+  var headers = {
+    'accept': '*/*',
+    'Authorization': 'Bearer $token',
+  };
+  var response = await http.get(url, headers: headers);
+  print("Get actions status code ${response.statusCode}");
+  if (response.statusCode == 200) {
+    var jsonResponse = jsonDecode(response.body);
+    print(jsonResponse);
+    return jsonResponse;
+  }
+}
+
 // OFFLINE
 
 class Automatisation {
