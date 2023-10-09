@@ -2,10 +2,10 @@ import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { Home } from '../';
-import { useCallbackGoogle } from '../../hooks';
+import { useCallbackSteam } from '../../hooks';
 
-function CallBackGoogle() {
-  const { navigate, success, loading } = useCallbackGoogle();
+function CallBackSteam() {
+  const { navigate, success, loading } = useCallbackSteam();
 
   const header = () => {
     return (
@@ -21,14 +21,14 @@ function CallBackGoogle() {
       <div>
         <h1>Success !</h1>
         <span>
-          You are connected to Google's service. Go <a href='/home'>to the home page</a> to add new
+          You are connected to Steam's service. Go <a href='/home'>to the home page</a> to add new
           AREAs with this service.
         </span>
       </div>
     ) : (
       <div>
         <h1>Failure</h1>
-        You weren't able to connect to Google's service. Go{' '}
+        You weren't able to connect to Steam's service. Go{' '}
         <a href='/settings/services'>to the services page</a> to try again, connect with another
         account or to another service.
       </div>
@@ -44,7 +44,7 @@ function CallBackGoogle() {
         onHide={() => navigate('/home')}>
         <Button
           style={{ marginLeft: -10 }}
-          label='Discord'
+          label='Steam'
           icon='pi pi-chevron-left'
           text
           severity='info'
@@ -56,4 +56,4 @@ function CallBackGoogle() {
   );
 }
 
-export default CallBackGoogle;
+export default CallBackSteam;
