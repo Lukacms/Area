@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router';
 
 const useHome = () => {
   let nbArea = 0;
+  let nbAreaFav = 0;
   const [stateOfCreation, setStateOfCreation] = useState('Not');
   const navigate = useNavigate();
   const [canSave, setCanSave] = useState(false);
@@ -229,6 +230,27 @@ const useHome = () => {
       });
     }
   };
+  const addToPanelFavArea = ({ act, react, name }) => {
+    if (panelAreas[0].items[0].label === '') {
+      panelAreas[0].items.pop();
+      panelAreas[0].items.push({
+        label: name,
+        data: { action: act, reaction: react },
+        command: () => {
+          clickArea({ areaSelected: panelAreas[1].items[0] });
+        },
+      });
+    } else {
+      nbAreaFav++;
+      panelAreas[0].items.push({
+        label: name,
+        data: { action: act, reaction: react },
+        command: () => {
+          clickArea({ areaSelected: panelAreas[0].items[nbAreaFav] });
+        },
+      });
+    }
+  };
 
   const [actionOrReaction, setItems] = useState(actionList);
   const dispAct = () => {
@@ -346,17 +368,19 @@ const useHome = () => {
         if (usersAreas && usersAreas.data.length) {
           usersAreas.data.forEach((item) => {
             if (item.favorite) {
-              panelAreas[0].items.push({
+              addToPanelFavArea({ act: item.action, react: item.reaction, name: item.name });
+              /*panelAreas[0].items.push({
                 label: item.name,
                 data: { action: item.action, reaction: item.reaction, id: item.id },
                 command: () => clickArea({ areaSelected: item.id, favorite: 0 }),
-              });
+              });*/
             } else {
-              panelAreas[1].items.push({
+              addToPanelArea({ act: item.action, react: item.reaction, name: item.name });
+              /*panelAreas[1].items.push({
                 label: item.name,
                 data: { action: item.action, reaction: item.reaction, id: item.id },
                 command: () => clickArea({ areaSelected: item.id, favorite: 1 }),
-              });
+              });*/
             }
           });
         }
