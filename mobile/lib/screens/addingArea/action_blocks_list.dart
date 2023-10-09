@@ -5,10 +5,12 @@ import 'package:mobile/screens/addingArea/action_block.dart';
 import 'package:mobile/theme/style.dart';
 
 class ActionBlockList extends StatefulWidget {
-  final List<AreaAction> actions;
+  final AreaAction action;
+  final List<AreaAction> reactions;
   const ActionBlockList({
     super.key,
-    required this.actions,
+    required this.action,
+    required this.reactions,
   });
 
   @override
@@ -24,24 +26,38 @@ class _ActionBlockListState extends State<ActionBlockList> {
         SizedBox(
           width: 300,
           child: ListView.builder(
-            itemCount: widget.actions.length,
+            itemCount: widget.reactions.isNotEmpty ?  widget.reactions.length + 1 : 1,
             shrinkWrap: true,
             itemBuilder: (context, index) {
-              return index != widget.actions.length - 1
+              print(index);
+              return index == 0
                   ? Column(
                       children: [
                         ActionBlock(
-                          action: widget.actions[index],
+                          action: widget.action,
                         ),
-                        Container(
-                          height: blockHeight * 2,
-                          width: blockHeight,
-                          color: AppColors.white.withOpacity(0.1),
-                        )
+                        widget.reactions.isEmpty
+                            ? Container()
+                            : Container(
+                                height: blockHeight * 2,
+                                width: blockHeight,
+                                color: AppColors.white.withOpacity(0.1),
+                              )
                       ],
                     )
-                  : ActionBlock(
-                      action: widget.actions[index],
+                  : Column(
+                      children: [
+                        ActionBlock(
+                          action: widget.reactions[index - 1],
+                        ),
+                        index == widget.reactions.length
+                            ? Container()
+                            : Container(
+                                height: blockHeight * 2,
+                                width: blockHeight,
+                                color: AppColors.white.withOpacity(0.1),
+                              )
+                      ],
                     );
             },
           ),

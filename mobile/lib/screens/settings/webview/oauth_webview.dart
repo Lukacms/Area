@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:mobile/back/services.dart';
 
-class DiscordWebView extends StatelessWidget {
+
+class OauthWebView extends StatelessWidget {
   final String url;
+  final int index;
 
-  DiscordWebView({Key? key, required this.url}) : super(key: key);
+  const OauthWebView({Key? key, required this.url, required this.index}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Discord'),
+        title: Text(AppServices().services[index].name),
       ),
       body: WebView(
         initialUrl: url,
