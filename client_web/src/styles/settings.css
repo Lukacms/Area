@@ -1,0 +1,13 @@
+.formikInput {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  text-align: left;
+  margin-bottom: 5%;
+  background-color: "#fff";
+  gap: 2%;
+}
+
+.logout {
+  margin-top: 5%;
+}

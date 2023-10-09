@@ -1,9 +1,9 @@
 .areaCardMainDiv {
     display: flex;
-    border: 2px red solid;
     width: 50vw;
-    height: 60vh;
-    justify-content: center;
+    height: 70vh;
     align-items: center;
     flex-direction: column;
+    gap: 2vh;
+    overflow-y: auto;
 }

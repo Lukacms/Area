@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { getServices, getUserServices } from '../config/request';
+import { getServices, getUserServices } from '../../config/request';
 import secureLocalStorage from 'react-secure-storage';
 
 const useSettingServices = () => {
@@ -9,15 +9,17 @@ const useSettingServices = () => {
   const [loaded, setLoaded] = useState(false);
 
   const isUserConnected = (user, id) => {
+    var userConnect = false;
+
     if (!user) {
       return false;
     }
-    user?.forEach((item) => {
+    user.forEach((item) => {
       if (item.serviceId === id) {
-        return true;
+        userConnect = true;
       }
     });
-    return false;
+    return userConnect;
   };
 
   const findUserServiceId = (user, id) => {
@@ -32,16 +34,8 @@ const useSettingServices = () => {
     return -1;
   };
 
-  /* const fromBase64ToImage = (data) => {
-    const fileReader = new FileReader();
-    fileReader.readAsDataURL(data);
-    fileReader.onload = () => {
-      const baseData = fileReader.result;
-      return baseData;
-    };
-  }; */
-
-  useState(async () => {
+  useState(() => {
+    const fetchData = async () => {
     try {
       const userId = secureLocalStorage.getItem('userId');
       const existingServices = await getServices();
@@ -64,6 +58,8 @@ const useSettingServices = () => {
     } catch (e) {
       navigate('/error', { state: { message: e.message } });
     }
+    };
+    fetchData();
   }, []);
 
   return { services, navigate, loaded };

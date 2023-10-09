@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useLocation, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { serviceCallbackDiscord } from '../../config/request';
+import { getByValue } from '../../config/commons';
 
 const useCallbackDiscord = () => {
-  const navigate = useLocation();
+  const navigate = useNavigate();
   const [searchParams /* , setSearchParams */] = useSearchParams();
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -11,7 +12,9 @@ const useCallbackDiscord = () => {
   useEffect(() => {
     const fetchCallback = async () => {
       const data = {
-        searchParams,
+        code: getByValue(searchParams, "code"),
+        guildId: getByValue(searchParams, "guild_id"),
+        permissions: getByValue(searchParams, "permissions")
       };
 
       try {
@@ -25,7 +28,7 @@ const useCallbackDiscord = () => {
       setLoading(false);
     };
     fetchCallback();
-  }, [searchParams]);
+  }, []);
 
   return { navigate, success, loading };
 };

@@ -1,5 +1,6 @@
 using System.Text;
 using AREA_ReST_API;
+using AREA_ReST_API.Classes;
 using AREA_ReST_API.Classes.Jwt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +8,8 @@ using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var _AreaPolicy = "AreaPolicy";
+var areaPolicy = "AreaPolicy";
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -43,7 +45,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: _AreaPolicy,
+    options.AddPolicy(name: areaPolicy,
         policy  =>
         {
             policy.AllowAnyOrigin()
@@ -53,6 +55,10 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddAuthorization();
+
+builder.Services.AddScoped<AppDbContext>();
+
+// builder.Services.AddHostedService<ActionChecker>();
 
 var app = builder.Build();
 
@@ -65,7 +71,7 @@ var app = builder.Build();
 
 app.UseHttpsRedirection();
 
-app.UseCors(_AreaPolicy);
+app.UseCors(areaPolicy);
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -75,7 +81,6 @@ app.MapControllers();
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-
     var context = services.GetRequiredService<AppDbContext>();
     if (context.Database.GetPendingMigrations().Any())
     {

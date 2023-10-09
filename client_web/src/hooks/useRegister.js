@@ -1,9 +1,12 @@
 import { useState } from 'react';
 import * as Yup from 'yup';
 import { register } from '../config/request';
+import { useNavigate } from 'react-router-dom';
 
 const useRegister = () => {
   const [dialogue, setDialogue] = useState(false);
+  const [successDialog, setSuccessDialog] = useState(false);
+  const navigate = useNavigate();
   const initialValues = {
     name: '',
     surname: '',
@@ -34,15 +37,14 @@ const useRegister = () => {
     };
 
     try {
-      const datas = await register(newUser);
-      console.log('Success', datas);
+      await register(newUser);
+      setSuccessDialog(true);
     } catch (error) {
-      console.log('Failure', error);
       setDialogue(true);
     }
   };
 
-  return { initialValues, validate, registerUser, dialogue, setDialogue };
+  return { initialValues, validate, registerUser, dialogue, setDialogue, successDialog, navigate };
 };
 
 export default useRegister;

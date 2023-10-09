@@ -10,7 +10,8 @@ import '../styles/components.css';
 import '../styles/register.css';
 
 function Register() {
-  const { initialValues, validate, registerUser, dialogue, setDialogue } = useRegister();
+  const { initialValues, validate, registerUser, dialogue, setDialogue, successDialog, navigate } =
+    useRegister();
 
   return (
     <Background>
@@ -18,10 +19,13 @@ function Register() {
         <BackButton label='Home' />
         <div className='body'>
           <Image src={process.env.PUBLIC_URL + 'icon.png'} width={400} className='logo' />
-          <Divider layout='vertical' align='center' className='divider' />
+          <Divider layout='vertical' align='center' className='dividerRegister' />
           <div className='register'>
             <h1>Register</h1>
-            <Formik initialValues={initialValues} validationSchema={validate} onSubmit={registerUser}>
+            <Formik
+              initialValues={initialValues}
+              validationSchema={validate}
+              onSubmit={registerUser}>
               {(props) => (
                 <Form>
                   <div className='names'>
@@ -104,6 +108,9 @@ function Register() {
             </Formik>
             <Dialog header='Failure' visible={dialogue} onHide={() => setDialogue(false)}>
               <p>Failed to create your account. Try again in a few minutes.</p>
+            </Dialog>
+            <Dialog header='Failure' visible={successDialog} onHide={() => navigate('/')}>
+              <p>Succesfully created the account. Check your emails to finalise the connexion.</p>
             </Dialog>
           </div>
         </div>

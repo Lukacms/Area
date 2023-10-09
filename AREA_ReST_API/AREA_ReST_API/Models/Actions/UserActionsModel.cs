@@ -10,4 +10,5 @@ public class UserActionsModel
     [Required] public required int AreaId { get; set; }
     [Required] public required int Timer { get; set; }
     [Required] public required string Configuration { get; set; }
+    public int Countdown { get; set; }
 }

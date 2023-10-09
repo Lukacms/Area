@@ -2,6 +2,7 @@
 using AREA_ReST_API;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AREA_ReST_API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231003164051_add_endpoint_link_in_services")]
+    partial class add_endpoint_link_in_services
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -126,9 +129,6 @@ namespace AREA_ReST_API.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("Countdown")
-                        .HasColumnType("int");
-
                     b.Property<int>("Timer")
                         .HasColumnType("int");
 
@@ -167,9 +167,6 @@ namespace AREA_ReST_API.Migrations
                     b.Property<string>("AccessToken")
                         .IsRequired()
                         .HasColumnType("longtext");
-
-                    b.Property<int>("ExpiresIn")
-                        .HasColumnType("int");
 
                     b.Property<string>("RefreshToken")
                         .IsRequired()

@@ -1,15 +1,5 @@
-import AreaCard from "../components/AreaCard";
-import {
-  Button,
-  ToggleButton,
-  ToggleButtonGroup,
-  IconButton,
-  TextField,
-  AppBar,
-  Stack,
-} from "@mui/material";
-import HomeToolbar from "../components/HomeToolBar";
-import { useEffect, useState } from "react";
+import { AreaCard, HomeToolbar } from '.';
+import { Stack } from '@mui/material';
 
 const AreaBuild = ({
   canSave,
@@ -29,7 +19,7 @@ const AreaBuild = ({
         onClickForCreateArea={onClickForCreateArea}
         onEnterNameArea={onEnterNameArea}
       />
-      <div className="middleDiv" style={{ flex: 2 }}>
+      <div className='middleDiv' style={{ flex: 2 }}>
         <p> {currentState} </p>
         <AreaCard area={selectedArea} />
       </div>

@@ -9,6 +9,7 @@ import {
   NotFound,
   Register,
   SettingServices,
+  SettingsUser,
   SpecificService,
 } from './pages';
 import 'primeicons/primeicons.css';
@@ -24,6 +25,7 @@ function App() {
       </Route>
       <Route path='/home' element={<Home />} />
       <Route path='/settings'>
+        <Route index element={<SettingsUser />} />
         <Route path='services'>
           <Route index element={<SettingServices />} />
           <Route path=':id' element={<SpecificService />} />
