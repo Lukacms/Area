@@ -4,6 +4,7 @@ import {
   CallBackDeezer,
   CallBackDiscord,
   CallBackFacebook,
+  CallBackGithub,
   CallBackGoogle,
   CallBackInstagram,
   CallBackLetterBoxd,
@@ -63,7 +64,6 @@ function App() {
       <Route path='*' element={<Navigate to='/notfound' />} />
     </Routes>
   );
-  // <Route index element={<SettingUser />} /> // TODO
 }
 
 export default App;

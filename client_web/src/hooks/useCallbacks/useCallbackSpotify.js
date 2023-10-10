@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { serviceCallbackDiscord } from '../../config/request';
+import { serviceCallbackSpotify } from '../../config/request';
 import { getByValue } from '../../config/commons';
 
 const useCallbackSpotify = () => {
@@ -18,7 +18,7 @@ const useCallbackSpotify = () => {
       };
 
       try {
-        const res = await serviceCallbackDiscord(data);
+        const res = await serviceCallbackSpotify(data);
         if (res.status.toString().startsWith('2')) {
           setSuccess(true);
         }
