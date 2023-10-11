@@ -21,23 +21,6 @@ class _SettingsPageState extends State<SettingsPage> {
   List<Area> areas = [];
   String selectedSegment = "Services";
 
-  Future handleSignIn() async {
-    final GoogleSignIn googleSignIn = GoogleSignIn();
-    try {
-      final googleUser = await googleSignIn.signIn();
-      final googleAuth = await googleUser?.authentication;
-      if (googleAuth != null) {
-        final String? token = googleAuth.accessToken;
-        print(googleAuth.accessToken);
-        print(googleUser!.serverAuthCode);
-      } else {
-        print('User not signed in');
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
-
   @override
   void initState() {
     super.initState();
@@ -148,21 +131,10 @@ class _SettingsPageState extends State<SettingsPage> {
                                   ),
                                 ),
                                 onPressed: () {
-                                  /*  if (AppServices().services[index].oAuth !=
-                                      "null") {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => OauthWebView(
-                                          index: index,
-                                          url: AppServices()
-                                              .services[index]
-                                              .oAuth,
-                                        ),
-                                      ),
-                                    );
-                                  } */
-                                  handleSignIn();
+                                  if (AppServices().services[index] != "null") {
+                                    AppServices().serviceLogInFunctions[
+                                        AppServices().services[index].name]!();
+                                  }
                                 },
                               );
                             },
