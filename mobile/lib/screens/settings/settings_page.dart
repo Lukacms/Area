@@ -5,10 +5,8 @@ import 'package:mobile/back/api.dart';
 import 'package:mobile/back/local_storage.dart';
 import 'package:mobile/back/services.dart';
 import 'package:mobile/main.dart';
-import 'package:mobile/screens/login/login.dart';
 import 'package:mobile/theme/style.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:mobile/screens/settings/webview/oauth_webview.dart';
 
 class SettingsPage extends StatefulWidget {
   final String token;
@@ -24,23 +22,14 @@ class _SettingsPageState extends State<SettingsPage> {
   String selectedSegment = "Services";
 
   Future handleSignIn() async {
-    print("AOJODOJDOEK");
-    final GoogleSignIn googleSignIn = GoogleSignIn(
-      scopes: [
-        'https://www.googleapis.com/auth/gmail.modify',
-        'openid',
-        'https://Fwww.googleapis.com/Fauth/calendar',
-      ],
-      serverClientId:
-          '315267877885-2np97bt3qq9s6er73549ldrfme2b67pi.apps.googleusercontent.com',
-    );
+    final GoogleSignIn googleSignIn = GoogleSignIn();
     try {
       final googleUser = await googleSignIn.signIn();
       final googleAuth = await googleUser?.authentication;
       if (googleAuth != null) {
-        print(googleAuth.accessToken);
         final String? token = googleAuth.accessToken;
-        print(token);
+        print(googleAuth.accessToken);
+        print(googleUser!.serverAuthCode);
       } else {
         print('User not signed in');
       }
