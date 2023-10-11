@@ -44,8 +44,6 @@ public class HttpService
           request.Headers.Add("Accept", accept);
       request.Content = new StringContent(query, Encoding.UTF8, contentType);
       var response = await _client.SendAsync(request);
-      Console.WriteLine("G repons");
-      Console.WriteLine(response.ToString());
       return await response.Content.ReadAsStringAsync();
     }
 }

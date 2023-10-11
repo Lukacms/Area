@@ -31,11 +31,7 @@ public class GithubController
         const string callbackUri = "http%3A%2F%2Flocalhost:8081%2Fsettings%2Fservices%2Fgithub";
         var query = $"?client_id=Iv1.f47bfd491f94b532&client_secret=c8f7c650f3d4c47462ddbf0ca06b1113478c9f6e&code={githubCode.Code}&redirect_uri={callbackUri}";
         var result = await _client.PostWithQueryAsync(_githubUri, query, "application/x-www-forms-urlencoded", "application/json");
-        Console.WriteLine("\n");
-        Console.WriteLine(result);
-        Console.WriteLine("\n");
         var jsonRes = JObject.Parse(result);
-        Console.WriteLine(jsonRes);
         var userService = new UserServicesModel
         {
             ServiceId = _context.Services.First(service => service.Name == "Github").Id,
@@ -44,7 +40,6 @@ public class GithubController
             RefreshToken = jsonRes["refresh_token"]!.ToString(),
             ExpiresIn = (int)jsonRes["refresh_token_expires_in"]!,
         };
-        Console.WriteLine("OUI LOL");
         _context.UserServices.Add(userService);
         await _context.SaveChangesAsync();
         return new OkResult();

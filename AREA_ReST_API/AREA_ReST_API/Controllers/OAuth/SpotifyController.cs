@@ -37,7 +37,7 @@ public class SpotifyController
         {
             { "code", spotifyCodes.Code },
             { "redirect_uri", callbackUri},
-            { "grant_type", "client_credentials" },
+            { "grant_type", "authorization_code" },
         };
         var result = await _client.PostAsync(_spotifyUrl, data, "application/x-www-forms-urlencoded", base64str);
         var jsonRes = JObject.Parse(result);
