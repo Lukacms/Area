@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { serviceCallbackDiscord } from '../../config/request';
+import { serviceCallbackGithub } from '../../config/request';
 import { getByValue } from '../../config/commons';
 
 const useCallbackGithub = () => {
@@ -12,13 +12,11 @@ const useCallbackGithub = () => {
   useEffect(() => {
     const fetchCallback = async () => {
       const data = {
-        code: getByValue(searchParams, "code"),
-        guildId: getByValue(searchParams, "guild_id"),
-        permissions: getByValue(searchParams, "permissions")
+        code: getByValue(searchParams, 'code'),
       };
 
       try {
-        const res = await serviceCallbackDiscord(data);
+        const res = await serviceCallbackGithub(data);
         if (res.status.toString().startsWith('2')) {
           setSuccess(true);
         }
@@ -34,5 +32,3 @@ const useCallbackGithub = () => {
 };
 
 export default useCallbackGithub;
-
-

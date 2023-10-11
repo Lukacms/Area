@@ -69,3 +69,4 @@ export const getUsersAreas = (id) => axiosInstance.get(API_URL + `Areas/${id}`);
 export const serviceCallbackDiscord = (datas) => axiosInstance.post(OAUTH_URL + 'Discord', datas);
 export const serviceCallbackGoogle = (datas) => axiosInstance.post(OAUTH_URL + 'Google', datas);
 export const serviceCallbackSpotify = (datas) => axiosInstance.post(OAUTH_URL + 'Spotify', datas);
+export const serviceCallbackGithub = (datas) => axiosInstance.post(OAUTH_URL + 'Github', datas);

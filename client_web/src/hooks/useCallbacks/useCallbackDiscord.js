@@ -12,9 +12,9 @@ const useCallbackDiscord = () => {
   useEffect(() => {
     const fetchCallback = async () => {
       const data = {
-        code: getByValue(searchParams, "code"),
-        guildId: getByValue(searchParams, "guild_id"),
-        permissions: getByValue(searchParams, "permissions")
+        code: getByValue(searchParams, 'code'),
+        guildId: getByValue(searchParams, 'guild_id'),
+        permissions: getByValue(searchParams, 'permissions'),
       };
 
       try {
