@@ -133,7 +133,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                 onPressed: () {
                                   if (AppServices().services[index] != "null") {
                                     AppServices().serviceLogInFunctions[
-                                        AppServices().services[index].name]!();
+                                        AppServices().services[index].name]!(context);
                                   }
                                 },
                               );

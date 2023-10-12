@@ -1,4 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:mobile/back/api.dart';
+import 'package:mobile/screens/settings/webview/oauth_webview.dart';
 import 'package:mobile/theme/style.dart';
 
 class Service {
@@ -68,20 +72,21 @@ enum ServiceCategories {
 class AppServices {
   List services = [
     Service(
-        name: "Github",
-        svgIcon: 'assets/serviceIcons/github.svg',
-        iconColor: Colors.grey,
-        category: 'Dev',
-        actions: ['Commit', 'Push', 'Pull'],
-        oAuth: "null",
+      name: "Github",
+      svgIcon: 'assets/serviceIcons/github.svg',
+      iconColor: Colors.grey,
+      category: 'Dev',
+      actions: ['Commit', 'Push', 'Pull'],
+      oAuth: "null",
     ),
     Service(
-        name: "Discord",
-        svgIcon: 'assets/serviceIcons/discord.svg',
-        iconColor: Colors.purple,
-        category: 'messageries',
-        actions: ['Message', 'Call', 'Video'],
-        oAuth: "https://discord.com/api/oauth2/authorize?client_id=1158738215704985681&permissions=8&redirect_uri=http%3A%2F%2Flocalhost%3A8081%2Fsettings%2Fservices&response_type=code&scope=bot",
+      name: "Discord",
+      svgIcon: 'assets/serviceIcons/discord.svg',
+      iconColor: Colors.purple,
+      category: 'messageries',
+      actions: ['Message', 'Call', 'Video'],
+      oAuth:
+          "https://discord.com/api/oauth2/authorize?client_id=1158738215704985681&permissions=8&redirect_uri=http%3A%2F%2Flocalhost%3A8081%2Fsettings%2Fservices&response_type=code&scope=bot",
     ),
     Service(
       name: "Google",
@@ -89,7 +94,8 @@ class AppServices {
       iconColor: Colors.white,
       category: 'reseaux',
       actions: ['Message', 'Call', 'Video'],
-      oAuth: "https://accounts.google.com/o/oauth2/auth?scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fgmail.modify+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar&response_type=code&redirect_uri=http%3A%2F%2Flocalhost:8090%2Fsettings%2Fservices%2Fgoogle&client_id=315267877885-lkqq49r6v587fi9pduggbdh9dr1j69me.apps.googleusercontent.com",
+      oAuth:
+          "https://accounts.google.com/o/oauth2/auth?scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fgmail.modify+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar&response_type=code&redirect_uri=http%3A%2F%2Flocalhost:8090%2Fsettings%2Fservices%2Fgoogle&client_id=315267877885-lkqq49r6v587fi9pduggbdh9dr1j69me.apps.googleusercontent.com",
     ),
     Service(
       name: "Instagram",
@@ -100,7 +106,7 @@ class AppServices {
       oAuth: "null",
     ),
     Service(
-      name: "Linkedin",
+      name: "Spotify",
       svgIcon: 'assets/serviceIcons/linkedin.svg',
       iconColor: Colors.blue,
       category: "reseaux",
@@ -153,4 +159,49 @@ class AppServices {
       )
     ],
   ];
+  Map<String, dynamic> serviceLogInFunctions = {
+    'Google': () async {
+      final GoogleSignIn googleSignIn = GoogleSignIn();
+      try {
+        final googleUser = await googleSignIn.signIn();
+        final googleAuth = await googleUser?.authentication;
+        if (googleAuth != null) {
+          final String? token = googleAuth.accessToken;
+          if (kDebugMode) {
+            print(googleAuth.accessToken);
+            print(googleUser!.serverAuthCode);
+          }
+          return token;
+        } else {
+          if (kDebugMode) {
+            print('User not signed in');
+          }
+          return null;
+        }
+      } catch (e) {
+        if (kDebugMode) {
+          print(e);
+        }
+        return null;
+      }
+    },
+    'Spotify': (BuildContext context) async {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) {
+            return SpotifyAuthWebView(
+              clientId: '834ee184a29945b2a2a3dc8108a5bbf4',
+              clientSecret: 'b589f784bb3f4b3897337acbfdd80f0d',
+              url: 'https://accounts.spotify.com/api/token',
+              serverOauth: (code) {
+                serverSpotifyAuth(code);
+              },
+              authUrl:
+                  'https://accounts.spotify.com/authorize?client_id=834ee184a29945b2a2a3dc8108a5bbf4&response_type=code&redirect_uri=area://oauth2redirect&scope=user-read-private%20user-read-email',
+            );
+          },
+        ),
+      );
+    },
+  };
 }

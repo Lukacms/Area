@@ -20,6 +20,35 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+  void login() async {
+    List res = [];
+    await serverLogin(emailController.text, passwordController.text)
+        .then((value) {
+      res = value;
+    });
+    if (res[0]) {
+      Map<String, dynamic> user = {};
+      await saveToken(res[1]);
+      await serverGetSelfInfos(res[1]).then((value) {
+        saveUser(value);
+        user = value;
+      });
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => HomePage(
+          user: user,
+          token: res[1],
+        ),
+      ));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Login failed. Please try again."),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final safePadding = MediaQuery.of(context).padding.top;
@@ -66,6 +95,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 placeholder: '********',
                 isPassword: true,
                 controller: passwordController,
+                onValidate: () {
+                  login();
+                },
               ),
               Padding(padding: EdgeInsets.only(top: blockHeight * 2)),
               Row(
@@ -92,11 +124,12 @@ class _LoginScreenState extends State<LoginScreen> {
                             transitionsBuilder: (context, animation,
                                     secondaryAnimation, child) =>
                                 SlideTransition(
-                                    position: Tween<Offset>(
-                                      begin: const Offset(0, 1),
-                                      end: Offset.zero,
-                                    ).animate(animation),
-                                    child: child),
+                              position: Tween<Offset>(
+                                begin: const Offset(0, 1),
+                                end: Offset.zero,
+                              ).animate(animation),
+                              child: child,
+                            ),
                           ),
                         );
                       },
@@ -157,34 +190,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       fontSize: 20,
                     ),
                   ),
-                  onPressed: () async {
-                    List res = [];
-                    await serverLogin(
-                            emailController.text, passwordController.text)
-                        .then((value) {
-                      res = value;
-                    });
-                    if (res[0]) {
-                      Map<String, dynamic> user = {};
-                      await saveToken(res[1]);
-                      await serverGetSelfInfos(res[1]).then((value) {
-                        saveUser(value);
-                        user = value;
-                      });
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => HomePage(
-                          user: user,
-                          token: res[1],
-                        ),
-                      ));
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text("Login failed. Please try again."),
-                          duration: Duration(seconds: 2),
-                        ),
-                      );
-                    }
+                  onPressed: () {
+                    login();
                   },
                 ),
               ),

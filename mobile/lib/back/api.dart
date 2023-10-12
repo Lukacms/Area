@@ -102,6 +102,23 @@ Future serverGoogleAuth(String token, String scope) async {
   return response;
 }
 
+Future serverSpotifyAuth(String code) async {
+  var url =
+      Uri(scheme: 'http', host: CURRENT_IP, port: 8080, path: '/oauth/Spotify');
+  var headers = {
+    'Content-Type': 'application/json',
+    'accept': '*/*',
+  };
+  var body = jsonEncode({'code': code, 'scope': ''});
+  var response =
+      await http.post(url, headers: headers, body: body).then((value) {
+    print('reponse serveur${value.statusCode}');
+    print(value.body);
+    return value.body;
+  });
+  return null;
+}
+
 /// Sends a GET request to the server to retrieve information about the area with the specified `id`.
 ///
 /// Returns a JSON-encoded object containing information about the area with the specified `id`,
