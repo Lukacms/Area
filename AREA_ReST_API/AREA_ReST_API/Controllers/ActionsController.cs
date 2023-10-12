@@ -1,6 +1,9 @@
+using System.Text.Json.Nodes;
 using AREA_ReST_API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Linq;
 
 namespace AREA_ReST_API.Controllers;
 
@@ -29,5 +32,22 @@ public class ActionsController
     {
         var requestedActions = _context.Actions.Where(action => action.ServiceId == serviceId).ToList();
         return new OkObjectResult(requestedActions);
+    }
+
+    [HttpPost("")]
+    public ActionResult CreateNewAction([FromBody] ActionsModel newAction)
+    {
+        if (newAction.Name.IsNullOrEmpty()) 
+            return new BadRequestObjectResult(new JsonObject { { "message", "Reaction name is empty" } });
+        if (newAction.Endpoint.IsNullOrEmpty())
+            return new BadRequestObjectResult(new JsonObject { { "message", "Reaction endpoint is empty" } });
+        if (newAction.ServiceId == 0)
+            return new BadRequestObjectResult(new JsonObject { { "message", "ServiceId cannot be equal to zero" } });
+        var service = _context.Services.FirstOrDefault(s => s.Id == newAction.ServiceId);
+        if (service == null)
+            return new BadRequestObjectResult(new JsonObject { { "message", $"There's no services with this ServiceId" } });
+        var registeredAction = _context.Actions.Add(newAction);
+        _context.SaveChanges();
+        return new CreatedResult("Action successfully created", registeredAction.Entity);
     }
 }

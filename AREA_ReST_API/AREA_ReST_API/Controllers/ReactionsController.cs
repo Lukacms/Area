@@ -1,6 +1,8 @@
+using System.Text.Json.Nodes;
 using AREA_ReST_API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace AREA_ReST_API.Controllers;
 
@@ -29,5 +31,22 @@ public class ReactionsController
     {
         var requestedActions = _context.Reactions.Where(action => action.ServiceId == serviceId).ToList();
         return new OkObjectResult(requestedActions);
+    }
+    
+    [HttpPost("")]
+    public ActionResult CreateNewReaction([FromBody] ReactionsModel newReaction)
+    {
+        if (newReaction.Name.IsNullOrEmpty()) 
+            return new BadRequestObjectResult(new JsonObject { { "message", "Reaction name is empty" } });
+        if (newReaction.Endpoint.IsNullOrEmpty())
+            return new BadRequestObjectResult(new JsonObject { { "message", "Reaction endpoint is empty" } });
+        if (newReaction.ServiceId == 0)
+            return new BadRequestObjectResult(new JsonObject { { "message", "ServiceId cannot be equal to zero" } });
+        var service = _context.Services.FirstOrDefault(s => s.Id == newReaction.ServiceId);
+        if (service == null)
+            return new BadRequestObjectResult(new JsonObject { { "message", $"There's no services with this ServiceId" } });
+        var registeredReaction = _context.Reactions.Add(newReaction);
+        _context.SaveChanges();
+        return new CreatedResult("Reaction successfully created", registeredReaction.Entity);
     }
 }
