@@ -4,13 +4,16 @@ import { useSpecificService } from '../../hooks';
 import { Home } from '..';
 
 function SpecificService() {
-  const { navigate, item, connect, changeAccount, disconnect } = useSpecificService();
+  const { navigate, item, connect, changeAccount, disconnect, isAdmin } = useSpecificService();
 
   const header = () => {
     return (
       <div className='flex flex-row' style={{ width: '110%' }}>
         <Button label='Services' disabled text severity='info' />
         <Button label='Settings' onClick={() => navigate('/settings')} text severity='info' />
+        {isAdmin ? (
+          <Button label='Admin' onClick={() => navigate('/settings/admin')} text severity='info' />
+        ) : null}
       </div>
     );
   };

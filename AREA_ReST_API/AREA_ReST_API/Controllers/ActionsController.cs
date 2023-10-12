@@ -23,7 +23,7 @@ public class ActionsController
         var actions = _context.Actions.ToList();
         return new OkObjectResult(actions);
     }
-    
+
     [HttpGet("{serviceId:int}")]
     public ActionResult<List<ActionsModel>> GetActionsByServiceId([AsParameters] int serviceId)
     {

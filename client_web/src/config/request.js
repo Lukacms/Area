@@ -26,8 +26,6 @@ axios.interceptors.response.use(
   },
 );
 
-export const getUsers = () => axiosInstance.get('Users');
-
 export const register = (userData) =>
   axios.post(API_URL + 'Users/register', userData, {
     headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Credentials': true },
@@ -70,3 +68,6 @@ export const serviceCallbackDiscord = (datas) => axiosInstance.post(OAUTH_URL + 
 export const serviceCallbackGoogle = (datas) => axiosInstance.post(OAUTH_URL + 'Google', datas);
 export const serviceCallbackSpotify = (datas) => axiosInstance.post(OAUTH_URL + 'Spotify', datas);
 export const serviceCallbackGithub = (datas) => axiosInstance.post(OAUTH_URL + 'Github', datas);
+
+// admin
+export const getAllUsers = () => axiosInstance.get(API_URL + 'Users');

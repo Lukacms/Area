@@ -25,6 +25,7 @@ const useLogin = () => {
       secureLocalStorage.setItem('token', data.data.access_token);
       const user = await getFirstInfos(data.data.access_token);
       secureLocalStorage.setItem('userId', user.data.id);
+      secureLocalStorage.setItem('isAdmin', user.data.admin);
       navigate('/home');
     } catch (error) {
       setError(error.message);

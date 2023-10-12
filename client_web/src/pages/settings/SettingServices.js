@@ -6,13 +6,16 @@ import { Home } from '..';
 import { useSettingServices } from '../../hooks';
 
 function SettingServices() {
-  const { services, navigate, loaded } = useSettingServices();
+  const { services, navigate, loaded, isAdmin } = useSettingServices();
 
   const header = () => {
     return (
       <div className='flex flex-row' style={{ width: '110%' }}>
         <Button label='Services' disabled text severity='info' />
         <Button label='Settings' onClick={() => navigate('/settings')} text severity='info' />
+        {isAdmin ? (
+          <Button label='Admin' onClick={() => navigate('/settings/admin')} text severity='info' />
+        ) : null}
       </div>
     );
   };

@@ -1,0 +1,33 @@
+.globalDiv {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    background-color: #1B1A2A;
+}
+
+.leftDiv {
+    display: flex;
+    width: 15vw;
+    background-color: rgba(255, 250, 251, 0.1);
+    flex-direction: column;
+    gap: 2vh;
+}
+
+.topLeft {
+    display: flex;
+    gap: 3vw;
+    margin-top: 3vh;
+    margin-bottom: 1vh;
+    padding-bottom: 1vh;
+    align-items: center;
+    border-bottom: white solid 1px;
+}
+
+.settingsButton {
+  align-self: center;
+}
+
+.centerAdmin {
+  margin-top: 3vh;
+  margin-left: 3vw;
+}
