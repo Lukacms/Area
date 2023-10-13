@@ -1,9 +1,9 @@
 using System.Text.Json.Nodes;
+using AREA_ReST_API.Middleware;
 using AREA_ReST_API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json.Linq;
 
 namespace AREA_ReST_API.Controllers;
 
@@ -26,7 +26,7 @@ public class ActionsController
         var actions = _context.Actions.ToList();
         return new OkObjectResult(actions);
     }
-    
+
     [HttpGet("{serviceId:int}")]
     public ActionResult<List<ActionsModel>> GetActionsByServiceId([AsParameters] int serviceId)
     {
@@ -35,9 +35,13 @@ public class ActionsController
     }
 
     [HttpPost("")]
-    public ActionResult CreateNewAction([FromBody] ActionsModel newAction)
+    public ActionResult CreateNewAction([FromBody] ActionsModel newAction, [FromHeader] string authorization)
     {
-        if (newAction.Name.IsNullOrEmpty()) 
+        var decodedUser = JwtDecoder.Decode(authorization);
+
+        if (!decodedUser.Admin)
+          return new UnauthorizedObjectResult(new JsonObject{{"message", "You are not allowed to add a reaction"}});
+        if (newAction.Name.IsNullOrEmpty())
             return new BadRequestObjectResult(new JsonObject { { "message", "Reaction name is empty" } });
         if (newAction.Endpoint.IsNullOrEmpty())
             return new BadRequestObjectResult(new JsonObject { { "message", "Reaction endpoint is empty" } });
@@ -49,5 +53,20 @@ public class ActionsController
         var registeredAction = _context.Actions.Add(newAction);
         _context.SaveChanges();
         return new CreatedResult("Action successfully created", registeredAction.Entity);
+    }
+
+    [HttpDelete("{actionId:int}")]
+    public ActionResult DeleteAction([AsParameters] int actionId, [FromHeader] string authorization)
+    {
+        var decodedUser = JwtDecoder.Decode(authorization);
+        var deletedAction = _context.Actions.FirstOrDefault(action => action.Id == actionId);
+
+        if (!decodedUser.Admin)
+            return new UnauthorizedObjectResult(new JsonObject{{"message", "You are not authorized to do this"}});
+        if (deletedAction == null)
+            return new NotFoundObjectResult(new JsonObject{{"message", "No Action found to delete"}});
+        _context.Actions.Remove(deletedAction);
+        _context.SaveChanges();
+        return new OkObjectResult(new JsonObject{{"message", "Action successfully deleted"}});
     }
 }

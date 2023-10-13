@@ -7,6 +7,7 @@ import NotFound from './NotFound';
 import SettingsUser from './settings/SettingsUser';
 import SettingServices from './settings/SettingServices';
 import SpecificService from './settings/SpecificService';
+import SettingsAdmin from './settings/SettingsAdmin';
 import CallBackDiscord from './callbacks/CallbackDiscord';
 import CallBackGoogle from './callbacks/CallbackGoogle';
 import CallBackSteam from './callbacks/CallbackSteam';
@@ -33,6 +34,7 @@ export {
   SettingsUser,
   SettingServices,
   SpecificService,
+  SettingsAdmin,
   CallBackDiscord,
   CallBackGoogle,
   CallBackPhilipsHue,

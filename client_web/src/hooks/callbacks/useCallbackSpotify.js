@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { serviceCallbackDiscord } from '../../config/request';
+import { serviceCallbackSpotify } from '../../config/request';
 import { getByValue } from '../../config/commons';
 
-const useCallbackDiscord = () => {
+const useCallbackSpotify = () => {
   const navigate = useNavigate();
   const [searchParams /* , setSearchParams */] = useSearchParams();
   const [success, setSuccess] = useState(false);
@@ -12,13 +12,11 @@ const useCallbackDiscord = () => {
   useEffect(() => {
     const fetchCallback = async () => {
       const data = {
-        code: getByValue(searchParams, "code"),
-        guildId: getByValue(searchParams, "guild_id"),
-        permissions: getByValue(searchParams, "permissions")
+        code: getByValue(searchParams, 'code'),
       };
 
       try {
-        const res = await serviceCallbackDiscord(data);
+        const res = await serviceCallbackSpotify(data);
         if (res.status.toString().startsWith('2')) {
           setSuccess(true);
         }
@@ -33,4 +31,4 @@ const useCallbackDiscord = () => {
   return { navigate, success, loading };
 };
 
-export default useCallbackDiscord;
+export default useCallbackSpotify;

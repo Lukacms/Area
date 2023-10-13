@@ -19,12 +19,12 @@ public class AreasController
     {
         _context = context;
     }
-    
+
     [HttpGet("{userId:int}")]
     public ActionResult<List<AreaWithActionReaction>> GetAllAreasByUserId([AsParameters] int userId)
     {
         var requestedArea = _context.Areas.Where(area => area.UserId == userId).ToList();
-        var areasWithId = requestedArea.Select(areasModel => new AreaWithActionReaction 
+        var areasWithId = requestedArea.Select(areasModel => new AreaWithActionReaction
             {
                 Id = areasModel.Id,
                 Name = areasModel.Name,
@@ -78,7 +78,7 @@ public class AreasController
         };
         return new CreatedResult("Area successfully created", createdArea);
     }
-    
+
     [HttpDelete("{areaId:int}")]
     public ActionResult DeleteAreaWithActionAndReaction([AsParameters] int areaId)
     {

@@ -3,24 +3,25 @@ import useRegister from './useRegister';
 import useMailVerif from './useMailVerif';
 import useHome from './useHome';
 import useError from './useError';
-import useCallbackDiscord from './useCallbacks/useCallbackDiscord';
-import useCallbackGoogle from './useCallbacks/useCallbackGoogle';
+import useCallbackDiscord from './callbacks/useCallbackDiscord';
+import useCallbackGoogle from './callbacks/useCallbackGoogle';
 import useSettingServices from './settings/useSettingServices';
 import useSpecificService from './settings/useSpecificService';
 import useSettingsUser from './settings/useSettingsUser';
-import useCallbackYoutube from './useCallbacks/useCallbackYoutube';
-import useCallbackTrello from './useCallbacks/useCallbackTrello';
-import useCallbackSteam from './useCallbacks/useCallbackSteam';
-import useCallbackSpotify from './useCallbacks/useCallbackSpotify';
-import useCallbackPhilipsHue from './useCallbacks/useCallbackPhilipsHue';
-import useCallbackOutlook from './useCallbacks/useCallbackOutlook';
-import useCallbackLinkedin from './useCallbacks/useCallbackLinkedin';
-import useCallbackInstagram from './useCallbacks/useCallbackInstagram';
-import useCallbackGithub from './useCallbacks/useCallbackGithub';
-import useCallbackFacebook from './useCallbacks/useCallbackFacebook';
-import useCallbackDeezer from './useCallbacks/useCallbackDeezer';
-import useCallbackAppleMusic from './useCallbacks/useCallbackAppleMusic';
-import useCallbackLetterBoxd from './useCallbacks/useCallbackLetterBoxd';
+import useSettingsAdmin from './settings/useSettingsAdmin';
+import useCallbackYoutube from './callbacks/useCallbackYoutube';
+import useCallbackTrello from './callbacks/useCallbackTrello';
+import useCallbackSteam from './callbacks/useCallbackSteam';
+import useCallbackSpotify from './callbacks/useCallbackSpotify';
+import useCallbackPhilipsHue from './callbacks/useCallbackPhilipsHue';
+import useCallbackOutlook from './callbacks/useCallbackOutlook';
+import useCallbackLinkedin from './callbacks/useCallbackLinkedin';
+import useCallbackInstagram from './callbacks/useCallbackInstagram';
+import useCallbackGithub from './callbacks/useCallbackGithub';
+import useCallbackFacebook from './callbacks/useCallbackFacebook';
+import useCallbackDeezer from './callbacks/useCallbackDeezer';
+import useCallbackAppleMusic from './callbacks/useCallbackAppleMusic';
+import useCallbackLetterBoxd from './callbacks/useCallbackLetterBoxd';
 
 export {
   useRegister,
@@ -30,6 +31,7 @@ export {
   useSettingServices,
   useSpecificService,
   useSettingsUser,
+  useSettingsAdmin,
   useError,
   useCallbackDiscord,
   useCallbackGoogle,

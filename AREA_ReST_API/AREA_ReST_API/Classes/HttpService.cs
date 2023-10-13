@@ -1,5 +1,7 @@
 using System.Net;
 using System.Net.Http.Headers;
+using System.Text;
+using HttpContent = System.Net.Http.HttpContent;
 
 namespace AREA_ReST_API.Classes;
 
@@ -32,5 +34,16 @@ public class HttpService
         requestMessage.Content = new FormUrlEncodedContent(data);
         var response = await _client.SendAsync(requestMessage);
         return await response.Content.ReadAsStringAsync();
+    }
+
+    public async Task<string> PostWithQueryAsync(string url, string query, string contentType, string accept)
+    {
+      var request = new HttpRequestMessage(HttpMethod.Post, url + query);
+
+      if (accept.Length > 0)
+          request.Headers.Add("Accept", accept);
+      request.Content = new StringContent(query, Encoding.UTF8, contentType);
+      var response = await _client.SendAsync(request);
+      return await response.Content.ReadAsStringAsync();
     }
 }

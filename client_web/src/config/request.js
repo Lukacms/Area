@@ -26,8 +26,6 @@ axios.interceptors.response.use(
   },
 );
 
-export const getUsers = () => axiosInstance.get('Users');
-
 export const register = (userData) =>
   axios.post(API_URL + 'Users/register', userData, {
     headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Credentials': true },
@@ -69,3 +67,12 @@ export const getUsersAreas = (id) => axiosInstance.get(API_URL + `Areas/${id}`);
 export const serviceCallbackDiscord = (datas) => axiosInstance.post(OAUTH_URL + 'Discord', datas);
 export const serviceCallbackGoogle = (datas) => axiosInstance.post(OAUTH_URL + 'Google', datas);
 export const serviceCallbackSpotify = (datas) => axiosInstance.post(OAUTH_URL + 'Spotify', datas);
+export const serviceCallbackGithub = (datas) => axiosInstance.post(OAUTH_URL + 'Github', datas);
+
+// admin
+export const getAllUsers = () => axiosInstance.get(API_URL + 'Users');
+export const addAction = (data) => axiosInstance.post(API_URL + 'Actions', data);
+export const addReaction = (data) => axiosInstance.post(API_URL + 'Reactions', data);
+export const delAction = (actionId) => axiosInstance.delete(API_URL + `Actions/${actionId}`);
+export const delReaction = (reactionId) =>
+  axiosInstance.delete(API_URL + `Reactions/${reactionId}`);

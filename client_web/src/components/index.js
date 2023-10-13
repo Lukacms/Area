@@ -6,6 +6,7 @@ import AreaCard from './AreaCard';
 import AreaBuild from './AreaBuild';
 import ItemCard from './ItemCard';
 import HomeToolbar from './HomeToolBar';
+import AdminAddItem from './AdminAddItem';
 
 export {
   ItemCard,
@@ -16,4 +17,5 @@ export {
   AreaBuild,
   AreaCard,
   HomeToolbar,
+  AdminAddItem,
 };

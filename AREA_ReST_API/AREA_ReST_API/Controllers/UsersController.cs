@@ -26,7 +26,7 @@ public class UsersController : ControllerBase
     {
         _context = context;
     }
-    
+
     [HttpGet("")]
     public ActionResult<IEnumerable<UsersModel>> GetAllUsers([FromHeader] string authorization)
     {
@@ -57,7 +57,7 @@ public class UsersController : ControllerBase
             return new NotFoundObjectResult(new JsonObject { { "message", "User not found" } });
         return new OkObjectResult(requestedUser);
     }
-    
+
     [HttpDelete("{id:int}")]
     public ActionResult DeleteUser([AsParameters] int id)
     {
@@ -68,7 +68,7 @@ public class UsersController : ControllerBase
         _context.SaveChanges();
         return new OkObjectResult(new JsonObject {{"message", "User successfully deleted"}});
     }
-    
+
     [AllowAnonymous]
     [HttpPost("register")]
     public ActionResult CreateNewUser([FromBody] RegisterClass userInfo)
@@ -89,7 +89,7 @@ public class UsersController : ControllerBase
             Admin = false,
         };
         var user = _context.Users.Add(newUser);
-        _context.SaveChanges(); 
+        _context.SaveChanges();
         return new CreatedResult("URI", user.Entity);
     }
 
@@ -102,7 +102,7 @@ public class UsersController : ControllerBase
         }
         return !newUser.Username.IsNullOrEmpty() && !newUser.Name.IsNullOrEmpty() && !newUser.Password.IsNullOrEmpty();
     }
-    
+
     [AllowAnonymous]
     [HttpPost("login")]
     public ActionResult LoginUser([FromBody] Credentials credentials, JwtOptions jwtOptions)
@@ -119,7 +119,7 @@ public class UsersController : ControllerBase
         var token = GenerateJwtToken(requestedUser, jwtOptions);
         return new OkObjectResult(new JsonObject { { "access_token", token } });
     }
-    
+
     private static string GenerateJwtToken(UsersModel user, JwtOptions jwtOptions)
     {
         var tokenHandler = new JwtSecurityTokenHandler();

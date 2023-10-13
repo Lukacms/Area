@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { serviceCallbackDiscord } from '../../config/request';
 import { getByValue } from '../../config/commons';
 
-const useCallbackGithub = () => {
+const useCallbackDiscord = () => {
   const navigate = useNavigate();
   const [searchParams /* , setSearchParams */] = useSearchParams();
   const [success, setSuccess] = useState(false);
@@ -12,9 +12,9 @@ const useCallbackGithub = () => {
   useEffect(() => {
     const fetchCallback = async () => {
       const data = {
-        code: getByValue(searchParams, "code"),
-        guildId: getByValue(searchParams, "guild_id"),
-        permissions: getByValue(searchParams, "permissions")
+        code: getByValue(searchParams, 'code'),
+        guildId: getByValue(searchParams, 'guild_id'),
+        permissions: getByValue(searchParams, 'permissions'),
       };
 
       try {
@@ -33,6 +33,4 @@ const useCallbackGithub = () => {
   return { navigate, success, loading };
 };
 
-export default useCallbackGithub;
-
-
+export default useCallbackDiscord;

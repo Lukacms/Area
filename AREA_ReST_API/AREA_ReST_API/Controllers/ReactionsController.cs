@@ -1,4 +1,5 @@
 using System.Text.Json.Nodes;
+using AREA_ReST_API.Middleware;
 using AREA_ReST_API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,18 +26,22 @@ public class ReactionsController
         var actions = _context.Reactions.ToList();
         return new OkObjectResult(actions);
     }
-    
+
     [HttpGet("{serviceId:int}")]
     public ActionResult<List<ReactionsModel>> GetActionsByServiceId([AsParameters] int serviceId)
     {
         var requestedActions = _context.Reactions.Where(action => action.ServiceId == serviceId).ToList();
         return new OkObjectResult(requestedActions);
     }
-    
+
     [HttpPost("")]
-    public ActionResult CreateNewReaction([FromBody] ReactionsModel newReaction)
+    public ActionResult CreateNewReaction([FromBody] ReactionsModel newReaction, [FromHeader] string authorization)
     {
-        if (newReaction.Name.IsNullOrEmpty()) 
+        var decodedUser = JwtDecoder.Decode(authorization);
+
+        if (!decodedUser.Admin)
+          return new UnauthorizedObjectResult(new JsonObject{{"message", "You are not allowed to add a reaction"}});
+        if (newReaction.Name.IsNullOrEmpty())
             return new BadRequestObjectResult(new JsonObject { { "message", "Reaction name is empty" } });
         if (newReaction.Endpoint.IsNullOrEmpty())
             return new BadRequestObjectResult(new JsonObject { { "message", "Reaction endpoint is empty" } });
@@ -48,5 +53,20 @@ public class ReactionsController
         var registeredReaction = _context.Reactions.Add(newReaction);
         _context.SaveChanges();
         return new CreatedResult("Reaction successfully created", registeredReaction.Entity);
+    }
+
+    [HttpDelete("{reactionId:int}")]
+    public ActionResult DeleteAction([AsParameters] int reactionId, [FromHeader] string authorization)
+    {
+        var decodedUser = JwtDecoder.Decode(authorization);
+        var deletedReaction = _context.Reactions.FirstOrDefault(action => action.Id == reactionId);
+
+        if (!decodedUser.Admin)
+            return new UnauthorizedObjectResult(new JsonObject{{"message", "You are not authorized to do this"}});
+        if (deletedReaction == null)
+            return new NotFoundObjectResult(new JsonObject{{"message", "No Reaction found to delete"}});
+        _context.Reactions.Remove(deletedReaction);
+        _context.SaveChanges();
+        return new OkObjectResult(new JsonObject{{"message", "Reaction successfully deleted"}});
     }
 }

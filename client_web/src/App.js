@@ -22,6 +22,7 @@ import {
   NotFound,
   Register,
   SettingServices,
+  SettingsAdmin,
   SettingsUser,
   SpecificService,
 } from './pages';
@@ -39,6 +40,7 @@ function App() {
       <Route path='/home' element={<Home />} />
       <Route path='/settings'>
         <Route index element={<SettingsUser />} />
+        <Route path='admin' element={<SettingsAdmin />} />
         <Route path='services'>
           <Route index element={<SettingServices />} />
           <Route path=':id' element={<SpecificService />} />
