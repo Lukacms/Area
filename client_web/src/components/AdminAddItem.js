@@ -5,7 +5,13 @@ import { Button } from 'primereact/button';
 
 const AdminAddItem = ({ initalValues, validate, onSubmit, services }) => {
   return (
-    <Formik initialValues={initalValues} validationSchema={validate} onSubmit={onSubmit}>
+    <Formik
+      initialValues={initalValues}
+      validationSchema={validate}
+      onSubmit={(values, { resetForm }) => {
+        onSubmit(values);
+        resetForm();
+      }}>
       {(props) => (
         <Form
           style={{

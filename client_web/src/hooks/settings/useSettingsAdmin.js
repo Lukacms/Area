@@ -32,7 +32,7 @@ const useSettingsAdmin = () => {
 
   const validate = Yup.object().shape({
     name: Yup.string().min(3, 'Not enough characters').max(35, 'Too long').required('Required'),
-    endpoint: Yup.string().min(3, 'Not enough characters').max(35, 'Too long').required('Required'),
+    endpoint: Yup.string().min(1, 'Not enough characters').max(35, 'Too long').required('Required'),
     service: Yup.object()
       .shape({ name: Yup.string().required('Required') })
       .required('Required'),
@@ -93,7 +93,7 @@ const useSettingsAdmin = () => {
 
   const deleteAction = async (action) => {
     try {
-      const res = await delAction(action.id);
+      await delAction(action.id);
       setActions(actions.filter((item) => item !== action));
       toast.current.show({severity: 'success', summary: 'While deleting action', detail: 'Successfully deleted action'})
     } catch (e) {
@@ -103,7 +103,7 @@ const useSettingsAdmin = () => {
 
   const deleteReaction = async (reaction) => {
     try {
-      const res = await deleteReaction(reaction.id);
+      await deleteReaction(reaction.id);
       setReactions(reactions.filter((item) => item !== reaction));
       toast.current.show({severity: 'success', summary: 'While deleting reaction', detail: 'Successfully deleted reaction'})
     } catch (e) {
