@@ -25,7 +25,7 @@ public class UserServicesController
         var userServicesList = _context.UserServices.Where(userService => userService.UserId == userId).ToList();
         return new OkObjectResult(userServicesList);
     }
-    
+
     [HttpDelete("{userServiceId:int}")]
     public ActionResult DeleteUserServiceById([AsParameters] int userServiceId, [FromHeader] string authorization)
     {
