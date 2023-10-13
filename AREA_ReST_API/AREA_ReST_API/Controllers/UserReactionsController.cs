@@ -11,7 +11,7 @@ namespace AREA_ReST_API.Controllers;
 [Route("api/[controller]")]
 
 public class UserReactionsController
-{   
+{
     private readonly AppDbContext _context;
 
     public UserReactionsController(AppDbContext context)
@@ -24,7 +24,7 @@ public class UserReactionsController
     {
         var userReaction = _context.UserReactions.Add(newUserReaction);
         _context.SaveChanges();
-        return new CreatedResult("UserReaction successfully created", userReaction.Entity);   
+        return new CreatedResult("UserReaction successfully created", userReaction.Entity);
     }
 
     [HttpGet("{areaId:int}")]

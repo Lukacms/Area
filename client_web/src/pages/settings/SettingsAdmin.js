@@ -1,12 +1,13 @@
+import { useRef, useState } from 'react';
 import { Button } from 'primereact/button';
 import { Column } from 'primereact/column';
 import { ConfirmDialog } from 'primereact/confirmdialog';
 import { DataTable } from 'primereact/datatable';
 import { Dialog } from 'primereact/dialog';
+import { Toast } from 'primereact/toast';
 import { AdminAddItem } from '../../components';
 import { useSettingsAdmin } from '../../hooks';
 import '../../styles/admin.css';
-import { useRef, useState } from 'react';
 
 function SettingsAdmin() {
   const {
@@ -15,8 +16,8 @@ function SettingsAdmin() {
     setLabel,
     actions,
     reactions,
-    setActions,
-    setReactions,
+    deleteAction,
+    deleteReaction,
     services,
     users,
     initValues,
@@ -24,12 +25,13 @@ function SettingsAdmin() {
     submitAction,
     submitReaction,
     deleteAdmin,
-    addAdmin
+    addAdmin,
+    toast
   } = useSettingsAdmin();
   const [addAction, setAddAction] = useState(false);
   const [addReaction, setAddReaction] = useState(false);
   const revokeAdmin = useRef();
-  const [revoke, setRevoke] = useState(false);
+  const [revoke, setRevoke] = useState(null);
 
   const showActions = () => {
     return (
@@ -48,7 +50,7 @@ function SettingsAdmin() {
               icon='pi pi-minus'
               severity='danger'
               size='small'
-              onClick={() => setActions(actions.filter((item) => item !== action))}
+              onClick={() => deleteAction(action)}
             />
           )}
         />
@@ -73,7 +75,7 @@ function SettingsAdmin() {
               icon='pi pi-minus'
               severity='danger'
               size='small'
-              onClick={() => setReactions(reactions.filter((item) => item !== reaction))}
+              onClick={() => deleteReaction(reaction)}
             />
           )}
         />
@@ -86,22 +88,22 @@ function SettingsAdmin() {
       <>
         <ConfirmDialog
           target={revokeAdmin.current}
-          visible={revoke}
-          onHide={() => setRevoke(false)}
-          reject={() => setRevoke(false)}
-          accept={() => deleteAdmin(user)}
+          visible={revoke != null}
+          onHide={() => setRevoke(null)}
+          reject={() => setRevoke(null)}
+          accept={() => deleteAdmin(revoke)}
           icon='pi pi-exclamation-triangle'
           message='Are you sure you want to proceed ?'
         />
         {user.admin ? (
-          <Button label='Set admin' severity='success' onClick={() => addAdmin(user)} />
-        ) : (
           <Button
             ref={revokeAdmin}
             label='Revoke admin rights'
             severity='danger'
-            onClick={() => setRevoke(true)}
+            onClick={() => setRevoke(user)}
           />
+        ) : (
+          <Button label='Set admin' severity='success' onClick={() => addAdmin(user)} />
         )}
       </>
     );
@@ -121,6 +123,7 @@ function SettingsAdmin() {
 
   return (
     <div className='globalDiv'>
+      <Toast ref={toast}/>
       <div className='leftDiv'>
         <div className='topLeft'>
           <b className='fastrText' style={{ paddingLeft: '5%' }}>

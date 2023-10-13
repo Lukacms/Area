@@ -35,8 +35,12 @@ public class ReactionsController
     }
 
     [HttpPost("")]
-    public ActionResult CreateNewReaction([FromBody] ReactionsModel newReaction)
+    public ActionResult CreateNewReaction([FromBody] ReactionsModel newReaction, [FromHeader] string authorization)
     {
+        var decodedUser = JwtDecoder.Decode(authorization);
+
+        if (!decodedUser.Admin)
+          return new UnauthorizedObjectResult(new JsonObject{{"message", "You are not allowed to add a reaction"}});
         if (newReaction.Name.IsNullOrEmpty())
             return new BadRequestObjectResult(new JsonObject { { "message", "Reaction name is empty" } });
         if (newReaction.Endpoint.IsNullOrEmpty())
@@ -52,7 +56,7 @@ public class ReactionsController
     }
 
     [HttpDelete("{reactionId:int}")]
-    public ActionResult DeleteAction([AsParameters] int reactionId, string authorization)
+    public ActionResult DeleteAction([AsParameters] int reactionId, [FromHeader] string authorization)
     {
         var decodedUser = JwtDecoder.Decode(authorization);
         var deletedReaction = _context.Reactions.FirstOrDefault(action => action.Id == reactionId);
@@ -61,6 +65,8 @@ public class ReactionsController
             return new UnauthorizedObjectResult(new JsonObject{{"message", "You are not authorized to do this"}});
         if (deletedReaction == null)
             return new NotFoundObjectResult(new JsonObject{{"message", "No Reaction found to delete"}});
+        _context.Reactions.Remove(deletedReaction);
+        _context.SaveChanges();
         return new OkObjectResult(new JsonObject{{"message", "Reaction successfully deleted"}});
     }
 }

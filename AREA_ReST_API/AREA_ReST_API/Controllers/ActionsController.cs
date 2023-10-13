@@ -35,8 +35,12 @@ public class ActionsController
     }
 
     [HttpPost("")]
-    public ActionResult CreateNewAction([FromBody] ActionsModel newAction)
+    public ActionResult CreateNewAction([FromBody] ActionsModel newAction, [FromHeader] string authorization)
     {
+        var decodedUser = JwtDecoder.Decode(authorization);
+
+        if (!decodedUser.Admin)
+          return new UnauthorizedObjectResult(new JsonObject{{"message", "You are not allowed to add a reaction"}});
         if (newAction.Name.IsNullOrEmpty())
             return new BadRequestObjectResult(new JsonObject { { "message", "Reaction name is empty" } });
         if (newAction.Endpoint.IsNullOrEmpty())
@@ -52,7 +56,7 @@ public class ActionsController
     }
 
     [HttpDelete("{actionId:int}")]
-    public ActionResult DeleteAction([AsParameters] int actionId, string authorization)
+    public ActionResult DeleteAction([AsParameters] int actionId, [FromHeader] string authorization)
     {
         var decodedUser = JwtDecoder.Decode(authorization);
         var deletedAction = _context.Actions.FirstOrDefault(action => action.Id == actionId);
@@ -61,6 +65,8 @@ public class ActionsController
             return new UnauthorizedObjectResult(new JsonObject{{"message", "You are not authorized to do this"}});
         if (deletedAction == null)
             return new NotFoundObjectResult(new JsonObject{{"message", "No Action found to delete"}});
+        _context.Actions.Remove(deletedAction);
+        _context.SaveChanges();
         return new OkObjectResult(new JsonObject{{"message", "Action successfully deleted"}});
     }
 }

@@ -71,3 +71,8 @@ export const serviceCallbackGithub = (datas) => axiosInstance.post(OAUTH_URL + '
 
 // admin
 export const getAllUsers = () => axiosInstance.get(API_URL + 'Users');
+export const addAction = (data) => axiosInstance.post(API_URL + 'Actions', data);
+export const addReaction = (data) => axiosInstance.post(API_URL + 'Reactions', data);
+export const delAction = (actionId) => axiosInstance.delete(API_URL + `Actions/${actionId}`);
+export const delReaction = (reactionId) =>
+  axiosInstance.delete(API_URL + `Reactions/${reactionId}`);
