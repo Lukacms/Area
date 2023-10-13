@@ -35,6 +35,11 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  shared_preferences: ^2.2.1
+  flutter_svg: ^2.0.7
+  http: ^1.1.0
+  webview_flutter: ^2.0.13
+  google_sign_in: ^6.1.5
 
 
 dev_dependencies:
@@ -61,6 +66,14 @@ flutter:
 
   assets:
     - assets/logoFastR.png
+    - assets/serviceIcons/discord.svg
+    - assets/serviceIcons/github.svg
+    - assets/serviceIcons/gmail.svg
+    - assets/serviceIcons/instagram.svg
+    - assets/serviceIcons/linkedin.svg
+    - assets/serviceIcons/spotify.svg
+    - assets/serviceIcons/connectors.svg
+    - assets/serviceIcons/google.svg
   fonts:
     - family: Roboto
       fonts:

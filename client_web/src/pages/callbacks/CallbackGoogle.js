@@ -4,7 +4,7 @@ import { ProgressSpinner } from 'primereact/progressspinner';
 import { Home } from '../';
 import { useCallbackGoogle } from '../../hooks';
 
-function CallbackGoogle() {
+function CallBackGoogle() {
   const { navigate, success, loading } = useCallbackGoogle();
 
   const header = () => {
@@ -56,4 +56,4 @@ function CallbackGoogle() {
   );
 }
 
-export default CallbackGoogle;
+export default CallBackGoogle;

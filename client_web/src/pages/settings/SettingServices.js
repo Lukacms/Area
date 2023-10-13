@@ -28,7 +28,7 @@ function SettingServices() {
           raised
           text
           onClick={() => navigate('/settings/services/' + item.id, { state: { item } })}>
-          <Image src={`data:image/png;base64,${item.logo}`} width={50} alt='logo' />
+          <Image src={item.logo} width={50} alt='logo' />
           <span>{item.name}</span>
           <i className='pi pi-chevron-right' />
         </Button>

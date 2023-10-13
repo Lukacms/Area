@@ -1,7 +1,4 @@
-import {
-  Button,
-  TextField,
-} from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import SaveIcon from '@mui/icons-material/Save';
 import AddIcon from '@mui/icons-material/Add';
 import { useState } from 'react';
@@ -15,13 +12,14 @@ const HomeToolbar = ({
 }) => {
   const [isAddClicked, setIsAddClicked] = useState(false);
   const [isNextStep, setisNextStep] = useState(true);
+
   const addClick = () => {
     onClickForCreateArea();
-    console.log(isNextStep);
     if (isNextStep === false) setisNextStep(true);
     if (isAddClicked === true) setIsAddClicked(false);
     else setIsAddClicked(true);
   };
+
   return (
     <div
       style={{
@@ -37,13 +35,11 @@ const HomeToolbar = ({
           placeholder='Area Name'
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
-              console.log('ENTER');
               setisNextStep(false);
               onEnterNameArea();
             }
           }}
           onChange={(e) => {
-            console.log('gg');
             addNameToBlankArea({ name: e.target.value });
           }}
           sx={{ input: { color: 'white' }, borderColor: 'white' }}

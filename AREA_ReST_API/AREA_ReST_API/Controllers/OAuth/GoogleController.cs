@@ -41,8 +41,6 @@ public class GoogleController
         };
         var result = await _client.PostAsync(_googleUrl, data, "application/x-www-forms-urlencoded", "");
         var jsonRes = JObject.Parse(result);
-        Console.WriteLine("OUI AU MOINS");
-        Console.WriteLine(jsonRes.ToString());
         var userService = new UserServicesModel
         {
             ServiceId = _context.Services.First(service => service.Name == "Google").Id,
@@ -53,7 +51,6 @@ public class GoogleController
         };
         _context.UserServices.Add(userService);
         await _context.SaveChangesAsync();
-        Console.WriteLine("ET EN FAIT OUI HAHA");
         return new OkResult();
     }
 }

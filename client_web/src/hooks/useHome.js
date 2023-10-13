@@ -1,229 +1,244 @@
-import { useState } from "react";
+import { useEffect, useState } from 'react';
+import {
+  getServices,
+  getUserServices,
+  getActionsByServiceId,
+  getReactionsByServiceId,
+  getUsersAreas,
+} from '../config/request';
+import secureLocalStorage from 'react-secure-storage';
+import { useNavigate } from 'react-router';
 
 const useHome = () => {
-  let nbArea = 0;
-
+  const [stateOfCreation, setStateOfCreation] = useState('Not');
+  const navigate = useNavigate();
+  const [canSave, setCanSave] = useState(false);
   const [blankArea, setBlankArea] = useState({
-    label: "",
-    icon: "",
-    data: { action: "", reaction: [""], id: 0 },
+    label: '',
+    icon: '',
+    data: { action: '', reaction: [''], id: 0 },
     command: () => {},
   });
-  const [currentSelectedCategory, setCurrentSelectedCategory] =
-    useState("actions");
+  const [currentSelectedCategory, setCurrentSelectedCategory] = useState('actions');
 
   const updateCurrentSelectedCategory = (category) => {
+    if (category === null) return;
     setCurrentSelectedCategory(category);
   };
 
-  const [currentState, setCurrentState] = useState(
-    "Si vous voulez ajouter une area, clicker sur add area"
-  );
+  const [currentState, setCurrentState] = useState('If you want to add an area, click on new area');
   /*  const currentStatee = [
     'Please enter a name to the area',
     'Please select an action for the area',
     'Select your reactions, and when you are finished click on save Area',
   ];*/
   const [addAct, setaddAct] = useState(false);
-  const [areas, setArea] = useState([{ action: "", reaction: [""], name: "" }]);
-  const [tmpAct, setTmp] = useState("");
+  const [areas, setAreas] = useState([{ action: '', reaction: [''], name: '' }]);
+  const [tmpAct, setTmp] = useState('');
   const [selectedArea, setSelectedArea] = useState({
-    action: "",
-    reaction: [""],
-    name: "",
+    action: '',
+    reaction: '',
+    name: '',
   });
   const [panelAreas, setPanelAreas] = useState([
     {
-      label: "favorite",
-      icon: "pi pi-fw pi-folder",
+      label: 'favorite',
+      icon: 'pi pi-fw pi-folder',
       items: [
         {
-          label: "",
-          data: { action: "", reaction: [""], id: 0 },
+          label: '',
+          data: { action: '', reaction: [''], id: 0 },
           command: () => {
-            clickArea({ areaSelected: panelAreas[0].items[0] });
+            clickArea({ areaSelected: 0, favorite: 0 });
           },
         },
       ],
     },
     {
-      label: "Not Favorites",
-      icon: "pi pi-fw pi-folder",
+      label: 'Not Favorites',
+      icon: 'pi pi-fw pi-folder',
       items: [
         {
-          label: "",
+          label: '',
           command: () => {
-            clickArea({ areaSelected: panelAreas[1].items[0] });
+            clickArea({ areaSelected: 0, favorite: 1 });
           },
-          data: { action: "", reaction: [""], id: 0 },
+          data: { action: '', reaction: [''], id: 0 },
         },
       ],
     },
   ]);
 
-  const clickArea = ({ areaSelected }) => {
-    console.log("clickArea: ", areaSelected);
-    setSelectedArea({
-      name: areaSelected.label,
-      action: areaSelected.data.action,
-      reaction: areaSelected.data.reaction,
+  const clickArea = ({ areaSelected, favorite }) => {
+    panelAreas[favorite]?.items.forEach((item) => {
+      if (item && item.data.id === areaSelected) {
+        setSelectedArea({
+          name: String(item.label),
+          action: String(item.data.action),
+          reaction: String(item.data.reaction),
+        });
+      }
     });
   };
 
-  const actionList = [
+  const [actionList, setActionList] = useState([
     {
-      label: "discord",
-      icon: "pi pi-fw pi-folder",
+      label: 'discord',
+      icon: 'pi pi-fw pi-folder',
       items: [
         {
-          label: "action disc 1",
+          label: 'action disc 1',
           command: () => {
             //clickAct(actionList[0].items[0].label);
-            setCurrentSelectedCategory("reactions");
             addActionToBlankArea({ action: actionList[0].items[0].label });
-            onAddActionArea();
           },
         },
         {
-          label: "action disc 2",
+          label: 'action disc 2',
           command: () => {
-            setCurrentSelectedCategory("reactions");
             //clickAct(actionList[0].items[1].label);
             addActionToBlankArea({ action: actionList[0].items[1].label });
-            onAddActionArea();
           },
         },
       ],
     },
     {
-      label: "microsoft",
-      icon: "pi pi-fw pi-folder",
+      label: 'microsoft',
+      icon: 'pi pi-fw pi-folder',
       items: [
         {
-          label: "action mail1",
+          label: 'action mail1',
           command: () => {
-            setCurrentSelectedCategory("reactions");
             //clickAct(actionList[1].items[0].label);
             addActionToBlankArea({ action: actionList[1].items[0].label });
-            onAddActionArea();
           },
         },
         {
-          label: "action mail2",
+          label: 'action mail2',
           command: () => {
-            setCurrentSelectedCategory("reactions");
             //clickAct(actionList[1].items[1].label);
             addActionToBlankArea({ action: actionList[1].items[1].label });
-            onAddActionArea();
           },
         },
       ],
     },
-  ];
+  ]);
 
   const addActionToBlankArea = ({ action }) => {
+    // if (stateOfCreation !== 'action') return;
     var tmp = blankArea;
     tmp.data.action = action;
     setBlankArea(tmp);
+    setCurrentSelectedCategory('reactions');
+    setStateOfCreation('reaction');
+    onAddActionArea();
   };
 
   const clickAct = (eventName) => {
     if (addAct) {
-      /*console.log("Please select a reaction");*/
       return;
     }
     setTmp(eventName);
     setaddAct(true);
   };
 
-  const reactionList = [
+  const [reactionList, setReactionList] = useState([
     {
-      label: "discord",
-      icon: "pi pi-fw pi-folder",
+      label: 'discord',
+      icon: 'pi pi-fw pi-folder',
       items: [
         {
-          label: "reaction disc 1",
+          label: 'reaction disc 1',
           command: () => {
             //clickReact(reactionList[0].items[0].label);
             addReactionToBlankArea({
               reaction: reactionList[0].items[0].label,
             });
-            addCreatedAreaToAreas();
           },
         },
         {
-          label: "reaction disc 2",
+          label: 'reaction disc 2',
           command: () => {
             //clickReact(reactionList[0].items[1].label);
             addReactionToBlankArea({
               reaction: reactionList[0].items[1].label,
             });
-            addCreatedAreaToAreas();
           },
         },
       ],
     },
     {
-      label: "microsoft",
-      icon: "pi pi-fw pi-folder",
+      label: 'microsoft',
+      icon: 'pi pi-fw pi-folder',
       items: [
         {
-          label: "reaction mail1",
+          label: 'reaction mail1',
           command: () => {
             //clickReact(reactionList[1].items[0].label);
             addReactionToBlankArea({
               reaction: reactionList[1].items[0].label,
             });
-            addCreatedAreaToAreas();
           },
         },
         {
-          label: "reaction mail2",
+          label: 'reaction mail2',
           command: () => {
             //clickReact(reactionList[1].items[1].label);
             addReactionToBlankArea({
               reaction: reactionList[1].items[1].label,
             });
-            addCreatedAreaToAreas();
           },
         },
       ],
     },
-  ];
+  ]);
 
   const clickReact = (eventName) => {
     if (!addAct) {
-      /*console.log("Please select an action first");*/
       return;
     }
     setaddAct(false);
-    areas.push({ action: tmpAct, reaction: eventName, name: "act" });
+    areas.push({ action: tmpAct, reaction: eventName, name: 'act' });
     addToPanelArea({
       act: String(areas[areas.length - 1].action),
       name: String(areas[areas.length - 1].name),
       react: String(areas[areas.length - 1].reaction),
     });
   };
-  const addToPanelArea = ({ act, react, name }) => {
-    if (panelAreas[1].items[0].label === "") {
+
+  const addToPanelArea = ({ act, react, name, id }) => {
+    if (panelAreas[1].items[0].label === '') {
       panelAreas[1].items.pop();
-      panelAreas[1].items.push({
-        label: name,
-        data: { action: act, reaction: react },
-        command: () => {
-          clickArea({ areaSelected: panelAreas[1].items[0] });
-        },
-      });
-    } else {
-      nbArea++;
-      panelAreas[1].items.push({
-        label: name,
-        data: { action: act, reaction: react },
-        command: () => {
-          clickArea({ areaSelected: panelAreas[1].items[nbArea] });
-        },
-      });
     }
+    panelAreas[1].items.push({
+      label: name,
+      data: {
+        action: act,
+        reaction: react,
+        id: id,
+      },
+      command: () => {
+        clickArea({ areaSelected: id, favorite: 1 });
+      },
+    });
+  };
+  const addToPanelFavArea = ({ act, react, name, id }) => {
+    if (panelAreas[0].items[0].label === '') {
+      panelAreas[0].items.pop();
+    }
+    panelAreas[0].items.push({
+      label: name,
+      data: {
+        action: act,
+        reaction: react.map((item) => {
+          return item.configuration;
+        }),
+        id: id,
+      },
+      command: () => {
+        clickArea({ areaSelected: id, favorite: 0 });
+      },
+    });
   };
 
   const [actionOrReaction, setItems] = useState(actionList);
@@ -240,16 +255,22 @@ const useHome = () => {
     setBlankArea(tmp);
   };
 
-  const addReactionToBlankArea = ({ Reaction }) => {
+  const addReactionToBlankArea = ({ reaction }) => {
+    // if (stateOfCreation !== 'reaction' && stateOfCreation !== '1reaction') return;
     var tmp = blankArea;
-    tmp.data.reaction = Reaction;
+    if (tmp.data.reaction[0] === '') {
+      tmp.data.reaction[0] = reaction;
+    } else tmp.data.reaction.push(reaction);
     setBlankArea(tmp);
+    setCanSave(true);
+    setStateOfCreation('1reaction');
   };
 
   const addCreatedAreaToAreas = () => {
+    if (stateOfCreation !== '1reaction') return;
     areas.push({
       action: blankArea.data.action,
-      reaction: blankArea.data.action,
+      reaction: blankArea.data.reaction,
       name: blankArea.label,
     });
     addToPanelArea({
@@ -257,21 +278,116 @@ const useHome = () => {
       name: String(areas[areas.length - 1].name),
       react: String(areas[areas.length - 1].reaction),
     });
+    setCanSave(false);
+    setCurrentState('If you want to add an area, clik on new area');
+    setBlankArea({
+      label: '',
+      icon: '',
+      data: { action: '', reaction: [''], id: 0 },
+      command: () => {},
+    });
+    setStateOfCreation('Not');
   };
 
   const onClickForCreateArea = () => {
-    setCurrentState("Please enter a name to the area");
+    setCurrentState('Please enter a name to the area');
+    setStateOfCreation('name');
   };
 
   const onEnterNameArea = () => {
-    setCurrentState("Please select an action for the area");
+    setCurrentState('Please select an action for the area');
+    setStateOfCreation('action');
   };
 
   const onAddActionArea = () => {
-    setCurrentState(
-      "Select your reactions, and when you are finished click on save Area"
-    );
+    setCurrentState('Select your reactions, and when you are finished click on save Area');
   };
+
+  const addServicesToUser = ({ actions, reactions, name, logo }) => {
+    if (actions.data && actions.data.length) {
+      if (actionList[0].label === '') actionList.pop();
+      actionList.push({ label: name, icon: logo, items: [] });
+      for (let i = 0; i < actions.data.length; i++) {
+        actionList[actionList.length - 1].items.push({
+          label: actions.data[i].name,
+          command: () => {
+            setCurrentSelectedCategory('reactions');
+            addActionToBlankArea({ action: actions.data[i].name });
+            onAddActionArea();
+          },
+        });
+      }
+    }
+    if (reactions.data && reactions.data.length) {
+      if (reactionList[0].label === '') reactionList.pop();
+      reactionList.push({ label: name, icon: logo, items: [] });
+      for (let i = 0; i < reactions.data.length; i++) {
+        reactionList[reactionList.length - 1].items.push({
+          label: reactions.data[i].name,
+          command: () => {
+            addReactionToBlankArea({ reaction: reactions.data[i].name });
+          },
+        });
+      }
+    }
+  };
+
+  useEffect(() => {
+    const loadDatas = async () => {
+      const userId = secureLocalStorage.getItem('userId');
+
+      try {
+        const services = await getServices();
+        const userServices = await getUserServices(userId);
+        const usersAreas = await getUsersAreas(userId);
+
+        for (let i = 0; i < services.data.length; i++) {
+          for (let j = 0; j < userServices.data.length; j++) {
+            if (services.data[i].id === userServices.data[j].serviceId) {
+              addServicesToUser({
+                actions: await getActionsByServiceId(services.data[i].id),
+                reactions: await getReactionsByServiceId(services.data[i].id),
+                name: services.data[i].name,
+                logo: services.data[i].logo,
+              });
+            }
+          }
+        }
+        if (usersAreas && usersAreas.data.length) {
+          usersAreas.data.forEach((item) => {
+            if (item.favorite) {
+              addToPanelFavArea({
+                act: item.userAction?.configuration,
+                react: item.reaction.map((react) => react.configuration),
+                name: item.name,
+                id: item.id,
+              });
+              /*panelAreas[0].items.push({
+                label: item.name,
+                data: { action: item.action, reaction: item.reaction, id: item.id },
+                command: () => clickArea({ areaSelected: item.id, favorite: 0 }),
+              });*/
+            } else {
+              addToPanelArea({
+                act: item.userAction?.configuration,
+                react: item.reaction?.map((react) => react.configuration),
+                name: item.name,
+                id: item.id,
+              });
+              /*panelAreas[1].items.push({
+                label: item.name,
+                data: { action: item.action, reaction: item.reaction, id: item.id },
+                command: () => clickArea({ areaSelected: item.id, favorite: 1 }),
+              });*/
+            }
+          });
+        }
+      } catch (e) {
+        navigate('/error', { state: { message: e.message } });
+      }
+    };
+    loadDatas();
+  }, []);
 
   return {
     dispAct,
@@ -286,6 +402,7 @@ const useHome = () => {
     currentSelectedCategory,
     updateCurrentSelectedCategory,
     onEnterNameArea,
+    canSave,
   };
 };
 

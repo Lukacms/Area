@@ -5,12 +5,12 @@ namespace AREA_ReST_API.Classes;
 public class ActionChecker : BackgroundService
 {
     private readonly IServiceProvider _serviceProvider;
-    
+
     public ActionChecker(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
     }
-    
+
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         const int serverTimer = 2;
@@ -43,7 +43,7 @@ public class ActionChecker : BackgroundService
     private List<AreaWithActionReaction> GetAreasWithActionAndReaction(AppDbContext context)
     {
         var areas = context.Areas.ToList();
-        var completeAreas = areas.Select(areasModel => new AreaWithActionReaction 
+        var completeAreas = areas.Select(areasModel => new AreaWithActionReaction
         {
             Id = areasModel.Id,
             Name = areasModel.Name,
@@ -62,7 +62,6 @@ public class ActionChecker : BackgroundService
         {
             var reaction = context.Reactions.First(x => x.Id == userReaction.ReactionId);
             var service = context.UserServices.First(x => x.ServiceId == area.Id && x.UserId == area.UserId);
-            Console.WriteLine("Reaction effectué");
         }
     }
 }

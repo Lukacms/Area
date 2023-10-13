@@ -2,12 +2,15 @@ import { Dialog } from 'primereact/dialog';
 import { Home } from '..';
 import { useSettingsUser } from '../../hooks';
 import { Button } from 'primereact/button';
+import {ConfirmPopup} from 'primereact/confirmpopup';
 import { Form, Formik, Field } from 'formik';
 import { FormikPassword } from '../../components';
 import '../../styles/settings.css';
+import { useState } from 'react';
 
 function SettingsUser() {
-  const { navigate, passwordValues, validation, changePassword } = useSettingsUser();
+  const { navigate, passwordValues, validation, changePassword, logout, buttonEl } = useSettingsUser();
+  const [visible, setVisible] = useState(false);
 
   const header = () => {
     return (
@@ -66,6 +69,8 @@ function SettingsUser() {
             )}
           </Formik>
         </div>
+        <Button ref={buttonEl} className='logout' label='Log out' severity='danger' onClick={() => setVisible(true)} />
+        <ConfirmPopup target={buttonEl.current} visible={visible} onHide={() => setVisible(false)} message="Are you sure you want to proceed?" icon="pi pi-exclamation-triangle" accept={logout} reject={() => setVisible(false)} />
       </Dialog>
     </Home>
   );
