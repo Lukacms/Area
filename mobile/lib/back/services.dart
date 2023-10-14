@@ -34,6 +34,7 @@ class AreaAction {
 
 class Area {
   int userId;
+  int areaId;
   AreaAction? action;
   List<AreaAction> reactions;
   String name;
@@ -41,6 +42,7 @@ class Area {
 
   Area({
     required this.userId,
+    required this.areaId,
     required this.action,
     required this.reactions,
     required this.name,
@@ -185,7 +187,7 @@ class AppServices {
         return null;
       }
     },
-    'Spotify': (BuildContext context) async {
+    'Spotify': (BuildContext context, String token) async {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) {
@@ -194,7 +196,7 @@ class AppServices {
               clientSecret: 'b589f784bb3f4b3897337acbfdd80f0d',
               url: 'https://accounts.spotify.com/api/token',
               serverOauth: (code) {
-                serverSpotifyAuth(code);
+                serverSpotifyAuth(code, token);
               },
               authUrl:
                   'https://accounts.spotify.com/authorize?client_id=834ee184a29945b2a2a3dc8108a5bbf4&response_type=code&redirect_uri=area://oauth2redirect&scope=user-read-private%20user-read-email',

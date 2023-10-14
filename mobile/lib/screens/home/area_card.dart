@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/back/api.dart';
 import 'package:mobile/back/services.dart';
 import 'package:mobile/main.dart';
 import 'package:mobile/screens/addingArea/area_build.dart';
@@ -33,25 +34,87 @@ class AreaCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              IconButton(
+              PopupMenuButton(
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => AreaBuild(
+                              token: token,
+                              userId: userId,
+                              areasLenght: areasLength,
+                              isEdit: true,
+                              areaAdd: editAreaCallback,
+                              area: area,
+                            ),
+                          ),
+                        );
+                      },
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Modifier",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                          Icon(
+                            Icons.edit,
+                            color: Colors.black,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  PopupMenuItem(
+                    child: TextButton(
+                      onPressed: () {
+                        showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            title: const Text('Êtes-vous sûr.e ?'),
+                            content: const Text(
+                                'Toutes les données de l\'area seront perdues.'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: const Text('Annuler'),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  serverDeleteArea(token, area.areaId);
+                                  editAreaCallback();
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                },
+                                child: const Text('Confirmer'),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Supprimer",
+                            style: TextStyle(color: Colors.red),
+                          ),
+                          Icon(
+                            Icons.delete,
+                            color: Colors.red,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
                 icon: Icon(
                   Icons.pending,
                   color: AppColors.white,
                 ),
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => AreaBuild(
-                        token: token,
-                        userId: userId,
-                        areasLenght: areasLength,
-                        isEdit: true,
-                        areaAdd: editAreaCallback,
-                        area: area,
-                      ),
-                    ),
-                  );
-                },
               )
             ],
           ),

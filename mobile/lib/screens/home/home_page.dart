@@ -38,6 +38,7 @@ class _HomePageState extends State<HomePage> {
         reactions: area['userReaction'] ?? [],
         name: area['name'],
         favorite: area['favorite'],
+        areaId: area['id'],
       ));
     }
     setState(() {
@@ -59,7 +60,8 @@ class _HomePageState extends State<HomePage> {
       }
     }); */
     //serverAddArea(token, user['id'], 0, "Areatest");
-    getActions(widget.token);
+    serverGetActions(widget.token);
+    print(widget.token);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
@@ -123,7 +125,8 @@ class _HomePageState extends State<HomePage> {
               padding: EdgeInsets.symmetric(horizontal: blockWidth / 4),
               child: SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(
-                    parent: BouncingScrollPhysics()),
+                  parent: BouncingScrollPhysics(),
+                ),
                 child: Column(
                   children: [
                     AreaLists(
@@ -132,7 +135,7 @@ class _HomePageState extends State<HomePage> {
                       areasLength: areas.length,
                       areas: areas,
                       searchText: searchController.text,
-                      editAreaCallback: (value) {
+                      editAreaCallback: () {
                         loadAreas(widget.user['id'], widget.token);
                       },
                     ),

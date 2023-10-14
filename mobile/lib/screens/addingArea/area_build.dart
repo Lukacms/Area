@@ -30,7 +30,8 @@ class AreaBuild extends StatefulWidget {
 
 class _AreaBuildState extends State<AreaBuild> {
   TextEditingController areaNameController = TextEditingController();
-  Area newArea = Area(action: null, reactions: [], name: "", userId: -1);
+  Area newArea =
+      Area(action: null, reactions: [], name: "", userId: -1, areaId: -1);
   List actionsList = [];
   Area? savedArea;
   bool isNamed = true;

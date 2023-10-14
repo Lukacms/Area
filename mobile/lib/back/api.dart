@@ -102,14 +102,16 @@ Future serverGoogleAuth(String token, String scope) async {
   return response;
 }
 
-Future serverSpotifyAuth(String code) async {
+Future serverSpotifyAuth(String code, String token) async {
   var url =
       Uri(scheme: 'http', host: CURRENT_IP, port: 8080, path: '/oauth/Spotify');
+  print("CHUI DEDANS");
   var headers = {
     'Content-Type': 'application/json',
     'accept': '*/*',
+    'Authorization': 'Bearer $token',
   };
-  var body = jsonEncode({'code': code, 'scope': ''});
+  var body = jsonEncode({"code": code, "scope": ""});
   var response =
       await http.post(url, headers: headers, body: body).then((value) {
     print('reponse serveur${value.statusCode}');
@@ -140,6 +142,7 @@ Future<List> serverGetAreas(int id, String token) async {
   print("Get areas status code ${response.statusCode}");
   if (response.statusCode == 200) {
     var jsonResponse = jsonDecode(response.body);
+    print(jsonResponse);
     return jsonResponse;
   }
   return [];
@@ -230,7 +233,30 @@ Future<bool> serverEditArea(
   return false;
 }
 
-Future getActions(String token) async {
+Future<bool> serverDeleteArea(String token, int areaId) async {
+  final uri = Uri(
+    scheme: 'http',
+    host: CURRENT_IP,
+    port: 8080,
+    path: '/api/Areas/$areaId',
+  );
+  final response = await http.delete(
+    uri,
+    headers: {
+      'Authorization': 'Bearer $token',
+    },
+  );
+
+  if (response.statusCode == 200) {
+    print('Delete request successful');
+    return true;
+  } else {
+    print('Delete request failed with status: ${response.statusCode}');
+    return false;
+  }
+}
+
+Future serverGetActions(String token) async {
   var url = Uri(
     scheme: 'http',
     host: CURRENT_IP,
@@ -244,6 +270,28 @@ Future getActions(String token) async {
   var response = await http.get(url, headers: headers);
   print("Get actions status code ${response.statusCode}");
   if (response.statusCode == 200) {
+    var jsonResponse = jsonDecode(response.body);
+    print(jsonResponse);
+    return jsonResponse;
+  }
+}
+
+Future serverGetServices(String token) async {
+  var url = Uri(
+    scheme: 'http',
+    host: CURRENT_IP,
+    port: 8080,
+    path: '/api/Services',
+  );
+  var headers = {
+    'accept': '*/*',
+    'Authorization': 'Bearer $token',
+  };
+  var response = await http.get(url, headers: headers);
+  print("Get services status code ${response.statusCode}");
+  if (response.statusCode == 200) {
+    print('prout');
+    print(response.body);
     var jsonResponse = jsonDecode(response.body);
     print(jsonResponse);
     return jsonResponse;
@@ -268,19 +316,35 @@ class Automatisation {
 
 List<Area> automatisations = [
   Area(
-      userId: 1,
-      action: null,
-      reactions: [],
-      name: "area 1 a afficher",
-      favorite: true),
-  Area(userId: 1, action: null, reactions: [], name: "area 2 a pas afficher"),
-  Area(userId: 1, action: null, reactions: [], name: "area 3 a pas afficher"),
+    userId: 1,
+    action: null,
+    reactions: [],
+    name: "area 1 a afficher",
+    favorite: true,
+    areaId: 0,
+  ),
   Area(
-      userId: 1,
-      action: null,
-      reactions: [],
-      name: "area 4 a afficher",
-      favorite: true),
+    userId: 1,
+    action: null,
+    reactions: [],
+    name: "area 2 a pas afficher",
+    areaId: 1,
+  ),
+  Area(
+    userId: 1,
+    action: null,
+    reactions: [],
+    name: "area 3 a pas afficher",
+    areaId: 2,
+  ),
+  Area(
+    userId: 1,
+    action: null,
+    reactions: [],
+    name: "area 4 a afficher",
+    favorite: true,
+    areaId: 3,
+  ),
 ];
 
 List login(String user, String password) {

@@ -18,13 +18,26 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   TextEditingController searchController = TextEditingController();
-  List<Area> areas = [];
+  List services = [];
   String selectedSegment = "Services";
+
+  Future loadServices(String token) async {
+    List tmp = [];
+    var servicesData = await serverGetServices(token);
+    for (var service in servicesData) {
+      tmp.add(service);
+    }
+    setState(() {
+      services = tmp;
+      print("les services");
+      print(services);
+    });
+  }
 
   @override
   void initState() {
     super.initState();
-    areas = getAreas();
+    loadServices(widget.token);
   }
 
   @override
@@ -133,7 +146,9 @@ class _SettingsPageState extends State<SettingsPage> {
                                 onPressed: () {
                                   if (AppServices().services[index] != "null") {
                                     AppServices().serviceLogInFunctions[
-                                        AppServices().services[index].name]!(context);
+                                        AppServices()
+                                            .services[index]
+                                            .name]!(context, widget.token);
                                   }
                                 },
                               );

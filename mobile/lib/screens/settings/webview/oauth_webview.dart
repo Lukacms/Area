@@ -37,7 +37,7 @@ class SpotifyAuthWebView extends StatelessWidget {
               );
               final uri = Uri.parse(request.url);
               final code = uri.queryParameters['code'];
-              //final state = uri.queryParameters['state'];
+              await serverOauth(code);
               if (code == null) {
                 Navigator.pop(context, null);
                 return NavigationDecision.prevent;
