@@ -160,6 +160,18 @@ class _AreaBuildState extends State<AreaBuild> {
                           ActionBlockList(
                             action: newArea.action!,
                             reactions: newArea.reactions,
+                            removeActionCallback: () {
+                              setState(() {
+                                newArea.action = null;
+                                newArea.reactions = [];
+                              });
+                            },
+                            removeReactionCallback: (value) {
+                              setState(() {
+                                newArea.reactions
+                                    .remove(newArea.reactions[value]);
+                              });
+                            },
                           ),
                           SizedBox(height: blockHeight * 4),
                           AddActionButton(

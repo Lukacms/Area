@@ -7,10 +7,14 @@ import 'package:mobile/theme/style.dart';
 class ActionBlockList extends StatefulWidget {
   final AreaAction action;
   final List<AreaAction> reactions;
+  final Function removeActionCallback;
+  final Function removeReactionCallback;
   const ActionBlockList({
     super.key,
     required this.action,
     required this.reactions,
+    required this.removeActionCallback,
+    required this.removeReactionCallback,
   });
 
   @override
@@ -26,7 +30,8 @@ class _ActionBlockListState extends State<ActionBlockList> {
         SizedBox(
           width: 300,
           child: ListView.builder(
-            itemCount: widget.reactions.isNotEmpty ?  widget.reactions.length + 1 : 1,
+            itemCount:
+                widget.reactions.isNotEmpty ? widget.reactions.length + 1 : 1,
             shrinkWrap: true,
             itemBuilder: (context, index) {
               print(index);
@@ -35,6 +40,9 @@ class _ActionBlockListState extends State<ActionBlockList> {
                       children: [
                         ActionBlock(
                           action: widget.action,
+                          deleteBlock: () {
+                            widget.removeActionCallback();
+                          },
                         ),
                         widget.reactions.isEmpty
                             ? Container()
@@ -48,6 +56,9 @@ class _ActionBlockListState extends State<ActionBlockList> {
                   : Column(
                       children: [
                         ActionBlock(
+                          deleteBlock: () {
+                            widget.removeReactionCallback(index - 1);
+                          },
                           action: widget.reactions[index - 1],
                         ),
                         index == widget.reactions.length
