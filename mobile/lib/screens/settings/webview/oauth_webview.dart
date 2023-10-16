@@ -18,9 +18,6 @@ class AuthWebView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(authUrl);
-    print(clientId);
-    print(clientSecret);
     return SafeArea(
       child: Scaffold(
         body: WebView(
@@ -29,6 +26,8 @@ class AuthWebView extends StatelessWidget {
           javascriptMode: JavascriptMode.unrestricted,
           onWebViewCreated: (WebViewController webViewController) {},
           navigationDelegate: (NavigationRequest request) async {
+            print("LE request");
+            print(request.url);
             if (request.url.startsWith("area://oauth2redirect")) {
               final credentials = base64.encode(
                 utf8.encode('$clientId:$clientSecret'),

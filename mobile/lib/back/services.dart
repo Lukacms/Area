@@ -163,17 +163,21 @@ class AppServices {
   ];
   Map<String, dynamic> serviceLogInFunctions = {
     'Google': (BuildContext context, String token) async {
-      final GoogleSignIn googleSignIn = GoogleSignIn();
+      final GoogleSignIn googleSignIn = GoogleSignIn(
+        clientId:
+            '315267877885-7b6hvo4ibh0ms9lmt4fe1dvp9asqchdj.apps.googleusercontent.com',
+        forceCodeForRefreshToken: true,
+      );
       try {
         final googleUser = await googleSignIn.signIn();
         final googleAuth = await googleUser?.authentication;
-        if (googleAuth != null) {
-          final String? token = googleAuth.accessToken;
+        if (googleUser != null) {
+          print(googleAuth!.accessToken);
+          print(googleAuth.idToken);
           final String? serverAuthCode =
-              googleUser?.serverAuthCode; // Get the serverAuthCode
-
+              googleUser.serverAuthCode; // Get the serverAuthCode
+          //serverGoogleAuth(token, serverAuthCode!);
           if (kDebugMode) {
-            print(googleAuth.accessToken);
             print(serverAuthCode);
           }
           return token;
@@ -200,7 +204,7 @@ class AppServices {
                 //serverSpotifyAuth(code, token);
               },
               authUrl:
-                  'https://accounts.google.com/o/oauth2/auth?scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fgmail.modify+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar&response_type=code&redirect_uri=area://oauth2redirect&client_id=315267877885-7b6hvo4ibh0ms9lmt4fe1dvp9asqchdj.apps.googleusercontent.com&access_type=offline',
+                  'https://accounts.google.com/o/oauth2/auth?scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fgmail.modify+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar&response_type=code&redirect_uri=com.flutter.fastr://&client_id=315267877885-7b6hvo4ibh0ms9lmt4fe1dvp9asqchdj.apps.googleusercontent.com&access_type=offline',
             );
           },
         ),

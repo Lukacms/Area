@@ -88,18 +88,22 @@ Future serverGetSelfInfos(String token) async {
   }
 }
 
-Future serverGoogleAuth(String token, String scope) async {
+Future serverGoogleAuth(String token, String code) async {
   var url =
       Uri(scheme: 'http', host: CURRENT_IP, port: 8080, path: '/oauth/Google');
   var headers = {
     'Content-Type': 'application/json',
     'accept': '*/*',
+    'Authorization': 'Bearer $token',
   };
-  var body = jsonEncode({'code': token, 'scope': scope});
-  var response = await http
-      .post(url, headers: headers, body: body)
-      .then((value) => print(value.body));
-  return response;
+  var body = jsonEncode({'code': code, 'scope': null});
+  var response =
+      await http.post(url, headers: headers, body: body).then((value) {
+    print('reponse serveur${value.statusCode}');
+    print(value.body);
+    return value.body;
+  });
+  return null;
 }
 
 Future serverSpotifyAuth(String code, String token) async {
