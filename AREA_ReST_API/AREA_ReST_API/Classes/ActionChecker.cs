@@ -6,7 +6,7 @@ namespace AREA_ReST_API.Classes;
 public class ActionChecker : BackgroundService
 {
     private readonly IServiceProvider _serviceProvider;
-    private Dictionary<string, Func<IService>> _services;
+    private readonly Dictionary<string, Func<IService>> _services;
     public ActionChecker(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
@@ -36,6 +36,7 @@ public class ActionChecker : BackgroundService
                     context.UserActions.Update(userAction);
                     continue;
                 }
+                ManageActions(area.UserAction!, area, context);
                 userAction.Countdown = userAction.Timer;
             }
             await context.SaveChangesAsync(stoppingToken);
@@ -75,7 +76,7 @@ public class ActionChecker : BackgroundService
         var service = context.Services.First(s => s.Id == action.ServiceId);
         var userService = context.UserServices.First(s => s.ServiceId == action.ServiceId && s.UserId == area.UserId);
         var instance = _services[service.Name].Invoke();
-        if (await instance.ActionSelector(userAction, userService, context) == true)
+        if (await instance.ActionSelector(userAction, userService, context))
             await ManageReactions(area, context);
     }
 }
