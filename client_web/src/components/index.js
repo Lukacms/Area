@@ -1,3 +1,5 @@
+import FormikChip from './FormikChip';
+import FormikDropdown from './FormikDropdown';
 import FormikPassword from './FormikPassword';
 import FormikInputtext from './FormikInputtext';
 import BackButton from './BackButton';
@@ -10,6 +12,8 @@ import AdminAddItem from './AdminAddItem';
 
 export {
   ItemCard,
+  FormikChip,
+  FormikDropdown,
   FormikInputtext,
   FormikPassword,
   Background,

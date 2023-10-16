@@ -4,4 +4,11 @@ export const getByValue = (map, searchKey) => {
       return value;
     }
   }
-}
+};
+
+export const listToJsonObject = (strList) => {
+  const json = {};
+
+  strList.forEach((item) => (json[item] = ''));
+  return JSON.stringify(json);
+};

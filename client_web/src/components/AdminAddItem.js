@@ -1,7 +1,6 @@
-import { Field, Form, Formik } from 'formik';
-import FormikInputtext from './FormikInputtext';
-import { Dropdown } from 'primereact/dropdown';
 import { Button } from 'primereact/button';
+import { Field, Form, Formik } from 'formik';
+import { FormikChip, FormikDropdown, FormikInputtext } from '.';
 
 const AdminAddItem = ({ initalValues, validate, onSubmit, services }) => {
   return (
@@ -44,16 +43,27 @@ const AdminAddItem = ({ initalValues, validate, onSubmit, services }) => {
           <Field
             name='service'
             type='service'
-            as={Dropdown}
+            as={FormikDropdown}
             value={props.values.service}
             options={services}
             optionLabel='name'
             filter
             showClear
+            label='Services'
             onChange={(e) => props.setFieldValue('service', e.value)}
             placeholder='Select a service'
             error={props.errors?.service}
             touched={props.touched?.service}
+          />
+          <Field
+            name='defaultConfig'
+            type='defaultConfig'
+            as={FormikChip}
+            label='Configuration'
+            value={props.values.defaultConfig}
+            error={props.errors?.defaultConfig}
+            touched={props.touched?.defaultConfig}
+            tooltip='Configuration entries. Separate them with <Enter> key.'
           />
           <Button type='submit' label='Add new Action' severity='info' />
         </Form>

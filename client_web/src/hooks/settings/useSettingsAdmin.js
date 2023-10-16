@@ -1,8 +1,18 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import secureLocalStorage from 'react-secure-storage';
-import { addAction, addReaction, delAction, getActions, getAllUsers, getReactions, getServices } from '../../config/request';
+import {
+  addAction,
+  addReaction,
+  delAction,
+  delReaction,
+  getActions,
+  getAllUsers,
+  getReactions,
+  getServices,
+} from '../../config/request';
 import * as Yup from 'yup';
+import { listToJsonObject } from '../../config/commons';
 
 const useSettingsAdmin = () => {
   const navigate = useNavigate();
@@ -16,6 +26,7 @@ const useSettingsAdmin = () => {
     name: '',
     endpoint: '',
     service: {},
+    defaultConfig: []
   };
 
   const getServiceName = (item, services) => {
@@ -33,9 +44,8 @@ const useSettingsAdmin = () => {
   const validate = Yup.object().shape({
     name: Yup.string().min(3, 'Not enough characters').max(35, 'Too long').required('Required'),
     endpoint: Yup.string().min(1, 'Not enough characters').max(35, 'Too long').required('Required'),
-    service: Yup.object()
-      .shape({ name: Yup.string().required('Required') })
-      .required('Required'),
+    service: Yup.object().required('Required'),
+    defaultConfig: Yup.array().nullable()
   });
 
   const submitAction = async (values) => {
@@ -43,7 +53,8 @@ const useSettingsAdmin = () => {
       const res = await addAction({
         endpoint: values.endpoint,
         name: values.name,
-        serviceId: values.service.id
+        serviceId: values.service.id,
+        defaultConfiguration: listToJsonObject(values.defaultConfig),
       });
       setActions([
         ...actions,
@@ -52,10 +63,11 @@ const useSettingsAdmin = () => {
           name: values.name,
           endpoint: values.endpoint,
           service: values.service.name,
+          defaultConfiguration: '',
         },
       ]);
     } catch (e) {
-      toast.current.show({severity: 'error', summary: 'While adding action', detail: e.message})
+      toast.current.show({ severity: 'error', summary: 'While adding action', detail: e.message });
     }
   };
 
@@ -64,7 +76,8 @@ const useSettingsAdmin = () => {
       const res = await addReaction({
         endpoint: values.endpoint,
         name: values.name,
-        serviceId: values.service.id
+        serviceId: values.service.id,
+        defaultConfiguration: listToJsonObject(values.defaultConfig),
       });
       setReactions([
         ...reactions,
@@ -73,16 +86,25 @@ const useSettingsAdmin = () => {
           name: values.name,
           endpoint: values.endpoint,
           service: values.service.name,
+          defaultConfiguration: '',
         },
       ]);
     } catch (e) {
-      toast.current.show({severity: 'error', summary: 'While adding reaction', detail: e.message})
+      toast.current.show({
+        severity: 'error',
+        summary: 'While adding reaction',
+        detail: e.message,
+      });
     }
   };
 
   const deleteAdmin = async (user) => {
     if (user.id === secureLocalStorage.getItem('userId')) {
-      toast.current.show({severity: 'error', summary: 'Not allowed', detail: 'You cannot revoke your own admin rights.'})
+      toast.current.show({
+        severity: 'error',
+        summary: 'Not allowed',
+        detail: 'You cannot revoke your own admin rights.',
+      });
     }
     // axios request
   };
@@ -95,19 +117,35 @@ const useSettingsAdmin = () => {
     try {
       await delAction(action.id);
       setActions(actions.filter((item) => item !== action));
-      toast.current.show({severity: 'success', summary: 'While deleting action', detail: 'Successfully deleted action'})
+      toast.current.show({
+        severity: 'success',
+        summary: 'While deleting action',
+        detail: 'Successfully deleted action',
+      });
     } catch (e) {
-      toast.current.show({severity: 'error', summary: 'While deleting action', detail: e.message})
+      toast.current.show({
+        severity: 'error',
+        summary: 'While deleting action',
+        detail: e.message,
+      });
     }
   };
 
   const deleteReaction = async (reaction) => {
     try {
-      await deleteReaction(reaction.id);
+      await delReaction(reaction.id);
       setReactions(reactions.filter((item) => item !== reaction));
-      toast.current.show({severity: 'success', summary: 'While deleting reaction', detail: 'Successfully deleted reaction'})
+      toast.current.show({
+        severity: 'success',
+        summary: 'While deleting reaction',
+        detail: 'Successfully deleted reaction',
+      });
     } catch (e) {
-      toast.current.show({severity: 'error', summary: 'While deleting reaction', detail: e.message})
+      toast.current.show({
+        severity: 'error',
+        summary: 'While deleting reaction',
+        detail: e.message,
+      });
     }
   };
 
@@ -162,7 +200,7 @@ const useSettingsAdmin = () => {
     submitReaction,
     deleteAdmin,
     addAdmin,
-    toast
+    toast,
   };
 };
 
