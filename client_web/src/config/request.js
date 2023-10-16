@@ -45,6 +45,8 @@ export const getFirstInfos = (token) =>
     },
   });
 
+export const changeUser = (data) => axiosInstance.put(API_URL + 'Users', data);
+
 export const getServices = () => axiosInstance.get(API_URL + 'Services');
 
 export const getUserServices = (id) => axiosInstance.get(API_URL + `UserServices/${id}`);
@@ -76,3 +78,4 @@ export const addReaction = (data) => axiosInstance.post(API_URL + 'Reactions', d
 export const delAction = (actionId) => axiosInstance.delete(API_URL + `Actions/${actionId}`);
 export const delReaction = (reactionId) =>
   axiosInstance.delete(API_URL + `Reactions/${reactionId}`);
+export const changeAdmin = (data) => axiosInstance.put(API_URL + `Users/partialModif`, data);

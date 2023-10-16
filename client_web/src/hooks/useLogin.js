@@ -22,6 +22,9 @@ const useLogin = () => {
     setLoading(true);
     try {
       const data = await login(values);
+      if (!res.status.toString().startsWith('2')) {
+        throw error({ message: 'Wrong password' });
+      }
       secureLocalStorage.setItem('token', data.data.access_token);
       const user = await getFirstInfos(data.data.access_token);
       secureLocalStorage.setItem('userId', user.data.id);

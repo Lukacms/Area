@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import secureLocalStorage from 'react-secure-storage';
 import * as Yup from 'yup';
+import { changeUser, getFirstInfos } from '../../config/request';
 
 const useSettingsUser = () => {
   const navigate = useNavigate();
@@ -11,6 +12,7 @@ const useSettingsUser = () => {
     passwordCheck: '',
   };
   const buttonEl = useRef(null);
+  const toast = useRef(null);
 
   const validation = Yup.object().shape({
     password: Yup.string().min(8, 'Must be 8 characters minimum').required('Required'),
@@ -19,7 +21,19 @@ const useSettingsUser = () => {
       .required('Required'),
   });
 
-  const changePassword = async (values) => {};
+  const changePassword = async (values) => {
+    try {
+      const user =  await getFirstInfos(secureLocalStorage.getItem('token'));
+      await changeUser({...user.data, password: values.password});
+      toast.current.show({ severity: 'success', summary: 'Success' });
+    } catch (e) {
+      toast.current.show({
+        severity: 'error',
+        summary: 'While changing password',
+        detail: e.message,
+      });
+    }
+  };
 
   const logout = () => {
     secureLocalStorage.removeItem('token');
@@ -32,7 +46,6 @@ const useSettingsUser = () => {
     setIsAdmin(secureLocalStorage.getItem('isAdmin'));
   }, []);
 
-  return { navigate, passwordValues, validation, changePassword, logout, buttonEl, isAdmin };
+  return { navigate, passwordValues, validation, changePassword, logout, buttonEl, isAdmin, toast };
 };
-
 export default useSettingsUser;

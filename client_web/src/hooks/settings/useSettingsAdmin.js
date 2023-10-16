@@ -4,6 +4,7 @@ import secureLocalStorage from 'react-secure-storage';
 import {
   addAction,
   addReaction,
+  changeAdmin,
   delAction,
   delReaction,
   getActions,
@@ -26,7 +27,7 @@ const useSettingsAdmin = () => {
     name: '',
     endpoint: '',
     service: {},
-    defaultConfig: []
+    defaultConfig: [],
   };
 
   const getServiceName = (item, services) => {
@@ -45,7 +46,7 @@ const useSettingsAdmin = () => {
     name: Yup.string().min(3, 'Not enough characters').max(35, 'Too long').required('Required'),
     endpoint: Yup.string().min(1, 'Not enough characters').max(35, 'Too long').required('Required'),
     service: Yup.object().required('Required'),
-    defaultConfig: Yup.array().nullable()
+    defaultConfig: Yup.array().nullable(),
   });
 
   const submitAction = async (values) => {
@@ -105,12 +106,32 @@ const useSettingsAdmin = () => {
         summary: 'Not allowed',
         detail: 'You cannot revoke your own admin rights.',
       });
+      return;
     }
-    // axios request
+    try {
+      await changeAdmin({ ...user, admin: false });
+      setUsers(users.map((item) => (item.id === user.id ? { ...item, admin: false } : item)));
+    } catch (e) {
+      toast.current.show({
+        severity: 'error',
+        summary: 'Error',
+        detail: e.message,
+      });
+    }
   };
 
   const addAdmin = async (user) => {
     // axios request
+    try {
+      await changeAdmin({ ...user, admin: true });
+      setUsers(users.map((item) => (item.id === user.id ? { ...item, admin: true } : item)));
+    } catch (e) {
+      toast.current.show({
+        severity: 'error',
+        summary: 'Error',
+        detail: e.message,
+      });
+    }
   };
 
   const deleteAction = async (action) => {
