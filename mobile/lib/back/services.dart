@@ -162,16 +162,19 @@ class AppServices {
     ],
   ];
   Map<String, dynamic> serviceLogInFunctions = {
-    'Google': () async {
+    'Google': (BuildContext context, String token) async {
       final GoogleSignIn googleSignIn = GoogleSignIn();
       try {
         final googleUser = await googleSignIn.signIn();
         final googleAuth = await googleUser?.authentication;
         if (googleAuth != null) {
           final String? token = googleAuth.accessToken;
+          final String? serverAuthCode =
+              googleUser?.serverAuthCode; // Get the serverAuthCode
+
           if (kDebugMode) {
             print(googleAuth.accessToken);
-            print(googleUser!.serverAuthCode);
+            print(serverAuthCode);
           }
           return token;
         } else {
@@ -186,15 +189,30 @@ class AppServices {
         }
         return null;
       }
+      /* Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) {
+            return AuthWebView(
+              clientId:
+                  '315267877885-7b6hvo4ibh0ms9lmt4fe1dvp9asqchdj.apps.googleusercontent.com',
+              clientSecret: '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',
+              serverOauth: (code) {
+                //serverSpotifyAuth(code, token);
+              },
+              authUrl:
+                  'https://accounts.google.com/o/oauth2/auth?scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fgmail.modify+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar&response_type=code&redirect_uri=area://oauth2redirect&client_id=315267877885-7b6hvo4ibh0ms9lmt4fe1dvp9asqchdj.apps.googleusercontent.com&access_type=offline',
+            );
+          },
+        ),
+      ); */
     },
     'Spotify': (BuildContext context, String token) async {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) {
-            return SpotifyAuthWebView(
+            return AuthWebView(
               clientId: '834ee184a29945b2a2a3dc8108a5bbf4',
               clientSecret: 'b589f784bb3f4b3897337acbfdd80f0d',
-              url: 'https://accounts.spotify.com/api/token',
               serverOauth: (code) {
                 serverSpotifyAuth(code, token);
               },
@@ -205,5 +223,22 @@ class AppServices {
         ),
       );
     },
+    'Github': (BuildContext context, String token) async {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) {
+            return AuthWebView(
+              clientId: 'Iv1.f47bfd491f94b532',
+              clientSecret: 'c8f7c650f3d4c47462ddbf0ca06b1113478c9f6e',
+              serverOauth: (code) {
+                serverGithubAuth(code, token);
+              },
+              authUrl:
+                  ' https://github.com/login/oauth/authorize?client_id=Iv1.f47bfd491f94b532&redirect_uri=area://oauth2redirect',
+            );
+          },
+        ),
+      );
+    }
   };
 }
