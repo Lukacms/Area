@@ -145,4 +145,28 @@ public class UsersController : ControllerBase
         var jwt = tokenHandler.WriteToken(token);
         return jwt;
     }
+
+    [HttpPut("")]
+    public ActionResult ModifyUser([FromBody] UsersModel modifiedUser, [FromHeader] string authorization)
+    {
+        var decodedUser = JwtDecoder.Decode(authorization);
+        if (!decodedUser.Admin)
+            return new UnauthorizedObjectResult(new JsonObject
+                { { "message", "You are not authorized to modify this user" } });
+        if (modifiedUser.Name.IsNullOrEmpty())
+            return new BadRequestObjectResult(new JsonObject { {"message", "Name cannot be empty or null" } });
+        if (modifiedUser.Surname.IsNullOrEmpty())
+            return new BadRequestObjectResult(new JsonObject { {"message", "Surname cannot be empty or null" } });
+        if (modifiedUser.Username.IsNullOrEmpty())
+            return new BadRequestObjectResult(new JsonObject { {"message", "Username cannot be empty or null" } });
+        if (modifiedUser.Password.IsNullOrEmpty())
+            return new BadRequestObjectResult(new JsonObject { {"message", "Password cannot be empty or null" } });
+        if (modifiedUser.Email.IsNullOrEmpty())
+            return new BadRequestObjectResult(new JsonObject { {"message", "Email cannot be empty or null" } });
+        var hashedPassword = BCrypt.Net.BCrypt.EnhancedHashPassword(modifiedUser.Password, 13)!;
+        modifiedUser.Password = hashedPassword;
+        var user = _context.Users.Update(modifiedUser);
+        _context.SaveChanges();
+        return new CreatedResult("User successfully modified", user.Entity);
+    }
 }
