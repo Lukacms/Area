@@ -111,7 +111,27 @@ Future serverSpotifyAuth(String code, String token) async {
     'accept': '*/*',
     'Authorization': 'Bearer $token',
   };
-  var body = jsonEncode({"code": code, "scope": ""});
+  var body = jsonEncode({"code": code});
+  var response =
+      await http.post(url, headers: headers, body: body).then((value) {
+    print('reponse serveur${value.statusCode}');
+    print(value.body);
+    return value.body;
+  });
+  return null;
+}
+
+Future serverGithubAuth(String code, String token) async {
+  var url =
+      Uri(scheme: 'http', host: CURRENT_IP, port: 8080, path: '/oauth/Github');
+  print("CHUI DEDANS");
+  print('le code cote serveur $code');
+  var headers = {
+    'Content-Type': 'application/json',
+    'accept': '*/*',
+    'Authorization': 'Bearer $token',
+  };
+  var body = jsonEncode({"code": code, 'scope': null});
   var response =
       await http.post(url, headers: headers, body: body).then((value) {
     print('reponse serveur${value.statusCode}');
