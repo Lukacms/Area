@@ -20,6 +20,7 @@ const useHome = () => {
     command: () => {},
   });
   const [currentSelectedCategory, setCurrentSelectedCategory] = useState('actions');
+  const [loading, setLoading] = useState(true);
 
   const updateCurrentSelectedCategory = (category) => {
     if (category === null) return;
@@ -81,48 +82,7 @@ const useHome = () => {
     });
   };
 
-  const [actionList, setActionList] = useState([
-    {
-      label: 'discord',
-      icon: 'pi pi-fw pi-folder',
-      items: [
-        {
-          label: 'action disc 1',
-          command: () => {
-            //clickAct(actionList[0].items[0].label);
-            addActionToBlankArea({ action: actionList[0].items[0].label });
-          },
-        },
-        {
-          label: 'action disc 2',
-          command: () => {
-            //clickAct(actionList[0].items[1].label);
-            addActionToBlankArea({ action: actionList[0].items[1].label });
-          },
-        },
-      ],
-    },
-    {
-      label: 'microsoft',
-      icon: 'pi pi-fw pi-folder',
-      items: [
-        {
-          label: 'action mail1',
-          command: () => {
-            //clickAct(actionList[1].items[0].label);
-            addActionToBlankArea({ action: actionList[1].items[0].label });
-          },
-        },
-        {
-          label: 'action mail2',
-          command: () => {
-            //clickAct(actionList[1].items[1].label);
-            addActionToBlankArea({ action: actionList[1].items[1].label });
-          },
-        },
-      ],
-    },
-  ]);
+  const [actionList, setActionList] = useState([]);
 
   const addActionToBlankArea = ({ action }) => {
     // if (stateOfCreation !== 'action') return;
@@ -142,56 +102,7 @@ const useHome = () => {
     setaddAct(true);
   };
 
-  const [reactionList, setReactionList] = useState([
-    {
-      label: 'discord',
-      icon: 'pi pi-fw pi-folder',
-      items: [
-        {
-          label: 'reaction disc 1',
-          command: () => {
-            //clickReact(reactionList[0].items[0].label);
-            addReactionToBlankArea({
-              reaction: reactionList[0].items[0].label,
-            });
-          },
-        },
-        {
-          label: 'reaction disc 2',
-          command: () => {
-            //clickReact(reactionList[0].items[1].label);
-            addReactionToBlankArea({
-              reaction: reactionList[0].items[1].label,
-            });
-          },
-        },
-      ],
-    },
-    {
-      label: 'microsoft',
-      icon: 'pi pi-fw pi-folder',
-      items: [
-        {
-          label: 'reaction mail1',
-          command: () => {
-            //clickReact(reactionList[1].items[0].label);
-            addReactionToBlankArea({
-              reaction: reactionList[1].items[0].label,
-            });
-          },
-        },
-        {
-          label: 'reaction mail2',
-          command: () => {
-            //clickReact(reactionList[1].items[1].label);
-            addReactionToBlankArea({
-              reaction: reactionList[1].items[1].label,
-            });
-          },
-        },
-      ],
-    },
-  ]);
+  const [reactionList, setReactionList] = useState([]);
 
   const clickReact = (eventName) => {
     if (!addAct) {
@@ -303,10 +214,10 @@ const useHome = () => {
     setCurrentState('Select your reactions, and when you are finished click on save Area');
   };
 
-  const addServicesToUser = ({ actions, reactions, name, logo }) => {
+  const addServicesToUser = ({ actions, reactions, name, id }) => {
     if (actions.data && actions.data.length) {
-      if (actionList[0].label === '') actionList.pop();
-      actionList.push({ label: name, icon: logo, items: [] });
+      if (actionList.length && actionList[0].label === '') actionList.pop();
+      actionList.push({ label: name, icon: 'pi pi-fw pi-folder', id: id, items: [] });
       for (let i = 0; i < actions.data.length; i++) {
         actionList[actionList.length - 1].items.push({
           label: actions.data[i].name,
@@ -319,8 +230,8 @@ const useHome = () => {
       }
     }
     if (reactions.data && reactions.data.length) {
-      if (reactionList[0].label === '') reactionList.pop();
-      reactionList.push({ label: name, icon: logo, items: [] });
+      if (reactionList.length && reactionList[0].label === '') reactionList.pop();
+      reactionList.push({ label: name, icon: 'pi pi-fw pi-folder', id: id, items: [] });
       for (let i = 0; i < reactions.data.length; i++) {
         reactionList[reactionList.length - 1].items.push({
           label: reactions.data[i].name,
@@ -348,7 +259,7 @@ const useHome = () => {
                 actions: await getActionsByServiceId(services.data[i].id),
                 reactions: await getReactionsByServiceId(services.data[i].id),
                 name: services.data[i].name,
-                logo: services.data[i].logo,
+                id: services.data[i].id,
               });
             }
           }
@@ -362,11 +273,6 @@ const useHome = () => {
                 name: item.name,
                 id: item.id,
               });
-              /*panelAreas[0].items.push({
-                label: item.name,
-                data: { action: item.action, reaction: item.reaction, id: item.id },
-                command: () => clickArea({ areaSelected: item.id, favorite: 0 }),
-              });*/
             } else {
               addToPanelArea({
                 act: item.userAction?.configuration,
@@ -374,17 +280,13 @@ const useHome = () => {
                 name: item.name,
                 id: item.id,
               });
-              /*panelAreas[1].items.push({
-                label: item.name,
-                data: { action: item.action, reaction: item.reaction, id: item.id },
-                command: () => clickArea({ areaSelected: item.id, favorite: 1 }),
-              });*/
             }
           });
         }
       } catch (e) {
         navigate('/error', { state: { message: e.message } });
       }
+      setLoading(false);
     };
     loadDatas();
   }, []);

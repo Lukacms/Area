@@ -1,5 +1,5 @@
-import '../styles/AreaCard.css';
 import ItemCard from './ItemCard';
+import '../styles/AreaCard.css';
 
 const AreaCard = ({ area }) => {
   let value = [];

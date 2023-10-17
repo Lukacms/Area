@@ -2,8 +2,8 @@ import '../styles/ItemCard.css';
 
 const ItemCard = ({ value }) => {
   return (
-    <div className='ItemCardDiv'>
-      <p> {value} </p>
+    <div className='itemCardDiv'>
+      <div> {value} </div>
     </div>
   );
 };

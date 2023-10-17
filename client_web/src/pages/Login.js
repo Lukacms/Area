@@ -74,10 +74,10 @@ function Login() {
           <hr className='hrMidle' />
         </div>
         <div className='divSignin'>
-          <p className='title'>
-            <b>Dont have an account ?</b>
-          </p>
-          <p className='subTitle'>Sign up now !</p>
+          <div className='title'>
+            <b>Don't have an account ?</b>
+          </div>
+          <div className='subTitle'>Sign up now !</div>
           <Button
             label='Sign up'
             size='large'

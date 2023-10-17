@@ -1,18 +1,18 @@
-import '../styles/home.css';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { PanelMenu } from 'primereact/panelmenu';
 import { Divider } from 'primereact/divider';
-import { useNavigate } from 'react-router-dom';
-import { AreaBuild } from '../components';
-import { useHome } from '../hooks';
+import { ProgressSpinner } from 'primereact/progressspinner';
 import { styled } from '@mui/material/styles';
 import { ToggleButton, ToggleButtonGroup, IconButton, TextField } from '@mui/material';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import InputAdornment from '@mui/material/InputAdornment';
 import SearchIcon from '@mui/icons-material/Search';
-import { useState } from 'react';
-import React from 'react';
+import { useHome } from '../hooks';
+import { AreaBuild } from '../components';
+import '../styles/home.css';
 
-const Home = ({children}) => {
+const Home = ({ children }) => {
   const {
     dispAct,
     dispReac,
@@ -27,6 +27,7 @@ const Home = ({children}) => {
     updateCurrentSelectedCategory,
     onEnterNameArea,
     canSave,
+    loading,
   } = useHome();
 
   const navigate = useNavigate();
@@ -42,9 +43,15 @@ const Home = ({children}) => {
       dispReac();
     }
   };
+
   if (currentSelectedCategory !== displayedCategory) {
     handleChange(null, currentSelectedCategory);
   }
+
+  if (loading && !children) {
+    return <ProgressSpinner />;
+  }
+
   return (
     <div className='globalDiv'>
       <div className='leftDiv'>
@@ -126,7 +133,7 @@ const Home = ({children}) => {
                   style={{
                     color: 'rgba(255, 250, 251, 0.5)',
                   }}>
-                  Rechercher
+                  Search
                 </b>
               </InputAdornment>
             ),
@@ -143,7 +150,7 @@ const Home = ({children}) => {
           }}
           p-menuitem-icon='pi pi-folder'
         />
-      {children}
+        {children}
       </div>
     </div>
   );

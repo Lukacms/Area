@@ -44,6 +44,11 @@ const HomeToolbar = ({
           }}
           sx={{ input: { color: 'white' }, borderColor: 'white' }}
           disabled={!isAddClicked || !isNextStep}
+          style={
+            !isAddClicked || !isNextStep
+              ? { backgroundColor: 'rgba(255, 250, 251, 0.2)', borderRadius: '5px', color: 'black' }
+              : {}
+          }
         />
       </div>
       <div

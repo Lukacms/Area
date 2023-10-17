@@ -1,5 +1,6 @@
 import { AreaCard, HomeToolbar } from '.';
 import { Stack } from '@mui/material';
+import '../styles/home.css';
 
 const AreaBuild = ({
   canSave,
