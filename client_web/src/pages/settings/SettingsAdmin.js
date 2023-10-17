@@ -5,9 +5,11 @@ import { ConfirmDialog } from 'primereact/confirmdialog';
 import { DataTable } from 'primereact/datatable';
 import { Dialog } from 'primereact/dialog';
 import { Toast } from 'primereact/toast';
-import { AdminAddItem } from '../../components';
+import { AdminAddItem, Background } from '../../components';
 import { useSettingsAdmin } from '../../hooks';
 import '../../styles/admin.css';
+import { Image } from 'primereact/image';
+import { Divider } from 'primereact/divider';
 
 function SettingsAdmin() {
   const {
@@ -122,13 +124,11 @@ function SettingsAdmin() {
   };
 
   return (
-    <div className='globalDiv'>
+    <Background>
       <Toast ref={toast}/>
-      <div className='leftDiv'>
-        <div className='topLeft'>
-          <b className='fastrText' style={{ paddingLeft: '5%' }}>
-            FastR
-          </b>
+      <div className='leftPannel'>
+        <div className='titleContainer'>
+          <Image src={'../' + process.env.PUBLIC_URL + 'partial_icon.png'} width='150' />
           <Button
             rounded
             outlined
@@ -138,6 +138,7 @@ function SettingsAdmin() {
             onClick={() => navigate('/settings')}
           />
         </div>
+        <Divider />
         <Button
           label='Home page'
           className='homeButton'
@@ -208,7 +209,7 @@ function SettingsAdmin() {
           />
         </Dialog>
       </div>
-    </div>
+    </Background>
   );
 }
 

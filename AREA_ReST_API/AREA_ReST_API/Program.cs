@@ -58,7 +58,7 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddScoped<AppDbContext>();
 
-builder.Services.AddHostedService<ActionChecker>();
+// builder.Services.AddHostedService<ActionChecker>();
 
 var app = builder.Build();
 

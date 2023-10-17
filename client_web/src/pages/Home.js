@@ -1,176 +1,126 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { PanelMenu } from 'primereact/panelmenu';
+import { useState } from 'react';
+import { Image } from 'primereact/image';
+import { Button } from 'primereact/button';
 import { Divider } from 'primereact/divider';
+import { TabMenu } from 'primereact/tabmenu';
+import { PanelMenu } from 'primereact/panelmenu';
 import { ProgressSpinner } from 'primereact/progressspinner';
-import { styled } from '@mui/material/styles';
-import { ToggleButton, ToggleButtonGroup, IconButton, TextField } from '@mui/material';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import InputAdornment from '@mui/material/InputAdornment';
-import SearchIcon from '@mui/icons-material/Search';
-import { useHome } from '../hooks';
-import { AreaBuild } from '../components';
+import { Background } from '../components';
+import { useFetchHome, useHome } from '../hooks';
 import '../styles/home.css';
+import { Toast } from 'primereact/toast';
+import { InputText } from 'primereact/inputtext';
 
-const Home = ({ children }) => {
+function Home({ children }) {
   const {
-    dispAct,
-    dispReac,
-    actionOrReaction,
-    panelAreas,
-    selectedArea,
-    addNameToBlankArea,
-    addCreatedAreaToAreas,
-    currentState,
-    currentSelectedCategory,
-    onClickForCreateArea,
-    updateCurrentSelectedCategory,
-    onEnterNameArea,
-    canSave,
+    navigate,
+    actionReac,
+    setActionReac,
+    panelActions,
+    panelReactions,
     loading,
-  } = useHome();
+    tabAreas,
+    setTabAreas,
+  } = useFetchHome();
+  const { toast, changeAreaStatus } = useHome();
+  const actionReacOpts = [{ label: 'Actions' }, { label: 'Reactions' }];
+  const [areaTab, setAreaTab] = useState(0);
+  const areaTabs = [
+    { label: 'Favourite', icon: 'pi pi-star' },
+    { label: 'All', icon: 'pi pi-list' },
+  ];
+  const [searchValue, setSearchValue] = useState('');
 
-  const navigate = useNavigate();
-
-  const [displayedCategory, setDisplayedCategory] = useState('actions');
-
-  const handleChange = (event, newSelectedValue) => {
-    setDisplayedCategory(newSelectedValue);
-    updateCurrentSelectedCategory(newSelectedValue);
-    if (newSelectedValue === 'actions') {
-      dispAct();
-    } else {
-      dispReac();
-    }
-  };
-
-  if (currentSelectedCategory !== displayedCategory) {
-    handleChange(null, currentSelectedCategory);
-  }
-
-  if (loading && !children) {
+  if (loading) {
     return <ProgressSpinner />;
   }
 
+  const renderItem = (item) => {
+    if (!areaTab && !item.favorite) {
+      return;
+    }
+    if (
+      areaTab &&
+      !item.name.toUpperCase().includes(searchValue.toUpperCase().trim().replace(/\s/g, ''))
+    ) {
+      return;
+    }
+
+    return (
+      <div className='areaPreviewContainer'>
+        <Button
+          text
+          raised
+          rounded
+          icon={item.favorite ? 'pi pi-star-fill' : 'pi pi-star'}
+          onClick={(e) => {
+            e.stopPropagation();
+            changeAreaStatus(item, tabAreas, setTabAreas);
+          }}
+        />
+        <div>{item.name}</div>
+        <Button text raised rounded icon='pi pi-minus' />
+      </div>
+    );
+  };
+
   return (
-    <div className='globalDiv'>
-      <div className='leftDiv'>
-        <div className='topLeft'>
-          <b className='fastrText' style={{ paddingLeft: '5%' }}>
-            FastR
-          </b>
-          <IconButton
-            label='setting'
-            style={{ border: '1%', color: 'white', borderRadius: '50%' }}
-            onClick={() => navigate('/settings')}>
-            <MoreHorizIcon style={{ color: 'white' }} />
-          </IconButton>
-        </div>
-        <div className='selectButton'>
-          <StyledToggleButtonGroup
-            exclusive
-            value={displayedCategory}
-            onChange={handleChange}
-            aria-label='categories'
-            style={{
-              width: '100%',
-              backgroundColor: 'rgba(255, 250, 251, 0.1)',
-              borderRadius: '10px',
-            }}>
-            <ToggleButton
-              value='actions'
-              style={{ color: 'white', width: '50%' }}
-              aria-label='category'>
-              Actions
-            </ToggleButton>
-            <ToggleButton
-              value='reactions'
-              style={{ color: 'white', width: '50%' }}
-              aria-label='category'>
-              Reactions
-            </ToggleButton>
-          </StyledToggleButtonGroup>
+    <Background>
+      <div className='toast'>
+        <Toast ref={toast} position='top-center' />
+      </div>
+      <div className='leftPannel'>
+        <div className='titleContainer'>
+          <Image src={process.env.PUBLIC_URL + 'partial_icon.png'} width='150' />
+          <Button
+            rounded
+            outlined
+            severity='info'
+            icon='pi pi-ellipsis-h'
+            className='settingsButton'
+            onClick={() => navigate('/settings')}
+          />
         </div>
         <Divider />
-        <b style={{ alignSelf: 'center', marginBottom: '5%' }}>
-          {currentSelectedCategory.toUpperCase()}
-        </b>
-        <PanelMenu
-          model={actionOrReaction}
-          className='pannelMenu'
-          style={{ backgroundColor: 'transparent' }}
-        />
+        <div className='actionReacTab'>
+          <TabMenu
+            model={actionReacOpts}
+            activeIndex={actionReac == 'Actions' ? 0 : 1}
+            onTabChange={(e) => setActionReac(e.value.label)}
+          />
+        </div>
+        <div className='panelContainer'>
+          {actionReac === 'Actions' ? (
+            <PanelMenu model={panelActions} />
+          ) : (
+            <PanelMenu model={panelReactions} />
+          )}
+        </div>
       </div>
-      <AreaBuild
-        canSave={canSave}
-        selectedArea={selectedArea}
-        currentState={currentState}
-        addNameToBlankArea={addNameToBlankArea}
-        addCreatedAreaToAreas={addCreatedAreaToAreas}
-        onClickForCreateArea={onClickForCreateArea}
-        onEnterNameArea={onEnterNameArea}
-      />
-      <div
-        className='rightDiv'
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}>
-        <b style={{ marginTop: '10%', fontSize: 25 }}>Areas</b>
-        <TextField
-          id='input-with-icon-textfield'
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position='start'>
-                <SearchIcon
-                  style={{
-                    color: 'rgba(255, 250, 251, 0.5)',
-                    marginLeft: '10%',
-                  }}
-                />
-                <b
-                  style={{
-                    color: 'rgba(255, 250, 251, 0.5)',
-                  }}>
-                  Search
-                </b>
-              </InputAdornment>
-            ),
-          }}
-          variant='standard'
-        />
-        <PanelMenu
-          model={panelAreas}
-          className='pannelMenu'
-          style={{
-            backgroundColor: 'transparent',
-            marginTop: '10%',
-            width: '100%',
-          }}
-          p-menuitem-icon='pi pi-folder'
-        />
-        {children}
+      <div className='rightPannel'>
+        <div className='actionReacTab'>
+          <TabMenu
+            model={areaTabs}
+            activeIndex={areaTab}
+            onTabChange={(e) => setAreaTab(e.index)}
+          />
+        </div>
+        {areaTab ? (
+          <span className='p-input-icon-left' style={{ margin: '0 1vw 3vh 1vw' }}>
+            <i className='pi pi-search' />
+            <InputText
+              className='searchContainer'
+              placeholder='Search for areas..'
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+            />
+          </span>
+        ) : null}
+        <div className='areaDisplayContainer'>{tabAreas.map((item) => renderItem(item))}</div>
       </div>
-    </div>
+      {children}
+    </Background>
   );
-};
+}
 
 export default Home;
-
-const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
-  '& .MuiToggleButtonGroup-grouped': {
-    margin: theme.spacing(0.5),
-    color: 'white',
-    border: 0,
-    '&.Mui-disabled': {
-      border: 0,
-    },
-    '&:not(:first-of-type)': {
-      borderRadius: theme.shape.borderRadius,
-    },
-    '&:first-of-type': {
-      borderRadius: theme.shape.borderRadius,
-    },
-  },
-}));

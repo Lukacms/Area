@@ -63,6 +63,8 @@ export const getReactionsByServiceId = (id) => axiosInstance.get(API_URL + `Reac
 
 export const disconnectUserService = (id) => axiosInstance.delete(API_URL + `UserServices/${id}`);
 
+export const putArea = (area) => axiosInstance.put(API_URL + 'Areas', area);
+
 export const getUsersAreas = (id) => axiosInstance.get(API_URL + `Areas/${id}`);
 
 // services callbacks
