@@ -27,7 +27,7 @@ function SettingsUser() {
   };
 
   return (
-    <Home>
+    <Home publicPath='../'>
       <Toast ref={toast} />
       <Dialog
         header={header}

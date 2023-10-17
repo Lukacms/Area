@@ -11,7 +11,7 @@ import '../styles/home.css';
 import { Toast } from 'primereact/toast';
 import { InputText } from 'primereact/inputtext';
 
-function Home({ children }) {
+function Home({ children, publicPath }) {
   const {
     navigate,
     actionReac,
@@ -69,56 +69,70 @@ function Home({ children }) {
       <div className='toast'>
         <Toast ref={toast} position='top-center' />
       </div>
-      <div className='leftPannel'>
-        <div className='titleContainer'>
-          <Image src={process.env.PUBLIC_URL + 'partial_icon.png'} width='150' />
-          <Button
-            rounded
-            outlined
-            severity='info'
-            icon='pi pi-ellipsis-h'
-            className='settingsButton'
-            onClick={() => navigate('/settings')}
-          />
-        </div>
-        <Divider />
-        <div className='actionReacTab'>
-          <TabMenu
-            model={actionReacOpts}
-            activeIndex={actionReac == 'Actions' ? 0 : 1}
-            onTabChange={(e) => setActionReac(e.value.label)}
-          />
-        </div>
-        <div className='panelContainer'>
-          {actionReac === 'Actions' ? (
-            <PanelMenu model={panelActions} />
-          ) : (
-            <PanelMenu model={panelReactions} />
-          )}
-        </div>
-      </div>
-      <div className='rightPannel'>
-        <div className='actionReacTab'>
-          <TabMenu
-            model={areaTabs}
-            activeIndex={areaTab}
-            onTabChange={(e) => setAreaTab(e.index)}
-          />
-        </div>
-        {areaTab ? (
-          <span className='p-input-icon-left' style={{ margin: '0 1vw 3vh 1vw' }}>
-            <i className='pi pi-search' />
-            <InputText
-              className='searchContainer'
-              placeholder='Search for areas..'
-              value={searchValue}
-              onChange={(e) => setSearchValue(e.target.value)}
+      <div className='globalGrid'>
+        <div className='leftPannel'>
+          <div className='titleContainer'>
+            <Image src={publicPath + process.env.PUBLIC_URL + 'partial_icon.png'} width='150' />
+            <Button
+              rounded
+              outlined
+              severity='info'
+              icon='pi pi-ellipsis-h'
+              className='settingsButton'
+              onClick={() => navigate('/settings')}
             />
-          </span>
-        ) : null}
-        <div className='areaDisplayContainer'>{tabAreas.map((item) => renderItem(item))}</div>
+          </div>
+          <Divider />
+          <div className='actionReacTab'>
+            <TabMenu
+              model={actionReacOpts}
+              activeIndex={actionReac == 'Actions' ? 0 : 1}
+              onTabChange={(e) => setActionReac(e.value.label)}
+            />
+          </div>
+          <div className='panelContainer'>
+            {actionReac === 'Actions' ? (
+              <PanelMenu model={panelActions} />
+            ) : (
+              <PanelMenu model={panelReactions} />
+            )}
+          </div>
+        </div>
+        <div className='areasContainer'>
+          <div className='buttonAddArea'>
+            <Button
+              icon='pi pi-plus'
+              iconPos='left'
+              text
+              raised
+              rounded
+              tooltip='Create new area'
+            />
+          </div>
+        </div>
+        <div className='rightPannel'>
+          <div className='actionReacTab'>
+            <TabMenu
+              model={areaTabs}
+              activeIndex={areaTab}
+              onTabChange={(e) => setAreaTab(e.index)}
+            />
+          </div>
+          {areaTab ? (
+            <span className='p-input-icon-left' style={{ margin: '0 1vw 3vh 1vw' }}>
+              <i className='pi pi-search' />
+              <InputText
+                className='searchContainer'
+                placeholder='Search for areas..'
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+              />
+            </span>
+          ) : null}
+          <div className='areaDisplayContainer'>{tabAreas.map((item) => renderItem(item))}</div>
+        </div>
+        {children}
       </div>
-      {children}
     </Background>
   );
 }

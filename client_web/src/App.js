@@ -37,7 +37,7 @@ function App() {
         <Route index element={<Register />} />
         <Route path='verify' element={<MailVerif />} />
       </Route>
-      <Route path='/home' element={<Home />} />
+      <Route path='/home' element={<Home publicPath='' />} />
       <Route path='/settings'>
         <Route index element={<SettingsUser />} />
         <Route path='admin' element={<SettingsAdmin />} />
