@@ -46,6 +46,7 @@ public class AreasController
         return new CreatedResult("Area successfully created", area.Entity);
     }
 
+    [AllowAnonymous]
     [HttpPost("full")]
     public ActionResult CreateNewAreaWithActionAndReaction([FromBody] AreaWithActionReaction newArea)
     {
@@ -58,14 +59,20 @@ public class AreasController
             UserId = newArea.UserId
         };
         var registeredArea = _context.Areas.Add(onlyArea).Entity;
+        _context.SaveChanges();
         UserActionsModel registeredAction = null!;
         if (newArea.UserAction != null)
         {
+            newArea.UserAction.AreaId = registeredArea.Id;
             registeredAction = _context.UserActions.Add(newArea.UserAction).Entity;
         }
         var registeredReaction = newArea.UserReactions.Select(
-            reaction => _context.UserReactions.Add(reaction).Entity
-            ).ToList();
+            reaction =>
+            {
+                reaction.AreaId = registeredArea.Id;
+                return _context.UserReactions.Add(reaction).Entity;
+            }
+    ).ToList();
         _context.SaveChanges();
         var createdArea = new AreaWithActionReaction
         {
