@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mobile/back/api.dart';
 import 'package:mobile/screens/settings/webview/oauth_webview.dart';
 import 'package:mobile/theme/style.dart';
+import 'package:http/http.dart' as http;
 
 class Service {
   final String name;
@@ -163,52 +167,39 @@ class AppServices {
   ];
   Map<String, dynamic> serviceLogInFunctions = {
     'Google': (BuildContext context, String token) async {
-      final GoogleSignIn googleSignIn = GoogleSignIn(
-        clientId:
-            '315267877885-7b6hvo4ibh0ms9lmt4fe1dvp9asqchdj.apps.googleusercontent.com',
-        forceCodeForRefreshToken: true,
-      );
-      try {
-        final googleUser = await googleSignIn.signIn();
-        final googleAuth = await googleUser?.authentication;
-        if (googleUser != null) {
-          print(googleAuth!.accessToken);
-          print(googleAuth.idToken);
-          final String? serverAuthCode =
-              googleUser.serverAuthCode; // Get the serverAuthCode
-          //serverGoogleAuth(token, serverAuthCode!);
-          if (kDebugMode) {
-            print(serverAuthCode);
-          }
-          return token;
-        } else {
-          if (kDebugMode) {
-            print('User not signed in');
-          }
-          return null;
-        }
-      } catch (e) {
-        if (kDebugMode) {
-          print(e);
-        }
-        return null;
-      }
-      /* Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) {
-            return AuthWebView(
-              clientId:
-                  '315267877885-7b6hvo4ibh0ms9lmt4fe1dvp9asqchdj.apps.googleusercontent.com',
-              clientSecret: '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',
-              serverOauth: (code) {
-                //serverSpotifyAuth(code, token);
-              },
-              authUrl:
-                  'https://accounts.google.com/o/oauth2/auth?scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fgmail.modify+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar&response_type=code&redirect_uri=com.flutter.fastr://&client_id=315267877885-7b6hvo4ibh0ms9lmt4fe1dvp9asqchdj.apps.googleusercontent.com&access_type=offline',
-            );
-          },
-        ),
-      ); */
+      const googleClientId =
+          '315267877885-lkqq49r6v587fi9pduggbdh9dr1j69me.apps.googleusercontent.com';
+      const callbackUrlScheme =
+          'com.googleusercontent.apps.315267877885-lkqq49r6v587fi9pduggbdh9dr1j69me';
+
+      // Construct the url
+      final url = Uri.https('accounts.google.com', '/o/oauth2/v2/auth', {
+        'response_type': 'code',
+        'client_id': googleClientId,
+        'redirect_uri': '$callbackUrlScheme:/',
+        'scope': 'email',
+      });
+      // Present the dialog to the user
+      final result = await FlutterWebAuth.authenticate(
+          url: url.toString(), callbackUrlScheme: callbackUrlScheme);
+
+      // Extract code from resulting url
+      final code = Uri.parse(result).queryParameters['code'];
+
+      // Use this code to get an access token
+      final response = await http
+          .post(Uri.parse('https://www.googleapis.com/oauth2/v4/token'), body: {
+        'client_id': googleClientId,
+        'redirect_uri': '$callbackUrlScheme:/',
+        'grant_type': 'authorization_code',
+        'code': code,
+      });
+
+      // Get the access token from the response
+      final accessToken = jsonDecode(response.body)['access_token'] as String;
+      final refreshToken = jsonDecode(response.body)['refresh_token'] as String;
+      serverGoogleAuth(token, accessToken, refreshToken);
+
     },
     'Spotify': (BuildContext context, String token) async {
       Navigator.of(context).push(
