@@ -46,7 +46,6 @@ public class AreasController
         return new CreatedResult("Area successfully created", area.Entity);
     }
 
-    [AllowAnonymous]
     [HttpPost("full")]
     public ActionResult CreateNewAreaWithActionAndReaction([FromBody] AreaWithActionReaction newArea)
     {
