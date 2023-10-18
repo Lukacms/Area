@@ -19,6 +19,9 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  Key usernameField = const Key('usernameField');
+  Key passwordField = const Key('passwordField');
+  Key loginButton = const Key('loginButton');
 
   void login() async {
     List res = [];
@@ -82,6 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: blockHeight * 5,
               ),
               LoginTextField(
+                key: usernameField,
                   description: "E-Mail",
                   placeholder: 'yourname@example.com',
                   isPassword: false,
@@ -91,6 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: blockHeight * 5,
               ),
               LoginTextField(
+                key: passwordField,
                 description: "Password",
                 placeholder: '********',
                 isPassword: true,
@@ -183,6 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   color: AppColors.greyBlue,
                 ),
                 child: TextButton(
+                  key: loginButton,
                   child: Text(
                     "Sign In",
                     style: TextStyle(

@@ -96,8 +96,12 @@ class _HomePageState extends State<HomePage> {
     for (var area in areasData) {
       tmp.add(Area(
         userId: area['userId'],
-        action: area['userAction'] != null ? actionFromServer(area['userAction']) : null,
-        reactions: area['userReactions'] != null ? reactionFromServer(area['userReactions']) : [],
+        action: area['userAction'] != null
+            ? actionFromServer(area['userAction'])
+            : null,
+        reactions: area['userReactions'] != null
+            ? reactionFromServer(area['userReactions'])
+            : [],
         name: area['name'],
         favorite: area['favorite'],
         areaId: area['id'],
@@ -142,6 +146,7 @@ class _HomePageState extends State<HomePage> {
                   areaAdd: (Area value) {
                     setState(
                       () {
+                        print("Je reload les areas");
                         loadAreas(widget.user['id'], widget.token);
                       },
                     );

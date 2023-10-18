@@ -15,6 +15,8 @@ class ForgotPassword extends StatefulWidget {
 
 class _ForgotPasswordState extends State<ForgotPassword> {
   TextEditingController emailController = TextEditingController();
+  Key emailField = const Key('emailField');
+  Key resetPasswordButton = const Key('resetPasswordButton');
 
   bool isValidEmail(String email) {
     // Regular expression to match email addresses
@@ -66,6 +68,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             children: [
               Center(
                 child: LoginTextField(
+                  key: emailField,
                   description: "E-Mail",
                   placeholder: 'yourname@example.com',
                   isPassword: false,
@@ -92,6 +95,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         color: AppColors.greyBlue,
                       ),
                       child: TextButton(
+                        key: resetPasswordButton,
                         child: Text(
                           "Reset Password",
                           style: TextStyle(

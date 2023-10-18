@@ -41,6 +41,12 @@ class AreaAction {
     required this.endpoint,
     required this.defaultConfiguration,
   });
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is AreaAction && other.id == id && other.name == name && other.endpoint == endpoint && other.defaultConfiguration == defaultConfiguration && other.serviceId == serviceId;
+  }
 }
 
 class Area {
