@@ -5,8 +5,10 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/back/services.dart';
+import 'package:mobile/screens/login/login.dart';
 
 void offlineTests() {
   List<dynamic> actionListTest = [
@@ -54,6 +56,21 @@ void offlineTests() {
   });
 }
 
+void widgetTests() {
+  testWidgets(
+      'LoginWidget shows username and password fields and a login button',
+      (WidgetTester tester) async {
+    // Build the LoginWidget in the test environment.
+    await tester.pumpWidget(MaterialApp(home: Scaffold(body: LoginScreen())));
+
+    // Verify the presence of the username and password fields and the login button.
+    expect(find.byKey(const Key('usernameField')), findsOneWidget);
+    expect(find.byKey(const Key('passwordField')), findsOneWidget);
+    expect(find.byKey(const Key('loginButton')), findsOneWidget);
+  });
+}
+
 void main() {
   offlineTests();
+  widgetTests();
 }
