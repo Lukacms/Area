@@ -119,15 +119,16 @@ class _AreaBuildState extends State<AreaBuild> {
                 }
                 widget.areaAdd(newArea);
                 if (!widget.isEdit) {
-                  /* serverAddFullArea(
-                      widget.token,
-                      widget.userId,
-                      widget.areasLenght - 1,
-                      newArea.name,
-                      newArea.action!,
-                      newArea.reactions); */
-                  serverAddArea(widget.token, widget.userId,
-                      widget.areasLenght - 1, newArea.name);
+                  serverAddFullArea(
+                    widget.token,
+                    widget.userId,
+                    widget.areasLenght - 1,
+                    newArea.name,
+                    newArea.action!,
+                    newArea.reactions,
+                  );
+                  /* serverAddArea(widget.token, widget.userId,
+                      widget.areasLenght - 1, newArea.name); */
                 } else {
                   editArea(newArea, savedArea!);
                 }

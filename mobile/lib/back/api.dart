@@ -210,13 +210,24 @@ Future<bool> serverAddArea(
 Future<bool> serverAddFullArea(String token, int userId, int id, String name,
     AreaAction action, List<AreaAction> reactions) async {
   List<Map<String, dynamic>> bodyReactions = [];
+  Map<String, dynamic> bodyAction = {
+    'id': 0,
+    'actionId': action.id,
+    'areaId': id,
+    'configuration':
+        action.defaultConfiguration.isEmpty ? "{}" : action.defaultConfiguration,
+    'timer': 1,
+    'countdown': 1,
+  };
   var i = 0;
   for (var reaction in reactions) {
     bodyReactions.add({
       'id': i,
-      'actionId': i,
+      'reactionId': reaction.id,
       'areaId': id,
-      'configuration': "",
+      'configuration': reaction.defaultConfiguration.isEmpty
+          ? "{}"
+          : reaction.defaultConfiguration,
     });
     i++;
   }
@@ -236,16 +247,10 @@ Future<bool> serverAddFullArea(String token, int userId, int id, String name,
     'name': name,
     'userId': userId,
     'favorite': false,
-    'userAction': {
-      'id': 0,
-      'actionId': 0,
-      'areaId': id,
-      'configuration': "",
-      'timer': 0,
-      'countdown': 0,
-    },
+    'userAction': bodyAction,
     'userReactions': bodyReactions,
   });
+  print(name);
   var response = await http.post(url, headers: headers, body: body);
   print("Add area status code ${response.statusCode}");
   if (response.statusCode == 201 || response.statusCode == 200) {
@@ -297,7 +302,6 @@ Future serverGetActions(String token) async {
   print("Get actions status code ${response.statusCode}");
   if (response.statusCode == 200) {
     var jsonResponse = jsonDecode(response.body);
-    print(jsonResponse);
     return jsonResponse;
   }
 }
@@ -317,7 +321,6 @@ Future serverGetReactions(String token) async {
   print("Get reactions status code ${response.statusCode}");
   if (response.statusCode == 200) {
     var jsonResponse = jsonDecode(response.body);
-    print(jsonResponse);
     return jsonResponse;
   }
 }
@@ -337,9 +340,7 @@ Future serverGetServices(String token) async {
   print("Get services status code ${response.statusCode}");
   if (response.statusCode == 200) {
     print('prout');
-    print(response.body);
     var jsonResponse = jsonDecode(response.body);
-    print(jsonResponse);
     return jsonResponse;
   }
 }

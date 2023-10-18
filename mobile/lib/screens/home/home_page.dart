@@ -41,11 +41,7 @@ class _HomePageState extends State<HomePage> {
     }
     setState(() {
       actions = AppServices().actionParse(tmp);
-      print("Les actions");
     });
-    for (var action in actions) {
-      print(action.serviceId);
-    }
   }
 
   Future loadReactions(String token) async {
@@ -70,14 +66,38 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  List<AreaAction> reactionFromServer(List<dynamic> serverReaction) {
+    List<AreaAction> tmp = [];
+    for (var reaction in serverReaction) {
+      tmp.add(AreaAction(
+        serviceId: reaction['serviceId'] ?? -1,
+        id: reaction['id'],
+        name: reaction['name'] ?? "",
+        endpoint: reaction['endpoint'] ?? "",
+        defaultConfiguration: reaction['defaultConfiguration'],
+      ));
+    }
+    return tmp;
+  }
+
+  AreaAction actionFromServer(Map<String, dynamic> serverAction) {
+    return AreaAction(
+      serviceId: serverAction['serviceId'] ?? -1,
+      id: serverAction['id'],
+      name: serverAction['name'] ?? "",
+      endpoint: serverAction['endpoint'] ?? "",
+      defaultConfiguration: serverAction['defaultConfiguration'],
+    );
+  }
+
   Future<void> loadAreas(int id, String token) async {
     List<Area> tmp = [];
     var areasData = await serverGetAreas(id, token);
     for (var area in areasData) {
       tmp.add(Area(
         userId: area['userId'],
-        action: area['userAction'],
-        reactions: area['userReaction'] ?? [],
+        action: area['userAction'] != null ? actionFromServer(area['userAction']) : null,
+        reactions: area['userReactions'] != null ? reactionFromServer(area['userReactions']) : [],
         name: area['name'],
         favorite: area['favorite'],
         areaId: area['id'],
