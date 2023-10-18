@@ -21,7 +21,7 @@ const useSettingsAdmin = () => {
   const [reactions, setReactions] = useState([]);
   const [services, setServices] = useState([]);
   const [users, setUsers] = useState([]);
-  const [label, setLabel] = useState('none');
+  const [label, setLabel] = useState('Users');
   const toast = useRef(null);
   const initValues = {
     name: '',

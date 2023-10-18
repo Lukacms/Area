@@ -5,11 +5,11 @@ import { ConfirmDialog } from 'primereact/confirmdialog';
 import { DataTable } from 'primereact/datatable';
 import { Dialog } from 'primereact/dialog';
 import { Toast } from 'primereact/toast';
+import { Image } from 'primereact/image';
+import { Divider } from 'primereact/divider';
 import { AdminAddItem, Background } from '../../components';
 import { useSettingsAdmin } from '../../hooks';
 import '../../styles/admin.css';
-import { Image } from 'primereact/image';
-import { Divider } from 'primereact/divider';
 
 function SettingsAdmin() {
   const {
@@ -28,7 +28,7 @@ function SettingsAdmin() {
     submitReaction,
     deleteAdmin,
     addAdmin,
-    toast
+    toast,
   } = useSettingsAdmin();
   const [addAction, setAddAction] = useState(false);
   const [addReaction, setAddReaction] = useState(false);
@@ -113,11 +113,11 @@ function SettingsAdmin() {
 
   const showUsers = () => {
     return (
-      <DataTable value={users} tableStyle={{ minWidth: '60rem' }}>
-        <Column field='surname' header='Surname' />
-        <Column field='name' header='Name' />
-        <Column field='username' header='Username' />
-        <Column field='email' header='Email' />
+      <DataTable value={users} tableStyle={{ minWidth: '60rem' }} removableSort>
+        <Column field='surname' header='Surname' sortable />
+        <Column field='name' header='Name' sortable />
+        <Column field='username' header='Username' sortable />
+        <Column field='email' header='Email' sortable />
         <Column body={checkIfAdmin} header='Is an admin' />
       </DataTable>
     );
@@ -125,89 +125,91 @@ function SettingsAdmin() {
 
   return (
     <Background>
-      <Toast ref={toast}/>
-      <div className='leftPannel'>
-        <div className='titleContainer'>
-          <Image src={'../' + process.env.PUBLIC_URL + 'partial_icon.png'} width='150' />
+      <div className='globalDiv'>
+        <Toast ref={toast} />
+        <div className='leftDiv'>
+          <div className='topLeft'>
+            <Image src={'../' + process.env.PUBLIC_URL + 'partial_icon.png'} width='150' />
+            <Button
+              rounded
+              outlined
+              severity='info'
+              icon='pi pi-ellipsis-h'
+              className='settingsButton'
+              onClick={() => navigate('/settings')}
+            />
+          </div>
+          <Divider />
           <Button
-            rounded
-            outlined
-            severity='info'
-            icon='pi pi-ellipsis-h'
-            className='settingsButton'
-            onClick={() => navigate('/settings')}
+            label='Home page'
+            className='homeButton'
+            size='large'
+            onClick={() => navigate('/home')}
+            style={{ backgroundColor: 'silver' }}
+          />
+          <Button
+            label='Actions'
+            size='large'
+            text={label !== 'Actions'}
+            raised={label !== 'Actions'}
+            icon='pi pi-chevron-right'
+            iconPos='right'
+            onClick={() => setLabel('Actions')}
+          />
+          <Button
+            label='Reactions'
+            size='large'
+            text={label !== 'Reactions'}
+            raised={label !== 'Reactions'}
+            icon='pi pi-chevron-right'
+            iconPos='right'
+            onClick={() => setLabel('Reactions')}
+          />
+          <Button
+            label='Users'
+            size='large'
+            text={label !== 'Users'}
+            raised={label !== 'Users'}
+            icon='pi pi-chevron-right'
+            iconPos='right'
+            onClick={() => setLabel('Users')}
           />
         </div>
-        <Divider />
-        <Button
-          label='Home page'
-          className='homeButton'
-          size='large'
-          onClick={() => navigate('/home')}
-          style={{ backgroundColor: 'silver', marginLeft: '1vh', marginRight: '1vw' }}
-        />
-        <Button
-          label='Actions'
-          size='large'
-          text={label !== 'Actions'}
-          raised={label !== 'Actions'}
-          icon='pi pi-chevron-right'
-          iconPos='right'
-          onClick={() => setLabel('Actions')}
-        />
-        <Button
-          label='Reactions'
-          size='large'
-          text={label !== 'Reactions'}
-          raised={label !== 'Reactions'}
-          icon='pi pi-chevron-right'
-          iconPos='right'
-          onClick={() => setLabel('Reactions')}
-        />
-        <Button
-          label='Users'
-          size='large'
-          text={label !== 'Users'}
-          raised={label !== 'Users'}
-          icon='pi pi-chevron-right'
-          iconPos='right'
-          onClick={() => setLabel('Users')}
-        />
-      </div>
-      <div className='centerAdmin'>
-        {label === 'Actions'
-          ? showActions()
-          : label === 'Reactions'
-          ? showReactions()
-          : label === 'Users'
-          ? showUsers()
-          : null}
-        <Dialog
-          visible={addAction}
-          style={{ width: '30vw' }}
-          header='Add new Action'
-          resizable={false}
-          onHide={() => setAddAction(false)}>
-          <AdminAddItem
-            initalValues={initValues}
-            services={services}
-            validate={validate}
-            onSubmit={submitAction}
-          />
-        </Dialog>
-        <Dialog
-          visible={addReaction}
-          style={{ width: '30vw' }}
-          header='Add new Reaction'
-          resizable={false}
-          onHide={() => setAddReaction(false)}>
-          <AdminAddItem
-            initalValues={initValues}
-            services={services}
-            validate={validate}
-            onSubmit={submitReaction}
-          />
-        </Dialog>
+        <div className='centerAdmin'>
+          {label === 'Actions'
+            ? showActions()
+            : label === 'Reactions'
+            ? showReactions()
+            : label === 'Users'
+            ? showUsers()
+            : null}
+          <Dialog
+            visible={addAction}
+            style={{ width: '30vw' }}
+            header='Add new Action'
+            resizable={false}
+            onHide={() => setAddAction(false)}>
+            <AdminAddItem
+              initalValues={initValues}
+              services={services}
+              validate={validate}
+              onSubmit={submitAction}
+            />
+          </Dialog>
+          <Dialog
+            visible={addReaction}
+            style={{ width: '30vw' }}
+            header='Add new Reaction'
+            resizable={false}
+            onHide={() => setAddReaction(false)}>
+            <AdminAddItem
+              initalValues={initValues}
+              services={services}
+              validate={validate}
+              onSubmit={submitReaction}
+            />
+          </Dialog>
+        </div>
       </div>
     </Background>
   );
