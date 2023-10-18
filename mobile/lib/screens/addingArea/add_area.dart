@@ -12,6 +12,7 @@ class AddArea extends StatefulWidget {
   final bool isReaction;
   final List<Service> services;
   final List<AreaAction> actions;
+  final List<AreaAction> reactions;
   const AddArea({
     super.key,
     required this.parentContext,
@@ -19,6 +20,7 @@ class AddArea extends StatefulWidget {
     required this.isReaction,
     required this.services,
     required this.actions,
+    required this.reactions,
   });
 
   @override
@@ -147,7 +149,9 @@ class _AddAreaState extends State<AddArea> {
           ],
         ),
         endDrawer: ActionReactionLists(
+          type: selectedSegment.toLowerCase(),
           actions: widget.actions,
+          reactions: widget.reactions,
           services: widget.services,
           category: selectedCategory,
           parentContext: widget.parentContext,

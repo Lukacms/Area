@@ -13,6 +13,7 @@ class AreaGroup extends StatelessWidget {
   final int areasLength;
   final List<Service> services;
   final List<AreaAction> actions;
+  final List<AreaAction> reactions;
   const AreaGroup({
     super.key,
     required this.group,
@@ -23,6 +24,7 @@ class AreaGroup extends StatelessWidget {
     required this.areasLength,
     required this.services,
     required this.actions,
+    required this.reactions,
   });
 
   @override
@@ -53,6 +55,7 @@ class AreaGroup extends StatelessWidget {
                 height: 50,
                 child: AreaCard(
                   actions: actions,
+                  reactions: reactions,
                   services: services,
                   area: group[index],
                   editAreaCallback: editAreaCallback,

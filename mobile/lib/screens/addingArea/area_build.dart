@@ -16,6 +16,7 @@ class AreaBuild extends StatefulWidget {
   final int areasLenght;
   final List<Service> services;
   final List<AreaAction> actions;
+  final List<AreaAction> reactions;
   const AreaBuild({
     super.key,
     this.area,
@@ -26,6 +27,7 @@ class AreaBuild extends StatefulWidget {
     required this.areasLenght,
     required this.services,
     required this.actions,
+    required this.reactions,
   });
 
   @override
@@ -151,6 +153,7 @@ class _AreaBuildState extends State<AreaBuild> {
                 child: newArea.action == null
                     ? AddActionButton(
                         actions: widget.actions,
+                        reactions: widget.reactions,
                         services: widget.services,
                         isReaction: false,
                         addActionCallback: (value) {
@@ -183,6 +186,7 @@ class _AreaBuildState extends State<AreaBuild> {
                           SizedBox(height: blockHeight * 4),
                           AddActionButton(
                             actions: widget.actions,
+                            reactions: widget.reactions,
                             services: widget.services,
                             isReaction: true,
                             addActionCallback: (value) {

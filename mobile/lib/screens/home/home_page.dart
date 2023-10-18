@@ -23,12 +23,14 @@ class _HomePageState extends State<HomePage> {
   List<Area> areas = [];
   List<Service> services = [];
   List<AreaAction> actions = [];
+  List<AreaAction> reactions = [];
   @override
   void initState() {
     super.initState();
     loadAreas(widget.user['id'], widget.token);
     loadServices(widget.token);
     loadActions(widget.token);
+    loadReactions(widget.token);
   }
 
   Future loadActions(String token) async {
@@ -44,6 +46,17 @@ class _HomePageState extends State<HomePage> {
     for (var action in actions) {
       print(action.serviceId);
     }
+  }
+
+  Future loadReactions(String token) async {
+    List tmp = [];
+    var reactionsData = await serverGetReactions(token);
+    for (var reaction in reactionsData) {
+      tmp.add(reaction);
+    }
+    setState(() {
+      reactions = AppServices().actionParse(tmp);
+    });
   }
 
   Future loadServices(String token) async {
@@ -100,6 +113,7 @@ class _HomePageState extends State<HomePage> {
               MaterialPageRoute(
                 builder: (context) => AreaBuild(
                   actions: actions,
+                  reactions: reactions,
                   services: services,
                   token: widget.token,
                   userId: widget.user['id'],
@@ -161,6 +175,7 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     AreaLists(
                       actions: actions,
+                      reactions: reactions,
                       services: services,
                       token: widget.token,
                       userId: widget.user['id'],

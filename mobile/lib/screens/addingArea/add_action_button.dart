@@ -8,12 +8,14 @@ class AddActionButton extends StatelessWidget {
   final bool isReaction;
   final List<Service> services;
   final List<AreaAction> actions;
+  final List<AreaAction> reactions;
   const AddActionButton({
     super.key,
     required this.addActionCallback,
     required this.isReaction,
     required this.services,
     required this.actions,
+    required this.reactions,
   });
 
   @override
@@ -43,6 +45,7 @@ class AddActionButton extends StatelessWidget {
                   return AddArea(
                     services: services,
                     actions: actions,
+                    reactions: reactions,
                     parentContext: context,
                     addActionCallback: addActionCallback,
                     isReaction: isReaction,

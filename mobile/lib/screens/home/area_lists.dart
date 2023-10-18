@@ -12,6 +12,7 @@ class AreaLists extends StatefulWidget {
   final int areasLength;
   final List<Service> services;
   final List<AreaAction> actions;
+  final List<AreaAction> reactions;
   const AreaLists({
     super.key,
     required this.areas,
@@ -22,6 +23,7 @@ class AreaLists extends StatefulWidget {
     required this.areasLength,
     required this.services,
     required this.actions,
+    required this.reactions,
   });
 
   @override
@@ -54,6 +56,7 @@ class _AreaListsState extends State<AreaLists> {
               children: [
                 AreaGroup(
                   actions: widget.actions,
+                  reactions: widget.reactions,
                   services: widget.services,
                   token: widget.token,
                   userId: widget.userId,
@@ -64,6 +67,7 @@ class _AreaListsState extends State<AreaLists> {
                 ),
                 AreaGroup(
                   actions: widget.actions,
+                  reactions: widget.reactions,
                   services: widget.services,
                   token: widget.token,
                   userId: widget.userId,
@@ -78,6 +82,7 @@ class _AreaListsState extends State<AreaLists> {
               children: [
                 AreaGroup(
                   actions: widget.actions,
+                  reactions: widget.reactions,
                   services: widget.services,
                   token: widget.token,
                   userId: widget.userId,
