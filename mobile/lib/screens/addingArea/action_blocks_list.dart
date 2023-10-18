@@ -41,7 +41,7 @@ class _ActionBlockListState extends State<ActionBlockList> {
                   ? Column(
                       children: [
                         ActionBlock(
-                          service: widget.services[widget.action.serviceId],
+                          service: widget.services[widget.action.serviceId - 1],
                           action: widget.action,
                           deleteBlock: () {
                             widget.removeActionCallback();
@@ -60,7 +60,7 @@ class _ActionBlockListState extends State<ActionBlockList> {
                       children: [
                         ActionBlock(
                           service: widget.services[
-                              widget.reactions[index - 1].serviceId],
+                              widget.reactions[index - 1].serviceId - 1],
                           deleteBlock: () {
                             widget.removeReactionCallback(index - 1);
                           },
