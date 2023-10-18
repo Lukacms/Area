@@ -1,17 +1,34 @@
 import { useState } from 'react';
-import { Image } from 'primereact/image';
+import { Background } from '../components';
 import { Button } from 'primereact/button';
+import { Dialog } from 'primereact/dialog';
 import { Divider } from 'primereact/divider';
-import { TabMenu } from 'primereact/tabmenu';
+import { Image } from 'primereact/image';
+import { InputText } from 'primereact/inputtext';
 import { PanelMenu } from 'primereact/panelmenu';
 import { ProgressSpinner } from 'primereact/progressspinner';
-import { Background } from '../components';
+import { TabMenu } from 'primereact/tabmenu';
+import { Toast } from 'primereact/toast';
 import { useFetchHome, useHome } from '../hooks';
 import '../styles/home.css';
-import { Toast } from 'primereact/toast';
-import { InputText } from 'primereact/inputtext';
 
 function Home({ children, publicPath }) {
+  const {
+    toast,
+    changeAreaStatus,
+    newAreaName,
+    setNewAreaName,
+    errorName,
+    validateName,
+    resetAreaName,
+    deleteArea,
+    resetAreaMaking,
+    newAction,
+    newReactions,
+    areaToast,
+    setActionArea,
+    setReactionArea,
+  } = useHome();
   const {
     navigate,
     actionReac,
@@ -21,9 +38,13 @@ function Home({ children, publicPath }) {
     loading,
     tabAreas,
     setTabAreas,
-  } = useFetchHome();
-  const { toast, changeAreaStatus } = useHome();
-  const actionReacOpts = [{ label: 'Actions' }, { label: 'Reactions' }];
+    status,
+    setStatus,
+  } = useFetchHome({ setActionArea, setReactionArea, resetAreaMaking, newAction, newReactions });
+  const actionReacOpts = [
+    { label: 'Actions', disabled: status === 'GetReactions' || status === 'ConfigureReaction' },
+    { label: 'Reactions', disabled: status === 'GetAction' || status === 'ConfigureAction' },
+  ];
   const [areaTab, setAreaTab] = useState(0);
   const areaTabs = [
     { label: 'Favourite', icon: 'pi pi-star' },
@@ -47,7 +68,7 @@ function Home({ children, publicPath }) {
     }
 
     return (
-      <div className='areaPreviewContainer'>
+      <div className='areaPreviewContainer' key={item.id}>
         <Button
           text
           raised
@@ -59,15 +80,57 @@ function Home({ children, publicPath }) {
           }}
         />
         <div>{item.name}</div>
-        <Button text raised rounded icon='pi pi-minus' />
+        <Button
+          text
+          raised
+          rounded
+          icon='pi pi-minus'
+          onClick={(e) => {
+            e.stopPropagation();
+            deleteArea(item, tabAreas, setTabAreas);
+          }}
+        />
       </div>
     );
   };
 
+  const footerAreaName = (
+    <div>
+      <Button label='Cancel' text onClick={() => resetAreaName(setStatus)} />
+      <Button label='Validate' onClick={() => validateName(setStatus)} />
+    </div>
+  );
+
   return (
     <Background>
+      <Dialog
+        header='Enter the area name'
+        visible={status === 'GetName'}
+        onHide={() => resetAreaName(setStatus)}
+        style={{ width: '20vw' }}
+        footer={footerAreaName}>
+        <InputText
+          placeholder='Area Name'
+          tooltip='Must be between 3 and 50 characters'
+          className='searchContainer'
+          value={newAreaName}
+          onChange={(e) => setNewAreaName(e.target.value)}
+        />
+        {errorName ? <small className='p-error'>{errorName}</small> : null}
+      </Dialog>
+      <Dialog
+        header={newAction.name}
+        visible={status === 'ConfigureAction'}
+        onHide={() => setStatus('GetAction')}></Dialog>
+      <Dialog
+        header={newReactions[newReactions?.length - 1]?.name}
+        visible={status === 'ConfigureReaction'} onHide={() => setStatus('GetReactions')}></Dialog>
+      <Dialog visible={status === 'ConfigureAction'} />
       <div className='toast'>
         <Toast ref={toast} position='top-center' />
+      </div>
+      <div className='areaToast'>
+        <Toast ref={areaToast} />
       </div>
       <div className='globalGrid'>
         <div className='leftPannel'>
@@ -86,7 +149,7 @@ function Home({ children, publicPath }) {
           <div className='actionReacTab'>
             <TabMenu
               model={actionReacOpts}
-              activeIndex={actionReac == 'Actions' ? 0 : 1}
+              activeIndex={actionReac === 'Actions' ? 0 : 1}
               onTabChange={(e) => setActionReac(e.value.label)}
             />
           </div>
@@ -107,7 +170,15 @@ function Home({ children, publicPath }) {
               raised
               rounded
               tooltip='Create new area'
+              onClick={() => setStatus('GetName')}
             />
+          </div>
+          <div className='newAreaName'>
+            {status !== 'Default' ? 'Creating ' + newAreaName : null}
+            <br />
+            <br />
+            {['Default', 'GetName'].indexOf(status) === -1 ? 'Areas:' : null}
+            {status}
           </div>
         </div>
         <div className='rightPannel'>

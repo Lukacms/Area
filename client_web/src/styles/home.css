@@ -10,7 +10,7 @@
   background-color: rgba(50, 48, 63, 0.6);
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: 100vh;
   width: 100%;
   top: 0;
   left: 0;
@@ -119,6 +119,23 @@
   color: rgba(255, 255, 255, 0.5);
 }
 
+.areaToast .p-toast-message {
+  background-color: rgba(50, 48, 63, 1);
+}
+
+.areaToast .p-toast-message-icon {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.areaToast .p-toast-message-text {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.areaToast .p-toast-icon-close {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+
 .searchContainer {
   width: 100%;
   background-color: transparent;
@@ -127,6 +144,11 @@
 .areasContainer {
   grid-column: span 3;
   position: relative;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
 }
 
 .buttonAddArea .p-button {
@@ -146,4 +168,11 @@
 
 .buttonAddArea .p-button-icon {
   font-size: 50px;
+}
+
+.newAreaName {
+  margin-top: 3vh;
+  color: white;
+  font-weight: 300;
+  font-size: 20px;
 }

@@ -9,13 +9,29 @@ import {
   getReactionsByServiceId,
 } from '../config/request';
 
-const useFetchHome = () => {
+const useFetchHome = ({
+  setActionArea,
+  setReactionArea,
+  resetAreaMaking,
+  newAction,
+  newReactions,
+}) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [actionReac, setActionReac] = useState('Actions');
   const [panelActions, setPanelActions] = useState([]);
   const [panelReactions, setPanelReactions] = useState([]);
   const [tabAreas, setTabAreas] = useState([]);
+  const [status, setStatus] = useState('Default'); // Default | GetName | GetAction | ConfigureAction | GetReactions | ConfigureReaction | Validate
+
+  const handleCommand = (event, isAction) => {
+    console.log(status);
+    if (isAction) {
+      setActionArea(status, setStatus, event.item);
+    } else {
+      setReactionArea(status, setStatus, event.item);
+    }
+  };
 
   useEffect(() => {
     const loadDatas = async () => {
@@ -40,18 +56,29 @@ const useFetchHome = () => {
                   icon: 'pi pi-folder',
                   id: item.id,
                   items: actions.data?.map((action) => {
-                    return { label: action.name, logo: '', command: () => {} };
+                    return {
+                      label: action.name,
+                      id: action.id,
+                      logo: '',
+                      command: (event) => handleCommand.bind(event, true)(),
+                    };
                   }),
                 },
               ]);
+
               setPanelReactions((old) => [
                 ...old,
                 {
                   label: service.name,
                   icon: 'pi pi-folder',
                   id: item.id,
-                  items: reactions.data?.map((action) => {
-                    return { label: action.name, logo: '', command: () => {} };
+                  items: reactions.data?.map((reaction) => {
+                    return {
+                      label: reaction.name,
+                      action: reaction.id,
+                      logo: '',
+                      command: (event) => handleCommand(event, false),
+                    };
                   }),
                 },
               ]);
@@ -68,7 +95,18 @@ const useFetchHome = () => {
     loadDatas();
   }, []);
 
-  return { navigate, actionReac, setActionReac, panelActions, panelReactions, loading, tabAreas, setTabAreas };
+  return {
+    navigate,
+    actionReac,
+    setActionReac,
+    panelActions,
+    panelReactions,
+    loading,
+    tabAreas,
+    setTabAreas,
+    status,
+    setStatus,
+  };
 };
 
 export default useFetchHome;
