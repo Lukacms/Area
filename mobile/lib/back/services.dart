@@ -1,38 +1,45 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mobile/back/api.dart';
 import 'package:mobile/screens/settings/webview/oauth_webview.dart';
 import 'package:mobile/theme/style.dart';
 import 'package:http/http.dart' as http;
 
 class Service {
+  final int id;
   final String name;
-  final String svgIcon;
-  final Color iconColor;
-  final String category;
-  final List actions;
-  final String oAuth;
+  final String connectionLink;
+  final String endpoint;
+  String svgIcon;
+  Color iconColor;
+  String category;
 
-  Service(
-      {required this.name,
-      required this.svgIcon,
-      required this.iconColor,
-      required this.category,
-      required this.actions,
-      required this.oAuth});
+  Service({
+    required this.name,
+    required this.id,
+    required this.connectionLink,
+    required this.endpoint,
+    this.svgIcon = '',
+    this.iconColor = Colors.white,
+    this.category = '',
+  });
 }
 
 class AreaAction {
-  final Service service;
+  final int serviceId;
+  final int id;
   final String name;
+  final String endpoint;
+  final dynamic defaultConfiguration;
 
   AreaAction({
-    required this.service,
+    required this.serviceId,
+    required this.id,
     required this.name,
+    required this.endpoint,
+    required this.defaultConfiguration,
   });
 }
 
@@ -76,7 +83,59 @@ enum ServiceCategories {
 }
 
 class AppServices {
-  List services = [
+  List<Service> serviceParse(List services) {
+    List<Service> tmp = [];
+    for (var service in services) {
+      Service serviceTmp;
+      serviceTmp = Service(
+          name: service['name'],
+          id: service['id'],
+          endpoint: service['endpoint'],
+          connectionLink: service['connectionLink']);
+      switch (service['name']) {
+        case 'Google':
+          serviceTmp.svgIcon = 'assets/serviceIcons/google.svg';
+          serviceTmp.iconColor = Colors.white;
+          serviceTmp.category = 'reseaux';
+          break;
+        case 'Spotify':
+          serviceTmp.svgIcon = 'assets/serviceIcons/spotify.svg';
+          serviceTmp.iconColor = Colors.green;
+          serviceTmp.category = 'medias';
+          break;
+        case 'Github':
+          serviceTmp.svgIcon = 'assets/serviceIcons/github.svg';
+          serviceTmp.iconColor = Colors.grey;
+          serviceTmp.category = 'Dev';
+          break;
+        case 'Discord':
+          serviceTmp.svgIcon = 'assets/serviceIcons/discord.svg';
+          serviceTmp.iconColor = Colors.purple;
+          serviceTmp.category = 'messageries';
+          break;
+      }
+      tmp.add(serviceTmp);
+    }
+    return tmp;
+  }
+
+  List<AreaAction> actionParse(List actions) {
+    List<AreaAction> tmp = [];
+    for (var action in actions) {
+      AreaAction actionTmp;
+      actionTmp = AreaAction(
+        serviceId: action['serviceId'],
+        id: action['id'],
+        name: action['name'],
+        endpoint: action['endpoint'],
+        defaultConfiguration: action['defaultConfiguration'],
+      );
+      tmp.add(actionTmp);
+    }
+    return tmp;
+  }
+
+  /*List services = [
     Service(
       name: "Github",
       svgIcon: 'assets/serviceIcons/github.svg',
@@ -127,7 +186,7 @@ class AppServices {
       actions: ['If', 'Or', 'And', 'Not', 'Else'],
       oAuth: "null",
     )
-  ];
+  ]; */
   List categories = [
     [
       "Reseaux",
@@ -199,7 +258,6 @@ class AppServices {
       final accessToken = jsonDecode(response.body)['access_token'] as String;
       final refreshToken = jsonDecode(response.body)['refresh_token'] as String;
       serverGoogleAuth(token, accessToken, refreshToken);
-
     },
     'Spotify': (BuildContext context, String token) async {
       Navigator.of(context).push(

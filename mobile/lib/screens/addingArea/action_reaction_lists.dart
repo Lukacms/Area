@@ -8,16 +8,20 @@ class ActionReactionLists extends StatelessWidget {
   final String category;
   final BuildContext parentContext;
   final Function addActionCallback;
+  final List<AreaAction> actions;
+  final List<Service> services;
   const ActionReactionLists({
     super.key,
     required this.category,
     required this.parentContext,
     required this.addActionCallback,
+    required this.actions,
+    required this.services,
   });
 
   List<Widget> getCategoryServices() {
     List<Widget> serviceGroups = [];
-    for (var service in AppServices().services) {
+    for (var service in services) {
       if (service.category == category.toLowerCase()) {
         serviceGroups.add(
           Column(
@@ -40,7 +44,9 @@ class ActionReactionLists extends StatelessWidget {
                   vertical: blockHeight * 2,
                 ),
                 shrinkWrap: true,
-                itemCount: service.actions.length,
+                itemCount: actions
+                    .where((element) => element.serviceId == service.id)
+                    .length,
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: EdgeInsets.only(bottom: blockHeight * 2),
@@ -54,9 +60,15 @@ class ActionReactionLists extends StatelessWidget {
                         padding: EdgeInsets.only(left: blockWidth / 4),
                         child: TextButton(
                           onPressed: () {
-                            addActionCallback(AreaAction(
-                                service: service,
-                                name: service.actions[index]));
+                            addActionCallback(
+                              AreaAction(
+                                  id: actions[index].id,
+                                  serviceId: service.id,
+                                  name: actions[index].name,
+                                  endpoint: actions[index].endpoint,
+                                  defaultConfiguration:
+                                      actions[index].defaultConfiguration),
+                            );
                             int count = 0;
                             Navigator.of(context).popUntil((_) => count++ >= 2);
                           },
@@ -70,7 +82,7 @@ class ActionReactionLists extends StatelessWidget {
                               ),
                               SizedBox(width: blockHeight),
                               Text(
-                                service.actions[index],
+                                actions[index].name,
                                 style: TextStyle(
                                   color: AppColors.white,
                                 ),
@@ -124,7 +136,7 @@ class ActionReactionLists extends StatelessWidget {
             children: getCategoryServices(),
           ),
           TextButton(
-            child: Text("Prout"),
+            child: const Text("Prout"),
             onPressed: () {
               Navigator.pop(context);
             },

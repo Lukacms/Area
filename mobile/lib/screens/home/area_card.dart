@@ -11,6 +11,8 @@ class AreaCard extends StatelessWidget {
   final int userId;
   final int areasLength;
   final Function editAreaCallback;
+  final List<Service> services;
+  final List<AreaAction> actions;
   const AreaCard({
     super.key,
     required this.area,
@@ -18,6 +20,8 @@ class AreaCard extends StatelessWidget {
     required this.token,
     required this.userId,
     required this.areasLength,
+    required this.services,
+    required this.actions,
   });
 
   @override
@@ -43,6 +47,8 @@ class AreaCard extends StatelessWidget {
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (context) => AreaBuild(
+                              actions: actions,
+                              services: services,
                               token: token,
                               userId: userId,
                               areasLenght: areasLength,

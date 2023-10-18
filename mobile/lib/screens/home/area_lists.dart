@@ -10,6 +10,8 @@ class AreaLists extends StatefulWidget {
   final String token;
   final int userId;
   final int areasLength;
+  final List<Service> services;
+  final List<AreaAction> actions;
   const AreaLists({
     super.key,
     required this.areas,
@@ -18,6 +20,8 @@ class AreaLists extends StatefulWidget {
     required this.token,
     required this.userId,
     required this.areasLength,
+    required this.services,
+    required this.actions,
   });
 
   @override
@@ -49,6 +53,8 @@ class _AreaListsState extends State<AreaLists> {
           ? Column(
               children: [
                 AreaGroup(
+                  actions: widget.actions,
+                  services: widget.services,
                   token: widget.token,
                   userId: widget.userId,
                   areasLength: widget.areasLength,
@@ -57,6 +63,8 @@ class _AreaListsState extends State<AreaLists> {
                   editAreaCallback: widget.editAreaCallback,
                 ),
                 AreaGroup(
+                  actions: widget.actions,
+                  services: widget.services,
                   token: widget.token,
                   userId: widget.userId,
                   areasLength: widget.areasLength,
@@ -69,6 +77,8 @@ class _AreaListsState extends State<AreaLists> {
           : Column(
               children: [
                 AreaGroup(
+                  actions: widget.actions,
+                  services: widget.services,
                   token: widget.token,
                   userId: widget.userId,
                   areasLength: widget.areasLength,

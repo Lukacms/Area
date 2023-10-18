@@ -11,6 +11,8 @@ class AreaGroup extends StatelessWidget {
   final String token;
   final int userId;
   final int areasLength;
+  final List<Service> services;
+  final List<AreaAction> actions;
   const AreaGroup({
     super.key,
     required this.group,
@@ -19,6 +21,8 @@ class AreaGroup extends StatelessWidget {
     required this.token,
     required this.userId,
     required this.areasLength,
+    required this.services,
+    required this.actions,
   });
 
   @override
@@ -48,6 +52,8 @@ class AreaGroup extends StatelessWidget {
               return SizedBox(
                 height: 50,
                 child: AreaCard(
+                  actions: actions,
+                  services: services,
                   area: group[index],
                   editAreaCallback: editAreaCallback,
                   token: token,

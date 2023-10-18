@@ -7,10 +7,12 @@ import 'package:mobile/theme/style.dart';
 class ActionBlockList extends StatefulWidget {
   final AreaAction action;
   final List<AreaAction> reactions;
+  final List<Service> services;
   final Function removeActionCallback;
   final Function removeReactionCallback;
   const ActionBlockList({
     super.key,
+    required this.services,
     required this.action,
     required this.reactions,
     required this.removeActionCallback,
@@ -39,6 +41,7 @@ class _ActionBlockListState extends State<ActionBlockList> {
                   ? Column(
                       children: [
                         ActionBlock(
+                          service: widget.services[widget.action.serviceId],
                           action: widget.action,
                           deleteBlock: () {
                             widget.removeActionCallback();
@@ -56,6 +59,8 @@ class _ActionBlockListState extends State<ActionBlockList> {
                   : Column(
                       children: [
                         ActionBlock(
+                          service: widget.services[
+                              widget.reactions[index - 1].serviceId],
                           deleteBlock: () {
                             widget.removeReactionCallback(index - 1);
                           },

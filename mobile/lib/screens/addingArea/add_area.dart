@@ -10,11 +10,15 @@ class AddArea extends StatefulWidget {
   final BuildContext parentContext;
   final Function addActionCallback;
   final bool isReaction;
+  final List<Service> services;
+  final List<AreaAction> actions;
   const AddArea({
     super.key,
     required this.parentContext,
     required this.addActionCallback,
     required this.isReaction,
+    required this.services,
+    required this.actions,
   });
 
   @override
@@ -27,7 +31,7 @@ class _AddAreaState extends State<AddArea> {
   String selectedCategory = "";
   @override
   Widget build(BuildContext context) {
-    if(widget.isReaction){
+    if (widget.isReaction) {
       selectedSegment = "Reactions";
     }
     return SizedBox(
@@ -143,6 +147,8 @@ class _AddAreaState extends State<AddArea> {
           ],
         ),
         endDrawer: ActionReactionLists(
+          actions: widget.actions,
+          services: widget.services,
           category: selectedCategory,
           parentContext: widget.parentContext,
           addActionCallback: widget.addActionCallback,

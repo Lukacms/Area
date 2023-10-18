@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/back/api.dart';
-import 'package:mobile/back/local_storage.dart';
 import 'package:mobile/back/services.dart';
 import 'package:mobile/components/background_gradient.dart';
 import 'package:mobile/main.dart';
@@ -22,10 +21,40 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   TextEditingController searchController = TextEditingController();
   List<Area> areas = [];
+  List<Service> services = [];
+  List<AreaAction> actions = [];
   @override
   void initState() {
     super.initState();
     loadAreas(widget.user['id'], widget.token);
+    loadServices(widget.token);
+    loadActions(widget.token);
+  }
+
+  Future loadActions(String token) async {
+    List tmp = [];
+    var actionsData = await serverGetActions(token);
+    for (var action in actionsData) {
+      tmp.add(action);
+    }
+    setState(() {
+      actions = AppServices().actionParse(tmp);
+      print("Les actions");
+    });
+    for (var action in actions) {
+      print(action.serviceId);
+    }
+  }
+
+  Future loadServices(String token) async {
+    List tmp = [];
+    var servicesData = await serverGetServices(token);
+    for (var service in servicesData) {
+      tmp.add(service);
+    }
+    setState(() {
+      services = AppServices().serviceParse(tmp);
+    });
   }
 
   Future<void> loadAreas(int id, String token) async {
@@ -60,8 +89,6 @@ class _HomePageState extends State<HomePage> {
       }
     }); */
     //serverAddArea(token, user['id'], 0, "Areatest");
-    serverGetActions(widget.token);
-    print(widget.token);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
@@ -72,6 +99,8 @@ class _HomePageState extends State<HomePage> {
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) => AreaBuild(
+                  actions: actions,
+                  services: services,
                   token: widget.token,
                   userId: widget.user['id'],
                   areasLenght: areas.length,
@@ -105,6 +134,7 @@ class _HomePageState extends State<HomePage> {
                 return SizedBox(
                   height: MediaQuery.of(context).size.height * 0.8,
                   child: SettingsPage(
+                    services: services,
                     token: widget.token,
                   ),
                 );
@@ -130,6 +160,8 @@ class _HomePageState extends State<HomePage> {
                 child: Column(
                   children: [
                     AreaLists(
+                      actions: actions,
+                      services: services,
                       token: widget.token,
                       userId: widget.user['id'],
                       areasLength: areas.length,

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:mobile/back/api.dart';
 import 'package:mobile/back/local_storage.dart';
 import 'package:mobile/back/services.dart';
 import 'package:mobile/main.dart';
@@ -10,7 +8,12 @@ import 'package:flutter/cupertino.dart';
 
 class SettingsPage extends StatefulWidget {
   final String token;
-  const SettingsPage({super.key, required this.token});
+  final List<Service> services;
+  const SettingsPage({
+    super.key,
+    required this.token,
+    required this.services,
+  });
 
   @override
   State<SettingsPage> createState() => _SettingsPageState();
@@ -18,26 +21,11 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   TextEditingController searchController = TextEditingController();
-  List services = [];
   String selectedSegment = "Services";
-
-  Future loadServices(String token) async {
-    List tmp = [];
-    var servicesData = await serverGetServices(token);
-    for (var service in servicesData) {
-      tmp.add(service);
-    }
-    setState(() {
-      services = tmp;
-      print("les services");
-      print(services);
-    });
-  }
 
   @override
   void initState() {
     super.initState();
-    loadServices(widget.token);
   }
 
   @override
@@ -47,6 +35,8 @@ class _SettingsPageState extends State<SettingsPage> {
     screenWidth = screenSize.width;
     blockWidth = screenWidth / 5;
     blockHeight = screenHeight / 100;
+    print("Dans settings");
+    print(widget.services);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
@@ -116,7 +106,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             physics: const AlwaysScrollableScrollPhysics(
                                 parent: BouncingScrollPhysics()),
                             shrinkWrap: true,
-                            itemCount: AppServices().services.length,
+                            itemCount: widget.services.length,
                             itemBuilder: (context, index) {
                               return TextButton(
                                 child: SizedBox(
@@ -127,16 +117,15 @@ class _SettingsPageState extends State<SettingsPage> {
                                         height: 24,
                                         width: 24,
                                         child: SvgPicture.asset(
-                                          AppServices().services[index].svgIcon,
+                                          widget.services[index].svgIcon,
                                           // ignore: deprecated_member_use
-                                          color: AppServices()
-                                              .services[index]
-                                              .iconColor,
+                                          color:
+                                              widget.services[index].iconColor,
                                         ),
                                       ),
                                       SizedBox(width: blockHeight * 2),
                                       Text(
-                                        AppServices().services[index].name,
+                                        widget.services[index].name,
                                         style: TextStyle(
                                             color: AppColors.lightBlue),
                                       ),
@@ -144,11 +133,10 @@ class _SettingsPageState extends State<SettingsPage> {
                                   ),
                                 ),
                                 onPressed: () {
-                                  if (AppServices().services[index] != "null") {
-                                    AppServices().serviceLogInFunctions[
-                                        AppServices()
-                                            .services[index]
-                                            .name]!(context, widget.token);
+                                  if (widget.services[index] != "null") {
+                                    AppServices().serviceLogInFunctions[widget
+                                        .services[index]
+                                        .name]!(context, widget.token);
                                   }
                                 },
                               );

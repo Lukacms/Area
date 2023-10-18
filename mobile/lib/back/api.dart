@@ -287,7 +287,7 @@ Future serverGetActions(String token) async {
     scheme: 'http',
     host: CURRENT_IP,
     port: 8080,
-    path: '/api/Actions/0',
+    path: '/api/Actions',
   );
   var headers = {
     'accept': '*/*',
@@ -295,6 +295,26 @@ Future serverGetActions(String token) async {
   };
   var response = await http.get(url, headers: headers);
   print("Get actions status code ${response.statusCode}");
+  if (response.statusCode == 200) {
+    var jsonResponse = jsonDecode(response.body);
+    print(jsonResponse);
+    return jsonResponse;
+  }
+}
+
+Future serverGetReactions(String token) async {
+  var url = Uri(
+    scheme: 'http',
+    host: CURRENT_IP,
+    port: 8080,
+    path: '/api/Reactions',
+  );
+  var headers = {
+    'accept': '*/*',
+    'Authorization': 'Bearer $token',
+  };
+  var response = await http.get(url, headers: headers);
+  print("Get reactions status code ${response.statusCode}");
   if (response.statusCode == 200) {
     var jsonResponse = jsonDecode(response.body);
     print(jsonResponse);

@@ -7,11 +7,13 @@ import 'package:mobile/theme/style.dart';
 
 class ActionBlock extends StatelessWidget {
   final AreaAction action;
+  final Service service;
   final Function deleteBlock;
   const ActionBlock({
     super.key,
     required this.action,
     required this.deleteBlock,
+    required this.service,
   });
 
   @override
@@ -29,7 +31,7 @@ class ActionBlock extends StatelessWidget {
           ),
         ],
       ),
-      child: action.service.category == "connecteurs"
+      child: /* action.service.category == "connecteurs"
           ? Padding(
               padding: EdgeInsets.symmetric(horizontal: blockWidth),
               child: Container(
@@ -45,35 +47,36 @@ class ActionBlock extends StatelessWidget {
                 ),
               ),
             )
-          : Container(
-              height: blockHeight * 8,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: AppColors.white.withOpacity(0.1),
+          : */
+          Container(
+        height: blockHeight * 8,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: AppColors.white.withOpacity(0.1),
+        ),
+        child: Padding(
+          padding: EdgeInsets.only(left: blockHeight * 2),
+          child: Row(
+            children: [
+              SvgPicture.asset(
+                service.svgIcon,
+                width: 24,
+                height: 24,
+                color: service.iconColor,
               ),
-              child: Padding(
-                padding: EdgeInsets.only(left: blockHeight * 2),
-                child: Row(
-                  children: [
-                    SvgPicture.asset(
-                      action.service.svgIcon,
-                      width: 24,
-                      height: 24,
-                      color: action.service.iconColor,
-                    ),
-                    SizedBox(
-                      width: blockWidth / 4,
-                    ),
-                    Text(
-                      action.name,
-                      style: TextStyle(
-                        color: AppColors.white,
-                      ),
-                    )
-                  ],
+              SizedBox(
+                width: blockWidth / 4,
+              ),
+              Text(
+                action.name,
+                style: TextStyle(
+                  color: AppColors.white,
                 ),
-              ),
-            ),
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
