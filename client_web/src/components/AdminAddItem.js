@@ -65,7 +65,7 @@ const AdminAddItem = ({ initalValues, validate, onSubmit, services }) => {
             touched={props.touched?.defaultConfig}
             tooltip='Configuration entries. Separate them with <Enter> key.'
           />
-          <Button type='submit' label='Add new Action' severity='info' />
+          <Button type='submit' label='Add new Item' severity='info' />
         </Form>
       )}
     </Formik>

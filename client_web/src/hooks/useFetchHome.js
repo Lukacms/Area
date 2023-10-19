@@ -44,8 +44,9 @@ const useFetchHome = () => {
                     return {
                       label: action.name,
                       id: action.id,
+                      timer: 0,
                       logo: '',
-                      // command: (event) => handleCommand.bind(event, true)(),
+                      defaultConfig: action.defaultConfiguration ? JSON.parse(action.defaultConfiguration) : '',
                     };
                   }),
                 },
@@ -60,9 +61,9 @@ const useFetchHome = () => {
                   items: reactions.data?.map((reaction) => {
                     return {
                       label: reaction.name,
-                      action: reaction.id,
+                      id: reaction.id,
                       logo: '',
-                      // command: (event) => handleCommand(event, false),
+                      defaultConfig: reaction.defaultConfiguration ? JSON.parse(reaction.defaultConfiguration) :  '',
                     };
                   }),
                 },

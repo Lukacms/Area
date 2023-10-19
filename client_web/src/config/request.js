@@ -65,7 +65,13 @@ export const disconnectUserService = (id) => axiosInstance.delete(API_URL + `Use
 
 export const putArea = (area) => axiosInstance.put(API_URL + 'Areas', area);
 
+export const postArea = (area) => axiosInstance.post(API_URL + 'Areas', area);
+
 export const delArea = (areaId) => axiosInstance.delete(API_URL + `Areas/${areaId}`);
+
+export const postUserAction = (userAction) => axiosInstance.post(API_URL + 'UserActions', userAction);
+
+export const postUserReaction = (userAction) => axiosInstance.post(API_URL + 'UserReactions', userAction);
 
 export const getUsersAreas = (id) => axiosInstance.get(API_URL + `Areas/${id}`);
 

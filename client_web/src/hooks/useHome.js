@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
-import { delArea, putArea } from '../config/request';
+import { delArea, postArea, postUserAction, postUserReaction, putArea } from '../config/request';
+import secureLocalStorage from 'react-secure-storage';
 
 const useHome = () => {
   const toast = useRef();
@@ -70,7 +71,6 @@ const useHome = () => {
   };
 
   const setActionArea = (status, setStatus, item) => {
-    console.log(status);
     if (status === 'GetAction') {
       setStatus('ConfigureAction');
       setNewAction(item);
@@ -80,7 +80,90 @@ const useHome = () => {
   const setReactionArea = (status, setStatus, item) => {
     if (status === 'GetReactions') {
       setStatus('ConfigureReaction');
-      setNewAction((old) => [...old, item]);
+      setNewReactions((old) => [...old, item]);
+    }
+  };
+
+  const cancelNewAction = (setStatus) => {
+    setStatus('GetAction');
+    setNewAction({});
+  };
+
+  const cancelNewReaction = (setStatus) => {
+    setStatus('GetReactions');
+    setNewReactions((old) => old.slice(0, -1));
+  };
+
+  const changeValueNewReaction = (e, item) => {
+    setNewReactions(
+      newReactions.map((reaction, index) =>
+        index === newReactions.length - 1
+          ? { ...reaction, defaultConfig: { ...reaction.defaultConfig, [item]: e.target.value } }
+          : reaction,
+      ),
+    );
+  };
+
+  const changeValueNewAction = (e, item) => {
+    setNewAction(
+      (old) =>
+        [
+          {
+            ...old,
+            defaultConfig: { ...old.defaultConfig, [item]: e.target.value },
+          },
+        ][0],
+    );
+  };
+
+  const saveNewArea = async (setTabAreas, setStatus) => {
+    try {
+      const userId = secureLocalStorage.getItem('userId');
+
+      const createdArea = await postArea({
+        userId: userId,
+        name: newAreaName,
+        favorite: false,
+      });
+      await postUserAction({
+        areaId: createdArea.data.id,
+        actionId: newAction.id,
+        timer: newAction.timer,
+        configuration: JSON.stringify(newAction.defaultConfig),
+      });
+      newReactions.forEach(async (reaction) => {
+        try {
+          await postUserReaction({
+            areaId: createdArea.data.id,
+            reactionId: reaction.id,
+            configuration: JSON.stringify(reaction.defaultConfig),
+          });
+        } catch (e) {
+          areaToast.current.show({
+            severity: 'error',
+            summary: 'Could not create Area',
+            detail: 'Try again in a few minutes',
+          });
+        }
+      });
+      setTabAreas((old) => [
+        ...old,
+        {
+          id: createdArea.data.id,
+          userId: userId,
+          name: newAreaName,
+          favorite: false,
+          userAction: newAction,
+          userReactions: newReactions,
+        },
+      ]);
+      resetAreaMaking(setStatus);
+    } catch (e) {
+      areaToast.current.show({
+        severity: 'error',
+        summary: 'Could not create Area',
+        detail: 'Try again in a few minutes',
+      });
     }
   };
 
@@ -95,10 +178,16 @@ const useHome = () => {
     deleteArea,
     resetAreaMaking,
     newAction,
+    setNewAction,
     newReactions,
     areaToast,
     setActionArea,
     setReactionArea,
+    cancelNewAction,
+    cancelNewReaction,
+    changeValueNewReaction,
+    changeValueNewAction,
+    saveNewArea,
   };
 };
 

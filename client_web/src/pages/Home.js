@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { Background, PanelAccordion } from '../components';
 import { Button } from 'primereact/button';
+import { ConfirmDialog } from 'primereact/confirmdialog';
 import { Dialog } from 'primereact/dialog';
 import { Divider } from 'primereact/divider';
 import { Image } from 'primereact/image';
 import { InputText } from 'primereact/inputtext';
-import { PanelMenu } from 'primereact/panelmenu';
+import { InputNumber} from 'primereact/inputnumber';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { TabMenu } from 'primereact/tabmenu';
 import { Toast } from 'primereact/toast';
@@ -24,10 +25,16 @@ function Home({ children, publicPath }) {
     deleteArea,
     resetAreaMaking,
     newAction,
+    setNewAction,
     newReactions,
     areaToast,
     setActionArea,
     setReactionArea,
+    cancelNewAction,
+    cancelNewReaction,
+    changeValueNewReaction,
+    changeValueNewAction,
+    saveNewArea,
   } = useHome();
   const {
     navigate,
@@ -51,6 +58,7 @@ function Home({ children, publicPath }) {
     { label: 'All', icon: 'pi pi-list' },
   ];
   const [searchValue, setSearchValue] = useState('');
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
   if (loading) {
     return <ProgressSpinner />;
@@ -94,6 +102,25 @@ function Home({ children, publicPath }) {
     );
   };
 
+  const footer = (
+    <>
+      <Button
+        label='Cancel'
+        onClick={() =>
+          status === 'ConfigureAction' ? cancelNewAction(setStatus) : cancelNewReaction(setStatus)
+        }
+      />
+      <Button
+        label='Validate'
+        onClick={() => {
+          areaToast.current.show({ severity: 'success', summary: 'Successfully added ' + status === 'ConfigureAction' ? 'action' : 'reaction' });
+          setStatus('GetReactions');
+          setActionReac('Reactions');
+        }}
+      />
+    </>
+  );
+
   const footerAreaName = (
     <div>
       <Button label='Cancel' text onClick={() => resetAreaName(setStatus)} />
@@ -119,13 +146,46 @@ function Home({ children, publicPath }) {
         {errorName ? <small className='p-error'>{errorName}</small> : null}
       </Dialog>
       <Dialog
-        header={newAction.name}
+        header={newAction.label}
+        footer={footer}
         visible={status === 'ConfigureAction'}
-        onHide={() => setStatus('GetAction')}></Dialog>
+        style={{ minWidth: '20vw' }}
+        onHide={() => cancelNewAction(setStatus)}>
+        <div className='dialog'>
+          <InputNumber placeholder='Timer (in seconds)' value={newAction.timer} onChange={(e) => setNewAction(old => [{...old, timer: e.value}][0])} locale='fr-FR' suffix=' sec' min={1} />
+          {newAction.defaultConfig
+            ? Object.entries(newAction.defaultConfig).map((item, key) => (
+                <InputText
+                  key={key}
+                  placeholder={item[0]}
+                  value={item[1]}
+                  onChange={(e) => changeValueNewAction(e, item[0])}
+                />
+              ))
+            : null}
+        </div>
+      </Dialog>
       <Dialog
-        header={newReactions[newReactions?.length - 1]?.name}
-        visible={status === 'ConfigureReaction'} onHide={() => setStatus('GetReactions')}></Dialog>
-      <Dialog visible={status === 'ConfigureAction'} onHide={() => setStatus('GetAction')} />
+        header={newReactions[newReactions.length - 1]?.label}
+        style={{ minWidth: '20vw' }}
+        footer={footer}
+        visible={status === 'ConfigureReaction'}
+        onHide={() => cancelNewReaction(setStatus)}>
+        <div className='dialog'>
+          {newReactions[newReactions.length - 1]?.defaultConfig
+            ? Object.entries(newReactions[newReactions.length - 1].defaultConfig).map(
+                (item, key) => (
+                  <InputText
+                    placeholder={item[0]}
+                    value={item[1]}
+                    key={key}
+                    onChange={(e) => changeValueNewReaction(e, item[0])}
+                  />
+                ),
+              )
+            : null}
+        </div>
+      </Dialog>
       <div className='toast'>
         <Toast ref={toast} position='top-center' />
       </div>
@@ -155,9 +215,19 @@ function Home({ children, publicPath }) {
           </div>
           <div className='panelContainer'>
             {actionReac === 'Actions' ? (
-              <PanelAccordion baseList={panelActions} onClick={setActionArea} status={status} setStatus={setStatus} />
+              <PanelAccordion
+                baseList={panelActions}
+                onClick={setActionArea}
+                status={status}
+                setStatus={setStatus}
+              />
             ) : (
-              <PanelAccordion baseList={panelReactions} onClick={setReactionArea} status={status} setStatus={setStatus} />
+              <PanelAccordion
+                baseList={panelReactions}
+                onClick={setReactionArea}
+                status={status}
+                setStatus={setStatus}
+              />
             )}
           </div>
         </div>
@@ -173,6 +243,39 @@ function Home({ children, publicPath }) {
               onClick={() => setStatus('GetName')}
             />
           </div>
+          <ConfirmDialog
+            visible={confirmDelete}
+            onHide={() => setConfirmDelete(false)}
+            header='Delete your Area ?'
+            icon='pi pi-exclamation-triangle'
+            message={"Are you sure you want to proceed ? You won't be able to go back"}
+            accept={() => resetAreaMaking(setStatus)}
+            reject={() => setConfirmDelete(false)}
+          />
+          {status !== 'Default' ? (
+            <div className='buttonResetArea'>
+              <Button
+                icon='pi pi-trash'
+                rounded
+                raised
+                text
+                tooltip='Reset the creation'
+                onClick={() => setConfirmDelete(true)}
+              />
+            </div>
+          ) : null}
+          {['GetReactions', 'ConfigureReaction'].indexOf(status) !== -1 && newReactions.length ? (
+            <div className='buttonValidateArea'>
+              <Button
+                icon='pi pi-save'
+                rounded
+                raised
+                text
+                tooltip='Save the new Area'
+                onClick={() => saveNewArea(setTabAreas, setStatus)}
+              />
+            </div>
+          ) : null}
           <div className='newAreaName'>
             {status !== 'Default' ? 'Creating ' + newAreaName : null}
             <br />
