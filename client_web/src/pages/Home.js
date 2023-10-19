@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Background } from '../components';
+import { Background, PanelAccordion } from '../components';
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
 import { Divider } from 'primereact/divider';
@@ -40,7 +40,7 @@ function Home({ children, publicPath }) {
     setTabAreas,
     status,
     setStatus,
-  } = useFetchHome({ setActionArea, setReactionArea, resetAreaMaking, newAction, newReactions });
+  } = useFetchHome();
   const actionReacOpts = [
     { label: 'Actions', disabled: status === 'GetReactions' || status === 'ConfigureReaction' },
     { label: 'Reactions', disabled: status === 'GetAction' || status === 'ConfigureAction' },
@@ -125,7 +125,7 @@ function Home({ children, publicPath }) {
       <Dialog
         header={newReactions[newReactions?.length - 1]?.name}
         visible={status === 'ConfigureReaction'} onHide={() => setStatus('GetReactions')}></Dialog>
-      <Dialog visible={status === 'ConfigureAction'} />
+      <Dialog visible={status === 'ConfigureAction'} onHide={() => setStatus('GetAction')} />
       <div className='toast'>
         <Toast ref={toast} position='top-center' />
       </div>
@@ -155,9 +155,9 @@ function Home({ children, publicPath }) {
           </div>
           <div className='panelContainer'>
             {actionReac === 'Actions' ? (
-              <PanelMenu model={panelActions} />
+              <PanelAccordion baseList={panelActions} onClick={setActionArea} status={status} setStatus={setStatus} />
             ) : (
-              <PanelMenu model={panelReactions} />
+              <PanelAccordion baseList={panelReactions} onClick={setReactionArea} status={status} setStatus={setStatus} />
             )}
           </div>
         </div>

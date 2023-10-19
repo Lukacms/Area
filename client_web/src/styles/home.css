@@ -64,17 +64,19 @@
   max-height: 80%;
 }
 
-.panelContainer .p-panelmenu-header-link:not(:hover) {
+.panelContainer .p-accordion-header-link:not(:hover) {
   background-color: rgba(50, 48, 63, 0.2);
 }
 
-.panelContainer .p-panelmenu-content {
+.panelContainer .p-accordion-content {
   background-color: rgba(50, 48, 63, 0.6);
-}
-
-.panelContainer .p-menuitem-text {
-  text-align: start;
-  margin-left: 3vh;
+  border-radius: 0px 0px 10px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 1vh;
+  width: 100%;
+  padding-left: 0vw;
+  padding-right: 0vw;
 }
 
 .areaPreviewContainer {

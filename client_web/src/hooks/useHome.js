@@ -70,7 +70,7 @@ const useHome = () => {
   };
 
   const setActionArea = (status, setStatus, item) => {
-    console.log(newAreaName);
+    console.log(status);
     if (status === 'GetAction') {
       setStatus('ConfigureAction');
       setNewAction(item);

@@ -9,13 +9,7 @@ import {
   getReactionsByServiceId,
 } from '../config/request';
 
-const useFetchHome = ({
-  setActionArea,
-  setReactionArea,
-  resetAreaMaking,
-  newAction,
-  newReactions,
-}) => {
+const useFetchHome = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [actionReac, setActionReac] = useState('Actions');
@@ -23,15 +17,6 @@ const useFetchHome = ({
   const [panelReactions, setPanelReactions] = useState([]);
   const [tabAreas, setTabAreas] = useState([]);
   const [status, setStatus] = useState('Default'); // Default | GetName | GetAction | ConfigureAction | GetReactions | ConfigureReaction | Validate
-
-  const handleCommand = (event, isAction) => {
-    console.log(status);
-    if (isAction) {
-      setActionArea(status, setStatus, event.item);
-    } else {
-      setReactionArea(status, setStatus, event.item);
-    }
-  };
 
   useEffect(() => {
     const loadDatas = async () => {
@@ -60,7 +45,7 @@ const useFetchHome = ({
                       label: action.name,
                       id: action.id,
                       logo: '',
-                      command: (event) => handleCommand.bind(event, true)(),
+                      // command: (event) => handleCommand.bind(event, true)(),
                     };
                   }),
                 },
@@ -77,7 +62,7 @@ const useFetchHome = ({
                       label: reaction.name,
                       action: reaction.id,
                       logo: '',
-                      command: (event) => handleCommand(event, false),
+                      // command: (event) => handleCommand(event, false),
                     };
                   }),
                 },
