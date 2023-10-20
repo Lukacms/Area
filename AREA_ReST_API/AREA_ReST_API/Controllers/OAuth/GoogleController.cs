@@ -17,13 +17,11 @@ public class GoogleController
     private readonly AppDbContext _context;
     private readonly HttpService _client;
     private readonly string _googleUrl = "https://oauth2.googleapis.com/token";
-    private HttpClient client;
 
     public GoogleController(AppDbContext context)
     {
         _context = context;
         _client = new HttpService();
-        client = new HttpClient();
     }
 
     [HttpPost("")]

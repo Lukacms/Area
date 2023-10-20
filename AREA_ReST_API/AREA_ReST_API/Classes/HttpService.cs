@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
+using Microsoft.IdentityModel.Tokens;
 using HttpContent = System.Net.Http.HttpContent;
 
 namespace AREA_ReST_API.Classes;
@@ -25,11 +26,11 @@ public class HttpService
         return await response.Content.ReadAsStringAsync();
     }
 
-    public async Task<string> PostAsync(string uri, Dictionary<string, string> data, string contentType, string authentication)
+    public async Task<string> PostAsync(string uri, Dictionary<string, string> data, string contentType, string? authentication)
     {
         var requestMessage = new HttpRequestMessage(HttpMethod.Post, uri);
 
-        if (authentication.Length > 0)
+        if (!authentication.IsNullOrEmpty())
             requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Basic", authentication);
         requestMessage.Content = new FormUrlEncodedContent(data);
         var response = await _client.SendAsync(requestMessage);

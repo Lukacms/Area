@@ -12,7 +12,8 @@ public class ActionChecker : BackgroundService
         _serviceProvider = serviceProvider;
         _services = new Dictionary<string, Func<IService>>
         {
-            { "Spotify", () => new SpotifyService() }
+            { "Spotify", () => new SpotifyService() },
+            { "Google", () => new GoogleService() },
         };
     }
 
