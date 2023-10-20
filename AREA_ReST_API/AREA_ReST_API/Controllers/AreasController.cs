@@ -2,7 +2,6 @@ using System.Text.Json.Nodes;
 using AREA_ReST_API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.IdentityModel.Tokens;
 
 namespace AREA_ReST_API.Controllers;
@@ -92,6 +91,8 @@ public class AreasController
         if (deletedArea == null)
             return new NotFoundObjectResult(new JsonObject { { "message", "Area not found" } });
         DeleteAllActionAndReactionByAreaId(deletedArea.Id);
+        _context.Areas.Remove(deletedArea);
+        _context.SaveChanges();
         return new OkObjectResult(new JsonObject { { "message", "Area successfully deleted" } });
     }
 

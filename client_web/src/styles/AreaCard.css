@@ -4,6 +4,7 @@
     height: 70vh;
     align-items: center;
     flex-direction: column;
+    text-align: center;
     gap: 2vh;
     overflow-y: auto;
 }

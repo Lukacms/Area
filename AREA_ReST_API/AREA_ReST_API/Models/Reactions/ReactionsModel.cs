@@ -9,6 +9,5 @@ public class ReactionsModel
     [Required] public required int ServiceId { get; set; }
     [Required] public required string Name { get; set; }
     [Required] public required string Endpoint { get; set; }
-    
-    [Required] public required string DefaultConfiguration { get; set; }
+    public string? DefaultConfiguration { get; set; }
 }

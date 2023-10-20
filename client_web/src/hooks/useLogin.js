@@ -21,9 +21,14 @@ const useLogin = () => {
   const loginUser = async (values) => {
     setLoading(true);
     try {
-      const data = await login(values);
-      secureLocalStorage.setItem('token', data.data.access_token);
-      const user = await getFirstInfos(data.data.access_token);
+      const res = await login(values);
+      console.log(res);
+      if (!res?.status?.toString().startsWith('2')) {
+        setError('Wrong email or password');
+        setLoading(false);
+      }
+      secureLocalStorage.setItem('token', res.data.access_token);
+      const user = await getFirstInfos(res.data.access_token);
       secureLocalStorage.setItem('userId', user.data.id);
       secureLocalStorage.setItem('isAdmin', user.data.admin);
       navigate('/home');

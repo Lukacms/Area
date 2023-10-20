@@ -1,26 +1,29 @@
 .globalDiv {
-    display: flex;
-    width: 100vw;
-    height: 100vh;
-    background-color: #1B1A2A;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  width: 100vw;
+  height: 100vh;
 }
 
 .leftDiv {
-    display: flex;
-    width: 15vw;
-    background-color: rgba(255, 250, 251, 0.1);
-    flex-direction: column;
-    gap: 2vh;
+  grid-column: span 1;
+  z-index: 2;
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  background-color: rgba(50, 48, 63, 0.6);
+  flex-direction: column;
+  padding-top: 4vh;
+  padding-left: 1vw;
+  padding-right: 1vw;
+  gap: 2vh;
 }
 
 .topLeft {
-    display: flex;
-    gap: 3vw;
-    margin-top: 3vh;
-    margin-bottom: 1vh;
-    padding-bottom: 1vh;
-    align-items: center;
-    border-bottom: white solid 1px;
+  display: flex;
+  flex-direction: row;
+  align-items: space-around;
+  justify-content: space-around;
 }
 
 .settingsButton {
@@ -28,6 +31,10 @@
 }
 
 .centerAdmin {
+  grid-column: span 3;
+  z-index: 2;
+  width: 100%;
+  height: 100vh;
   margin-top: 3vh;
   margin-left: 3vw;
 }

@@ -1,48 +1,216 @@
-.globalDiv {
-    display: flex;
-    width: 100vw;
-    height: 100vh;
-    background-color: #1B1A2A;
-}
-.leftDiv {
-    display: flex;
-    width: 15vw;
-    background-color: rgba(255, 250, 251, 0.1);
-    flex-direction: column;
+.globalGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  width: 100vw;
+  height: 100vh;
 }
 
-.middleDiv {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 70vw;
-    flex-direction: column;
+.leftPannel {
+  grid-column: span 1;
+  background-color: rgba(50, 48, 63, 0.6);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  padding-top: 4vh;
+  padding-left: 1vw;
+  padding-right: 1vw;
 }
 
-.rightDiv {
-    display: flex;
-    width: 15vw;
-    background-color: rgba(255, 250, 251, 0.1);
-    flex-direction: column;
+.titleContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: space-around;
+  justify-content: space-around;
 }
 
-.fastrText {
-    font-size: 50px;
-    align-self: start;
+.rightPannel {
+  grid-column: span 1;
+  background-color: rgba(50, 48, 63, 0.6);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  right: 0;
+  z-index: 2;
+  padding-top: 2vh;
+  padding-left: 1vw;
+  padding-right: 1vw;
 }
 
-.selectButton {
-    display: flex;
+.actionReacTab .p-tabmenu-nav {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 3vh;
 }
 
-.pannelMenu {
-    background-color: #54B6CC;
+.actionReacTab .p-tabmenuitem {
+  flex: 1;
+  text-align: center;
 }
 
-.divider {
-    margin: 0px;
+.actionReacTab .p-menuitem-text {
+  text-align: center;
+  width: 100%;
 }
 
-.buttonText {
-    color: #FFFFFF;
+.panelContainer {
+  text-align: start;
+  overflow-y: scroll;
+  max-height: 80%;
+}
+
+.panelContainer .p-accordion-header-link:not(:hover) {
+  background-color: rgba(50, 48, 63, 0.2);
+}
+
+.panelContainer .p-accordion-content {
+  background-color: rgba(50, 48, 63, 0.6);
+  border-radius: 0px 0px 10px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 1vh;
+  width: 100%;
+  padding-left: 0vw;
+  padding-right: 0vw;
+}
+
+.areaPreviewContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 1vh;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  border-radius: 10px;
+  align-items: center;
+}
+
+.areaPreviewContainer:hover {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 1vh;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.areaDisplayContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 2vh;
+}
+
+.toast .p-toast-message {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.toast .p-toast-message-icon {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.toast .p-toast-message-text {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.toast .p-toast-icon-close {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.areaToast .p-toast-message {
+  background-color: rgba(50, 48, 63, 1);
+}
+
+.areaToast .p-toast-message-icon {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.areaToast .p-toast-message-text {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.areaToast .p-toast-icon-close {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+
+.searchContainer {
+  width: 100%;
+  background-color: transparent;
+}
+
+.areasContainer {
+  grid-column: span 3;
+  position: relative;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.buttonAddArea .p-button {
+  background-color: rgba(255, 255, 255, 0.05);
+  width: 70px;
+  height: 70px;
+  position: absolute;
+  right: 3vh;
+  bottom: 3vh;
+}
+
+.buttonAddArea .p-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  width: 70px;
+  height: 70px;
+}
+
+.buttonAddArea .p-button-icon {
+  font-size: 50px;
+}
+
+.buttonResetArea .p-button {
+  background-color: rgba(50, 48, 63, 1);
+  width: 70px;
+  height: 70px;
+  position: absolute;
+  left: 3vh;
+  bottom: 3vh;
+}
+
+.buttonResetArea .p-button-icon {
+  font-size: 40px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.buttonValidateArea .p-button {
+  background-color: rgba(50, 48, 63, 1);
+  width: 70px;
+  height: 70px;
+  position: absolute;
+  right: 50vw;
+  left: 50vw;
+  bottom: 3vh;
+}
+
+.buttonValidateArea .p-button-icon {
+  font-size: 40px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.newAreaName {
+  margin-top: 3vh;
+  color: white;
+  font-weight: 300;
+  font-size: 20px;
+}
+
+.dialog {
+  display: flex;
+  flex-direction: column;
+  gap: 2vh;
+  width: 80%;
 }

@@ -17,7 +17,6 @@ namespace AREA_ReST_API.Controllers;
 [Authorize]
 [ApiController]
 [Route("api/[controller]")]
-
 public class UsersController : ControllerBase
 {
     private readonly AppDbContext _context;
@@ -74,6 +73,7 @@ public class UsersController : ControllerBase
     public ActionResult CreateNewUser([FromBody] RegisterClass userInfo)
     {
         var checkedUser = _context.Users.FirstOrDefault(user => user.Email == userInfo.Email);
+
         if (checkedUser != null)
             return new ConflictObjectResult(new JsonObject { { "message", "Email is already used" } });
         if (!IsUserValid(userInfo))
@@ -110,6 +110,7 @@ public class UsersController : ControllerBase
         var email = credentials.Email;
         var password = credentials.Password;
         var requestedUser = _context.Users.FirstOrDefault(user => user.Email == email);
+
         if (requestedUser == null)
             return new NotFoundObjectResult(new JsonObject { { "message", "User not found" } });
         if (email.IsNullOrEmpty() || password.IsNullOrEmpty())
@@ -150,6 +151,7 @@ public class UsersController : ControllerBase
     public ActionResult ModifyUser([FromBody] UsersModel modifiedUser, [FromHeader] string authorization)
     {
         var decodedUser = JwtDecoder.Decode(authorization);
+
         if (!decodedUser.Admin)
             return new UnauthorizedObjectResult(new JsonObject
                 { { "message", "You are not authorized to modify this user" } });
@@ -168,5 +170,15 @@ public class UsersController : ControllerBase
         var user = _context.Users.Update(modifiedUser);
         _context.SaveChanges();
         return new CreatedResult("User successfully modified", user.Entity);
+    }
+
+    [HttpPut("partialModif")]
+    public ActionResult ModifyPartiallyUser([FromBody] UsersModel modifiedUser, [FromHeader] string authorization)
+    {
+      var decodedUser = JwtDecoder.Decode(authorization);
+
+      var user = _context.Users.Update(modifiedUser);
+      _context.SaveChanges();
+      return new CreatedResult("User successfully modified", user.Entity);
     }
 }

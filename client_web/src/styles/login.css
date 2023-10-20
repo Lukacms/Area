@@ -149,6 +149,7 @@
   margin: 10%;
   box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.2);
   border-radius: 15px;
+  text-align: flex-start;
 }
 
 .title {

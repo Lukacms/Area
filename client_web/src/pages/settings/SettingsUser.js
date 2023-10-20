@@ -7,9 +7,10 @@ import { Form, Formik, Field } from 'formik';
 import { FormikPassword } from '../../components';
 import '../../styles/settings.css';
 import { useState } from 'react';
+import { Toast } from 'primereact/toast';
 
 function SettingsUser() {
-  const { navigate, passwordValues, validation, changePassword, logout, buttonEl, isAdmin } =
+  const { navigate, passwordValues, validation, changePassword, logout, buttonEl, isAdmin, toast } =
     useSettingsUser();
   const [visible, setVisible] = useState(false);
 
@@ -26,7 +27,8 @@ function SettingsUser() {
   };
 
   return (
-    <Home>
+    <Home publicPath='../'>
+      <Toast ref={toast} />
       <Dialog
         header={header}
         style={{ minWidth: '30%', minHeight: '40%' }}

@@ -2,6 +2,7 @@ import useLogin from './useLogin';
 import useRegister from './useRegister';
 import useMailVerif from './useMailVerif';
 import useHome from './useHome';
+import useFetchHome from './useFetchHome';
 import useError from './useError';
 import useCallbackDiscord from './callbacks/useCallbackDiscord';
 import useCallbackGoogle from './callbacks/useCallbackGoogle';
@@ -28,6 +29,7 @@ export {
   useLogin,
   useMailVerif,
   useHome,
+  useFetchHome,
   useSettingServices,
   useSpecificService,
   useSettingsUser,

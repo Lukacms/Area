@@ -45,6 +45,8 @@ export const getFirstInfos = (token) =>
     },
   });
 
+export const changeUser = (data) => axiosInstance.put(API_URL + 'Users', data);
+
 export const getServices = () => axiosInstance.get(API_URL + 'Services');
 
 export const getUserServices = (id) => axiosInstance.get(API_URL + `UserServices/${id}`);
@@ -61,6 +63,16 @@ export const getReactionsByServiceId = (id) => axiosInstance.get(API_URL + `Reac
 
 export const disconnectUserService = (id) => axiosInstance.delete(API_URL + `UserServices/${id}`);
 
+export const putArea = (area) => axiosInstance.put(API_URL + 'Areas', area);
+
+export const postArea = (area) => axiosInstance.post(API_URL + 'Areas', area);
+
+export const delArea = (areaId) => axiosInstance.delete(API_URL + `Areas/${areaId}`);
+
+export const postUserAction = (userAction) => axiosInstance.post(API_URL + 'UserActions', userAction);
+
+export const postUserReaction = (userAction) => axiosInstance.post(API_URL + 'UserReactions', userAction);
+
 export const getUsersAreas = (id) => axiosInstance.get(API_URL + `Areas/${id}`);
 
 // services callbacks
@@ -76,3 +88,4 @@ export const addReaction = (data) => axiosInstance.post(API_URL + 'Reactions', d
 export const delAction = (actionId) => axiosInstance.delete(API_URL + `Actions/${actionId}`);
 export const delReaction = (reactionId) =>
   axiosInstance.delete(API_URL + `Reactions/${reactionId}`);
+export const changeAdmin = (data) => axiosInstance.put(API_URL + `Users/partialModif`, data);
