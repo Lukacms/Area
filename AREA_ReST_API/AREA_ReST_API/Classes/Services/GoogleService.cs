@@ -1,3 +1,4 @@
+using System.Net.Http.Headers;
 using System.Runtime.InteropServices.JavaScript;
 using AREA_ReST_API.Models;
 using Newtonsoft.Json.Linq;
@@ -19,7 +20,7 @@ public class GoogleService : IService
 
     public override async Task ReactionSelector(UserReactionsModel userReaction, UserServicesModel userService, AppDbContext context)
     {
-        var reaction = context.Reactions.First(r => r.Id == userReaction.Id);
+        var reaction = context.Reactions.First(r => r.Id == userReaction.ReactionId);
         switch (reaction.Name)
         {
             case "Send Mail":
@@ -34,11 +35,11 @@ public class GoogleService : IService
         var epochTime = DateTimeOffset.Now.ToUnixTimeSeconds();
         var modifiedEpoch = DateTimeOffset.FromUnixTimeSeconds(epochTime).AddSeconds(-1 * userAction.Timer)
             .ToUnixTimeSeconds();
-        const string uri = "https://gmail.googleapis.com/gmail/v1/users/me/messages?";
-        string queryParameters = $"q=after:1697533317";
-        var config = JObject.Parse(userAction.Configuration);
+        const string uri = "https://gmail.googleapis.com/gmail/v1/users/me/messages?q=";
+        string queryParameters = $"after:{modifiedEpoch}";
         var requestMessage = new HttpRequestMessage(HttpMethod.Get, uri + Uri.EscapeDataString(queryParameters));
 
+        requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", userService.AccessToken);
         var response = await client.SendAsync(requestMessage);
         var json = JObject.Parse(await response.Content.ReadAsStringAsync());
         return (int)json["resultSizeEstimate"]! != 0;
@@ -49,10 +50,10 @@ public class GoogleService : IService
         var client = new HttpClient();
         var uri = "https://gmail.googleapis.com/gmail/v1/users/me/messages/send";
 
-        var config = JObject.Parse(userReaction.Configuration);
-        var requestMessage = new HttpRequestMessage(HttpMethod.Get, uri);
+        var requestMessage = new HttpRequestMessage(HttpMethod.Post, uri);
         var mailToSend = CreateMail(userReaction);
         requestMessage.Content = JsonContent.Create(new { raw = mailToSend });
+        requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", userService.AccessToken);
         var response = await client.SendAsync(requestMessage);
         var json = JObject.Parse(await response.Content.ReadAsStringAsync());
     }
@@ -60,10 +61,10 @@ public class GoogleService : IService
     private string CreateMail(UserReactionsModel userReaction)
     {
         var json = JObject.Parse(userReaction.Configuration);
-        var receiver = $"To: <{json["Receiver"]!}>\n";
-        var subject = $"Subject: {json["Subject"]!}\n";
-        var body = json["Body"]!.ToString();
-        var textByte = System.Text.Encoding.UTF8.GetBytes($"{receiver}{subject}{body}");
+        var receiver = $"To: <{json["receiver"]!}>\n";
+        var subject = $"Subject: {json["subject"]!}\n";
+        var body = json["body"]!.ToString();
+        var textByte = System.Text.Encoding.UTF8.GetBytes($"{receiver}{subject}\n\r{body}");
 
         return Convert.ToBase64String(textByte);
     }

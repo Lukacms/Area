@@ -37,7 +37,14 @@ public class ActionChecker : BackgroundService
                     context.UserActions.Update(userAction);
                     continue;
                 }
-                ManageActions(area.UserAction!, area, context);
+                try
+                {
+                    await ManageActions(area.UserAction!, area, context);
+                }
+                catch
+                {
+                    // ignored
+                }
                 userAction.Countdown = userAction.Timer;
             }
             await context.SaveChangesAsync(stoppingToken);
@@ -67,11 +74,18 @@ public class ActionChecker : BackgroundService
             var service = context.Services.First(s => s.Id == reaction.ServiceId);
             var userService = context.UserServices.First(s => s.ServiceId == service.Id && s.UserId == area.UserId);
             var instance = _services[service.Name].Invoke();
-            await instance.ReactionSelector(userReaction, userService, context);
+            try
+            {
+                await instance.ReactionSelector(userReaction, userService, context);
+            }
+            catch
+            {
+                return;
+            }
         }
     }
 
-    private async void ManageActions(UserActionsModel userAction, AreaWithActionReaction area, AppDbContext context)
+    private async Task ManageActions(UserActionsModel userAction, AreaWithActionReaction area, AppDbContext context)
     {
         var action = context.Actions.First(a => a.Id == userAction.ActionId);
         var service = context.Services.First(s => s.Id == action.ServiceId);
