@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/back/api.dart';
 import 'package:mobile/back/services.dart';
@@ -110,28 +111,27 @@ class _AreaBuildState extends State<AreaBuild> {
       floatingActionButton: newArea.action == null
           ? null
           : TextButton(
-              onPressed: () {
+              onPressed: () async {
                 if (newArea.name.isEmpty) {
                   setState(() {
                     isNamed = false;
                   });
                   return;
                 }
-                widget.areaAdd(newArea);
                 if (!widget.isEdit) {
-                  serverAddFullArea(
+                  await serverAddFullArea(
                     widget.token,
                     widget.userId,
                     widget.areasLenght - 1,
                     newArea.name,
                     newArea.action!,
                     newArea.reactions,
+                    newArea.favorite
                   );
-                  /* serverAddArea(widget.token, widget.userId,
-                      widget.areasLenght - 1, newArea.name); */
                 } else {
                   editArea(newArea, savedArea!);
                 }
+                widget.areaAdd(newArea);
                 Navigator.of(context).pop();
               },
               style: TextButton.styleFrom(
@@ -160,9 +160,7 @@ class _AreaBuildState extends State<AreaBuild> {
                         addActionCallback: (value) {
                           setState(
                             () {
-                              print(value.defaultConfiguration.runtimeType);
                               newArea.action = value;
-                              print(newArea.action!.defaultConfiguration);
                             },
                           );
                         },
@@ -207,6 +205,28 @@ class _AreaBuildState extends State<AreaBuild> {
           ),
         ],
       ),
+      persistentFooterAlignment: AlignmentDirectional.center,
+      persistentFooterButtons: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(left: blockHeight),
+              child: Text(
+                "Favorite",
+                style: TextStyle(color: AppColors.white, fontSize: 18),
+              ),
+            ),
+            CupertinoSwitch(
+                value: newArea.favorite,
+                onChanged: (value) {
+                  setState(() {
+                    newArea.favorite = value;
+                  });
+                })
+          ],
+        )
+      ],
     );
   }
 }

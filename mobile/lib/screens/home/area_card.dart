@@ -38,8 +38,12 @@ class AreaCard extends StatelessWidget {
       child: Column(
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              area.favorite ? Padding(
+                padding: EdgeInsets.only(left: blockHeight),
+                child: const Icon(Icons.star, color: Colors.yellow),
+              ) : Container(),
               PopupMenuButton(
                 itemBuilder: (context) => [
                   PopupMenuItem(

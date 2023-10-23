@@ -208,7 +208,7 @@ Future<bool> serverAddArea(
 }
 
 Future<bool> serverAddFullArea(String token, int userId, int id, String name,
-    AreaAction action, List<AreaAction> reactions) async {
+    AreaAction action, List<AreaAction> reactions, bool favorite) async {
   print("LAAAAA");
   print(jsonEncode(action.configuration));
   print(action.defaultConfiguration.isEmpty);
@@ -252,7 +252,7 @@ Future<bool> serverAddFullArea(String token, int userId, int id, String name,
     'id': id,
     'name': name,
     'userId': userId,
-    'favorite': false,
+    'favorite': favorite,
     'userAction': bodyAction,
     'userReactions': bodyReactions,
   });
