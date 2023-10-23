@@ -188,8 +188,8 @@ const useHome = () => {
           userId: userId,
           name: newAreaName,
           favorite: false,
-          userAction: newAction,
-          userReactions: newReactions,
+          userAction: action,
+          userReactions: reactions,
         },
       ]);
       resetAreaMaking(setStatus);
