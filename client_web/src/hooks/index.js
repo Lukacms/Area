@@ -23,6 +23,7 @@ import useCallbackFacebook from './callbacks/useCallbackFacebook';
 import useCallbackDeezer from './callbacks/useCallbackDeezer';
 import useCallbackAppleMusic from './callbacks/useCallbackAppleMusic';
 import useCallbackLetterBoxd from './callbacks/useCallbackLetterBoxd';
+import useCallbackLogin from './callbacks/login/useCallbackLogin';
 
 export {
   useRegister,
@@ -49,5 +50,6 @@ export {
   useCallbackSpotify,
   useCallbackSteam,
   useCallbackTrello,
-  useCallbackYoutube
+  useCallbackYoutube,
+  useCallbackLogin,
 };

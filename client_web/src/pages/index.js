@@ -23,6 +23,7 @@ import CallBackInstagram from './callbacks/CallbackInstagram';
 import CallBackAppleMusic from './callbacks/CallbackAppleMusic';
 import CallBackLetterBoxd from './callbacks/CallbackLetterBoxd';
 import CallBackPhilipsHue from './callbacks/CallbackPhilipsHue';
+import CallbackLogin from './callbacks/login/CallbackLogin';
 
 export {
   Login,
@@ -49,5 +50,6 @@ export {
   CallBackTrello,
   CallBackGithub,
   CallBackDeezer,
-  CallBackSteam
+  CallBackSteam,
+  CallbackLogin,
 };

@@ -73,7 +73,7 @@ export const postUserAction = (userAction) => axiosInstance.post(API_URL + 'User
 
 export const postUserReaction = (userAction) => axiosInstance.post(API_URL + 'UserReactions', userAction);
 
-export const getUsersAreas = (id) => axiosInstance.get(API_URL + `Areas/${id}`);
+export const getUsersAreas = (id) => axiosInstance.get(API_URL + `Areas/${id}/full`);
 
 // services callbacks
 export const serviceCallbackDiscord = (datas) => axiosInstance.post(OAUTH_URL + 'Discord', datas);
