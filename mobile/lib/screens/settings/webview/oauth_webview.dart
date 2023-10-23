@@ -45,7 +45,8 @@ class AuthWebView extends StatelessWidget {
                 context,
               );
               return NavigationDecision.prevent;
-            } else if (request.url.contains('authorize')) {
+            } else if (request.url.contains('authorize') ||
+                request.url.contains('recaptcha') || request.url.contains('challenge-completed')) {
               return NavigationDecision.navigate;
             }
             return NavigationDecision.prevent;

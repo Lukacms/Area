@@ -9,10 +9,12 @@ import 'package:flutter/cupertino.dart';
 class SettingsPage extends StatefulWidget {
   final String token;
   final List<Service> services;
+  final List<int> userServices;
   const SettingsPage({
     super.key,
     required this.token,
     required this.services,
+    required this.userServices,
   });
 
   @override
@@ -36,7 +38,10 @@ class _SettingsPageState extends State<SettingsPage> {
     blockWidth = screenWidth / 5;
     blockHeight = screenHeight / 100;
     print("Dans settings");
-    print(widget.services);
+    widget.services.forEach((element) {
+      print(element.id);
+    });
+    print(widget.userServices);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
@@ -71,16 +76,18 @@ class _SettingsPageState extends State<SettingsPage> {
                           "Services": Text(
                             "Services",
                             style: TextStyle(
-                                color: selectedSegment == "Services"
-                                    ? Colors.black
-                                    : AppColors.white),
+                              color: selectedSegment == "Services"
+                                  ? Colors.black
+                                  : AppColors.white,
+                            ),
                           ),
                           "Reglages": Text(
                             "Reglages",
                             style: TextStyle(
-                                color: selectedSegment == "Reglages"
-                                    ? Colors.black
-                                    : AppColors.white),
+                              color: selectedSegment == "Reglages"
+                                  ? Colors.black
+                                  : AppColors.white,
+                            ),
                           ),
                         },
                         onValueChanged: (value) {
@@ -112,23 +119,36 @@ class _SettingsPageState extends State<SettingsPage> {
                                 child: SizedBox(
                                   height: blockHeight * 6,
                                   child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      SizedBox(
-                                        height: 24,
-                                        width: 24,
-                                        child: SvgPicture.asset(
-                                          widget.services[index].svgIcon,
-                                          // ignore: deprecated_member_use
-                                          color:
-                                              widget.services[index].iconColor,
-                                        ),
+                                      Row(
+                                        children: [
+                                          SizedBox(
+                                            height: 24,
+                                            width: 24,
+                                            child: SvgPicture.asset(
+                                              widget.services[index].svgIcon,
+                                              // ignore: deprecated_member_use
+                                              color: widget
+                                                  .services[index].iconColor,
+                                            ),
+                                          ),
+                                          SizedBox(width: blockHeight * 2),
+                                          Text(
+                                            widget.services[index].name,
+                                            style: TextStyle(
+                                                color: AppColors.lightBlue),
+                                          ),
+                                        ],
                                       ),
-                                      SizedBox(width: blockHeight * 2),
-                                      Text(
-                                        widget.services[index].name,
-                                        style: TextStyle(
-                                            color: AppColors.lightBlue),
-                                      ),
+                                      widget.userServices.contains(
+                                              widget.services[index].id)
+                                          ? Icon(
+                                              Icons.check,
+                                              color: AppColors.lightBlue,
+                                            )
+                                          : Container(),
                                     ],
                                   ),
                                 ),

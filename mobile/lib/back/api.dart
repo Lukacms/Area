@@ -109,17 +109,16 @@ Future serverGoogleAuth(
 }
 
 Future serverSpotifyAuth(String code, String token) async {
+  print("Spotify server oauth");
   var url =
       Uri(scheme: 'http', host: CURRENT_IP, port: 8080, path: '/oauth/Spotify');
-  print("CHUI DEDANS");
   var headers = {
     'Content-Type': 'application/json',
     'accept': '*/*',
     'Authorization': 'Bearer $token',
   };
   var body = jsonEncode({"code": code});
-  var response =
-      await http.post(url, headers: headers, body: body).then((value) {
+  await http.post(url, headers: headers, body: body).then((value) {
     print('reponse serveur${value.statusCode}');
     print(value.body);
     return value.body;
@@ -209,18 +208,14 @@ Future<bool> serverAddArea(
 
 Future<bool> serverAddFullArea(String token, int userId, int id, String name,
     AreaAction action, List<AreaAction> reactions, bool favorite) async {
-  print("LAAAAA");
-  print(jsonEncode(action.configuration));
-  print(action.defaultConfiguration.isEmpty);
   List<Map<String, dynamic>> bodyReactions = [];
   Map<String, dynamic> bodyAction = {
     'id': 0,
     'actionId': action.id,
     'areaId': id,
     'serviceId': action.serviceId,
-    'configuration': action.configuration.isEmpty
-        ? "{}"
-        : jsonEncode(action.configuration),
+    'configuration':
+        action.configuration.isEmpty ? "{}" : jsonEncode(action.configuration),
     'timer': action.timer,
     'countdown': 1,
   };
@@ -231,9 +226,8 @@ Future<bool> serverAddFullArea(String token, int userId, int id, String name,
       'reactionId': reaction.id,
       'serviceId': reaction.serviceId,
       'areaId': id,
-      'configuration': reaction.configuration.isEmpty
-          ? "{}"
-          : reaction.configuration,
+      'configuration':
+          reaction.configuration.isEmpty ? "{}" : reaction.configuration,
     });
     i++;
   }
@@ -346,6 +340,25 @@ Future serverGetServices(String token) async {
   print("Get services status code ${response.statusCode}");
   if (response.statusCode == 200) {
     print('prout');
+    var jsonResponse = jsonDecode(response.body);
+    return jsonResponse;
+  }
+}
+
+Future serverGetUserServices(String token, int userId) async {
+  var url = Uri(
+    scheme: 'http',
+    host: CURRENT_IP,
+    port: 8080,
+    path: '/api/UserServices/$userId',
+  );
+  var headers = {
+    'accept': '*/*',
+    'Authorization': 'Bearer $token',
+  };
+  var response = await http.get(url, headers: headers);
+  print("Get user services status code ${response.statusCode}");
+  if (response.statusCode == 200) {
     var jsonResponse = jsonDecode(response.body);
     return jsonResponse;
   }

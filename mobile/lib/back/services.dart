@@ -134,6 +134,15 @@ class AppServices {
     return tmp;
   }
 
+  List<int> userServicesParse(List userServices) {
+    List<int> tmp = [];
+    print(userServices);
+    for (var service in userServices) {
+      tmp.add(service['serviceId']);
+    }
+    return tmp;
+  }
+
   List<AreaAction> actionParse(List actions) {
     List<AreaAction> tmp = [];
     for (var action in actions) {
@@ -158,58 +167,6 @@ class AppServices {
     return tmp;
   }
 
-  /*List services = [
-    Service(
-      name: "Github",
-      svgIcon: 'assets/serviceIcons/github.svg',
-      iconColor: Colors.grey,
-      category: 'Dev',
-      actions: ['Commit', 'Push', 'Pull'],
-      oAuth: "null",
-    ),
-    Service(
-      name: "Discord",
-      svgIcon: 'assets/serviceIcons/discord.svg',
-      iconColor: Colors.purple,
-      category: 'messageries',
-      actions: ['Message', 'Call', 'Video'],
-      oAuth:
-          "https://discord.com/api/oauth2/authorize?client_id=1158738215704985681&permissions=8&redirect_uri=http%3A%2F%2Flocalhost%3A8081%2Fsettings%2Fservices&response_type=code&scope=bot",
-    ),
-    Service(
-      name: "Google",
-      svgIcon: 'assets/serviceIcons/google.svg',
-      iconColor: Colors.white,
-      category: 'reseaux',
-      actions: ['Message', 'Call', 'Video'],
-      oAuth:
-          "https://accounts.google.com/o/oauth2/auth?scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fgmail.modify+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar&response_type=code&redirect_uri=http%3A%2F%2Flocalhost:8090%2Fsettings%2Fservices%2Fgoogle&client_id=315267877885-lkqq49r6v587fi9pduggbdh9dr1j69me.apps.googleusercontent.com",
-    ),
-    Service(
-      name: "Instagram",
-      svgIcon: 'assets/serviceIcons/instagram.svg',
-      iconColor: Colors.pink,
-      category: 'reseaux',
-      actions: ['Message', 'Call', 'Video'],
-      oAuth: "null",
-    ),
-    Service(
-      name: "Spotify",
-      svgIcon: 'assets/serviceIcons/linkedin.svg',
-      iconColor: Colors.blue,
-      category: "reseaux",
-      actions: ['Message', 'Call', 'Video'],
-      oAuth: "null",
-    ),
-    Service(
-      name: "Conditions",
-      svgIcon: 'assets/serviceIcons/connectors.svg',
-      iconColor: AppColors.lightBlue,
-      category: 'connecteurs',
-      actions: ['If', 'Or', 'And', 'Not', 'Else'],
-      oAuth: "null",
-    )
-  ]; */
   List categories = [
     [
       "Reseaux",

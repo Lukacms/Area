@@ -24,6 +24,7 @@ class _HomePageState extends State<HomePage> {
   TextEditingController searchController = TextEditingController();
   List<Area> areas = [];
   List<Service> services = [];
+  List<int> userServices = [];
   List<AreaAction> actions = [];
   List<AreaAction> reactions = [];
   @override
@@ -31,6 +32,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     loadAreas(widget.user['id'], widget.token);
     loadServices(widget.token);
+    loadUserServices(widget.token);
     loadActions(widget.token);
     loadReactions(widget.token);
   }
@@ -65,6 +67,18 @@ class _HomePageState extends State<HomePage> {
     }
     setState(() {
       services = AppServices().serviceParse(tmp);
+    });
+  }
+
+  Future loadUserServices(String token) async {
+    List tmp = [];
+    var userServicesData =
+        await serverGetUserServices(token, widget.user['id']);
+    for (var service in userServicesData) {
+      tmp.add(service);
+    }
+    setState(() {
+      userServices = AppServices().userServicesParse(tmp);
     });
   }
 
@@ -193,6 +207,7 @@ class _HomePageState extends State<HomePage> {
                   height: MediaQuery.of(context).size.height * 0.8,
                   child: SettingsPage(
                     services: services,
+                    userServices: userServices,
                     token: widget.token,
                   ),
                 );
