@@ -80,21 +80,25 @@ class ActionReactionLists extends StatelessWidget {
                                 onPressed: () {
                                   addActionCallback(
                                     AreaAction(
-                                      id: type == 'actions'
-                                          ? actions[index].id
-                                          : reactions[index].id,
-                                      serviceId: service.id,
-                                      name: type == 'actions'
-                                          ? actions[index].name
-                                          : reactions[index].name,
-                                      endpoint: type == 'actions'
-                                          ? actions[index].endpoint
-                                          : reactions[index].endpoint,
-                                      defaultConfiguration: type == 'actions'
-                                          ? actions[index].defaultConfiguration
-                                          : reactions[index]
-                                              .defaultConfiguration,
-                                    ),
+                                        id: type == 'actions'
+                                            ? actions[index].id
+                                            : reactions[index].id,
+                                        serviceId: service.id,
+                                        name: type == 'actions'
+                                            ? actions[index].name
+                                            : reactions[index].name,
+                                        endpoint: type == 'actions'
+                                            ? actions[index].endpoint
+                                            : reactions[index].endpoint,
+                                        defaultConfiguration: type == 'actions'
+                                            ? actions[index]
+                                                .defaultConfiguration
+                                            : reactions[index]
+                                                .defaultConfiguration,
+                                        configuration: type == 'actions'
+                                            ? actions[index].configuration
+                                            : reactions[index].configuration,
+                                        timer: 0),
                                   );
                                   int count = 0;
                                   Navigator.of(context)
@@ -106,6 +110,7 @@ class ActionReactionLists extends StatelessWidget {
                                       service.svgIcon,
                                       width: 24,
                                       height: 24,
+                                      // ignore: deprecated_member_use
                                       color: service.iconColor,
                                     ),
                                     SizedBox(width: blockHeight),

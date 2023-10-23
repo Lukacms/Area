@@ -158,7 +158,7 @@ Future<List> serverGetAreas(int id, String token) async {
     scheme: 'http',
     host: CURRENT_IP,
     port: 8080,
-    path: '/api/Areas/$id',
+    path: '/api/Areas/$id/full',
   );
   var headers = {
     'accept': '*/*',
@@ -209,14 +209,19 @@ Future<bool> serverAddArea(
 
 Future<bool> serverAddFullArea(String token, int userId, int id, String name,
     AreaAction action, List<AreaAction> reactions) async {
+  print("LAAAAA");
+  print(jsonEncode(action.configuration));
+  print(action.defaultConfiguration.isEmpty);
   List<Map<String, dynamic>> bodyReactions = [];
   Map<String, dynamic> bodyAction = {
     'id': 0,
     'actionId': action.id,
     'areaId': id,
-    'configuration':
-        action.defaultConfiguration.isEmpty ? "{}" : action.defaultConfiguration,
-    'timer': 1,
+    'serviceId': action.serviceId,
+    'configuration': action.configuration.isEmpty
+        ? "{}"
+        : jsonEncode(action.configuration),
+    'timer': action.timer,
     'countdown': 1,
   };
   var i = 0;
@@ -224,10 +229,11 @@ Future<bool> serverAddFullArea(String token, int userId, int id, String name,
     bodyReactions.add({
       'id': i,
       'reactionId': reaction.id,
+      'serviceId': reaction.serviceId,
       'areaId': id,
-      'configuration': reaction.defaultConfiguration.isEmpty
+      'configuration': reaction.configuration.isEmpty
           ? "{}"
-          : reaction.defaultConfiguration,
+          : reaction.configuration,
     });
     i++;
   }

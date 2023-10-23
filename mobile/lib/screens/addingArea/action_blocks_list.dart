@@ -36,11 +36,11 @@ class _ActionBlockListState extends State<ActionBlockList> {
                 widget.reactions.isNotEmpty ? widget.reactions.length + 1 : 1,
             shrinkWrap: true,
             itemBuilder: (context, index) {
-              print(index);
               return index == 0
                   ? Column(
                       children: [
                         ActionBlock(
+                          isAction: true,
                           service: widget.services[widget.action.serviceId - 1],
                           action: widget.action,
                           deleteBlock: () {
@@ -59,6 +59,7 @@ class _ActionBlockListState extends State<ActionBlockList> {
                   : Column(
                       children: [
                         ActionBlock(
+                          isAction: false,
                           service: widget.services[
                               widget.reactions[index - 1].serviceId - 1],
                           deleteBlock: () {

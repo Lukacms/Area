@@ -160,7 +160,9 @@ class _AreaBuildState extends State<AreaBuild> {
                         addActionCallback: (value) {
                           setState(
                             () {
+                              print(value.defaultConfiguration.runtimeType);
                               newArea.action = value;
+                              print(newArea.action!.defaultConfiguration);
                             },
                           );
                         },

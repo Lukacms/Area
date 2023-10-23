@@ -32,7 +32,9 @@ class AreaAction {
   final int id;
   final String name;
   final String endpoint;
-  final dynamic defaultConfiguration;
+  final Map<String, dynamic> defaultConfiguration;
+  final Map<String, dynamic> configuration;
+  int timer;
 
   AreaAction({
     required this.serviceId,
@@ -40,12 +42,19 @@ class AreaAction {
     required this.name,
     required this.endpoint,
     required this.defaultConfiguration,
+    required this.configuration,
+    required this.timer,
   });
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is AreaAction && other.id == id && other.name == name && other.endpoint == endpoint && other.defaultConfiguration == defaultConfiguration && other.serviceId == serviceId;
+    return other is AreaAction &&
+        other.id == id &&
+        other.name == name &&
+        other.endpoint == endpoint &&
+        other.defaultConfiguration == defaultConfiguration &&
+        other.serviceId == serviceId;
   }
 }
 
@@ -134,7 +143,15 @@ class AppServices {
         id: action['id'],
         name: action['name'],
         endpoint: action['endpoint'],
-        defaultConfiguration: action['defaultConfiguration'],
+        defaultConfiguration: action['defaultConfiguration'] != null &&
+                action['defaultConfiguration'].isNotEmpty
+            ? jsonDecode(action['defaultConfiguration'])
+            : {},
+        configuration: action['configuration'] != null &&
+                action['configuration'].isNotEmpty
+            ? jsonDecode(action['configuration'])
+            : {},
+        timer: action['timer'] ?? 0,
       );
       tmp.add(actionTmp);
     }
