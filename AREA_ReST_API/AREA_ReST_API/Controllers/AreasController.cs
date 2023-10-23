@@ -57,14 +57,20 @@ public class AreasController
             UserId = newArea.UserId
         };
         var registeredArea = _context.Areas.Add(onlyArea).Entity;
+        _context.SaveChanges();
         UserActionsModel registeredAction = null!;
         if (newArea.UserAction != null)
         {
+            newArea.UserAction.AreaId = registeredArea.Id;
             registeredAction = _context.UserActions.Add(newArea.UserAction).Entity;
         }
         var registeredReaction = newArea.UserReactions.Select(
-            reaction => _context.UserReactions.Add(reaction).Entity
-            ).ToList();
+            reaction =>
+            {
+                reaction.AreaId = registeredArea.Id;
+                return _context.UserReactions.Add(reaction).Entity;
+            }
+    ).ToList();
         _context.SaveChanges();
         var createdArea = new AreaWithActionReaction
         {
@@ -112,5 +118,32 @@ public class AreasController
         _context.Areas.Update(requestedArea);
         _context.SaveChanges();
         return new OkObjectResult(new JsonObject { { "message", "Area successfully updated" } });
+    }
+
+    [HttpGet("{userId:int}/full")]
+    public ActionResult<List<AreaWithActionReaction>> GetAllAreasFullByUserId([AsParameters] int userId)
+    {
+        var requestedArea = _context.Areas.Where(area => area.UserId == userId).ToList();
+        var fullAreas = requestedArea.Select(areasModel => new AreaFull
+        {
+            Id = areasModel.Id,
+            Name = areasModel.Name,
+            UserId = areasModel.UserId,
+            Favorite = areasModel.Favorite,
+            UserAction = _context.UserActions.Select(ua => new UserActionWithActionModel
+            {
+                Action = _context.Actions.First(a => a.Id == ua.ActionId),
+                AreaId = ua.AreaId,
+                Configuration = ua.Configuration,
+                Timer = ua.Timer
+            }).First(),
+            UserReactions = _context.UserReactions.Select(ur => new UserReactionWithReactionModel
+            {
+                AreaId = ur.AreaId,
+                Configuration = ur.Configuration,
+                Reaction = _context.Reactions.First(r => r.Id == ur.ReactionId)
+            }).ToList()
+        }).ToList();
+        return new OkObjectResult(fullAreas);
     }
 }
