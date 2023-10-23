@@ -17,6 +17,10 @@ const useFetchHome = () => {
   const [panelReactions, setPanelReactions] = useState([]);
   const [tabAreas, setTabAreas] = useState([]);
   const [status, setStatus] = useState('Default'); // Default | GetName | GetAction | ConfigureAction | GetReactions | ConfigureReaction | Validate
+  const actionReacOpts = [
+    { label: 'Actions', disabled: status === 'GetReactions' || status === 'ConfigureReaction' },
+    { label: 'Reactions', disabled: status === 'GetAction' || status === 'ConfigureAction' },
+  ];
 
   useEffect(() => {
     const loadDatas = async () => {
@@ -44,9 +48,11 @@ const useFetchHome = () => {
                     return {
                       label: action.name,
                       id: action.id,
-                      timer: 0,
+                      timer: 1,
                       logo: '',
-                      defaultConfig: action.defaultConfiguration ? JSON.parse(action.defaultConfiguration) : '',
+                      configuration: action.defaultConfiguration
+                        ? JSON.parse(action.defaultConfiguration)
+                        : '',
                     };
                   }),
                 },
@@ -63,7 +69,9 @@ const useFetchHome = () => {
                       label: reaction.name,
                       id: reaction.id,
                       logo: '',
-                      defaultConfig: reaction.defaultConfiguration ? JSON.parse(reaction.defaultConfiguration) :  '',
+                      configuration: reaction.defaultConfiguration
+                        ? JSON.parse(reaction.defaultConfiguration)
+                        : '',
                     };
                   }),
                 },
@@ -92,6 +100,7 @@ const useFetchHome = () => {
     setTabAreas,
     status,
     setStatus,
+    actionReacOpts,
   };
 };
 

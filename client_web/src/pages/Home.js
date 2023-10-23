@@ -1,12 +1,18 @@
 import { useState } from 'react';
-import { Background, PanelAccordion } from '../components';
+import {
+  AreaPanel,
+  AreaPanelBuild,
+  Background,
+  ConfigureAction,
+  ConfigureReaction,
+  PanelAccordion,
+} from '../components';
 import { Button } from 'primereact/button';
 import { ConfirmDialog } from 'primereact/confirmdialog';
 import { Dialog } from 'primereact/dialog';
 import { Divider } from 'primereact/divider';
 import { Image } from 'primereact/image';
 import { InputText } from 'primereact/inputtext';
-import { InputNumber} from 'primereact/inputnumber';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { TabMenu } from 'primereact/tabmenu';
 import { Toast } from 'primereact/toast';
@@ -35,6 +41,10 @@ function Home({ children, publicPath }) {
     changeValueNewReaction,
     changeValueNewAction,
     saveNewArea,
+    error,
+    validateActionReac,
+    selectedArea,
+    setSelectedArea,
   } = useHome();
   const {
     navigate,
@@ -47,11 +57,8 @@ function Home({ children, publicPath }) {
     setTabAreas,
     status,
     setStatus,
+    actionReacOpts,
   } = useFetchHome();
-  const actionReacOpts = [
-    { label: 'Actions', disabled: status === 'GetReactions' || status === 'ConfigureReaction' },
-    { label: 'Reactions', disabled: status === 'GetAction' || status === 'ConfigureAction' },
-  ];
   const [areaTab, setAreaTab] = useState(0);
   const areaTabs = [
     { label: 'Favourite', icon: 'pi pi-star' },
@@ -76,7 +83,7 @@ function Home({ children, publicPath }) {
     }
 
     return (
-      <div className='areaPreviewContainer' key={item.id}>
+      <div className='areaPreviewContainer' key={item.id} onClick={() => setSelectedArea(item)}>
         <Button
           text
           raised
@@ -112,11 +119,7 @@ function Home({ children, publicPath }) {
       />
       <Button
         label='Validate'
-        onClick={() => {
-          areaToast.current.show({ severity: 'success', summary: 'Successfully added ' + status === 'ConfigureAction' ? 'action' : 'reaction' });
-          setStatus('GetReactions');
-          setActionReac('Reactions');
-        }}
+        onClick={() => validateActionReac(setActionReac, status, setStatus)}
       />
     </>
   );
@@ -124,7 +127,7 @@ function Home({ children, publicPath }) {
   const footerAreaName = (
     <div>
       <Button label='Cancel' text onClick={() => resetAreaName(setStatus)} />
-      <Button label='Validate' onClick={() => validateName(setStatus)} />
+      <Button label='Validate' onClick={() => validateName(setStatus, setActionReac)} />
     </div>
   );
 
@@ -145,47 +148,25 @@ function Home({ children, publicPath }) {
         />
         {errorName ? <small className='p-error'>{errorName}</small> : null}
       </Dialog>
-      <Dialog
-        header={newAction.label}
+      <ConfigureAction
+        action={newAction}
+        onHide={cancelNewAction}
+        setStatus={setStatus}
+        status={status}
         footer={footer}
-        visible={status === 'ConfigureAction'}
-        style={{ minWidth: '20vw' }}
-        onHide={() => cancelNewAction(setStatus)}>
-        <div className='dialog'>
-          <InputNumber placeholder='Timer (in seconds)' value={newAction.timer} onChange={(e) => setNewAction(old => [{...old, timer: e.value}][0])} locale='fr-FR' suffix=' sec' min={1} />
-          {newAction.defaultConfig
-            ? Object.entries(newAction.defaultConfig).map((item, key) => (
-                <InputText
-                  key={key}
-                  placeholder={item[0]}
-                  value={item[1]}
-                  onChange={(e) => changeValueNewAction(e, item[0])}
-                />
-              ))
-            : null}
-        </div>
-      </Dialog>
-      <Dialog
-        header={newReactions[newReactions.length - 1]?.label}
-        style={{ minWidth: '20vw' }}
+        changeValue={changeValueNewAction}
+        error={error}
+        setAction={setNewAction}
+      />
+      <ConfigureReaction
+        reactions={newReactions}
+        status={status}
+        setStatus={setStatus}
+        onHide={cancelNewReaction}
+        onChangeValue={changeValueNewReaction}
+        error={error}
         footer={footer}
-        visible={status === 'ConfigureReaction'}
-        onHide={() => cancelNewReaction(setStatus)}>
-        <div className='dialog'>
-          {newReactions[newReactions.length - 1]?.defaultConfig
-            ? Object.entries(newReactions[newReactions.length - 1].defaultConfig).map(
-                (item, key) => (
-                  <InputText
-                    placeholder={item[0]}
-                    value={item[1]}
-                    key={key}
-                    onChange={(e) => changeValueNewReaction(e, item[0])}
-                  />
-                ),
-              )
-            : null}
-        </div>
-      </Dialog>
+      />
       <div className='toast'>
         <Toast ref={toast} position='top-center' />
       </div>
@@ -277,11 +258,23 @@ function Home({ children, publicPath }) {
             </div>
           ) : null}
           <div className='newAreaName'>
-            {status !== 'Default' ? 'Creating ' + newAreaName : null}
-            <br />
-            <br />
-            {['Default', 'GetName'].indexOf(status) === -1 ? 'Areas:' : null}
-            {status}
+            {status !== 'Default' ? (
+              <AreaPanelBuild
+                name={newAreaName}
+                action={newAction}
+                reactions={newReactions}
+                status={status}
+              />
+            ) : null}
+            {status === 'Default' && selectedArea ? (
+              <AreaPanel
+                name={selectedArea.name}
+                action={selectedArea.userAction}
+                reactions={selectedArea.userReactions}
+                status={status}
+                onHide={setSelectedArea}
+              />
+            ) : null}
           </div>
         </div>
         <div className='rightPannel'>

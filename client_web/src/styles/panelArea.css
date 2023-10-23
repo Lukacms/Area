@@ -1,0 +1,11 @@
+.card .p-card {
+  background-color: rgba(50, 48, 63, 0.6);
+  border-radius: 10px;
+}
+
+.card .p-card-title {
+  font-size: 40px;
+  font-weight: 200;
+  margin: 2vh 0vw 2vh 2vw;
+  text-transform: capitalize;
+}

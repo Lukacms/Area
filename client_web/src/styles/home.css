@@ -90,6 +90,7 @@
 }
 
 .areaPreviewContainer:hover {
+  cursor: pointer;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -100,6 +101,8 @@
 }
 
 .areaDisplayContainer {
+  overflow-y: scroll;
+  max-height: 80%;
   display: flex;
   flex-direction: column;
   gap: 2vh;

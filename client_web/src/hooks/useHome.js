@@ -9,8 +9,10 @@ const useHome = () => {
   const [errorName, setErrorName] = useState(null);
   const [newAction, setNewAction] = useState({});
   const [newReactions, setNewReactions] = useState([]);
+  const [error, setError] = useState(null);
+  const [selectedArea, setSelectedArea] = useState(null);
 
-  const validateName = (setStatus) => {
+  const validateName = (setStatus, setActionReac) => {
     if (!newAreaName || newAreaName.length < 3 || newAreaName.length > 50) {
       setErrorName('Invalid name of Area. Must be between 3 and 50 characters.');
     } else {
@@ -21,6 +23,7 @@ const useHome = () => {
         detail: 'Now select an Action',
       });
       setErrorName(null);
+      setActionReac('Actions');
     }
   };
 
@@ -98,10 +101,40 @@ const useHome = () => {
     setNewReactions(
       newReactions.map((reaction, index) =>
         index === newReactions.length - 1
-          ? { ...reaction, defaultConfig: { ...reaction.defaultConfig, [item]: e.target.value } }
+          ? { ...reaction, configuration: { ...reaction.configuration, [item]: e.target.value } }
           : reaction,
       ),
     );
+  };
+
+  const validateActionReac = (setActionReac, status, setStatus) => {
+    var isValid = true;
+
+    if (status === 'ConfigureAction') {
+      Object.entries(newAction.configuration).forEach((item) => {
+        if (!item[1]) {
+          setError('All fields must be filled');
+          isValid = false;
+          return;
+        }
+      });
+    } else if (status === 'ConfigureReaction') {
+      Object.entries(newReactions[newReactions.length - 1].configuration).forEach((item) => {
+        if (!item[1]) {
+          setError('All fields must be filled');
+          isValid = false;
+          return;
+        }
+      });
+    }
+    if (error || !isValid) return;
+    areaToast.current.show({
+      severity: 'success',
+      summary: 'Successfully added ' + status === 'ConfigureAction' ? 'action' : 'reaction',
+    });
+    setStatus('GetReactions');
+    setActionReac('Reactions');
+    setError(null);
   };
 
   const changeValueNewAction = (e, item) => {
@@ -110,7 +143,7 @@ const useHome = () => {
         [
           {
             ...old,
-            defaultConfig: { ...old.defaultConfig, [item]: e.target.value },
+            configuration: { ...old.configuration, [item]: e.target.value },
           },
         ][0],
     );
@@ -119,29 +152,31 @@ const useHome = () => {
   const saveNewArea = async (setTabAreas, setStatus) => {
     try {
       const userId = secureLocalStorage.getItem('userId');
-
       const createdArea = await postArea({
         userId: userId,
         name: newAreaName,
         favorite: false,
       });
-      await postUserAction({
+      const action = {
         areaId: createdArea.data.id,
         actionId: newAction.id,
         timer: newAction.timer,
-        configuration: JSON.stringify(newAction.defaultConfig),
-      });
-      newReactions.forEach(async (reaction) => {
+        configuration: newAction.configuration ? JSON.stringify(newAction.configuration) : '{}',
+      };
+      const reactions = newReactions.map((reaction) => ({
+        areaId: createdArea.data.id,
+        reactionId: reaction.id,
+        configuration: reaction.configuration ? JSON.stringify(reaction.configuration) : '{}',
+      }));
+
+      await postUserAction(action);
+      reactions.forEach(async (reaction) => {
         try {
-          await postUserReaction({
-            areaId: createdArea.data.id,
-            reactionId: reaction.id,
-            configuration: JSON.stringify(reaction.defaultConfig),
-          });
+          await postUserReaction(reaction);
         } catch (e) {
           areaToast.current.show({
             severity: 'error',
-            summary: 'Could not create Area',
+            summary: 'Could not create Reaction',
             detail: 'Try again in a few minutes',
           });
         }
@@ -153,11 +188,23 @@ const useHome = () => {
           userId: userId,
           name: newAreaName,
           favorite: false,
-          userAction: newAction,
-          userReactions: newReactions,
+          userAction: action,
+          userReactions: reactions,
         },
       ]);
       resetAreaMaking(setStatus);
+      setSelectedArea(
+        [
+          {
+            id: createdArea.data.id,
+            userId: userId,
+            name: newAreaName,
+            favorite: false,
+            userAction: action,
+            userReactions: reactions,
+          },
+        ][0],
+      );
     } catch (e) {
       areaToast.current.show({
         severity: 'error',
@@ -188,6 +235,10 @@ const useHome = () => {
     changeValueNewReaction,
     changeValueNewAction,
     saveNewArea,
+    error,
+    validateActionReac,
+    selectedArea,
+    setSelectedArea,
   };
 };
 
