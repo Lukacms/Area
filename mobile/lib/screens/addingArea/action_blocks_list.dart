@@ -41,7 +41,7 @@ class _ActionBlockListState extends State<ActionBlockList> {
                       children: [
                         ActionBlock(
                           isAction: true,
-                          service: widget.services[widget.action.serviceId - 1],
+                          service: widget.services.where((element) => element.id == widget.action.serviceId).first,
                           action: widget.action,
                           deleteBlock: () {
                             widget.removeActionCallback();
@@ -60,8 +60,7 @@ class _ActionBlockListState extends State<ActionBlockList> {
                       children: [
                         ActionBlock(
                           isAction: false,
-                          service: widget.services[
-                              widget.reactions[index - 1].serviceId - 1],
+                          service: widget.services.where((element) => element.id == widget.reactions[index - 1].serviceId).first,
                           deleteBlock: () {
                             widget.removeReactionCallback(index - 1);
                           },

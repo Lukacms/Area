@@ -84,7 +84,11 @@ class _HomePageState extends State<HomePage> {
 
   List<AreaAction> reactionFromServer(List<dynamic> serverReaction) {
     List<AreaAction> tmp = [];
+    List<int> existingIds = [];
     for (var reaction in serverReaction) {
+      if (existingIds.contains(reaction['reaction']['id'])) {
+        continue;
+      }
       tmp.add(AreaAction(
         serviceId: reaction['reaction']['serviceId'] ?? -1,
         id: reaction['reaction']['id'],
@@ -101,6 +105,7 @@ class _HomePageState extends State<HomePage> {
             : {},
         timer: reaction['reaction']['timer'] ?? 0,
       ));
+      existingIds.add(reaction['reaction']['id']);
     }
     return tmp;
   }

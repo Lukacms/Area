@@ -1,11 +1,9 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:mobile/back/api.dart';
 import 'package:mobile/screens/settings/webview/oauth_webview.dart';
 import 'package:mobile/theme/style.dart';
-import 'package:http/http.dart' as http;
 
 class Service {
   final int id;

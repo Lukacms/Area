@@ -89,18 +89,22 @@ Future serverGetSelfInfos(String token) async {
 }
 
 Future serverGoogleAuth(
-    String token, String code,) async {
-  var url =
-      Uri(scheme: 'http', host: CURRENT_IP, port: 8080, path: '/oauth/Google/mobile');
+  String token,
+  String code,
+) async {
+  var url = Uri(
+      scheme: 'http',
+      host: CURRENT_IP,
+      port: 8080,
+      path: '/oauth/Google/mobile');
   var headers = {
     'Content-Type': 'application/json',
     'accept': '*/*',
     'Authorization': 'Bearer $token',
   };
-  var body =
-      jsonEncode({'code': code});
-  var response =
-      await http.post(url, headers: headers, body: body).then((value) {
+  var body = jsonEncode({'code': code});
+
+  await http.post(url, headers: headers, body: body).then((value) {
     print('reponse serveur${value.statusCode}');
     print(value.body);
     return value.body;
@@ -137,8 +141,7 @@ Future serverGithubAuth(String code, String token) async {
     'Authorization': 'Bearer $token',
   };
   var body = jsonEncode({"code": code, 'scope': null});
-  var response =
-      await http.post(url, headers: headers, body: body).then((value) {
+  await http.post(url, headers: headers, body: body).then((value) {
     print('reponse serveur${value.statusCode}');
     print(value.body);
     return value.body;
@@ -167,7 +170,6 @@ Future<List> serverGetAreas(int id, String token) async {
   print("Get areas status code ${response.statusCode}");
   if (response.statusCode == 200) {
     var jsonResponse = jsonDecode(response.body);
-    print(jsonResponse);
     return jsonResponse;
   }
   return [];
