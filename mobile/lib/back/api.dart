@@ -89,7 +89,7 @@ Future serverGetSelfInfos(String token) async {
 }
 
 Future serverGoogleAuth(
-    String token, String accessToken, String refreshToken) async {
+    String token, String code,) async {
   var url =
       Uri(scheme: 'http', host: CURRENT_IP, port: 8080, path: '/oauth/Google');
   var headers = {
@@ -98,7 +98,7 @@ Future serverGoogleAuth(
     'Authorization': 'Bearer $token',
   };
   var body =
-      jsonEncode({'access_token': accessToken, 'refresh_token': refreshToken});
+      jsonEncode({'code': code});
   var response =
       await http.post(url, headers: headers, body: body).then((value) {
     print('reponse serveur${value.statusCode}');

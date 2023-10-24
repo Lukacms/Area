@@ -210,34 +210,16 @@ class AppServices {
           '315267877885-lkqq49r6v587fi9pduggbdh9dr1j69me.apps.googleusercontent.com';
       const callbackUrlScheme =
           'com.googleusercontent.apps.315267877885-lkqq49r6v587fi9pduggbdh9dr1j69me';
-
-      // Construct the url
       final url = Uri.https('accounts.google.com', '/o/oauth2/v2/auth', {
         'response_type': 'code',
         'client_id': googleClientId,
         'redirect_uri': '$callbackUrlScheme:/',
         'scope': 'email',
       });
-      // Present the dialog to the user
       final result = await FlutterWebAuth.authenticate(
           url: url.toString(), callbackUrlScheme: callbackUrlScheme);
-
-      // Extract code from resulting url
       final code = Uri.parse(result).queryParameters['code'];
-
-      // Use this code to get an access token
-      final response = await http
-          .post(Uri.parse('https://www.googleapis.com/oauth2/v4/token'), body: {
-        'client_id': googleClientId,
-        'redirect_uri': '$callbackUrlScheme:/',
-        'grant_type': 'authorization_code',
-        'code': code,
-      });
-
-      // Get the access token from the response
-      final accessToken = jsonDecode(response.body)['access_token'] as String;
-      final refreshToken = jsonDecode(response.body)['refresh_token'] as String;
-      serverGoogleAuth(token, accessToken, refreshToken);
+      serverGoogleAuth(token, code!);
     },
     'Spotify': (BuildContext context, String token) async {
       Navigator.of(context).push(
