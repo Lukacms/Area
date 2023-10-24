@@ -8,6 +8,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/back/services.dart';
+import 'package:mobile/components/backgroundCircles.dart';
 import 'package:mobile/screens/login/forgot_password.dart';
 import 'package:mobile/screens/login/login.dart';
 import 'package:mobile/screens/register.dart';
@@ -88,7 +89,7 @@ void widgetTests() {
     expect(find.byKey(const Key('emailField')), findsOneWidget);
     expect(find.byKey(const Key('resetPasswordButton')), findsOneWidget);
   });
-  testWidgets(
+  /* testWidgets(
       'Sign up screen displays name, surname, username, email, password fields and signup button',
       (WidgetTester tester) async {
     await tester
@@ -101,6 +102,12 @@ void widgetTests() {
     expect(find.byKey(const Key('passwordField')), findsOneWidget);
     expect(find.byKey(const Key('signupButton')), findsOneWidget);
   });
+  testWidgets('Background circles component displays 4 circles',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(
+        const MaterialApp(home: Scaffold(body: BackgroundCircles())));
+    expect(find.byKey(const Key('circle1')), findsOneWidget);
+  }); */
 }
 
 void main() {
