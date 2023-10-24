@@ -29,10 +29,30 @@ jobs:
           exit 1
         fi
 
+  build_docker:
+    runs-on: ubuntu-latest
+    needs: check_repository_cleanliness
+    steps:
+      - name: install and setup docker
+        run: |
+          sudo apt-get update -qq
+          sudo apt install apt-transport-https ca-certificates curl software-properties-common
+          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+          sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+          apt-cache policy docker-ce
+          sudo systemctl status docker
+      - name: install docker-compose
+        run: |
+          sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+          sudo docker-compose --version
+      - name: check if docker-compose can build
+        run: docker-compose build
+
   push_to_mirror:
     if: ${{ github.event_name == 'push' }}
     runs-on: ubuntu-latest
-    needs: check_repository_cleanliness
+    needs: build_docker
     steps:
       - uses: actions/checkout@v2
         with:
