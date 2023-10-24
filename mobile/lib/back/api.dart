@@ -91,7 +91,7 @@ Future serverGetSelfInfos(String token) async {
 Future serverGoogleAuth(
     String token, String code,) async {
   var url =
-      Uri(scheme: 'http', host: CURRENT_IP, port: 8080, path: '/oauth/Google');
+      Uri(scheme: 'http', host: CURRENT_IP, port: 8080, path: '/oauth/Google/mobile');
   var headers = {
     'Content-Type': 'application/json',
     'accept': '*/*',
