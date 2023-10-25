@@ -56,6 +56,7 @@ function App() {
           <Route path='letterboxd' element={<CallBackLetterBoxd />} />
           <Route path='linkedin' element={<CallBackLinkedin />} />
           <Route path='outlook' element={<CallBackOutlook />} />
+          <Route path='microsoft' element={<CallBackOutlook />} />
           <Route path='philipshue' element={<CallBackPhilipsHue />} />
           <Route path='spotify' element={<CallBackSpotify />} />
           <Route path='steam' element={<CallBackSteam />} />

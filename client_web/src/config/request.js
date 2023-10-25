@@ -88,6 +88,7 @@ export const serviceCallbackDiscord = (datas) => axiosInstance.post(OAUTH_URL + 
 export const serviceCallbackGoogle = (datas) => axiosInstance.post(OAUTH_URL + 'Google', datas);
 export const serviceCallbackSpotify = (datas) => axiosInstance.post(OAUTH_URL + 'Spotify', datas);
 export const serviceCallbackGithub = (datas) => axiosInstance.post(OAUTH_URL + 'Github', datas);
+export const serviceCallbackMicrosoft = (datas) => axiosInstance.post(OAUTH_URL + 'Microsoft', datas);
 
 // admin
 export const getAllUsers = () => axiosInstance.get(API_URL + 'Users');
