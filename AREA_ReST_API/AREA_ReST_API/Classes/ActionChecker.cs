@@ -14,6 +14,7 @@ public class ActionChecker : BackgroundService
         {
             { "Spotify", () => new SpotifyService() },
             { "Google", () => new GoogleService() },
+            { "Github", () => new GithubService() }
         };
     }
 
@@ -73,13 +74,16 @@ public class ActionChecker : BackgroundService
             var reaction = context.Reactions.First(x => x.Id == userReaction.ReactionId);
             var service = context.Services.First(s => s.Id == reaction.ServiceId);
             var userService = context.UserServices.First(s => s.ServiceId == service.Id && s.UserId == area.UserId);
+            Console.WriteLine($"SERVICE CALLED FOR REACTION : {service.Name}");
             var instance = _services[service.Name].Invoke();
+            Console.WriteLine($"INVOKE WITH : {service.Name}");
             try
             {
                 await instance.ReactionSelector(userReaction, userService, context);
             }
             catch
             {
+                Console.WriteLine("TRY CATCH FAILED");
                 return;
             }
         }
