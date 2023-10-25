@@ -110,6 +110,7 @@ const useHome = () => {
   const validateActionReac = (setActionReac, status, setStatus) => {
     var isValid = true;
 
+    setError(null);
     if (status === 'ConfigureAction') {
       Object.entries(newAction.configuration).forEach((item) => {
         if (!item[1]) {
@@ -167,12 +168,17 @@ const useHome = () => {
         areaId: createdArea.data.id,
         reactionId: reaction.id,
         configuration: reaction.configuration ? JSON.stringify(reaction.configuration) : '{}',
+        reaction: { name: reaction.label },
       }));
 
       await postUserAction(action);
       reactions.forEach(async (reaction) => {
         try {
-          await postUserReaction(reaction);
+          await postUserReaction({
+            areaId: reaction.areaId,
+            reactionId: reaction.id,
+            configuration: reaction.configuration ? JSON.stringify(reaction.configuration) : '{}',
+          });
         } catch (e) {
           areaToast.current.show({
             severity: 'error',
@@ -200,7 +206,7 @@ const useHome = () => {
             userId: userId,
             name: newAreaName,
             favorite: false,
-            userAction: action,
+            userAction: { ...action, action: { name: newAction.label } },
             userReactions: reactions,
           },
         ][0],

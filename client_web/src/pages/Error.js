@@ -9,7 +9,7 @@ function Error() {
   return (
     <Background>
       <div className='app'>
-        <BackButton label='Back' path={'/home'} />
+        <BackButton label='Back' />
         <div style={{ display: 'flex', justifyContent: 'center', marginTop: '5vh' }}>
           <Messages ref={error_msgs} style={{ width: '70vw' }} />
         </div>

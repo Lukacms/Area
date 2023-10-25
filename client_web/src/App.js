@@ -15,6 +15,7 @@ import {
   CallBackSteam,
   CallBackTrello,
   CallBackYoutube,
+  CallbackLogin,
   Error,
   Home,
   Login,
@@ -33,6 +34,7 @@ function App() {
   return (
     <Routes>
       <Route path='/' element={<Login />} />
+      <Route path='/googleOauth' element={<CallbackLogin />} />
       <Route path='/register'>
         <Route index element={<Register />} />
         <Route path='verify' element={<MailVerif />} />
@@ -54,6 +56,7 @@ function App() {
           <Route path='letterboxd' element={<CallBackLetterBoxd />} />
           <Route path='linkedin' element={<CallBackLinkedin />} />
           <Route path='outlook' element={<CallBackOutlook />} />
+          <Route path='microsoft' element={<CallBackOutlook />} />
           <Route path='philipshue' element={<CallBackPhilipsHue />} />
           <Route path='spotify' element={<CallBackSpotify />} />
           <Route path='steam' element={<CallBackSteam />} />
