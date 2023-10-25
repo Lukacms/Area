@@ -110,6 +110,7 @@ const useHome = () => {
   const validateActionReac = (setActionReac, status, setStatus) => {
     var isValid = true;
 
+    setError(null);
     if (status === 'ConfigureAction') {
       Object.entries(newAction.configuration).forEach((item) => {
         if (!item[1]) {

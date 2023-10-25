@@ -31,8 +31,14 @@ export const register = (userData) =>
     headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Credentials': true },
   });
 
+// login
 export const login = (userData) =>
   axios.post(API_URL + 'Users/login', userData, {
+    headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Credentials': true },
+  });
+// login with google
+export const loginGoogle = (data) =>
+  axios.post(API_URL + 'Users/googleLogin', data, {
     headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Credentials': true },
   });
 
@@ -69,9 +75,11 @@ export const postArea = (area) => axiosInstance.post(API_URL + 'Areas', area);
 
 export const delArea = (areaId) => axiosInstance.delete(API_URL + `Areas/${areaId}`);
 
-export const postUserAction = (userAction) => axiosInstance.post(API_URL + 'UserActions', userAction);
+export const postUserAction = (userAction) =>
+  axiosInstance.post(API_URL + 'UserActions', userAction);
 
-export const postUserReaction = (userAction) => axiosInstance.post(API_URL + 'UserReactions', userAction);
+export const postUserReaction = (userAction) =>
+  axiosInstance.post(API_URL + 'UserReactions', userAction);
 
 export const getUsersAreas = (id) => axiosInstance.get(API_URL + `Areas/${id}/full`);
 

@@ -44,7 +44,32 @@ public class HttpService
       if (accept.Length > 0)
           request.Headers.Add("Accept", accept);
       request.Content = new StringContent(query, Encoding.UTF8, contentType);
+      Console.WriteLine(request);
       var response = await _client.SendAsync(request);
       return await response.Content.ReadAsStringAsync();
     }
+
+    public async Task<string> GetWithQueryAsync(string url, string query, string contentType, string accept)
+    {
+      var request = new HttpRequestMessage(HttpMethod.Get, url + query);
+
+      if (accept.Length > 0)
+          request.Headers.Add("Accept", accept);
+      if (contentType.Length > 0)
+          request.Content = new StringContent(query, Encoding.UTF8, contentType);
+      var response = await _client.SendAsync(request);
+      return await response.Content.ReadAsStringAsync();
+    }
+    public async Task<string> GetAsyncAuth(string uri, Dictionary<string, string>? data, string contentType, string? authentication)
+    {
+        var requestMessage = new HttpRequestMessage(HttpMethod.Get, uri);
+
+        if (!authentication.IsNullOrEmpty())
+            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authentication);
+        if (data != null)
+            requestMessage.Content = new FormUrlEncodedContent(data);
+        var response = await _client.SendAsync(requestMessage);
+        return await response.Content.ReadAsStringAsync();
+    }
+
 }

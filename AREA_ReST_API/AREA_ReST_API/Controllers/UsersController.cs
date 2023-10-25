@@ -1,16 +1,20 @@
+using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Mail;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json.Nodes;
+using AREA_ReST_API.Classes;
 using AREA_ReST_API.Classes.Jwt;
 using AREA_ReST_API.Classes.Login;
 using AREA_ReST_API.Classes.Register;
 using AREA_ReST_API.Middleware;
 using AREA_ReST_API.Models;
+using AREA_ReST_API.Models.OAuth.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Linq;
 
 namespace AREA_ReST_API.Controllers;
 
@@ -20,10 +24,13 @@ namespace AREA_ReST_API.Controllers;
 public class UsersController : ControllerBase
 {
     private readonly AppDbContext _context;
+    private readonly HttpService _client;
+    private readonly string _googleUrl = "https://oauth2.googleapis.com/token";
 
     public UsersController(AppDbContext context)
     {
         _context = context;
+        _client = new HttpService();
     }
 
     [HttpGet("")]
@@ -180,5 +187,57 @@ public class UsersController : ControllerBase
       var user = _context.Users.Update(modifiedUser);
       _context.SaveChanges();
       return new CreatedResult("User successfully modified", user.Entity);
+    }
+
+    [AllowAnonymous]
+    [HttpPost("googleLogin")]
+    public async Task<ActionResult> GoogleLogin([FromBody] GoogleModel googleCodes, JwtOptions jwtOptions)
+    {
+        const string googleInfos = "https://www.googleapis.com/oauth2/v1/userinfo";
+        var callbackUri = "http://localhost:8081/googleOauth";
+        var data = new Dictionary<string, string>
+        {
+            { "code", googleCodes.Code },
+            { "client_id", "315267877885-2np97bt3qq9s6er73549ldrfme2b67pi.apps.googleusercontent.com" },
+            { "client_secret", "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" },
+            { "redirect_uri", callbackUri},
+            { "grant_type", "authorization_code" },
+        };
+        var result = await _client.PostAsync(_googleUrl, data, "application/x-www-forms-urlencoded", "");
+        var jsonRes = JObject.Parse(result);
+        var query = $"?alt=json&access_token={jsonRes["access_token"]!.ToString()}";
+        var userInfo = await _client.GetWithQueryAsync(googleInfos, query, "",
+            "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8");
+        var userJson = JObject.Parse(userInfo);
+        var userMail = await _client.GetAsyncAuth($"https://gmail.googleapis.com/gmail/v1/users/{userJson["id"]!.ToString()}/profile", null, "application/x-www-forms-urlencoded", jsonRes["access_token"]!.ToString());
+        Console.WriteLine(userMail);
+        var userMailJson = JObject.Parse(userMail);
+        var client = _context.Users.FirstOrDefault(user => user.Email == userMailJson["emailAddress"]!.ToString());
+        if (client == null || client.Email == null)
+        {
+            client = new UsersModel
+            {
+                Username = userJson["name"]!.ToString(),
+                Email = userMailJson["emailAddress"]!.ToString(),
+                Password = "",
+                Name = userJson["family_name"]!.ToString(),
+                Surname = userJson["given_name"]!.ToString(),
+                Admin = false,
+            };
+            var createdUser = _context.Users.Add(client);
+            await _context.SaveChangesAsync();
+            var userService = new UserServicesModel
+            {
+                ServiceId = _context.Services.First(service => service.Name == "Google").Id,
+                UserId = createdUser.Entity.Id,
+                AccessToken = jsonRes["access_token"]!.ToString(),
+                RefreshToken = jsonRes["refresh_token"]!.ToString(),
+                ExpiresIn = (int)jsonRes["expires_in"]!,
+            };
+            _context.UserServices.Add(userService);
+            await _context.SaveChangesAsync();
+        }
+        var token = GenerateJwtToken(client, jwtOptions);
+        return new OkObjectResult(new JsonObject { { "access_token", token } });
     }
 }
