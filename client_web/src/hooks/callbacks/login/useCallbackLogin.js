@@ -29,7 +29,7 @@ const useCallbackLogin = () => {
 
       try {
         const res = await loginGoogle(data);
-        secureLocalStorage.setItem('token', res.data?.access_token);
+        secureLocalStorage.setItem('token', res.data.access_token);
         const user = await getFirstInfos(res.data.access_token);
         secureLocalStorage.setItem('userId', user.data.id);
         secureLocalStorage.setItem('isAdmin', user.data.admin);
