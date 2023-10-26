@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { getServices, getUserServices } from '../../config/request';
 import secureLocalStorage from 'react-secure-storage';
@@ -24,18 +24,18 @@ const useSettingServices = () => {
   };
 
   const findUserServiceId = (user, id) => {
-    if (!user) {
-      return -1;
-    }
+    var serviceId = -1;
+
+    if (!user) return -1;
     user?.forEach((item) => {
       if (item.serviceId === id) {
-        return item.id;
+        serviceId = item.id;
       }
     });
-    return -1;
+    return serviceId;
   };
 
-  useState(() => {
+  useEffect(() => {
     const fetchData = async () => {
       setIsAdmin(secureLocalStorage.getItem('isAdmin'));
       try {
@@ -62,7 +62,7 @@ const useSettingServices = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [navigate]);
 
   return { services, navigate, loaded, isAdmin };
 };

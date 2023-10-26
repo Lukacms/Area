@@ -223,6 +223,7 @@ public class UsersController : ControllerBase
                 Name = userJson["family_name"]!.ToString(),
                 Surname = userJson["given_name"]!.ToString(),
                 Admin = false,
+                IsGoogleConnected = true,
             };
             var createdUser = _context.Users.Add(client);
             await _context.SaveChangesAsync();
