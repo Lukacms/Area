@@ -38,7 +38,7 @@ const useSettingsUser = () => {
   const logout = () => {
     secureLocalStorage.removeItem('token');
     secureLocalStorage.removeItem('userId');
-    secureLocalStorage.clear();
+    secureLocalStorage.removeItem('isAdmin');
     navigate('/');
   };
 

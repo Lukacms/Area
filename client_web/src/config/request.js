@@ -15,7 +15,19 @@ export const axiosInstance = axios.create({
 
 // causing the pages to crash, idk why
 // intercept 403 code to refresh token
-axios.interceptors.response.use(
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const token = secureLocalStorage.getItem('token');
+
+    config.headers.Authorization = `Bearer ${token}`;
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+axiosInstance.interceptors.response.use(
   (response) => {
     return response;
   },

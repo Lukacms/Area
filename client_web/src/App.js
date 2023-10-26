@@ -26,6 +26,7 @@ import {
   SettingsAdmin,
   SettingsUser,
   SpecificService,
+  CallBackMicrosoft,
 } from './pages';
 import 'primeicons/primeicons.css';
 import 'primereact/resources/themes/mdc-dark-deeppurple/theme.css';
@@ -56,7 +57,7 @@ function App() {
           <Route path='letterboxd' element={<CallBackLetterBoxd />} />
           <Route path='linkedin' element={<CallBackLinkedin />} />
           <Route path='outlook' element={<CallBackOutlook />} />
-          <Route path='microsoft' element={<CallBackOutlook />} />
+          <Route path='microsoft' element={<CallBackMicrosoft />} />
           <Route path='philipshue' element={<CallBackPhilipsHue />} />
           <Route path='spotify' element={<CallBackSpotify />} />
           <Route path='steam' element={<CallBackSteam />} />

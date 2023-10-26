@@ -28,6 +28,7 @@ const useFetchHome = () => {
 
       setLoading(true);
       try {
+        console.log(secureLocalStorage.getItem('token'));
         const services = await getServices();
         const userServices = await getUserServices(userId);
         const usersAreas = await getUsersAreas(userId);
