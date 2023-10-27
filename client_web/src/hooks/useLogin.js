@@ -28,7 +28,6 @@ const useLogin = () => {
     setLoading(true);
     try {
       const res = await login(values);
-      console.log(res);
       if (!res?.status?.toString().startsWith('2')) {
         setError('Wrong email or password');
         setLoading(false);

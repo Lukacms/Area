@@ -1,7 +1,17 @@
 import { Accordion, AccordionTab } from 'primereact/accordion';
 import { Button } from 'primereact/button';
 import { Card } from 'primereact/card';
+import { InputText } from 'primereact/inputtext';
 import '../styles/panelArea.css';
+
+const AreaConfig = ({ label, value, id }) => {
+  return (
+    <div className='p-inputgroup flex-1' key={id} style={{margin: '1vh 0vw 1vh 0vw'}}>
+      <Button label={label} disabled />
+      <InputText value={value} disabled />
+    </div>
+  );
+};
 
 const AreaPanelBuild = ({ name, action, reactions, status, onHide }) => {
   const footer = <Button label='Hide' onClick={() => onHide(null)} />;
@@ -11,12 +21,10 @@ const AreaPanelBuild = ({ name, action, reactions, status, onHide }) => {
       <Card title={name} style={{ minWidth: '50vw' }} footer={status === 'Default' ? footer : null}>
         <Accordion multiple>
           <AccordionTab header={action?.label} key={0}>
-            <p>timer: {action?.timer}</p>
+            <AreaConfig label='timer' value={action?.timer} />
             {action?.configuration ? (
               Object.entries(action.configuration).map((item, key) => (
-                <p key={key}>
-                  {item[0]}: {item[1]}
-                </p>
+                <AreaConfig label={item[0]} value={item[1]} id={key} />
               ))
             ) : (
               <p>No configuration available</p>
@@ -27,9 +35,7 @@ const AreaPanelBuild = ({ name, action, reactions, status, onHide }) => {
               <AccordionTab header={reaction?.label} key={key + 1}>
                 {reaction?.configuration ? (
                   Object.entries(reaction.configuration).map((item, pKey) => (
-                    <p key={pKey}>
-                      {item[0]}: {item[1]}
-                    </p>
+                    <AreaConfig label={item[0]} value={item[1]} id={pKey} />
                   ))
                 ) : (
                   <p>No configuration available</p>
@@ -52,12 +58,10 @@ const AreaPanel = ({ name, action, reactions, status, onHide }) => {
       <Card title={name} style={{ minWidth: '50vw' }} footer={status === 'Default' ? footer : null}>
         <Accordion multiple>
           <AccordionTab header={action.action?.name} key={0}>
-            <p>timer: {action?.timer}</p>
+            <AreaConfig label='timer' value={action?.timer} />
             {actionConfig ? (
               Object.entries(actionConfig).map((item, key) => (
-                <p key={key}>
-                  {item[0]}: {item[1]}
-                </p>
+                <AreaConfig label={item[0]} value={item[1]} id={key} />
               ))
             ) : (
               <p>No configuration available</p>
@@ -71,9 +75,7 @@ const AreaPanel = ({ name, action, reactions, status, onHide }) => {
               <AccordionTab header={reaction.reaction?.name} key={key + 1}>
                 {reactionConfig && reactionConfig !== '' ? (
                   Object.entries(reactionConfig).map((item, pKey) => (
-                    <p key={pKey}>
-                      {item[0]}: {item[1]}
-                    </p>
+                    <AreaConfig label={item[0]} value={item[1]} id={pKey} />
                   ))
                 ) : (
                   <p>No configuration available</p>

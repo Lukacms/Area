@@ -63,35 +63,42 @@ export const getFirstInfos = (token) =>
     },
   });
 
+// users
 export const changeUser = (data) => axiosInstance.put(API_URL + 'Users', data);
 
+export const getMyProfile = () => axiosInstance.get(API_URL + 'Users/me');
+
+export const verifyMail = (data) => axios.post(API_URL + 'Users/verifyMail', data);
+
+// services
 export const getServices = () => axiosInstance.get(API_URL + 'Services');
 
 export const getUserServices = (id) => axiosInstance.get(API_URL + `UserServices/${id}`);
 
-export const getMyProfile = () => axiosInstance.get(API_URL + 'Users/me');
+export const disconnectUserService = (id) => axiosInstance.delete(API_URL + `UserServices/${id}`);
 
+// actions
 export const getActions = () => axiosInstance.get(API_URL + 'Actions');
 
 export const getActionsByServiceId = (id) => axiosInstance.get(API_URL + `Actions/${id}`);
 
+export const postUserAction = (userAction) =>
+  axiosInstance.post(API_URL + 'UserActions', userAction);
+
+// reactions
 export const getReactions = () => axiosInstance.get(API_URL + 'Reactions');
 
 export const getReactionsByServiceId = (id) => axiosInstance.get(API_URL + `Reactions/${id}`);
 
-export const disconnectUserService = (id) => axiosInstance.delete(API_URL + `UserServices/${id}`);
+export const postUserReaction = (userAction) =>
+  axiosInstance.post(API_URL + 'UserReactions', userAction);
 
+// areas
 export const putArea = (area) => axiosInstance.put(API_URL + 'Areas', area);
 
 export const postArea = (area) => axiosInstance.post(API_URL + 'Areas', area);
 
 export const delArea = (areaId) => axiosInstance.delete(API_URL + `Areas/${areaId}`);
-
-export const postUserAction = (userAction) =>
-  axiosInstance.post(API_URL + 'UserActions', userAction);
-
-export const postUserReaction = (userAction) =>
-  axiosInstance.post(API_URL + 'UserReactions', userAction);
 
 export const getUsersAreas = (id) => axiosInstance.get(API_URL + `Areas/${id}/full`);
 
