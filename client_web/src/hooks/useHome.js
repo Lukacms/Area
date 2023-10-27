@@ -77,6 +77,8 @@ const useHome = () => {
     if (status === 'GetAction') {
       setStatus('ConfigureAction');
       setNewAction(item);
+    } else {
+      toast.current.show({severity: 'error', summary: 'Not allowed', detail: 'Create an area to add the action'});
     }
   };
 
@@ -84,6 +86,8 @@ const useHome = () => {
     if (status === 'GetReactions') {
       setStatus('ConfigureReaction');
       setNewReactions((old) => [...old, item]);
+    } else {
+      toast.current.show({severity: 'error', summary: 'Not allowed', detail: 'Create an area to add the reaction'});
     }
   };
 
@@ -211,6 +215,11 @@ const useHome = () => {
           },
         ][0],
       );
+      areaToast.current.show({
+        severity: 'success',
+        summary: 'Success',
+        detail: 'Area successfully created',
+      });
     } catch (e) {
       areaToast.current.show({
         severity: 'error',

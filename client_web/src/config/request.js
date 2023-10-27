@@ -68,6 +68,8 @@ export const changeUser = (data) => axiosInstance.put(API_URL + 'Users', data);
 
 export const getMyProfile = () => axiosInstance.get(API_URL + 'Users/me');
 
+export const verifyMail = (data) => axios.post(API_URL + 'Users/verifyMail', data);
+
 // services
 export const getServices = () => axiosInstance.get(API_URL + 'Services');
 

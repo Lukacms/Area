@@ -12,4 +12,5 @@ public class UsersModel
     public string? Password { get; set; }
     public bool Admin { get; set; }
     public bool IsGoogleConnected { get; set; } = false;
+    public bool IsMailVerified { get; set; } = false;
 }

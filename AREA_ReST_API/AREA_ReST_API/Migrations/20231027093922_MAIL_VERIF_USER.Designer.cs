@@ -2,6 +2,7 @@
 using AREA_ReST_API;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AREA_ReST_API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231027093922_MAIL_VERIF_USER")]
+    partial class MAIL_VERIF_USER
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,7 +43,7 @@ namespace AREA_ReST_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Actions", (string)null);
+                    b.ToTable("Actions");
                 });
 
             modelBuilder.Entity("AREA_ReST_API.Models.AreasModel", b =>
@@ -61,7 +64,7 @@ namespace AREA_ReST_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Areas", (string)null);
+                    b.ToTable("Areas");
                 });
 
             modelBuilder.Entity("AREA_ReST_API.Models.ReactionsModel", b =>
@@ -86,7 +89,7 @@ namespace AREA_ReST_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Reactions", (string)null);
+                    b.ToTable("Reactions");
                 });
 
             modelBuilder.Entity("AREA_ReST_API.Models.ServicesModel", b =>
@@ -113,7 +116,7 @@ namespace AREA_ReST_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Services", (string)null);
+                    b.ToTable("Services");
                 });
 
             modelBuilder.Entity("AREA_ReST_API.Models.UserActionsModel", b =>
@@ -140,7 +143,7 @@ namespace AREA_ReST_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserActions", (string)null);
+                    b.ToTable("UserActions");
                 });
 
             modelBuilder.Entity("AREA_ReST_API.Models.UserReactionsModel", b =>
@@ -161,7 +164,7 @@ namespace AREA_ReST_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserReactions", (string)null);
+                    b.ToTable("UserReactions");
                 });
 
             modelBuilder.Entity("AREA_ReST_API.Models.UserServicesModel", b =>
@@ -189,7 +192,7 @@ namespace AREA_ReST_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserServices", (string)null);
+                    b.ToTable("UserServices");
                 });
 
             modelBuilder.Entity("AREA_ReST_API.Models.UsersModel", b =>
@@ -224,7 +227,7 @@ namespace AREA_ReST_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 #pragma warning restore 612, 618
         }

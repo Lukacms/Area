@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 using System.Net.Mail;
 using System.Security.Claims;
 using System.Text;
@@ -75,6 +76,33 @@ public class UsersController : ControllerBase
         return new OkObjectResult(new JsonObject {{"message", "User successfully deleted"}});
     }
 
+    private async void SendVerifEmail(UsersModel newUser)
+    {
+        string body = $"Hello {newUser.Username},<br/><br/>" +
+                      $"Click the link below to complete the login process:<br/>" +
+                      $"<a href=\"http://localhost:8081/register/verify?id={BCrypt.Net.BCrypt.EnhancedHashPassword(newUser.Id.ToString(), 13)}&email={newUser.Email}\">login</a>";
+
+        MailMessage mail = new MailMessage();
+        mail.From = new MailAddress("noreply.fastr@gmail.com", "NoReply");
+        mail.To.Add(newUser.Email!);
+        mail.Subject = "FastR - Verify your email in one click";
+        mail.SubjectEncoding = System.Text.Encoding.UTF8;
+        mail.Body = body;
+        mail.BodyEncoding = System.Text.Encoding.UTF8;
+        mail.IsBodyHtml = true;
+
+        SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
+        client.UseDefaultCredentials = false;
+        client.Credentials = new NetworkCredential("noreply.fastr@gmail.com", "wdro dohf rfuz wdjh ");
+        client.EnableSsl = true;
+        try
+        {
+            await client.SendMailAsync(mail);
+        } catch (Exception e) {
+          Console.WriteLine("failure " + e);
+        }
+    }
+
     [AllowAnonymous]
     [HttpPost("register")]
     public ActionResult CreateNewUser([FromBody] RegisterClass userInfo)
@@ -97,7 +125,24 @@ public class UsersController : ControllerBase
         };
         var user = _context.Users.Add(newUser);
         _context.SaveChanges();
+        SendVerifEmail(user.Entity);
         return new CreatedResult("URI", user.Entity);
+    }
+
+    [AllowAnonymous]
+    [HttpPost("verifyMail")]
+    public ActionResult VerifyUserEmail([FromBody] UserMailVerification user)
+    {
+        var checkedUser = _context.Users.FirstOrDefault(search => search.Email == user.Email);
+
+        if (checkedUser == null)
+            return new ConflictObjectResult(new JsonObject { { "message", "User does not exists" } });
+        if (BCrypt.Net.BCrypt.EnhancedVerify(checkedUser.Id.ToString(), user.HashId) == false)
+            return new ConflictObjectResult(new JsonObject { { "message", "Invalid code." } });
+        checkedUser.IsMailVerified = true;
+        _context.Users.Update(checkedUser);
+        _context.SaveChanges();
+        return new OkObjectResult("Successfully verified mail");
     }
 
     private static bool IsUserValid(RegisterClass newUser)
@@ -122,6 +167,8 @@ public class UsersController : ControllerBase
             return new NotFoundObjectResult(new JsonObject { { "message", "User not found" } });
         if (email.IsNullOrEmpty() || password.IsNullOrEmpty())
             return new BadRequestObjectResult(new JsonObject { { "message", "Request is not valid" } });
+        if (requestedUser.IsMailVerified == false)
+            return new UnauthorizedObjectResult(new JsonObject {{"message", "User must validate account via the link send in mail." }});
         if (BCrypt.Net.BCrypt.EnhancedVerify(password, requestedUser.Password) == false)
             return new UnauthorizedObjectResult(new JsonObject {{"message", "Wrong password" }});
         var token = GenerateJwtToken(requestedUser, jwtOptions);
@@ -135,8 +182,8 @@ public class UsersController : ControllerBase
 
         var claims = new List<Claim>
         {
-            new Claim("username", user.Username),
-            new Claim("email", user.Email),
+            new Claim("username", user.Username!),
+            new Claim("email", user.Email!),
             new Claim("admin", user.Admin.ToString()),
             new Claim("id", user.Id.ToString()),
         };
