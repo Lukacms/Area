@@ -27,8 +27,12 @@ public class SpotifyController
     }
 
     [HttpPost("")]
-    public async Task<ActionResult> RequestSpotifyToken([FromBody] SpotifyModel spotifyCodes, [FromHeader] string authorization)
+    public async Task<ActionResult> RequestSpotifyToken([FromBody] SpotifyModel spotifyCodes,
+        [FromHeader] string authorization)
+
     {
+        Console.WriteLine("Here");
+        Console.WriteLine(DotNetEnv.Env.GetString("SPOTIFY_CLIENT_ID"));
         var decodedUser = JwtDecoder.Decode(authorization);
         var callbackUri = "http://localhost:8081/settings/services/spotify";
         var authentication = $"834ee184a29945b2a2a3dc8108a5bbf4:b589f784bb3f4b3897337acbfdd80f0d";
@@ -36,7 +40,7 @@ public class SpotifyController
         var data = new Dictionary<string, string>
         {
             { "code", spotifyCodes.Code },
-            { "redirect_uri", callbackUri},
+            { "redirect_uri", callbackUri },
             { "grant_type", "authorization_code" },
         };
         var result = await _client.PostAsync(_spotifyUrl, data, "application/x-www-forms-urlencoded", base64str);

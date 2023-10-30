@@ -4,14 +4,14 @@ using Newtonsoft.Json.Linq;
 
 namespace AREA_ReST_API.Classes.Services;
 
-public class WeatherService : IService
+public class XIVService : IService
 {
     public override async Task<bool> ActionSelector(UserActionsModel userAction, UserServicesModel userService, AppDbContext context)
     {
         var action = context.Actions.First(a => a.Id == userAction.ActionId);
         return action.Name switch
         {
-            "Get Current Temperature" => await GetCurrentTemperature(userAction, userService),
+            "Get Character Level" => await GetCharacterLevel(userAction, userService),
             _ => false
         };
     }
@@ -22,19 +22,21 @@ public class WeatherService : IService
         return base.ReactionSelector(userReaction, userService, context);
     }
 
-    private async Task<bool> GetCurrentTemperature(UserActionsModel userAction, UserServicesModel userService)
+    private async Task<bool> GetCharacterLevel(UserActionsModel userAction, UserServicesModel userService)
     {
         var client = new HttpClient();
-        const string uri = "https://api.openweathermap.org/data/2.5/weather";
+        const string uri = "https://xivapi.com/character/search?";
         var config = JObject.Parse(userAction.Configuration);
-        var queryParameters = $"q={config["city"]!}&appid=f4b50a2c4b2cc946e56c066d56df50bf&units=metric";
+        var queryParameters = $"name={config["name"]!}&server={config["server"]}";
         var requestMessage = new HttpRequestMessage(HttpMethod.Get, uri + Uri.EscapeDataString(queryParameters));
 
         var response = await client.SendAsync(requestMessage);
         var json = JObject.Parse(await response.Content.ReadAsStringAsync());
-        var min = (int)config["min_temperature"]!;
-        var max = (int)config["max_temperature"]!;
-        var currentTemp = (int)json["main"]!["temp"]!;
-        return currentTemp > min && currentTemp < max;
+        var characterId = (int)json["Results"]![0]!["ID"]!;
+        requestMessage = new HttpRequestMessage(HttpMethod.Get, $"https://xivapi.com/character/{characterId}");
+        response = await client.SendAsync(requestMessage);
+        json = JObject.Parse(await response.Content.ReadAsStringAsync());
+        Console.WriteLine(json);
+        return (int)config["targeted_level"]! == (int)json["Character"]!["ActiveClassJob"]!["Level"]!;
     }
 }
