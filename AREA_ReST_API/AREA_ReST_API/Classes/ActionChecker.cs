@@ -14,6 +14,8 @@ public class ActionChecker : BackgroundService
         {
             { "Spotify", () => new SpotifyService() },
             { "Google", () => new GoogleService() },
+            { "Github", () => new GithubService() },
+            { "Microsoft", () => new MicrosoftService() }
         };
     }
 
@@ -37,7 +39,14 @@ public class ActionChecker : BackgroundService
                     context.UserActions.Update(userAction);
                     continue;
                 }
-                ManageActions(area.UserAction!, area, context);
+                try
+                {
+                    await ManageActions(area.UserAction!, area, context);
+                }
+                catch
+                {
+                    // ignored
+                }
                 userAction.Countdown = userAction.Timer;
             }
             await context.SaveChangesAsync(stoppingToken);
@@ -66,12 +75,22 @@ public class ActionChecker : BackgroundService
             var reaction = context.Reactions.First(x => x.Id == userReaction.ReactionId);
             var service = context.Services.First(s => s.Id == reaction.ServiceId);
             var userService = context.UserServices.First(s => s.ServiceId == service.Id && s.UserId == area.UserId);
+            Console.WriteLine($"SERVICE CALLED FOR REACTION : {service.Name}");
             var instance = _services[service.Name].Invoke();
-            await instance.ReactionSelector(userReaction, userService, context);
+            Console.WriteLine($"INVOKE WITH : {service.Name}");
+            try
+            {
+                await instance.ReactionSelector(userReaction, userService, context);
+            }
+            catch
+            {
+                Console.WriteLine("TRY CATCH FAILED");
+                return;
+            }
         }
     }
 
-    private async void ManageActions(UserActionsModel userAction, AreaWithActionReaction area, AppDbContext context)
+    private async Task ManageActions(UserActionsModel userAction, AreaWithActionReaction area, AppDbContext context)
     {
         var action = context.Actions.First(a => a.Id == userAction.ActionId);
         var service = context.Services.First(s => s.Id == action.ServiceId);

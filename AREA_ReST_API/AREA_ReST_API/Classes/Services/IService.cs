@@ -8,8 +8,13 @@ public class IService
     {
         return false;
     }
-    
+
     public virtual async Task ReactionSelector(UserReactionsModel userReaction, UserServicesModel userService, AppDbContext context)
+    {
+        return;
+    }
+
+    public virtual async Task RefreshToken(UserServicesModel userService, AppDbContext context)
     {
         return;
     }

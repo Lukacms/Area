@@ -176,12 +176,14 @@ const useHome = () => {
       }));
 
       await postUserAction(action);
-      reactions.forEach(async (reaction) => {
+      for (const reaction of reactions) {
+        console.log("AFTER POSTUSERACTION")
+        console.log(reaction);
         try {
           await postUserReaction({
             areaId: reaction.areaId,
-            reactionId: reaction.id,
-            configuration: reaction.configuration ? JSON.stringify(reaction.configuration) : '{}',
+            reactionId: reaction.reactionId,
+            configuration: reaction.configuration ? reaction.configuration : '{}',
           });
         } catch (e) {
           areaToast.current.show({
@@ -190,7 +192,7 @@ const useHome = () => {
             detail: 'Try again in a few minutes',
           });
         }
-      });
+      }
       setTabAreas((old) => [
         ...old,
         {

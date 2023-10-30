@@ -18,7 +18,6 @@ public class MicrosoftController
     private readonly AppDbContext _context;
     private readonly HttpService _client;
     private readonly string _microsoftUri = "https://login.microsoftonline.com/common/oauth2/v2.0/token";
-    private readonly string _microsoftRefreshUri = "https://login.microsoftonline.com/common/oauth2/v2.0/token";
 
     public MicrosoftController(AppDbContext context)
     {
