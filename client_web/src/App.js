@@ -31,6 +31,10 @@ import {
 import 'primeicons/primeicons.css';
 import 'primereact/resources/themes/mdc-dark-deeppurple/theme.css';
 
+/**
+ * Main function of the application;
+ * Launch the visuals in single-page react app
+ */
 function App() {
   return (
     <Routes>
