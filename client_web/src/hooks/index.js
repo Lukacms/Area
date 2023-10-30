@@ -25,6 +25,7 @@ import useCallbackAppleMusic from './callbacks/useCallbackAppleMusic';
 import useCallbackLetterBoxd from './callbacks/useCallbackLetterBoxd';
 import useCallbackMicrosoft from './callbacks/useCallbackMicrosoft';
 import useCallbackLogin from './callbacks/login/useCallbackLogin';
+import useAbout from './useAbout';
 
 export {
   useRegister,
@@ -54,4 +55,5 @@ export {
   useCallbackTrello,
   useCallbackYoutube,
   useCallbackLogin,
+  useAbout,
 };
