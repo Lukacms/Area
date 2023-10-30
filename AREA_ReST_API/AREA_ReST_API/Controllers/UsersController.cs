@@ -287,4 +287,55 @@ public class UsersController : ControllerBase
         var token = GenerateJwtToken(client, jwtOptions);
         return new OkObjectResult(new JsonObject { { "access_token", token } });
     }
+
+    [AllowAnonymous]
+    [HttpPost("googleLoginMobile")]
+    public async Task<ActionResult> GoogleLoginMobile([FromBody] GoogleModel googleCodes, JwtOptions jwtOptions)
+    {
+        const string googleInfos = "https://www.googleapis.com/oauth2/v1/userinfo";
+        var data = new Dictionary<string, string>
+        {
+            { "code", googleCodes.Code },
+            { "client_id", "315267877885-lkqq49r6v587fi9pduggbdh9dr1j69me.apps.googleusercontent.com" },
+            { "redirect_uri", googleCodes.callbackUri!},
+            { "grant_type", "authorization_code" },
+        };
+        var result = await _client.PostAsync(_googleUrl, data, "application/x-www-forms-urlencoded", "");
+        var jsonRes = JObject.Parse(result);
+        var query = $"?alt=json&access_token={jsonRes["access_token"]!.ToString()}";
+        var userInfo = await _client.GetWithQueryAsync(googleInfos, query, "",
+            "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8");
+        var userJson = JObject.Parse(userInfo);
+        var userMail = await _client.GetAsyncAuth($"https://gmail.googleapis.com/gmail/v1/users/{userJson["id"]!.ToString()}/profile", null, "application/x-www-forms-urlencoded", jsonRes["access_token"]!.ToString());
+        Console.WriteLine(userMail);
+        var userMailJson = JObject.Parse(userMail);
+        var client = _context.Users.FirstOrDefault(user => user.Email == userMailJson["emailAddress"]!.ToString());
+        if (client == null || client.Email == null)
+        {
+            client = new UsersModel
+            {
+                Username = userJson["name"]!.ToString(),
+                Email = userMailJson["emailAddress"]!.ToString(),
+                Password = "",
+                Name = userJson["family_name"]!.ToString(),
+                Surname = userJson["given_name"]!.ToString(),
+                Admin = false,
+                IsGoogleConnected = true,
+            };
+            var createdUser = _context.Users.Add(client);
+            await _context.SaveChangesAsync();
+            var userService = new UserServicesModel
+            {
+                ServiceId = _context.Services.First(service => service.Name == "Google").Id,
+                UserId = createdUser.Entity.Id,
+                AccessToken = jsonRes["access_token"]!.ToString(),
+                RefreshToken = jsonRes["refresh_token"]!.ToString(),
+                ExpiresIn = (int)jsonRes["expires_in"]!,
+            };
+            _context.UserServices.Add(userService);
+            await _context.SaveChangesAsync();
+        }
+        var token = GenerateJwtToken(client, jwtOptions);
+        return new OkObjectResult(new JsonObject { { "access_token", token } });
+    }
 }
