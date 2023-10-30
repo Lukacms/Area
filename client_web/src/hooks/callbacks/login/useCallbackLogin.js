@@ -25,6 +25,7 @@ const useCallbackLogin = () => {
       const data = {
         code: getByValue(searchParams, 'code'),
         scope: getByValue(searchParams, 'scope'),
+        callbackUri: 'http://localhost:8081/googleOauth',
       };
 
       try {

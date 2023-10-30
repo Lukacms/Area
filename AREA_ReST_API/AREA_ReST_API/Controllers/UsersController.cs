@@ -241,13 +241,12 @@ public class UsersController : ControllerBase
     public async Task<ActionResult> GoogleLogin([FromBody] GoogleModel googleCodes, JwtOptions jwtOptions)
     {
         const string googleInfos = "https://www.googleapis.com/oauth2/v1/userinfo";
-        var callbackUri = "http://localhost:8081/googleOauth";
         var data = new Dictionary<string, string>
         {
             { "code", googleCodes.Code },
             { "client_id", "315267877885-2np97bt3qq9s6er73549ldrfme2b67pi.apps.googleusercontent.com" },
             { "client_secret", "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" },
-            { "redirect_uri", callbackUri},
+            { "redirect_uri", googleCodes.callbackUri!},
             { "grant_type", "authorization_code" },
         };
         var result = await _client.PostAsync(_googleUrl, data, "application/x-www-forms-urlencoded", "");
