@@ -47,7 +47,7 @@ function SettingServices() {
         visible
         onHide={() => navigate('/home')}
         maximizable>
-        {loaded ? services.map((item) => renderItem(item)) : <ProgressSpinner />}
+        {loaded ? services.map((item) => (item.oauth ? renderItem(item) : null)) : <ProgressSpinner />}
       </Dialog>
     </Home>
   );

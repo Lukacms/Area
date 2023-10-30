@@ -53,6 +53,7 @@ const useSettingServices = () => {
             userServiceId: findUserServiceId(userConnected.data, item.id),
             connectionLink: item.connectionLink,
             endpoint: item.endpoint,
+            oauth: item.isConnectionNeeded
           });
         });
         setServices(tmpServices);

@@ -38,7 +38,7 @@ const useLogin = () => {
       secureLocalStorage.setItem('isAdmin', user.data.admin);
       navigate('/home');
     } catch (error) {
-      setError(error.message);
+      setError(error.response.data.message);
     }
     setLoading(false);
   };
@@ -47,5 +47,3 @@ const useLogin = () => {
 };
 
 export default useLogin;
-
-// https://accounts.google.com/o/oauth2/auth?scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fgmail.modify+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar&response_type=code&redirect_uri=http%3A%2F%2Flocalhost:8081%2Fsettings%2Fservices%2Fgoogle&client_id=315267877885-2np97bt3qq9s6er73549ldrfme2b67pi.apps.googleusercontent.com&access_type=offline
