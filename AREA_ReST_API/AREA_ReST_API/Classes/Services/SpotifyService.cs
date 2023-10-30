@@ -99,9 +99,7 @@ public class SpotifyService : IService
 
         var response = await client.SendAsync(requestMessage);
         var responseContent = await response.Content.ReadAsStringAsync();
-        Console.WriteLine(responseContent);
         var responseJson = JObject.Parse(responseContent);
-        Console.WriteLine(responseJson);
         return string.Equals(responseJson["device"]!["name"]!.ToString(), config["target_device"]!.ToString());
     }
 

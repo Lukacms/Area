@@ -14,7 +14,8 @@ public class TokenRefresher : BackgroundService
         {
             { "Spotify", () => new SpotifyService() },
             { "Google", () => new GoogleService() },
-            { "Github", () => new GithubService() }
+            { "Github", () => new GithubService() },
+            { "Microsoft", () => new MicrosoftService() }
         };
     }
 
