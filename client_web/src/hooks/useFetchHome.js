@@ -34,7 +34,7 @@ const useFetchHome = () => {
 
         services.data.forEach((service) => {
           userServices.data.forEach(async (item) => {
-            if (service.id === item.serviceId) {
+            if (service.id === item.serviceId || !service.isConnectionNeeded) {
               const actions = await getActionsByServiceId(item.serviceId);
               const reactions = await getReactionsByServiceId(item.serviceId);
 
