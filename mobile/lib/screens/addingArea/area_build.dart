@@ -129,7 +129,16 @@ class _AreaBuildState extends State<AreaBuild> {
                     newArea.favorite
                   );
                 } else {
-                  editArea(newArea, savedArea!);
+                  await serverDeleteArea(widget.token, newArea.areaId);
+                  await serverAddFullArea(
+                    widget.token,
+                    widget.userId,
+                    widget.areasLenght - 1,
+                    newArea.name,
+                    newArea.action!,
+                    newArea.reactions,
+                    newArea.favorite
+                  );
                 }
                 widget.areaAdd(newArea);
                 Navigator.of(context).pop();
