@@ -214,6 +214,12 @@ class _HomePageState extends State<HomePage> {
                     services: services,
                     userServices: userServices,
                     token: widget.token,
+                    reloadUserServices: () async {
+                      await loadUserServices(widget.token);
+                      setState(() {});
+                      print("Je reload les user services");
+                      print(userServices);
+                    },
                   ),
                 );
               },

@@ -10,11 +10,13 @@ class SettingsPage extends StatefulWidget {
   final String token;
   final List<Service> services;
   final List<int> userServices;
+  final Function reloadUserServices;
   const SettingsPage({
     super.key,
     required this.token,
     required this.services,
     required this.userServices,
+    required this.reloadUserServices,
   });
 
   @override
@@ -23,11 +25,17 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   TextEditingController searchController = TextEditingController();
+  List<Service> oauthServices = [];
   String selectedSegment = "Services";
 
   @override
   void initState() {
     super.initState();
+    widget.services.forEach((element) {
+      if (element.isOauth) {
+        oauthServices.add(element);
+      }
+    });
   }
 
   @override
@@ -37,11 +45,13 @@ class _SettingsPageState extends State<SettingsPage> {
     screenWidth = screenSize.width;
     blockWidth = screenWidth / 5;
     blockHeight = screenHeight / 100;
+
     print("Dans settings");
     widget.services.forEach((element) {
-      print(element.id);
+      print(element.name);
+      print(element.connectionLink);
+      print(element.endpoint);
     });
-    print(widget.userServices);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
@@ -111,9 +121,10 @@ class _SettingsPageState extends State<SettingsPage> {
                           width: screenWidth * 0.9,
                           child: ListView.builder(
                             physics: const AlwaysScrollableScrollPhysics(
-                                parent: BouncingScrollPhysics()),
+                              parent: BouncingScrollPhysics(),
+                            ),
                             shrinkWrap: true,
-                            itemCount: widget.services.length,
+                            itemCount: oauthServices.length,
                             itemBuilder: (context, index) {
                               return TextButton(
                                 child: SizedBox(
@@ -128,7 +139,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                             height: 24,
                                             width: 24,
                                             child: SvgPicture.asset(
-                                              widget.services[index].svgIcon,
+                                              oauthServices[index].svgIcon,
                                               // ignore: deprecated_member_use
                                               color: widget
                                                   .services[index].iconColor,
@@ -136,9 +147,10 @@ class _SettingsPageState extends State<SettingsPage> {
                                           ),
                                           SizedBox(width: blockHeight * 2),
                                           Text(
-                                            widget.services[index].name,
+                                            oauthServices[index].name,
                                             style: TextStyle(
-                                                color: AppColors.lightBlue),
+                                              color: AppColors.lightBlue,
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -152,11 +164,12 @@ class _SettingsPageState extends State<SettingsPage> {
                                     ],
                                   ),
                                 ),
-                                onPressed: () {
-                                  if (widget.services[index] != "null") {
-                                    AppServices().serviceLogInFunctions[widget
+                                onPressed: () async {
+                                  if (oauthServices[index] != "null")  {
+                                    await AppServices().serviceLogInFunctions[widget
                                         .services[index]
                                         .name]!(context, widget.token);
+                                    widget.reloadUserServices();
                                   }
                                 },
                               );
@@ -191,7 +204,8 @@ class _SettingsPageState extends State<SettingsPage> {
                                         style: ButtonStyle(
                                           foregroundColor:
                                               MaterialStateProperty.all<Color>(
-                                                  AppColors.lightBlue),
+                                            AppColors.lightBlue,
+                                          ),
                                         ),
                                         child: const Align(
                                           alignment: Alignment.centerLeft,

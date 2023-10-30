@@ -115,7 +115,7 @@ Future serverGoogleAuth(
 Future serverSpotifyAuth(String code, String token) async {
   print("Spotify server oauth");
   var url =
-      Uri(scheme: 'http', host: CURRENT_IP, port: 8080, path: '/oauth/Spotify');
+      Uri(scheme: 'http', host: CURRENT_IP, port: 8080, path: '/oauth/Spotify/mobile');
   var headers = {
     'Content-Type': 'application/json',
     'accept': '*/*',
@@ -133,6 +133,25 @@ Future serverSpotifyAuth(String code, String token) async {
 Future serverGithubAuth(String code, String token) async {
   var url =
       Uri(scheme: 'http', host: CURRENT_IP, port: 8080, path: '/oauth/Github');
+  print("CHUI DEDANS");
+  print('le code cote serveur $code');
+  var headers = {
+    'Content-Type': 'application/json',
+    'accept': '*/*',
+    'Authorization': 'Bearer $token',
+  };
+  var body = jsonEncode({"code": code, 'scope': null});
+  await http.post(url, headers: headers, body: body).then((value) {
+    print('reponse serveur${value.statusCode}');
+    print(value.body);
+    return value.body;
+  });
+  return null;
+}
+
+Future serverMicrosoftAuth(String code, String token) async {
+  var url =
+      Uri(scheme: 'http', host: CURRENT_IP, port: 8080, path: '/oauth/Microsoft/mobile');
   print("CHUI DEDANS");
   print('le code cote serveur $code');
   var headers = {

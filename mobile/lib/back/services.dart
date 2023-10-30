@@ -13,12 +13,14 @@ class Service {
   String svgIcon;
   Color iconColor;
   String category;
+  final bool isOauth;
 
   Service({
     required this.name,
     required this.id,
     required this.connectionLink,
     required this.endpoint,
+    required this.isOauth,
     this.svgIcon = '',
     this.iconColor = Colors.white,
     this.category = '',
@@ -101,10 +103,12 @@ class AppServices {
     for (var service in services) {
       Service serviceTmp;
       serviceTmp = Service(
-          name: service['name'],
-          id: service['id'],
-          endpoint: service['endpoint'],
-          connectionLink: service['connectionLink']);
+        isOauth: service['isConnectionNeeded'],
+        name: service['name'],
+        id: service['id'],
+        endpoint: service['endpoint'],
+        connectionLink: service['connectionLinkMobile'],
+      );
       switch (service['name']) {
         case 'Google':
           serviceTmp.svgIcon = 'assets/serviceIcons/google.svg';
@@ -121,9 +125,14 @@ class AppServices {
           serviceTmp.iconColor = Colors.grey;
           serviceTmp.category = 'Dev';
           break;
-        case 'Discord':
-          serviceTmp.svgIcon = 'assets/serviceIcons/discord.svg';
-          serviceTmp.iconColor = Colors.purple;
+        case 'Microsoft':
+          serviceTmp.svgIcon = 'assets/serviceIcons/microsoft.svg';
+          serviceTmp.iconColor = Colors.lightBlue;
+          serviceTmp.category = 'messageries';
+          break;
+        case 'Weather':
+          serviceTmp.svgIcon = 'assets/serviceIcons/weather.svg';
+          serviceTmp.iconColor = Colors.grey;
           serviceTmp.category = 'messageries';
           break;
       }
@@ -202,7 +211,7 @@ class AppServices {
       )
     ],
   ];
-  Map<String, dynamic> serviceLogInFunctions = {
+  Map<String, Function> serviceLogInFunctions = {
     'Google': (BuildContext context, String token) async {
       const googleClientId =
           '315267877885-lkqq49r6v587fi9pduggbdh9dr1j69me.apps.googleusercontent.com';
@@ -247,7 +256,24 @@ class AppServices {
                 serverGithubAuth(code, token);
               },
               authUrl:
-                  ' https://github.com/login/oauth/authorize?client_id=Iv1.f47bfd491f94b532&redirect_uri=area://oauth2redirect',
+                  'https://github.com/login/oauth/authorize?client_id=Iv1.f47bfd491f94b532&redirect_uri=area://oauth2redirect',
+            );
+          },
+        ),
+      );
+    },
+    'Microsoft': (BuildContext context, String token) async {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) {
+            return AuthWebView(
+              clientId: '5731d8cc-7d4b-47dc-812f-f4615f65b38d',
+              clientSecret: 'eHV8Q~MgohheH_~OxgTyRgbht8RvdEIZ5MkWQc50',
+              serverOauth: (code) {
+                serverMicrosoftAuth(code, token);
+              },
+              authUrl:
+                  'https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=5731d8cc-7d4b-47dc-812f-f4615f65b38d&response_type=code&redirect_uri=area://oauth2redirect&response_mode=query&scope=https%3A%2F%2Fgraph.microsoft.com%2FMail.Read%20https%3A%2F%2Fgraph.microsoft.com%2FMail.Read.Shared%20https%3A%2F%2Fgraph.microsoft.com%2FMail.Send%20https%3A%2F%2Fgraph.microsoft.com%2FMail.Send.Shared%20https%3A%2F%2Fgraph.microsoft.com%2FChatMessage.Send%20https%3A%2F%2Fgraph.microsoft.com%2FChatMessage.Read%20https%3A%2F%2Fgraph.microsoft.com%2FUser.Read%20https%3A%2F%2Fgraph.microsoft.com%2FNotes.ReadWrite.All%20https%3A%2F%2Fgraph.microsoft.com%2FMailboxSettings.ReadWrite%20https%3A%2F%2Fgraph.microsoft.com%2FMail.ReadWrite%20offline_access',
             );
           },
         ),

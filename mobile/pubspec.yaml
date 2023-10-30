@@ -76,6 +76,10 @@ flutter:
     - assets/serviceIcons/spotify.svg
     - assets/serviceIcons/connectors.svg
     - assets/serviceIcons/google.svg
+    - assets/serviceIcons/microsoft.svg
+    - assets/serviceIcons/weather.svg
+
+
   fonts:
     - family: Roboto
       fonts:
