@@ -177,8 +177,6 @@ const useHome = () => {
 
       await postUserAction(action);
       for (const reaction of reactions) {
-        console.log("AFTER POSTUSERACTION")
-        console.log(reaction);
         try {
           await postUserReaction({
             areaId: reaction.areaId,
