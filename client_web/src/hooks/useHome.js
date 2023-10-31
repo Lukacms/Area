@@ -77,6 +77,8 @@ const useHome = () => {
     if (status === 'GetAction') {
       setStatus('ConfigureAction');
       setNewAction(item);
+    } else {
+      toast.current.show({severity: 'error', summary: 'Not allowed', detail: 'Create an area to add the action'});
     }
   };
 
@@ -84,6 +86,8 @@ const useHome = () => {
     if (status === 'GetReactions') {
       setStatus('ConfigureReaction');
       setNewReactions((old) => [...old, item]);
+    } else {
+      toast.current.show({severity: 'error', summary: 'Not allowed', detail: 'Create an area to add the reaction'});
     }
   };
 
@@ -110,6 +114,7 @@ const useHome = () => {
   const validateActionReac = (setActionReac, status, setStatus) => {
     var isValid = true;
 
+    setError(null);
     if (status === 'ConfigureAction') {
       Object.entries(newAction.configuration).forEach((item) => {
         if (!item[1]) {
@@ -167,12 +172,17 @@ const useHome = () => {
         areaId: createdArea.data.id,
         reactionId: reaction.id,
         configuration: reaction.configuration ? JSON.stringify(reaction.configuration) : '{}',
+        reaction: { name: reaction.label },
       }));
 
       await postUserAction(action);
-      reactions.forEach(async (reaction) => {
+      for (const reaction of reactions) {
         try {
-          await postUserReaction(reaction);
+          await postUserReaction({
+            areaId: reaction.areaId,
+            reactionId: reaction.reactionId,
+            configuration: reaction.configuration ? reaction.configuration : '{}',
+          });
         } catch (e) {
           areaToast.current.show({
             severity: 'error',
@@ -180,7 +190,7 @@ const useHome = () => {
             detail: 'Try again in a few minutes',
           });
         }
-      });
+      }
       setTabAreas((old) => [
         ...old,
         {
@@ -200,11 +210,16 @@ const useHome = () => {
             userId: userId,
             name: newAreaName,
             favorite: false,
-            userAction: action,
+            userAction: { ...action, action: { name: newAction.label } },
             userReactions: reactions,
           },
         ][0],
       );
+      areaToast.current.show({
+        severity: 'success',
+        summary: 'Success',
+        detail: 'Area successfully created',
+      });
     } catch (e) {
       areaToast.current.show({
         severity: 'error',

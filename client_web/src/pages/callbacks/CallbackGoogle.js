@@ -44,7 +44,7 @@ function CallBackGoogle() {
         onHide={() => navigate('/home')}>
         <Button
           style={{ marginLeft: -10 }}
-          label='Discord'
+          label='Google'
           icon='pi pi-chevron-left'
           text
           severity='info'

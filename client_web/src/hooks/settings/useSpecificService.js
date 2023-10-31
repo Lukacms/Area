@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import secureLocalStorage from 'react-secure-storage';
+import { disconnectUserService } from '../../config/request';
 
 const useSpecificService = () => {
   const navigate = useNavigate();
@@ -12,9 +13,23 @@ const useSpecificService = () => {
     window.open(item.connectionLink, '_self');
   };
 
-  const changeAccount = () => {};
+  const changeAccount = async () => {
+    try {
+      await disconnectUserService(item.userServiceId);
+      window.open(item.connectionLink, '_self');
+    } catch (e) {
+      navigate('/error', { state: { message: e.message } });
+    }
+  };
 
-  const disconnect = () => {};
+  const disconnect = async () => {
+    try {
+      await disconnectUserService(item.userServiceId);
+      navigate('/settings/services');
+    } catch (e) {
+      navigate('/error', { state: { message: e.message } });
+    }
+  };
 
   useEffect(() => {
     if (!state || !item) {

@@ -1,20 +1,31 @@
 import { useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
+import { getByValue } from '../config/commons';
+import { verifyMail } from '../config/request';
 
 const useMailVerif = () => {
+  const [searchParams /* , setSearchParams */] = useSearchParams();
   const [verified, setVerified] = useState(false);
-  const { userId } = useParams();
-  const tmp = useLocation().search;
-  const [id, setId] = useState('');
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const getId = () => {
-      setId(tmp.substring(tmp.search('=') + 1, tmp.length));
-    };
-    getId();
-  }, []);
+    const fetchVerifMail = async () => {
+      const data = {
+        email: getByValue(searchParams, 'email'),
+        hashId: getByValue(searchParams, 'id')
+      };
 
-  return { verified, id };
+      try {
+        await verifyMail(data);
+      } catch (e) {
+        setError(e.message);
+      }
+      setVerified(true);
+    };
+    fetchVerifMail();
+  }, [searchParams]);
+
+  return { verified, error };
 };
 
 export default useMailVerif;

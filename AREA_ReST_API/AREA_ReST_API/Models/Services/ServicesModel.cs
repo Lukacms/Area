@@ -10,5 +10,7 @@ public class ServicesModel
     [Required] public required string Name { get; set; }
     [Required] public required byte[] Logo { get; set; }
     [Required] public required string ConnectionLink { get; set; }
+    [Required] public required string ConnectionLinkMobile { get; set; }
     [Required] public required string Endpoint { get; set; }
+    [Required] public required bool IsConnectionNeeded { get; set; }
 }

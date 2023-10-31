@@ -19,6 +19,12 @@ import { Toast } from 'primereact/toast';
 import { useFetchHome, useHome } from '../hooks';
 import '../styles/home.css';
 
+/**
+ * HomePage
+ * @param children (<Html/>) - if there are any sub-elements (cf settings) to display
+ * @param publicPath (string) - the path to display images
+ * @returns {Html}
+ */
 function Home({ children, publicPath }) {
   const {
     toast,

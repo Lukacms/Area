@@ -31,7 +31,7 @@ function SettingServices() {
           raised
           text
           onClick={() => navigate('/settings/services/' + item.id, { state: { item } })}>
-          <Image src={item.logo} width={50} alt='logo' />
+          <Image src={'data:image/png;base64 ' + item.logo} width={50} alt='logo' />
           <span>{item.name}</span>
           <i className='pi pi-chevron-right' />
         </Button>
@@ -47,7 +47,7 @@ function SettingServices() {
         visible
         onHide={() => navigate('/home')}
         maximizable>
-        {loaded ? services.map((item) => renderItem(item)) : <ProgressSpinner />}
+        {loaded ? services.map((item) => (item.oauth ? renderItem(item) : null)) : <ProgressSpinner />}
       </Dialog>
     </Home>
   );

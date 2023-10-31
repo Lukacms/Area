@@ -25,7 +25,6 @@ namespace AREA_ReST_API.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("DefaultConfiguration")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Endpoint")
@@ -72,7 +71,6 @@ namespace AREA_ReST_API.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("DefaultConfiguration")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Endpoint")
@@ -101,9 +99,16 @@ namespace AREA_ReST_API.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("ConnectionLinkMobile")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<string>("Endpoint")
                         .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<bool>("IsConnectionNeeded")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<byte[]>("Logo")
                         .IsRequired()
@@ -204,23 +209,24 @@ namespace AREA_ReST_API.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<bool>("IsGoogleConnected")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("IsMailVerified")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Password")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Surname")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Username")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");

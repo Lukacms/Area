@@ -51,4 +51,32 @@ public class GoogleController
         await _context.SaveChangesAsync();
         return new OkResult();
     }
+
+    [HttpPost("mobile")]
+    public async Task<ActionResult> RequestGoogleTokenMobile([FromBody] GoogleModel googleCodes, [FromHeader] string authorization)
+    {
+        var decodedUser = JwtDecoder.Decode(authorization);
+        var callbackUri = "com.googleusercontent.apps.315267877885-lkqq49r6v587fi9pduggbdh9dr1j69me:/";
+        var data = new Dictionary<string, string>
+        {
+            { "code", googleCodes.Code },
+            { "client_id", "315267877885-lkqq49r6v587fi9pduggbdh9dr1j69me.apps.googleusercontent.com" },
+            { "redirect_uri", callbackUri },
+            { "grant_type", "authorization_code" },
+        };
+        var result = await _client.PostAsync(_googleUrl, data, "application/x-www-forms-urlencoded", "");
+        var jsonRes = JObject.Parse(result);
+        Console.WriteLine(jsonRes);
+        var userService = new UserServicesModel
+        {
+            ServiceId = _context.Services.First(service => service.Name == "Google").Id,
+            UserId = decodedUser.Id,
+            AccessToken = jsonRes["access_token"]!.ToString(),
+            RefreshToken = jsonRes["refresh_token"]!.ToString(),
+            ExpiresIn = (int)jsonRes["expires_in"]!,
+        };
+        _context.UserServices.Add(userService);
+        await _context.SaveChangesAsync();
+        return new OkResult();
+    }
 }

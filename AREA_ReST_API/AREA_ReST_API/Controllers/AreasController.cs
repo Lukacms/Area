@@ -130,14 +130,14 @@ public class AreasController
             Name = areasModel.Name,
             UserId = areasModel.UserId,
             Favorite = areasModel.Favorite,
-            UserAction = _context.UserActions.Select(ua => new UserActionWithActionModel
+        UserAction = _context.UserActions.Where(ua => ua.AreaId == areasModel.Id).Select(ua => new UserActionWithActionModel
             {
                 Action = _context.Actions.First(a => a.Id == ua.ActionId),
                 AreaId = ua.AreaId,
                 Configuration = ua.Configuration,
                 Timer = ua.Timer
-            }).First(),
-            UserReactions = _context.UserReactions.Select(ur => new UserReactionWithReactionModel
+            }).FirstOrDefault(),
+            UserReactions = _context.UserReactions.Where(ur => ur.AreaId == areasModel.Id).ToList().Select(ur => new UserReactionWithReactionModel
             {
                 AreaId = ur.AreaId,
                 Configuration = ur.Configuration,

@@ -6,30 +6,29 @@ namespace AREA_ReST_API.Classes.Services;
 
 public class WeatherService : IService
 {
-    public override async Task<bool> ActionSelector(UserActionsModel userAction, UserServicesModel userService, AppDbContext context)
+    public override async Task<bool> ActionSelectorWithoutUserService(UserActionsModel userAction, AppDbContext context)
     {
         var action = context.Actions.First(a => a.Id == userAction.ActionId);
         return action.Name switch
         {
-            "Get Current Temperature" => await GetCurrentTemperature(userAction, userService),
+            "Get Current Temperature" => await GetCurrentTemperature(userAction),
             _ => false
         };
     }
 
-    public override async Task ReactionSelector(UserReactionsModel userReaction, UserServicesModel userService, AppDbContext context)
-    {
-    }
-
-    private async Task<bool> GetCurrentTemperature(UserActionsModel userAction, UserServicesModel userService)
+    private async Task<bool> GetCurrentTemperature(UserActionsModel userAction)
     {
         var client = new HttpClient();
         const string uri = "https://api.openweathermap.org/data/2.5/weather";
         var config = JObject.Parse(userAction.Configuration);
-        var queryParameters = $"q={config["city"]!}&appid=f4b50a2c4b2cc946e56c066d56df50bf&units=metric";
-        var requestMessage = new HttpRequestMessage(HttpMethod.Get, uri + Uri.EscapeDataString(queryParameters));
+        var queryParameters = $"?q={config["city"]!}&appid=f4b50a2c4b2cc946e56c066d56df50bf&units=metric";
+        var requestMessage = new HttpRequestMessage(HttpMethod.Get, uri + queryParameters);
 
         var response = await client.SendAsync(requestMessage);
         var json = JObject.Parse(await response.Content.ReadAsStringAsync());
-        return json["main"]!["temp"]! == config["temp"];
+        var min = (int)config["min_temperature"]!;
+        var max = (int)config["max_temperature"]!;
+        var currentTemp = (int)json["main"]!["temp"]!;
+        return currentTemp > min && currentTemp < max;
     }
 }
