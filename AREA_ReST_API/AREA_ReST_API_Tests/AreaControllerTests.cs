@@ -1,6 +1,3 @@
-using System.Diagnostics;
-using System.Text.Json;
-using System.Text.Json.Nodes;
 using AREA_ReST_API;
 using AREA_ReST_API.Controllers;
 using AREA_ReST_API.Models;
@@ -30,6 +27,8 @@ public class AreaControllerTests
             Endpoint = "Endpoint",
             ConnectionLink = "ConnectionLink",
             Logo = "Logo"u8.ToArray(),
+            ConnectionLinkMobile = "ConnectionLinkMobile",
+            IsConnectionNeeded = false,
         };
         var action = new ActionsModel
         {

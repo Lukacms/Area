@@ -27,6 +27,8 @@ public class ActionsControllerTests
             Endpoint = "Endpoint",
             ConnectionLink = "ConnectionLink",
             Logo = "Logo"u8.ToArray(),
+            ConnectionLinkMobile = "ConnectionLinkMobile",
+            IsConnectionNeeded = false,
         };
         _database.Services.Add(service);
         _database.SaveChanges();
