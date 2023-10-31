@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:mobile/back/local_storage.dart';
+import 'package:mobile/back/api.dart';
 import 'package:mobile/back/services.dart';
 import 'package:mobile/main.dart';
+import 'package:mobile/screens/settings/settings.dart';
 import 'package:mobile/theme/style.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -24,9 +25,13 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+  TextEditingController editProfileController = TextEditingController();
   TextEditingController searchController = TextEditingController();
   List<Service> oauthServices = [];
+  Map selfInfos = {};
   String selectedSegment = "Services";
+  List isDrawerOpen = [false, ''];
 
   @override
   void initState() {
@@ -35,6 +40,11 @@ class _SettingsPageState extends State<SettingsPage> {
       if (element.isOauth) {
         oauthServices.add(element);
       }
+    });
+    serverGetSelfInfos(widget.token).then((value) {
+      setState(() {
+        selfInfos = value;
+      });
     });
   }
 
@@ -53,6 +63,7 @@ class _SettingsPageState extends State<SettingsPage> {
       print(element.endpoint);
     });
     return Scaffold(
+      key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
       backgroundColor: AppColors.darkBlue,
@@ -165,10 +176,10 @@ class _SettingsPageState extends State<SettingsPage> {
                                   ),
                                 ),
                                 onPressed: () async {
-                                  if (oauthServices[index] != "null")  {
-                                    await AppServices().serviceLogInFunctions[widget
-                                        .services[index]
-                                        .name]!(context, widget.token);
+                                  if (oauthServices[index] != "null") {
+                                    await AppServices().serviceLogInFunctions[
+                                            widget.services[index].name]!(
+                                        context, widget.token);
                                     widget.reloadUserServices();
                                   }
                                 },
@@ -176,101 +187,83 @@ class _SettingsPageState extends State<SettingsPage> {
                             },
                           ),
                         )
-                      : SizedBox(
-                          width: screenWidth * 0.9,
-                          child: ListView(
-                            shrinkWrap: true,
-                            children: [
-                              Row(
-                                children: [
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      TextButton(
-                                        onPressed: () {},
-                                        style: ButtonStyle(
-                                          foregroundColor:
-                                              MaterialStateProperty.all<Color>(
-                                                  AppColors.lightBlue),
-                                        ),
-                                        child: const Align(
-                                          alignment: Alignment.centerLeft,
-                                          child:
-                                              Text("Modifier mon mot de passe"),
-                                        ),
-                                      ),
-                                      TextButton(
-                                        onPressed: () {},
-                                        style: ButtonStyle(
-                                          foregroundColor:
-                                              MaterialStateProperty.all<Color>(
-                                            AppColors.lightBlue,
-                                          ),
-                                        ),
-                                        child: const Align(
-                                          alignment: Alignment.centerLeft,
-                                          child:
-                                              Text("Gérer mes notifications"),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              TextButton(
-                                onPressed: () => showDialog<String>(
-                                  context: context,
-                                  builder: (BuildContext context) =>
-                                      AlertDialog(
-                                    title: const Text('Êtes-vous sûr.e ?'),
-                                    content: const Text(
-                                        'Vous devrez vous reconnecter pour utiliser l\'application.'),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        onPressed: () => Navigator.pop(context),
-                                        child: const Text('Annuler'),
-                                      ),
-                                      TextButton(
-                                        onPressed: () {
-                                          saveToken('');
-                                          saveUser({});
-                                          Navigator.pushNamedAndRemoveUntil(
-                                            context,
-                                            '/login',
-                                            (route) => false,
-                                          );
-                                        },
-                                        child: const Text('Confirmer'),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                style: ButtonStyle(
-                                  foregroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                    Colors.red,
-                                  ),
-                                ),
-                                child: SizedBox(
-                                  width: blockWidth * 2,
-                                  height: blockHeight * 6,
-                                  child: const Center(
-                                    child: Text(
-                                      "Deconnexion",
-                                      style: TextStyle(fontSize: 20),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                      : Settings(
+                          token: widget.token,
+                          onSettingsEdit: (value) {
+                            setState(() {
+                              isDrawerOpen = [true, value];
+                            });
+                            _scaffoldKey.currentState!.openEndDrawer();
+                          },
+                          selfInfos: selfInfos,
+                        )
                 ],
               ),
             ],
           ),
         ],
       ),
+      endDrawer: isDrawerOpen[0]
+          ? Container(
+              width: screenWidth,
+              color: AppColors.darkBlue,
+              child: Padding(
+                padding: EdgeInsets.only(left: blockHeight * 2),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Edit ${isDrawerOpen[1]}",
+                      style: TextStyle(color: AppColors.white, fontSize: 20),
+                    ),
+                    Center(
+                      child: SizedBox(
+                        width: screenWidth * 0.8,
+                        child: TextField(
+                          controller: editProfileController,
+                          style: TextStyle(color: AppColors.white),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: blockHeight * 2,
+                    ),
+                    Center(
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                          backgroundColor: AppColors.white,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: blockWidth * 2,
+                            vertical: blockHeight,
+                          ),
+                        ),
+                        child: Text(
+                          "Enregistrer",
+                          style: TextStyle(color: AppColors.darkBlue),
+                        ),
+                        onPressed: () {
+                          String uncapitalize(String text) {
+                            if (text.isEmpty) {
+                              return text;
+                            }
+                            return text[0].toLowerCase() + text.substring(1);
+                          }
+
+                          selfInfos[uncapitalize(isDrawerOpen[1])] =
+                              editProfileController.text;
+                          serverEditSelfInfos(widget.token, selfInfos);
+                          setState(() {
+                            isDrawerOpen = [false, ''];
+                          });
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            )
+          : null,
     );
   }
 }

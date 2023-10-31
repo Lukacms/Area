@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
+/* import 'package:flutter/material.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' show jsonDecode;
-
-class GoogleAuth extends StatefulWidget {
+ */
+/* class GoogleAuth extends StatefulWidget {
   const GoogleAuth({super.key});
 
   @override
@@ -50,3 +50,4 @@ class _GoogleAuthState extends State<GoogleAuth> {
     return const Placeholder();
   }
 }
+ */

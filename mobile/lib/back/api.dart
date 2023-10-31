@@ -88,6 +88,25 @@ Future serverGetSelfInfos(String token) async {
   }
 }
 
+Future serverEditSelfInfos(String token, Map selfInfos) async {
+  var url = Uri(
+    scheme: 'http',
+    host: CURRENT_IP,
+    port: 8080,
+    path: '/api/Users/partialModif',
+  );
+  var headers = {
+    'accept': '*/*',
+    'Authorization': 'Bearer $token',
+  };
+  var body = jsonEncode(selfInfos);
+  var response = await http.put(url, body: body, headers: headers);
+  if (response.statusCode == 200) {
+    var jsonResponse = jsonDecode(response.body);
+    return jsonResponse;
+  }
+}
+
 Future serverGoogleAuth(
   String token,
   String code,
@@ -120,9 +139,7 @@ Future serverGoogleAuth(
   var res = await http.post(url, headers: headers, body: body);
   print('reponse serveur${res.statusCode}');
   print(res.body);
-  return redirectUrl.isEmpty
-      ? res.body
-      : jsonDecode(res.body)['access_token'];
+  return redirectUrl.isEmpty ? res.body : jsonDecode(res.body)['access_token'];
 }
 
 Future serverSpotifyAuth(String code, String token) async {
