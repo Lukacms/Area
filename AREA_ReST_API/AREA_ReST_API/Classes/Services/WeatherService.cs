@@ -26,7 +26,6 @@ public class WeatherService : IService
 
         var response = await client.SendAsync(requestMessage);
         var json = JObject.Parse(await response.Content.ReadAsStringAsync());
-        Console.WriteLine(json);
         var min = (int)config["min_temperature"]!;
         var max = (int)config["max_temperature"]!;
         var currentTemp = (int)json["main"]!["temp"]!;

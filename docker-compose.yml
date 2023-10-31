@@ -40,7 +40,7 @@ services:
     build: ./client_web
     hostname: "area_web"
     ports:
-      - "8091:8091"
+      - "8081:8081"
     volumes:
       - clients:/data
       - ./client_web:/app
