@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 
 class BackgroundCircles extends StatelessWidget {
   const BackgroundCircles({super.key});
+  final Key circle1 = const Key('circle 1');
+  final Key circle2 = const Key('circle 2');
+  final Key circle3 = const Key('circle 3');
+  final Key circle4 = const Key('circle 4');
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +19,7 @@ class BackgroundCircles extends StatelessWidget {
           verticalDirection: VerticalDirection.up,
           children: [
             Padding(
+              key: circle1,
               padding: const EdgeInsets.only(bottom: 50),
               child: Container(
                 height: 300,
@@ -33,6 +38,7 @@ class BackgroundCircles extends StatelessWidget {
               ),
             ),
             Padding(
+              key: circle2,
               padding: const EdgeInsets.only(bottom: 200),
               child: Container(
                 height: 100,
@@ -51,6 +57,7 @@ class BackgroundCircles extends StatelessWidget {
               ),
             ),
             Padding(
+              key: circle3,
               padding: const EdgeInsets.only(bottom: 100),
               child: Container(
                 height: 100,
@@ -69,6 +76,7 @@ class BackgroundCircles extends StatelessWidget {
               ),
             ),
             Padding(
+              key: circle4,
               padding: const EdgeInsets.only(bottom: 100),
               child: Container(
                 height: 250,
