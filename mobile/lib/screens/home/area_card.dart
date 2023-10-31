@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:mobile/back/api.dart';
 import 'package:mobile/back/services.dart';
@@ -96,8 +98,8 @@ class AreaCard extends StatelessWidget {
                                 child: const Text('Annuler'),
                               ),
                               TextButton(
-                                onPressed: () {
-                                  serverDeleteArea(token, area.areaId);
+                                onPressed: () async {
+                                  await serverDeleteArea(token, area.areaId);
                                   editAreaCallback();
                                   Navigator.pop(context);
                                   Navigator.pop(context);
