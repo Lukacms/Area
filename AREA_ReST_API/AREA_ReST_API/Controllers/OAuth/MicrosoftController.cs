@@ -30,7 +30,7 @@ public class MicrosoftController
         [FromHeader] string authorization)
     {
         var decodedUser = JwtDecoder.Decode(authorization);
-        var callbackUri = "http://localhost:8081/settings/services/microsoft";
+        var callbackUri = "http://localhost:8091/settings/services/microsoft";
         var authentication = "";
         var base64str = Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(authentication));
         var data = new Dictionary<string, string>()
@@ -62,18 +62,18 @@ public class MicrosoftController
         [FromHeader] string authorization)
     {
         var decodedUser = JwtDecoder.Decode(authorization);
-        var callbackUri = "area://oatuh2redirect";
+        var callbackUri = "area://oauth2redirect";
         var authentication = "";
         var base64str = Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(authentication));
         var data = new Dictionary<string, string>()
         {
             {"client_id", "5731d8cc-7d4b-47dc-812f-f4615f65b38d"},
-            {"client_secret", "eHV8Q~MgohheH_~OxgTyRgbht8RvdEIZ5MkWQc50"},
             {"grant_type", "authorization_code"},
             {"code", microsoftCode.Code},
             {"redirect_uri", callbackUri}
         };
         var result = await _client.PostAsync(_microsoftUri, data, "application/x-www-forms-urlencoded", base64str);
+        Console.WriteLine(result);
         var microsoftService = _context.Services.First(s => s.Name == "Microsoft");
         var jsonRes = JObject.Parse(result);
         var microsoftUserService = new UserServicesModel

@@ -28,7 +28,7 @@ public class DiscordController
     public async Task<ActionResult> RequestDiscordToken([FromBody] DiscordModel discordCode, [FromHeader] string authorization)
     {
         var decodedUser = JwtDecoder.Decode(authorization);
-        var callbackUri = "http://localhost:8081/settings/services/discord";
+        var callbackUri = "http://localhost:8091/settings/services/discord";
         var authentication = $"1158738215704985681:RKMdtaTvRUZ9Hoz9QUyM_t_d3jiPQz4N";
         var base64str = Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(authentication));
         var data = new Dictionary<string, string>()
