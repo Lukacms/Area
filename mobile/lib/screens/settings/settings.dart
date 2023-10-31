@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/back/api.dart';
 import 'package:mobile/back/local_storage.dart';
 import 'package:mobile/main.dart';
 import 'package:mobile/screens/settings/profile_edit_tile.dart';
@@ -17,7 +16,6 @@ class Settings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(selfInfos);
     return SizedBox(
       width: screenWidth * 0.9,
       child: selfInfos.isNotEmpty

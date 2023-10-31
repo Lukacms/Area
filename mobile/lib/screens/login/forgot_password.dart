@@ -107,7 +107,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                           if (!isValidEmail(emailController.text)) {
                             return;
                           }
-                          sendResetPassword();
+                          //sendResetPassword();
                           Navigator.of(context).pushReplacement(
                             PageRouteBuilder(
                               pageBuilder: (context, animation1, animation2) {

@@ -254,7 +254,7 @@ class AppServices {
               clientId: '834ee184a29945b2a2a3dc8108a5bbf4',
               clientSecret: 'b589f784bb3f4b3897337acbfdd80f0d',
               serverOauth: (code) {
-                serverSpotifyAuth(code, token);
+                serverServiceAuth(code, token, 'Spotify');
               },
               authUrl:
                   'https://accounts.spotify.com/authorize?client_id=834ee184a29945b2a2a3dc8108a5bbf4&response_type=code&redirect_uri=area://oauth2redirect&scope=user-read-private%20user-read-email',
@@ -271,7 +271,7 @@ class AppServices {
               clientId: 'Iv1.f47bfd491f94b532',
               clientSecret: 'c8f7c650f3d4c47462ddbf0ca06b1113478c9f6e',
               serverOauth: (code) {
-                serverGithubAuth(code, token);
+                serverServiceAuth(code, token, 'Github');
               },
               authUrl:
                   'https://github.com/login/oauth/authorize?client_id=Iv1.f47bfd491f94b532&redirect_uri=area://oauth2redirect',
@@ -288,7 +288,7 @@ class AppServices {
               clientId: '5731d8cc-7d4b-47dc-812f-f4615f65b38d',
               clientSecret: 'eHV8Q~MgohheH_~OxgTyRgbht8RvdEIZ5MkWQc50',
               serverOauth: (code) {
-                serverMicrosoftAuth(code, token);
+                serverServiceAuth(code, token, 'Microsoft');
               },
               authUrl:
                   'https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=5731d8cc-7d4b-47dc-812f-f4615f65b38d&response_type=code&redirect_uri=area://oauth2redirect&response_mode=query&scope=https%3A%2F%2Fgraph.microsoft.com%2FMail.Read%20https%3A%2F%2Fgraph.microsoft.com%2FMail.Read.Shared%20https%3A%2F%2Fgraph.microsoft.com%2FMail.Send%20https%3A%2F%2Fgraph.microsoft.com%2FMail.Send.Shared%20https%3A%2F%2Fgraph.microsoft.com%2FChatMessage.Send%20https%3A%2F%2Fgraph.microsoft.com%2FChatMessage.Read%20https%3A%2F%2Fgraph.microsoft.com%2FUser.Read%20https%3A%2F%2Fgraph.microsoft.com%2FNotes.ReadWrite.All%20https%3A%2F%2Fgraph.microsoft.com%2FMailboxSettings.ReadWrite%20https%3A%2F%2Fgraph.microsoft.com%2FMail.ReadWrite%20offline_access',
