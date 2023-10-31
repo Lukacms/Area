@@ -203,6 +203,13 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
         ],
       ),
+      onEndDrawerChanged: (isOpened) {
+        if (!isOpened) {
+          setState(() {
+            isDrawerOpen = [false, ''];
+          });
+        }
+      },
       endDrawer: isDrawerOpen[0]
           ? Container(
               width: screenWidth,

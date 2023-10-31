@@ -218,7 +218,6 @@ class _HomePageState extends State<HomePage> {
                       await loadUserServices(widget.token);
                       setState(() {});
                       print("Je reload les user services");
-                      print(userServices);
                     },
                   ),
                 );

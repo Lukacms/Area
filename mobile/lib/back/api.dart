@@ -97,10 +97,12 @@ Future serverEditSelfInfos(String token, Map selfInfos) async {
   );
   var headers = {
     'accept': '*/*',
+    'Content-Type': 'application/json',
     'Authorization': 'Bearer $token',
   };
   var body = jsonEncode(selfInfos);
   var response = await http.put(url, body: body, headers: headers);
+  print("Edit self infos status code ${response.statusCode}");
   if (response.statusCode == 200) {
     var jsonResponse = jsonDecode(response.body);
     return jsonResponse;
@@ -399,7 +401,6 @@ Future serverGetServices(String token) async {
   var response = await http.get(url, headers: headers);
   print("Get services status code ${response.statusCode}");
   if (response.statusCode == 200) {
-    print('prout');
     var jsonResponse = jsonDecode(response.body);
     return jsonResponse;
   }

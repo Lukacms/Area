@@ -143,7 +143,6 @@ class AppServices {
 
   List<int> userServicesParse(List userServices) {
     List<int> tmp = [];
-    print(userServices);
     for (var service in userServices) {
       tmp.add(service['serviceId']);
     }
