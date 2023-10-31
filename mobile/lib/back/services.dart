@@ -226,7 +226,25 @@ class AppServices {
       final result = await FlutterWebAuth.authenticate(
           url: url.toString(), callbackUrlScheme: callbackUrlScheme);
       final code = Uri.parse(result).queryParameters['code'];
-      serverGoogleAuth(token, code!);
+      serverGoogleAuth(token, code!, "");
+    },
+    'GoogleLogin': (BuildContext context) async {
+      const googleClientId =
+          '315267877885-lkqq49r6v587fi9pduggbdh9dr1j69me.apps.googleusercontent.com';
+      const callbackUrlScheme =
+          'com.googleusercontent.apps.315267877885-lkqq49r6v587fi9pduggbdh9dr1j69me';
+      final url = Uri.https('accounts.google.com', '/o/oauth2/v2/auth', {
+        'response_type': 'code',
+        'client_id': googleClientId,
+        'redirect_uri': '$callbackUrlScheme:/',
+        'scope':
+            'email https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/gmail.modify',
+      });
+      final result = await FlutterWebAuth.authenticate(
+          url: url.toString(), callbackUrlScheme: callbackUrlScheme);
+      final code = Uri.parse(result).queryParameters['code'];
+      var value = await serverGoogleAuth("", code!, "$callbackUrlScheme:/");
+      return value;
     },
     'Spotify': (BuildContext context, String token) async {
       Navigator.of(context).push(

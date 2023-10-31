@@ -1,4 +1,8 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:flutter_svg/svg.dart';
 import 'package:mobile/back/local_storage.dart';
+import 'package:mobile/back/services.dart';
 import 'package:mobile/components/loginTextField.dart';
 import 'package:mobile/main.dart';
 import 'package:flutter/material.dart';
@@ -23,12 +27,16 @@ class _LoginScreenState extends State<LoginScreen> {
   Key passwordField = const Key('passwordField');
   Key loginButton = const Key('loginButton');
 
-  void login() async {
+  void login(String token) async {
     List res = [];
-    await serverLogin(emailController.text, passwordController.text)
-        .then((value) {
-      res = value;
-    });
+    if (token.isEmpty) {
+      await serverLogin(emailController.text, passwordController.text)
+          .then((value) {
+        res = value;
+      });
+    } else {
+      res = [true, token];
+    }
     if (res[0]) {
       Map<String, dynamic> user = {};
       await saveToken(res[1]);
@@ -85,7 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: blockHeight * 5,
               ),
               LoginTextField(
-                key: usernameField,
+                  key: usernameField,
                   description: "E-Mail",
                   placeholder: 'yourname@example.com',
                   isPassword: false,
@@ -101,7 +109,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 isPassword: true,
                 controller: passwordController,
                 onValidate: () {
-                  login();
+                  login("");
                 },
               ),
               Padding(padding: EdgeInsets.only(top: blockHeight * 2)),
@@ -197,7 +205,53 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   onPressed: () {
-                    login();
+                    login("");
+                  },
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: blockHeight * 5),
+                width: blockWidth * 3,
+                height: blockHeight * 8,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: AppColors.greyBlue,
+                ),
+                child: TextButton(
+                  key: loginButton,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(
+                        "Google Sign In",
+                        style: TextStyle(
+                          color: AppColors.white,
+                          fontSize: 20,
+                        ),
+                      ),
+                      SvgPicture.asset(
+                        'assets/serviceIcons/google.svg',
+                        width: 24,
+                        height: 24,
+                        // ignore: deprecated_member_use
+                        color: AppColors.white,
+                      ),
+                    ],
+                  ),
+                  onPressed: () async {
+                    //login();
+                    var token = await AppServices()
+                        .serviceLogInFunctions['GoogleLogin']!(context);
+                    if (token == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text("Login failed. Please try again."),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                      return;
+                    }
+                    login(token);
                   },
                 ),
               ),

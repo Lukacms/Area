@@ -91,31 +91,47 @@ Future serverGetSelfInfos(String token) async {
 Future serverGoogleAuth(
   String token,
   String code,
+  String redirectUrl,
 ) async {
   var url = Uri(
-      scheme: 'http',
-      host: CURRENT_IP,
-      port: 8080,
-      path: '/oauth/Google/mobile');
-  var headers = {
-    'Content-Type': 'application/json',
-    'accept': '*/*',
-    'Authorization': 'Bearer $token',
-  };
-  var body = jsonEncode({'code': code});
+    scheme: 'http',
+    host: CURRENT_IP,
+    port: 8080,
+    path: redirectUrl.isEmpty
+        ? '/oauth/Google/mobile'
+        : '/api/Users/googleLoginMobile',
+  );
+  var headers = redirectUrl.isEmpty
+      ? {
+          'Content-Type': 'application/json',
+          'accept': '*/*',
+          'Authorization': 'Bearer $token',
+        }
+      : {
+          'Content-Type': 'application/json',
+          'accept': '*/*',
+        };
+  print('le code cote serveur $code');
+  print('le redirectUrl cote serveur $redirectUrl');
+  var body = jsonEncode(redirectUrl.isEmpty
+      ? {'code': code}
+      : {'code': code, 'callbackUri': redirectUrl});
 
-  await http.post(url, headers: headers, body: body).then((value) {
-    print('reponse serveur${value.statusCode}');
-    print(value.body);
-    return value.body;
-  });
-  return null;
+  var res = await http.post(url, headers: headers, body: body);
+  print('reponse serveur${res.statusCode}');
+  print(res.body);
+  return redirectUrl.isEmpty
+      ? res.body
+      : jsonDecode(res.body)['access_token'];
 }
 
 Future serverSpotifyAuth(String code, String token) async {
   print("Spotify server oauth");
-  var url =
-      Uri(scheme: 'http', host: CURRENT_IP, port: 8080, path: '/oauth/Spotify/mobile');
+  var url = Uri(
+      scheme: 'http',
+      host: CURRENT_IP,
+      port: 8080,
+      path: '/oauth/Spotify/mobile');
   var headers = {
     'Content-Type': 'application/json',
     'accept': '*/*',
@@ -131,8 +147,11 @@ Future serverSpotifyAuth(String code, String token) async {
 }
 
 Future serverGithubAuth(String code, String token) async {
-  var url =
-      Uri(scheme: 'http', host: CURRENT_IP, port: 8080, path: '/oauth/Github');
+  var url = Uri(
+      scheme: 'http',
+      host: CURRENT_IP,
+      port: 8080,
+      path: '/oauth/Github/mobile');
   print("CHUI DEDANS");
   print('le code cote serveur $code');
   var headers = {
@@ -150,8 +169,11 @@ Future serverGithubAuth(String code, String token) async {
 }
 
 Future serverMicrosoftAuth(String code, String token) async {
-  var url =
-      Uri(scheme: 'http', host: CURRENT_IP, port: 8080, path: '/oauth/Microsoft/mobile');
+  var url = Uri(
+      scheme: 'http',
+      host: CURRENT_IP,
+      port: 8080,
+      path: '/oauth/Microsoft/mobile');
   print("CHUI DEDANS");
   print('le code cote serveur $code');
   var headers = {
