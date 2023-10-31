@@ -11,6 +11,8 @@ import {
   getAllUsers,
   getReactions,
   getServices,
+  modifyAction,
+  modifyReaction,
 } from '../../config/request';
 import * as Yup from 'yup';
 import { listToJsonObject } from '../../config/commons';
@@ -28,6 +30,7 @@ const useSettingsAdmin = () => {
     endpoint: '',
     service: {},
     defaultConfig: [],
+    description: '',
   };
 
   const getServiceName = (item, services) => {
@@ -56,6 +59,7 @@ const useSettingsAdmin = () => {
         name: values.name,
         serviceId: values.service.id,
         defaultConfiguration: listToJsonObject(values.defaultConfig),
+        description: values.description,
       });
       setActions([
         ...actions,
@@ -64,9 +68,11 @@ const useSettingsAdmin = () => {
           name: values.name,
           endpoint: values.endpoint,
           service: values.service.name,
-          defaultConfiguration: '',
+          defaultConfiguration: listToJsonObject(values.defaultConfig),
+          description: values.description,
         },
       ]);
+      toast.current.show({ severity: 'success', summary: 'Successfully added action' });
     } catch (e) {
       toast.current.show({ severity: 'error', summary: 'While adding action', detail: e.message });
     }
@@ -79,6 +85,7 @@ const useSettingsAdmin = () => {
         name: values.name,
         serviceId: values.service.id,
         defaultConfiguration: listToJsonObject(values.defaultConfig),
+        description: values.description,
       });
       setReactions([
         ...reactions,
@@ -87,13 +94,83 @@ const useSettingsAdmin = () => {
           name: values.name,
           endpoint: values.endpoint,
           service: values.service.name,
-          defaultConfiguration: '',
+          defaultConfiguration: listToJsonObject(values.defaultConfig),
+          description: values.description,
         },
       ]);
+      toast.current.show({ severity: 'success', summary: 'Successfully added reaction' });
     } catch (e) {
       toast.current.show({
         severity: 'error',
         summary: 'While adding reaction',
+        detail: e.message,
+      });
+    }
+  };
+
+  const changeAction = async (values) => {
+    try {
+      await modifyAction({
+        id: values.id,
+        endpoint: values.endpoint,
+        name: values.name,
+        serviceId: values.service.id,
+        defaultConfiguration: listToJsonObject(values.defaultConfig),
+        description: values.description,
+      });
+      setActions(
+        actions.map((item) =>
+          item.id === values.id
+            ? {
+                id: values.id,
+                endpoint: values.endpoint,
+                name: values.name,
+                serviceId: values.service.id,
+                defaultConfiguration: listToJsonObject(values.defaultConfig),
+                description: values.description,
+              }
+            : item,
+        ),
+      );
+      toast.current.show({ severity: 'success', summary: 'Successfully modified action' });
+    } catch (e) {
+      toast.current.show({
+        severity: 'error',
+        summary: 'While modifying action',
+        detail: e.message,
+      });
+    }
+  };
+
+  const changeReaction = async (values) => {
+    try {
+      await modifyReaction({
+        id: values.id,
+        endpoint: values.endpoint,
+        name: values.name,
+        serviceId: values.service.id,
+        defaultConfiguration: listToJsonObject(values.defaultConfig),
+        description: values.description,
+      });
+      setReactions(
+        reactions.map((item) =>
+          item.id === values.id
+            ? {
+                id: values.id,
+                endpoint: values.endpoint,
+                name: values.name,
+                serviceId: values.service.id,
+                defaultConfiguration: listToJsonObject(values.defaultConfig),
+                description: values.description,
+              }
+            : item,
+        ),
+      );
+      toast.current.show({ severity: 'success', summary: 'Successfully modified reaction' });
+    } catch (e) {
+      toast.current.show({
+        severity: 'error',
+        summary: 'While modifying action',
         detail: e.message,
       });
     }
@@ -222,6 +299,8 @@ const useSettingsAdmin = () => {
     deleteAdmin,
     addAdmin,
     toast,
+    changeAction,
+    changeReaction,
   };
 };
 

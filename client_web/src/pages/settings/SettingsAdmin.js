@@ -29,11 +29,28 @@ function SettingsAdmin() {
     deleteAdmin,
     addAdmin,
     toast,
+    changeAction,
+    changeReaction,
   } = useSettingsAdmin();
   const [addAction, setAddAction] = useState(false);
   const [addReaction, setAddReaction] = useState(false);
   const revokeAdmin = useRef();
   const [revoke, setRevoke] = useState(null);
+  const [selectedAction, setSelectedAction] = useState(null);
+  const [selectedReaction, setSelectedReaction] = useState(null);
+
+  const findServiceFromName = (name) => {
+    var service = {};
+
+    services.forEach((item) => {
+      console.log(item, name);
+      if (item.name === name) {
+        service = item;
+        return;
+      }
+    });
+    return service;
+  };
 
   const showActions = () => {
     return (
@@ -44,6 +61,7 @@ function SettingsAdmin() {
         <Column field='name' header='Action Name' />
         <Column field='endpoint' header='Endpoint' />
         <Column field='service' header='Service' />
+        <Column field='description' header='Description' />
         <Column
           header='Delete'
           body={(action) => (
@@ -53,6 +71,27 @@ function SettingsAdmin() {
               severity='danger'
               size='small'
               onClick={() => deleteAction(action)}
+            />
+          )}
+        />
+        <Column
+          header='Modify'
+          body={(action) => (
+            <Button
+              rounded
+              icon='pi pi-pencil'
+              size='small'
+              onClick={() =>
+                setSelectedAction({
+                  ...action,
+                  service: findServiceFromName(action.service),
+                  defaultConfig: action.defaultConfiguration
+                    ? Object.keys(JSON.parse(action.defaultConfiguration)).map(function (key, _) {
+                        return key;
+                      })
+                    : [],
+                })
+              }
             />
           )}
         />
@@ -69,6 +108,7 @@ function SettingsAdmin() {
         <Column field='name' header='Reaction Name' />
         <Column field='endpoint' header='Endpoint' />
         <Column field='service' header='Service' />
+        <Column field='description' header='Description' />
         <Column
           header='Delete'
           body={(reaction) => (
@@ -78,6 +118,27 @@ function SettingsAdmin() {
               severity='danger'
               size='small'
               onClick={() => deleteReaction(reaction)}
+            />
+          )}
+        />
+        <Column
+          header='Modify'
+          body={(reaction) => (
+            <Button
+              rounded
+              icon='pi pi-pencil'
+              size='small'
+              onClick={() =>
+                setSelectedReaction({
+                  ...reaction,
+                  service: findServiceFromName(reaction.service),
+                  defaultConfig: reaction.defaultConfiguration
+                    ? Object.keys(JSON.parse(reaction.defaultConfiguration)).map(function (key, _) {
+                        return key;
+                      })
+                    : [],
+                })
+              }
             />
           )}
         />
@@ -207,6 +268,32 @@ function SettingsAdmin() {
               services={services}
               validate={validate}
               onSubmit={submitReaction}
+            />
+          </Dialog>
+          <Dialog
+            visible={selectedAction}
+            style={{ width: '30vw' }}
+            header='Change Action'
+            resizable={false}
+            onHide={() => setSelectedAction(null)}>
+            <AdminAddItem
+              initalValues={selectedAction}
+              services={services}
+              validate={validate}
+              onSubmit={changeAction}
+            />
+          </Dialog>
+          <Dialog
+            visible={selectedReaction}
+            style={{ width: '30vw' }}
+            header='Change Reaction'
+            resizable={false}
+            onHide={() => setSelectedReaction(null)}>
+            <AdminAddItem
+              initalValues={selectedReaction}
+              services={services}
+              validate={validate}
+              onSubmit={changeReaction}
             />
           </Dialog>
         </div>

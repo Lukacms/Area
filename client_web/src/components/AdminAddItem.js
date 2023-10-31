@@ -1,6 +1,6 @@
 import { Button } from 'primereact/button';
 import { Field, Form, Formik } from 'formik';
-import { FormikChip, FormikDropdown, FormikInputtext } from '.';
+import { FormikChip, FormikDropdown, FormikInputArea, FormikInputtext } from '.';
 
 const AdminAddItem = ({ initalValues, validate, onSubmit, services }) => {
   return (
@@ -64,6 +64,16 @@ const AdminAddItem = ({ initalValues, validate, onSubmit, services }) => {
             error={props.errors?.defaultConfig}
             touched={props.touched?.defaultConfig}
             tooltip='Configuration entries. Separate them with <Enter> key.'
+          />
+          <Field
+            name='description'
+            type='description'
+            as={FormikInputArea}
+            field='description'
+            label='Description'
+            error={props.errors?.description}
+            touched={props.touched?.description}
+            tooltip='How the action or reaction works.'
           />
           <Button type='submit' label='Add new Item' severity='info' />
         </Form>

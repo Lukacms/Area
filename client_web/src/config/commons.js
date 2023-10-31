@@ -9,6 +9,7 @@ export const getByValue = (map, searchKey) => {
 export const listToJsonObject = (strList) => {
   const json = {};
 
-  strList.forEach((item) => (json[item] = ''));
+  if (strList)
+    strList.forEach((item) => (json[item] = ''));
   return JSON.stringify(json);
 };

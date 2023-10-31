@@ -117,3 +117,5 @@ export const delAction = (actionId) => axiosInstance.delete(API_URL + `Actions/$
 export const delReaction = (reactionId) =>
   axiosInstance.delete(API_URL + `Reactions/${reactionId}`);
 export const changeAdmin = (data) => axiosInstance.put(API_URL + `Users/partialModif`, data);
+export const modifyAction = (data) => axiosInstance.put(API_URL + 'Actions', data);
+export const modifyReaction = (data) => axiosInstance.put(API_URL + 'Reactions', data);

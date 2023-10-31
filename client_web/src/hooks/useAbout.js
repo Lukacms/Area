@@ -52,9 +52,11 @@ const useAbout = () => {
             name: item.name,
             actions: actions.data.map((action) => ({
               name: action.name,
+              description: action.description ? action.description: ''
             })),
             reactions: reactions.data.map((reaction) => ({
               name: reaction.name,
+              description: reaction.description ? reaction.description: ''
             })),
           };
           setServices((old) => [...old, serviceItem]);
