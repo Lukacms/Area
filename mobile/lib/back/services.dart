@@ -221,7 +221,8 @@ class AppServices {
         'response_type': 'code',
         'client_id': googleClientId,
         'redirect_uri': '$callbackUrlScheme:/',
-        'scope': 'email',
+        'scope':
+            'email https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/gmail.modify',
       });
       final result = await FlutterWebAuth.authenticate(
           url: url.toString(), callbackUrlScheme: callbackUrlScheme);
