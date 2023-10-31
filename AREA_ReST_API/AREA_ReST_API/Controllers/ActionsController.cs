@@ -35,7 +35,7 @@ public class ActionsController
     }
 
     [HttpPost("")]
-    public ActionResult CreateNewAction([FromBody] ActionsModel newAction, [FromHeader] string authorization)
+    public ActionResult<ActionsModel> CreateNewAction([FromBody] ActionsModel newAction, [FromHeader] string authorization)
     {
         var decodedUser = JwtDecoder.Decode(authorization);
 
@@ -56,7 +56,7 @@ public class ActionsController
     }
 
     [HttpDelete("{actionId:int}")]
-    public ActionResult DeleteAction([AsParameters] int actionId, [FromHeader] string authorization)
+    public ActionResult<JsonObject> DeleteAction([AsParameters] int actionId, [FromHeader] string authorization)
     {
         var decodedUser = JwtDecoder.Decode(authorization);
         var deletedAction = _context.Actions.FirstOrDefault(action => action.Id == actionId);
