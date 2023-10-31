@@ -32,7 +32,50 @@ const useFetchHome = () => {
         const userServices = await getUserServices(userId);
         const usersAreas = await getUsersAreas(userId);
 
-        services.data.forEach((service) => {
+        services.data.forEach(async (service) => {
+          if (!service.isConnectionNeeded) {
+            const actions = await getActionsByServiceId(service.id);
+            const reactions = await getReactionsByServiceId(service.id);
+
+            setPanelActions((old) => [
+              ...old,
+              {
+                label: service.name,
+                icon: 'pi pi-folder',
+                id: service.id,
+                items: actions.data?.map((action) => {
+                  return {
+                    label: action.name,
+                    id: action.id,
+                    timer: 1,
+                    logo: '',
+                    configuration: action.defaultConfiguration
+                      ? JSON.parse(action.defaultConfiguration)
+                      : '',
+                  };
+                }),
+              },
+            ]);
+
+            setPanelReactions((old) => [
+              ...old,
+              {
+                label: service.name,
+                icon: 'pi pi-folder',
+                id: service.id,
+                items: reactions.data?.map((reaction) => {
+                  return {
+                    label: reaction.name,
+                    id: reaction.id,
+                    logo: '',
+                    configuration: reaction.defaultConfiguration
+                      ? JSON.parse(reaction.defaultConfiguration)
+                      : '',
+                  };
+                }),
+              },
+            ]);
+          }
           userServices.data.forEach(async (item) => {
             if (service.id === item.serviceId) {
               const actions = await getActionsByServiceId(item.serviceId);
@@ -43,7 +86,7 @@ const useFetchHome = () => {
                 {
                   label: service.name,
                   icon: 'pi pi-folder',
-                  id: item.id,
+                  id: service.id,
                   items: actions.data?.map((action) => {
                     return {
                       label: action.name,
@@ -63,7 +106,7 @@ const useFetchHome = () => {
                 {
                   label: service.name,
                   icon: 'pi pi-folder',
-                  id: item.id,
+                  id: service.id,
                   items: reactions.data?.map((reaction) => {
                     return {
                       label: reaction.name,

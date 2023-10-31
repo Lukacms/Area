@@ -25,6 +25,7 @@ import CallBackLetterBoxd from './callbacks/CallbackLetterBoxd';
 import CallBackPhilipsHue from './callbacks/CallbackPhilipsHue';
 import CallbackLogin from './callbacks/login/CallbackLogin';
 import CallBackMicrosoft from './callbacks/CallbackMicrosoft';
+import About from './About';
 
 export {
   Login,
@@ -54,4 +55,5 @@ export {
   CallBackSteam,
   CallbackLogin,
   CallBackMicrosoft,
+  About,
 };
