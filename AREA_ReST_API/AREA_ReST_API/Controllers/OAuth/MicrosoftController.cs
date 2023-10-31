@@ -30,7 +30,7 @@ public class MicrosoftController
         [FromHeader] string authorization)
     {
         var decodedUser = JwtDecoder.Decode(authorization);
-        var callbackUri = "http://localhost:8091/settings/services/microsoft";
+        var callbackUri = "http://localhost:8081/settings/services/microsoft";
         var authentication = "";
         var base64str = Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(authentication));
         var data = new Dictionary<string, string>()

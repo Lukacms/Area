@@ -28,7 +28,7 @@ public class GoogleController
     public async Task<ActionResult> RequestGoogleToken([FromBody] GoogleModel googleCodes, [FromHeader] string authorization)
     {
         var decodedUser = JwtDecoder.Decode(authorization);
-        var callbackUri = "http://localhost:8091/settings/services/google";
+        var callbackUri = "http://localhost:8081/settings/services/google";
         var data = new Dictionary<string, string>
         {
             { "code", googleCodes.Code },

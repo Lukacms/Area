@@ -28,7 +28,7 @@ public class GithubController
     public async Task<ActionResult> RequestGithubToken([FromBody] GithubModel githubCode, [FromHeader] string authorization)
     {
         var decodedUser = JwtDecoder.Decode(authorization);
-        const string callbackUri = "http%3A%2F%2Flocalhost:8091%2Fsettings%2Fservices%2Fgithub";
+        const string callbackUri = "http%3A%2F%2Flocalhost:8081%2Fsettings%2Fservices%2Fgithub";
         var query = $"?client_id=Iv1.f47bfd491f94b532&client_secret=c8f7c650f3d4c47462ddbf0ca06b1113478c9f6e&code={githubCode.Code}&redirect_uri={callbackUri}";
         var result = await _client.PostWithQueryAsync(_githubUri, query, "application/x-www-forms-urlencoded", "application/json");
         var jsonRes = JObject.Parse(result);

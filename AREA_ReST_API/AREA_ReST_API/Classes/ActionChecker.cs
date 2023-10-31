@@ -15,7 +15,9 @@ public class ActionChecker : BackgroundService
             { "Spotify", () => new SpotifyService() },
             { "Google", () => new GoogleService() },
             { "Github", () => new GithubService() },
-            { "Microsoft", () => new MicrosoftService() }
+            { "Microsoft", () => new MicrosoftService() },
+            { "XIV Api", () => new XIVService() },
+            { "Weather", () => new WeatherService() }
         };
     }
 
@@ -75,9 +77,11 @@ public class ActionChecker : BackgroundService
             var reaction = context.Reactions.First(x => x.Id == userReaction.ReactionId);
             var service = context.Services.First(s => s.Id == reaction.ServiceId);
             var userService = context.UserServices.First(s => s.ServiceId == service.Id && s.UserId == area.UserId);
+            Console.WriteLine("REACTION ---------------------------------------");
             Console.WriteLine($"SERVICE CALLED FOR REACTION : {service.Name}");
             var instance = _services[service.Name].Invoke();
             Console.WriteLine($"INVOKE WITH : {service.Name}");
+            Console.WriteLine("----------------------------------------------");
             try
             {
                 await instance.ReactionSelector(userReaction, userService, context);
@@ -94,8 +98,15 @@ public class ActionChecker : BackgroundService
     {
         var action = context.Actions.First(a => a.Id == userAction.ActionId);
         var service = context.Services.First(s => s.Id == action.ServiceId);
-        var userService = context.UserServices.First(s => s.ServiceId == action.ServiceId && s.UserId == area.UserId);
+        var userService = context.UserServices.FirstOrDefault(s => s.ServiceId == action.ServiceId && s.UserId == area.UserId);
+        Console.WriteLine("ACTION ---------------------------------------");
+        Console.WriteLine($"SERVICE CALLED FOR REACTION : {service.Name}");
         var instance = _services[service.Name].Invoke();
+        Console.WriteLine($"INVOKE WITH : {service.Name}");
+        Console.WriteLine("----------------------------------------------");
+        if (userService == null && service.IsConnectionNeeded == false)
+            if (await instance.ActionSelectorWithoutUserService(userAction, context))
+                await ManageReactions(area, context);
         if (await instance.ActionSelector(userAction, userService, context))
             await ManageReactions(area, context);
     }
