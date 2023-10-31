@@ -55,6 +55,29 @@ public class ReactionsController
         return new CreatedResult("Reaction successfully created", registeredReaction.Entity);
     }
 
+    [HttpPut("")]
+    public ActionResult ModifyReaction([FromBody] ReactionsModel newReaction, [FromHeader] string authorization)
+    {
+        var decodedUser = JwtDecoder.Decode(authorization);
+
+        if (!decodedUser.Admin)
+          return new UnauthorizedObjectResult(new JsonObject{{"message", "You are not allowed to add a reaction"}});
+        if (newReaction.Id == 0)
+            return new BadRequestObjectResult(new JsonObject { { "message", "Should have an Id" } });
+        if (newReaction.Name.IsNullOrEmpty())
+            return new BadRequestObjectResult(new JsonObject { { "message", "Reaction name is empty" } });
+        if (newReaction.Endpoint.IsNullOrEmpty())
+            return new BadRequestObjectResult(new JsonObject { { "message", "Reaction endpoint is empty" } });
+        if (newReaction.ServiceId == 0)
+            return new BadRequestObjectResult(new JsonObject { { "message", "ServiceId cannot be equal to zero" } });
+        var service = _context.Services.FirstOrDefault(s => s.Id == newReaction.ServiceId);
+        if (service == null)
+            return new BadRequestObjectResult(new JsonObject { { "message", $"There's no services with this ServiceId" } });
+        var registeredReaction = _context.Reactions.Add(newReaction);
+        _context.SaveChanges();
+        return new CreatedResult("Reaction successfully created", registeredReaction.Entity);
+    }
+
     [HttpDelete("{reactionId:int}")]
     public ActionResult DeleteAction([AsParameters] int reactionId, [FromHeader] string authorization)
     {

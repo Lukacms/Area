@@ -54,6 +54,29 @@ public class ActionsController
         _context.SaveChanges();
         return new CreatedResult("Action successfully created", registeredAction.Entity);
     }
+    [HttpPut("")]
+    public ActionResult ModifyAction([FromBody] ActionsModel newAction, [FromHeader] string authorization)
+    {
+        var decodedUser = JwtDecoder.Decode(authorization);
+
+        if (!decodedUser.Admin)
+          return new UnauthorizedObjectResult(new JsonObject{{"message", "You are not allowed to add a reaction"}});
+        if (newAction.Id == 0)
+            return new BadRequestObjectResult(new JsonObject { { "message", "Should specify the id of the action" } });
+        if (newAction.Name.IsNullOrEmpty())
+            return new BadRequestObjectResult(new JsonObject { { "message", "Reaction name is empty" } });
+        if (newAction.Endpoint.IsNullOrEmpty())
+            return new BadRequestObjectResult(new JsonObject { { "message", "Reaction endpoint is empty" } });
+        if (newAction.ServiceId == 0)
+            return new BadRequestObjectResult(new JsonObject { { "message", "ServiceId cannot be equal to zero" } });
+        var service = _context.Services.FirstOrDefault(s => s.Id == newAction.ServiceId);
+        if (service == null)
+            return new BadRequestObjectResult(new JsonObject { { "message", $"There's no services with this ServiceId" } });
+        var registeredAction = _context.Actions.Update(newAction);
+        _context.SaveChanges();
+        return new CreatedResult("Action successfully created", registeredAction.Entity);
+    }
+
 
     [HttpDelete("{actionId:int}")]
     public ActionResult DeleteAction([AsParameters] int actionId, [FromHeader] string authorization)

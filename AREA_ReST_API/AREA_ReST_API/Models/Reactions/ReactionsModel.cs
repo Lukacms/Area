@@ -10,4 +10,5 @@ public class ReactionsModel
     [Required] public required string Name { get; set; }
     [Required] public required string Endpoint { get; set; }
     public string? DefaultConfiguration { get; set; }
+    public string? Description { get; set; }
 }
