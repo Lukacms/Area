@@ -80,7 +80,7 @@ public class UsersController : ControllerBase
     {
         string body = $"Hello {newUser.Username},<br/><br/>" +
                       $"Click the link below to complete the login process:<br/>" +
-                      $"<a href=\"http://localhost:8091/register/verify?id={BCrypt.Net.BCrypt.EnhancedHashPassword(newUser.Id.ToString(), 13)}&email={newUser.Email}\">login</a>";
+                      $"<a href=\"http://localhost:8081/register/verify?id={BCrypt.Net.BCrypt.EnhancedHashPassword(newUser.Id.ToString(), 13)}&email={newUser.Email}\">login</a>";
 
         MailMessage mail = new MailMessage();
         mail.From = new MailAddress("noreply.fastr@gmail.com", "NoReply");
