@@ -72,7 +72,6 @@ public class GithubController
                 RefreshToken = jsonRes["refresh_token"]!.ToString(),
                 ExpiresIn = (int)jsonRes["expires_in"]!,
             };
-            Console.WriteLine(jsonRes);
             _context.UserServices.Add(userService);
             await _context.SaveChangesAsync();
             return new OkResult();
