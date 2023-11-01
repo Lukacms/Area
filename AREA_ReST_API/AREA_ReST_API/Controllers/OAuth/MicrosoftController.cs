@@ -16,13 +16,15 @@ namespace AREA_ReST_API.Controllers.OAuth;
 public class MicrosoftController
 {
     private readonly AppDbContext _context;
-    private readonly HttpService _client;
+    private readonly HttpService _client = new ();
     private readonly string _microsoftUri = "https://login.microsoftonline.com/common/oauth2/v2.0/token";
 
-    public MicrosoftController(AppDbContext context)
+    public MicrosoftController(AppDbContext context, HttpService? client = null!)
     {
         _context = context;
-        _client = new HttpService();
+        if (client == null)
+            return;
+        _client = client;
     }
 
     [HttpPost("")]
@@ -42,19 +44,26 @@ public class MicrosoftController
             {"redirect_uri", callbackUri}
         };
         var result = await _client.PostAsync(_microsoftUri, data, "application/x-www-forms-urlencoded", base64str);
-        var microsoftService = _context.Services.First(s => s.Name == "Microsoft");
-        var jsonRes = JObject.Parse(result);
-        var microsoftUserService = new UserServicesModel
+        try
         {
-            UserId = decodedUser.Id,
-            ServiceId = microsoftService.Id,
-            AccessToken = jsonRes["access_token"]!.ToString(),
-            RefreshToken = jsonRes["refresh_token"]!.ToString(),
-            ExpiresIn = (int)jsonRes["expires_in"]!,
-        };
-        _context.UserServices.Add(microsoftUserService);
-        await _context.SaveChangesAsync();
-        return new OkResult();
+            var microsoftService = _context.Services.First(s => s.Name == "Microsoft");
+            var jsonRes = JObject.Parse(result);
+            var microsoftUserService = new UserServicesModel
+            {
+                UserId = decodedUser.Id,
+                ServiceId = microsoftService.Id,
+                AccessToken = jsonRes["access_token"]!.ToString(),
+                RefreshToken = jsonRes["refresh_token"]!.ToString(),
+                ExpiresIn = (int)jsonRes["expires_in"]!,
+            };
+            _context.UserServices.Add(microsoftUserService);
+            await _context.SaveChangesAsync();
+            return new OkResult();
+        }
+        catch
+        {
+            return new BadRequestObjectResult(result);
+        }
     }
 
     [HttpPost("mobile")]
@@ -73,19 +82,25 @@ public class MicrosoftController
             {"redirect_uri", callbackUri}
         };
         var result = await _client.PostAsync(_microsoftUri, data, "application/x-www-forms-urlencoded", base64str);
-        Console.WriteLine(result);
-        var microsoftService = _context.Services.First(s => s.Name == "Microsoft");
-        var jsonRes = JObject.Parse(result);
-        var microsoftUserService = new UserServicesModel
+        try
         {
-            UserId = decodedUser.Id,
-            ServiceId = microsoftService.Id,
-            AccessToken = jsonRes["access_token"]!.ToString(),
-            RefreshToken = jsonRes["refresh_token"]!.ToString(),
-            ExpiresIn = (int)jsonRes["expires_in"]!,
-        };
-        _context.UserServices.Add(microsoftUserService);
-        await _context.SaveChangesAsync();
-        return new OkResult();
+            var microsoftService = _context.Services.First(s => s.Name == "Microsoft");
+            var jsonRes = JObject.Parse(result);
+            var microsoftUserService = new UserServicesModel
+            {
+                UserId = decodedUser.Id,
+                ServiceId = microsoftService.Id,
+                AccessToken = jsonRes["access_token"]!.ToString(),
+                RefreshToken = jsonRes["refresh_token"]!.ToString(),
+                ExpiresIn = (int)jsonRes["expires_in"]!,
+            };
+            _context.UserServices.Add(microsoftUserService);
+            await _context.SaveChangesAsync();
+            return new OkResult();
+        }
+        catch
+        {
+            return new BadRequestObjectResult(result);
+        }
     }
 }

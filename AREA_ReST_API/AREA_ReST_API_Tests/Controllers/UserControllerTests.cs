@@ -8,7 +8,7 @@ using AREA_ReST_API.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace TestProject2;
+namespace TestProject2.Controllers;
 
 public class Tests
 {

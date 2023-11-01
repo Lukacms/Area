@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
-namespace TestProject2;
+namespace TestProject2.Controllers;
 
 public class UserActionsControllerTests
 {
@@ -22,7 +22,7 @@ public class UserActionsControllerTests
     }
 
     [Test]
-    public void TestGetUserActionByAreaId_Valid()
+    public void Test_GetUserActionByAreaId_Valid()
     {
         var userAction = new UserActionsModel
         {
@@ -40,14 +40,14 @@ public class UserActionsControllerTests
     }
 
     [Test]
-    public void TestGetUserActionByAreaId_NoAction()
+    public void Test_GetUserActionByAreaId_NoAction()
     {
         var result = _controller.GetUserActionByAreaId(1);
         Assert.That(result.Result, Is.TypeOf<NotFoundObjectResult>());
     }
 
     [Test]
-    public void TestCreateNewUserAction_Valid()
+    public void Test_CreateNewUserAction_Valid()
     {
         var newUserAction = new UserActionsModel
         {
@@ -70,7 +70,7 @@ public class UserActionsControllerTests
     }
 
     [Test]
-    public void TestDeleteUserAction_Valid()
+    public void Test_DeleteUserAction_Valid()
     {
         var newUserAction = new UserActionsModel
         {
@@ -92,7 +92,7 @@ public class UserActionsControllerTests
     }
 
     [Test]
-    public void TestDeleteUserAction_NotExist()
+    public void Test_DeleteUserAction_NotExist()
     {
         var result = _controller.DeleteUserAction(0);
         Assert.That(result, Is.TypeOf<NotFoundObjectResult>());

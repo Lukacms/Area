@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
-namespace TestProject2;
+namespace TestProject2.Controllers;
 
 public class ReactionsControllerTests
 {
@@ -37,7 +37,7 @@ public class ReactionsControllerTests
     }
 
     [Test]
-    public void TestGetAllReactions_EmptyList()
+    public void Test_GetAllReactions_EmptyList()
     {
         var reactions = _controller.GetAllReactions();
         var emptyList = (List<ReactionsModel>)(((OkObjectResult)reactions.Result!)!).Value!;
@@ -45,7 +45,7 @@ public class ReactionsControllerTests
     }
 
     [Test]
-    public void TestGetAllReactions_FilledList()
+    public void Test_GetAllReactions_FilledList()
     {
         _database.Reactions.Add(new ReactionsModel
         {
@@ -62,7 +62,7 @@ public class ReactionsControllerTests
     }
 
     [Test]
-    public void TestGetReactionByServiceId_EmptyList()
+    public void Test_GetReactionByServiceId_EmptyList()
     {
         var reactions = _controller.GetReactionsByServiceId(1);
         var emptyList = (List<ReactionsModel>)(((OkObjectResult)reactions.Result!)!).Value!;
@@ -70,7 +70,7 @@ public class ReactionsControllerTests
     }
 
     [Test]
-    public void TestGetReactionByServiceId_FilledList()
+    public void Test_GetReactionByServiceId_FilledList()
     {
         _database.Reactions.Add(new ReactionsModel
         {
@@ -87,7 +87,7 @@ public class ReactionsControllerTests
     }
 
     [Test]
-    public void TestCreateNewReaction_Valid()
+    public void Test_CreateNewReaction_Valid()
     {
         var newReaction = new ReactionsModel
         {
@@ -102,7 +102,7 @@ public class ReactionsControllerTests
     }
 
     [Test]
-    public void TestCreateNewReaction_NoName()
+    public void Test_CreateNewReaction_NoName()
     {
         var newReaction = new ReactionsModel
         {
@@ -115,7 +115,7 @@ public class ReactionsControllerTests
     }
 
     [Test]
-    public void TestCreateNewReaction_NoEndpoint()
+    public void Test_CreateNewReaction_NoEndpoint()
     {
         var newReaction = new ReactionsModel
         {
@@ -128,7 +128,7 @@ public class ReactionsControllerTests
     }
 
     [Test]
-    public void TestCreateNewReaction_NoService()
+    public void Test_CreateNewReaction_NoService()
     {
         var newReaction = new ReactionsModel
         {
@@ -141,7 +141,7 @@ public class ReactionsControllerTests
     }
 
     [Test]
-    public void TestCreateNewReaction_NonExistingService()
+    public void Test_CreateNewReaction_NonExistingService()
     {
         var newReaction = new ReactionsModel
         {
@@ -154,7 +154,7 @@ public class ReactionsControllerTests
     }
 
     [Test]
-    public void TestCreateNewReaction_NotAdmin()
+    public void Test_CreateNewReaction_NotAdmin()
     {
         var newReaction = new ReactionsModel
         {
@@ -167,7 +167,7 @@ public class ReactionsControllerTests
     }
 
     [Test]
-    public void TestDeleteReaction_Valid()
+    public void Test_DeleteReaction_Valid()
     {
         var newReaction = new ReactionsModel
         {
@@ -184,7 +184,7 @@ public class ReactionsControllerTests
     }
 
     [Test]
-    public void TestDeleteReaction_NotAdmin()
+    public void Test_DeleteReaction_NotAdmin()
     {
         var newReaction = new ReactionsModel
         {
@@ -199,7 +199,7 @@ public class ReactionsControllerTests
     }
 
     [Test]
-    public void TestDeleteReaction_NotExist()
+    public void Test_DeleteReaction_NotExist()
     {
         var result = _controller.DeleteReaction(57, "Bearer " + _adminToken);
         Assert.That(result, Is.TypeOf<NotFoundObjectResult>());

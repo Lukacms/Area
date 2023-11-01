@@ -15,15 +15,15 @@ namespace AREA_ReST_API.Controllers.OAuth;
 public class SpotifyController
 {
     private readonly AppDbContext _context;
-    private readonly HttpService _client;
+    private readonly HttpService _client = new ();
     private readonly string _spotifyUrl = "https://accounts.spotify.com/api/token";
-    private HttpClient client;
 
-    public SpotifyController(AppDbContext context)
+    public SpotifyController(AppDbContext context, HttpService? client = null!)
     {
         _context = context;
-        _client = new HttpService();
-        client = new HttpClient();
+        if (client == null)
+            return;
+        _client = client;
     }
 
     [HttpPost("")]
@@ -42,19 +42,25 @@ public class SpotifyController
             { "grant_type", "authorization_code" },
         };
         var result = await _client.PostAsync(_spotifyUrl, data, "application/x-www-forms-urlencoded", base64str);
-        Console.WriteLine(result);
-        var jsonRes = JObject.Parse(result);
-        var userService = new UserServicesModel
+        try
         {
-            ServiceId = _context.Services.First(service => service.Name == "Spotify").Id,
-            UserId = decodedUser.Id,
-            AccessToken = jsonRes["access_token"]!.ToString(),
-            RefreshToken = jsonRes["refresh_token"]!.ToString(),
-            ExpiresIn = (int)jsonRes["expires_in"]!,
-        };
-        _context.UserServices.Add(userService);
-        await _context.SaveChangesAsync();
-        return new OkResult();
+            var jsonRes = JObject.Parse(result);
+            var userService = new UserServicesModel
+            {
+                ServiceId = _context.Services.First(service => service.Name == "Spotify").Id,
+                UserId = decodedUser.Id,
+                AccessToken = jsonRes["access_token"]!.ToString(),
+                RefreshToken = jsonRes["refresh_token"]!.ToString(),
+                ExpiresIn = (int)jsonRes["expires_in"]!,
+            };
+            _context.UserServices.Add(userService);
+            await _context.SaveChangesAsync();
+            return new OkResult();
+        }
+        catch
+        {
+            return new BadRequestObjectResult(result);
+        }
     }
 
     [HttpPost("mobile")]
@@ -73,17 +79,24 @@ public class SpotifyController
             { "grant_type", "authorization_code" },
         };
         var result = await _client.PostAsync(_spotifyUrl, data, "application/x-www-forms-urlencoded", base64str);
-        var jsonRes = JObject.Parse(result);
-        var userService = new UserServicesModel
+        try
         {
-            ServiceId = _context.Services.First(service => service.Name == "Spotify").Id,
-            UserId = decodedUser.Id,
-            AccessToken = jsonRes["access_token"]!.ToString(),
-            RefreshToken = jsonRes["refresh_token"]!.ToString(),
-            ExpiresIn = (int)jsonRes["expires_in"]!,
-        };
-        _context.UserServices.Add(userService);
-        await _context.SaveChangesAsync();
-        return new OkResult();
+            var jsonRes = JObject.Parse(result);
+            var userService = new UserServicesModel
+            {
+                ServiceId = _context.Services.First(service => service.Name == "Spotify").Id,
+                UserId = decodedUser.Id,
+                AccessToken = jsonRes["access_token"]!.ToString(),
+                RefreshToken = jsonRes["refresh_token"]!.ToString(),
+                ExpiresIn = (int)jsonRes["expires_in"]!,
+            };
+            _context.UserServices.Add(userService);
+            await _context.SaveChangesAsync();
+            return new OkResult();
+        }
+        catch
+        {
+            return new BadRequestObjectResult(result);
+        }
     }
 }

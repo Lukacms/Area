@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
-namespace TestProject2;
+namespace TestProject2.Controllers;
 
 public class UserReactionsControllerTests
 {
@@ -22,7 +22,7 @@ public class UserReactionsControllerTests
     }
 
     [Test]
-    public void TestsCreateNewUserReaction_Valid()
+    public void Test_CreateNewUserReaction_Valid()
     {
         var userReaction = new UserReactionsModel
         {
@@ -44,7 +44,7 @@ public class UserReactionsControllerTests
     }
 
     [Test]
-    public void TestsGetUserReactionByAreaId_FilledList()
+    public void Test_GetUserReactionByAreaId_FilledList()
     {
         var userReaction = new UserReactionsModel
         {
@@ -65,7 +65,7 @@ public class UserReactionsControllerTests
     }
 
     [Test]
-    public void TestsGetUserReactionByAreaId_EmptyList()
+    public void Test_GetUserReactionByAreaId_EmptyList()
     {
         var result = _controller.GetUserReactionByAreaId(1);
         Assert.Multiple(() =>
@@ -78,7 +78,7 @@ public class UserReactionsControllerTests
     }
 
     [Test]
-    public void TestsDeleteUserReactionById_Valid()
+    public void Test_DeleteUserReactionById_Valid()
     {
         var userReaction = new UserReactionsModel
         {
@@ -95,7 +95,7 @@ public class UserReactionsControllerTests
     }
 
     [Test]
-    public void TestsDeleteUserReactionById_NotExist()
+    public void Test_DeleteUserReactionById_NotExist()
     {
         var result = _controller.DeleteUserReactionById(0);
         Assert.That(result, Is.TypeOf<NotFoundObjectResult>());

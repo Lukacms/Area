@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
-namespace TestProject2;
+namespace TestProject2.Controllers;
 
 public class ServicesControllerTests
 {
@@ -26,14 +26,14 @@ public class ServicesControllerTests
     }
 
     [Test]
-    public void TestGetAllServices_EmptyList()
+    public void Test_GetAllServices_EmptyList()
     {
         var result = _controller.GetAllServices();
         Assert.That(((List<ServicesModel>)((OkObjectResult)result.Result!).Value!).IsNullOrEmpty(), Is.EqualTo(true));
     }
 
     [Test]
-    public void TestGetAllServices_FilledList()
+    public void Test_GetAllServices_FilledList()
     {
         var service = new ServicesModel
         {

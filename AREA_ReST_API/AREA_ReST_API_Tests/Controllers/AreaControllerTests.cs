@@ -4,7 +4,7 @@ using AREA_ReST_API.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace TestProject2;
+namespace TestProject2.Controllers;
 
 public class AreaControllerTests
 {
@@ -62,14 +62,14 @@ public class AreaControllerTests
     }
 
     [Test]
-    public void TestGetAllAreasByUserId()
+    public void Test_GetAllAreasByUserId()
     {
         var result = _controller.GetAllAreasByUserId(1);
         Assert.That(result.Result, Is.TypeOf<OkObjectResult>());
     }
 
     [Test]
-    public void TestCreateNewArea_Valid()
+    public void Test_CreateNewArea_Valid()
     {
         var area = new AreasModel
         {
@@ -84,7 +84,7 @@ public class AreaControllerTests
     }
 
     [Test]
-    public void TestCreateNewArea_Invalid()
+    public void Test_CreateNewArea_Invalid()
     {
         var area = new AreasModel
         {
@@ -97,7 +97,7 @@ public class AreaControllerTests
     }
 
     [Test]
-    public void TestCreateNewAreaWithActionAndReaction_Valid()
+    public void Test_CreateNewAreaWithActionAndReaction_Valid()
     {
         var area = new AreaWithActionReaction
         {
@@ -131,7 +131,7 @@ public class AreaControllerTests
     }
 
     [Test]
-    public void TestCreateNewAreaWithActionAndReaction_InvalidName()
+    public void Test_CreateNewAreaWithActionAndReaction_InvalidName()
     {
         var area = new AreaWithActionReaction
         {
@@ -165,7 +165,7 @@ public class AreaControllerTests
     }
 
     [Test]
-    public void TestDeleteAreaWithActionAndReaction_Valid()
+    public void Test_DeleteAreaWithActionAndReaction_Valid()
     {
         var area = new AreaWithActionReaction
         {
@@ -196,13 +196,13 @@ public class AreaControllerTests
     }
 
     [Test]
-    public void TestDeleteAreaWithActionAndReaction_Invalid()
+    public void Test_DeleteAreaWithActionAndReaction_Invalid()
     {
         Assert.That(_controller.DeleteAreaWithActionAndReaction(0), Is.TypeOf<NotFoundObjectResult>());
     }
 
     [Test]
-    public void TestModifyArea()
+    public void Test_ModifyArea()
     {
         var area = new AreasModel
         {
@@ -226,7 +226,7 @@ public class AreaControllerTests
     }
 
     [Test]
-    public void TestGetAllAreasFullByUserId()
+    public void Test_GetAllAreasFullByUserId()
     {
         var area = new AreaWithActionReaction
         {

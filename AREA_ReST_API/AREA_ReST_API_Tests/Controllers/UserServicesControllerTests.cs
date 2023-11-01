@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
-namespace TestProject2;
+namespace TestProject2.Controllers;
 
 public class UserServicesControllerTests
 {
@@ -35,7 +35,7 @@ public class UserServicesControllerTests
     }
 
     [Test]
-    public void TestGetUserServicesByUserId_FilledList()
+    public void Test_GetUserServicesByUserId_FilledList()
     {
         var userService = new UserServicesModel
         {
@@ -58,7 +58,7 @@ public class UserServicesControllerTests
     }
 
     [Test]
-    public void TestGetUserServicesByUserId_EmptyList()
+    public void Test_GetUserServicesByUserId_EmptyList()
     {
         var result = _controller.GetUserServicesByUserId(1);
         Assert.Multiple(() =>
@@ -69,7 +69,7 @@ public class UserServicesControllerTests
     }
 
     [Test]
-    public void TestDeleteUserServiceById_Valid()
+    public void Test_DeleteUserServiceById_Valid()
     {
         var userService = new UserServicesModel
         {
@@ -92,7 +92,7 @@ public class UserServicesControllerTests
     }
 
     [Test]
-    public void TestDeleteUserServiceById_InvalidToken()
+    public void Test_DeleteUserServiceById_InvalidToken()
     {
         var userService = new UserServicesModel
         {
@@ -111,7 +111,7 @@ public class UserServicesControllerTests
     }
 
     [Test]
-    public void TestDeleteUserServiceById_NotExist()
+    public void Test_DeleteUserServiceById_NotExist()
     {
         var result = _controller.DeleteUserServiceById(0, "Bearer " + _goodToken);
         Assert.That(result, Is.TypeOf<NotFoundObjectResult>());
