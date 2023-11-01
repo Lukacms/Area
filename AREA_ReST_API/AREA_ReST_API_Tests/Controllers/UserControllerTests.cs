@@ -50,8 +50,8 @@ public class Tests
         var user = db.Users.FirstOrDefault();
         user.IsMailVerified = true;
         db.Users.Update(user);
-        var test = usrCtr.LoginUser(cred, opt);
         db.SaveChanges();
+        var test = usrCtr.LoginUser(cred, opt);
         Assert.That(test, Is.TypeOf<OkObjectResult>());
     }
 

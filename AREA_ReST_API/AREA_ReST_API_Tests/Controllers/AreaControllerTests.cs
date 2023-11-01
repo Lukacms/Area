@@ -18,7 +18,7 @@ public class AreaControllerTests
     public AreaControllerTests()
     {
         var options = new DbContextOptionsBuilder<AppDbContext>()
-            .UseInMemoryDatabase(databaseName: "InMemoryDatabase")
+            .UseInMemoryDatabase(databaseName: "AreaControllerTest")
             .Options;
         _database = new AppDbContext(options);
         var service = new ServicesModel
@@ -78,7 +78,7 @@ public class AreaControllerTests
             UserId = 1,
         };
         var result = _controller.CreateNewArea(area);
-        Assert.That(result.Result, Is.TypeOf<CreatedResult>());
+        Assert.That(result, Is.TypeOf<CreatedResult>());
         _database.Areas.RemoveRange(_database.Areas);
         _database.SaveChanges();
     }
@@ -93,7 +93,7 @@ public class AreaControllerTests
             UserId = 1,
         };
         var result = _controller.CreateNewArea(area);
-        Assert.That(result.Result, Is.TypeOf<BadRequestObjectResult>());
+        Assert.That(result, Is.TypeOf<BadRequestObjectResult>());
     }
 
     [Test]
@@ -123,7 +123,7 @@ public class AreaControllerTests
         };
 
         var results = _controller.CreateNewAreaWithActionAndReaction(area);
-        Assert.That(results.Result, Is.TypeOf<CreatedResult>());
+        Assert.That(results, Is.TypeOf<CreatedResult>());
         _database.UserActions.RemoveRange(_database.UserActions);
         _database.UserReactions.RemoveRange(_database.UserReactions);
         _database.Areas.RemoveRange(_database.Areas);
@@ -157,7 +157,7 @@ public class AreaControllerTests
         };
 
         var results = _controller.CreateNewAreaWithActionAndReaction(area);
-        Assert.That(results.Result, Is.TypeOf<BadRequestObjectResult>());
+        Assert.That(results, Is.TypeOf<BadRequestObjectResult>());
         _database.UserActions.RemoveRange(_database.UserActions);
         _database.UserReactions.RemoveRange(_database.UserReactions);
         _database.Areas.RemoveRange(_database.Areas);
@@ -190,15 +190,15 @@ public class AreaControllerTests
             UserId = 1
         };
         var results = _controller.CreateNewAreaWithActionAndReaction(area);
-        var content = (CreatedResult)results.Result!;
+        var content = (CreatedResult)results!;
         var areaRes = (AreaWithActionReaction)content.Value!;
-        Assert.That(_controller.DeleteAreaWithActionAndReaction(areaRes.Id).Result, Is.TypeOf<OkObjectResult>());
+        Assert.That(_controller.DeleteAreaWithActionAndReaction(areaRes.Id), Is.TypeOf<OkObjectResult>());
     }
 
     [Test]
     public void TestDeleteAreaWithActionAndReaction_Invalid()
     {
-        Assert.That(_controller.DeleteAreaWithActionAndReaction(0).Result, Is.TypeOf<NotFoundObjectResult>());
+        Assert.That(_controller.DeleteAreaWithActionAndReaction(0), Is.TypeOf<NotFoundObjectResult>());
     }
 
     [Test]
@@ -211,7 +211,7 @@ public class AreaControllerTests
             UserId = 1,
         };
         var result = _controller.CreateNewArea(area);
-        var id = ((AreasModel)((CreatedResult)result.Result!).Value!).Id;
+        var id = ((AreasModel)((CreatedResult)result).Value!).Id;
         result = _controller.ModifyArea(new AreasModel
         {
             Id = id,
@@ -225,7 +225,7 @@ public class AreaControllerTests
         _database.SaveChanges();
     }
 
-    /*[Test]
+    [Test]
     public void TestGetAllAreasFullByUserId()
     {
         var area = new AreaWithActionReaction
@@ -257,5 +257,5 @@ public class AreaControllerTests
         _database.UserReactions.RemoveRange(_database.UserReactions);
         _database.Areas.RemoveRange(_database.Areas);
         _database.SaveChanges();
-    } */
+    }
 }

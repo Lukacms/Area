@@ -24,4 +24,8 @@
       <ProjectReference Include="..\AREA_ReST_API\AREA_ReST_API.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Classes\" />
+    </ItemGroup>
+
 </Project>

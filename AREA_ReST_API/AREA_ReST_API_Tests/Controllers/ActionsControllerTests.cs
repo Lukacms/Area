@@ -18,7 +18,7 @@ public class ActionsControllerTests
     public ActionsControllerTests()
     {
         var options = new DbContextOptionsBuilder<AppDbContext>()
-            .UseInMemoryDatabase(databaseName: "InMemoryDatabase")
+            .UseInMemoryDatabase(databaseName: "ActionControllerTest")
             .Options;
         _database = new AppDbContext(options);
         var service = new ServicesModel
@@ -33,11 +33,6 @@ public class ActionsControllerTests
         _database.Services.Add(service);
         _database.SaveChanges();
         _controller = new ActionsController(_database);
-    }
-
-    [SetUp]
-    public void Setup()
-    {
     }
 
     [Test]
