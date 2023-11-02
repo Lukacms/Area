@@ -4,6 +4,11 @@ import * as Yup from 'yup';
 import { getFirstInfos, login } from '../config/request';
 import secureLocalStorage from 'react-secure-storage';
 
+/**
+ * Hook for Login page. Log in the user with error handling, and also redirect for google login
+ * @returns {{loginUser: Function, navigate: NavigateFunction, initialValues: {},
+ * validate: Yup.ObjectSchema, loading: boolean, error: string | null, setError: Function, googleSignIn: Function | Window.open}}
+ */
 const useLogin = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);

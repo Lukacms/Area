@@ -4,6 +4,12 @@ import secureLocalStorage from 'react-secure-storage';
 import * as Yup from 'yup';
 import { changeUser, getFirstInfos } from '../../config/request';
 
+/**
+ * Provide SettingsUser pages everything needed that is not display
+ * @returns {{navigate: NavigateFunction, passwordValues: {}, validation: Yup.ObjectSchema,
+ * changePassword: Function, logout: Function, buttonEl: MutableRefObject<null>,
+ * isAdmin: boolean, toast: MutableRefObject<null>}}
+ */
 const useSettingsUser = () => {
   const navigate = useNavigate();
   const [isAdmin, setIsAdmin] = useState(false);

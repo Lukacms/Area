@@ -20,6 +20,12 @@ public class MicrosoftService : IService
             case "Send Mail":
                 await SendMail(userReaction, userService);
                 break;
+            case "Create Notebook":
+                await CreateNotebook(userReaction, userService);
+                break;
+            case "Create Draft":
+                await CreateDraft(userReaction, userService);
+                break;
         }
     }
 
@@ -33,6 +39,33 @@ public class MicrosoftService : IService
         requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", userService.AccessToken);
 
         requestMessage.Content = new StringContent(createdMail, Encoding.UTF8,"text/plain");
+        var response = await client.SendAsync(requestMessage);
+    }
+
+    private async Task CreateDraft(UserReactionsModel userReaction, UserServicesModel userService)
+    {
+        var client = new HttpClient();
+        var uri = "https://graph.microsoft.com/v1.0/me/messages";
+        var createdDraft = CreateMail(userReaction);
+
+        var requestMessage = new HttpRequestMessage(HttpMethod.Post, uri);
+        requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", userService.AccessToken);
+
+        requestMessage.Content = new StringContent(createdDraft, Encoding.UTF8,"text/plain");
+        var response = await client.SendAsync(requestMessage);
+    }
+
+    private async Task CreateNotebook(UserReactionsModel userReaction, UserServicesModel userService)
+    {
+        var client = new HttpClient();
+        var uri = "https://graph.microsoft.com/v1.0/me/onenote/notebooks";
+        var requestMessage = new HttpRequestMessage(HttpMethod.Post, uri);
+        var config = JObject.Parse(userReaction.Configuration);
+
+        requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", userService.AccessToken);
+
+        var content = "{displayName: \"" + config["name"]!.ToString() + "\"}";
+        requestMessage.Content = new StringContent(content, Encoding.UTF8,"application/json");
         var response = await client.SendAsync(requestMessage);
     }
 

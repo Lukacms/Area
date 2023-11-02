@@ -4,6 +4,12 @@ import { Card } from 'primereact/card';
 import { InputText } from 'primereact/inputtext';
 import '../styles/panelArea.css';
 
+/**
+ * @type Component
+ * @param label str
+ * @param value str
+ * @param id unique key
+ */
 const AreaConfig = ({ label, value, id }) => {
   return (
     <div className='p-inputgroup flex-1' key={id} style={{margin: '1vh 0vw 1vh 0vw'}}>
@@ -13,6 +19,13 @@ const AreaConfig = ({ label, value, id }) => {
   );
 };
 
+/**
+ * @type Component
+ * @param name str
+ * @param action Object
+ * @param reactions Object
+ * @param status - Display footer
+ */
 const AreaPanelBuild = ({ name, action, reactions, status, onHide }) => {
   const footer = <Button label='Hide' onClick={() => onHide(null)} />;
 
@@ -49,6 +62,13 @@ const AreaPanelBuild = ({ name, action, reactions, status, onHide }) => {
   );
 };
 
+/**
+ * @type Component
+ * @param name str
+ * @param action Object
+ * @param reactions Object
+ * @param status - Display footer
+ */
 const AreaPanel = ({ name, action, reactions, status, onHide }) => {
   const footer = <Button label='Hide' onClick={() => onHide(null)} />;
   const actionConfig = action?.configuration ? JSON.parse(action.configuration) : '';
@@ -58,7 +78,7 @@ const AreaPanel = ({ name, action, reactions, status, onHide }) => {
       <Card title={name} style={{ minWidth: '50vw' }} footer={status === 'Default' ? footer : null}>
         <Accordion multiple>
           <AccordionTab header={action.action?.name} key={0}>
-            <AreaConfig label='timer' value={action?.timer} />
+            <AreaConfig label='timer' value={action?.timer} key={1} />
             {actionConfig ? (
               Object.entries(actionConfig).map((item, key) => (
                 <AreaConfig label={item[0]} value={item[1]} id={key} />
@@ -72,7 +92,7 @@ const AreaPanel = ({ name, action, reactions, status, onHide }) => {
               ? JSON.parse(reaction.configuration)
               : '';
             return (
-              <AccordionTab header={reaction.reaction?.name} key={key + 1}>
+              <AccordionTab header={reaction.reaction?.name} key={key + 2}>
                 {reactionConfig && reactionConfig !== '' ? (
                   Object.entries(reactionConfig).map((item, pKey) => (
                     <AreaConfig label={item[0]} value={item[1]} id={pKey} />

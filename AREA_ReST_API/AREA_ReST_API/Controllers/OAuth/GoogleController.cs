@@ -15,13 +15,15 @@ namespace AREA_ReST_API.Controllers.OAuth;
 public class GoogleController
 {
     private readonly AppDbContext _context;
-    private readonly HttpService _client;
+    private readonly HttpService _client = new ();
     private readonly string _googleUrl = "https://oauth2.googleapis.com/token";
 
-    public GoogleController(AppDbContext context)
+    public GoogleController(AppDbContext context, HttpService? client = null!)
     {
         _context = context;
-        _client = new HttpService();
+        if (client == null)
+            return;
+        _client = client;
     }
 
     [HttpPost("")]
@@ -38,18 +40,25 @@ public class GoogleController
             { "grant_type", "authorization_code" },
         };
         var result = await _client.PostAsync(_googleUrl, data, "application/x-www-forms-urlencoded", "");
-        var jsonRes = JObject.Parse(result);
-        var userService = new UserServicesModel
+        try
         {
-            ServiceId = _context.Services.First(service => service.Name == "Google").Id,
-            UserId = decodedUser.Id,
-            AccessToken = jsonRes["access_token"]!.ToString(),
-            RefreshToken = jsonRes["refresh_token"]!.ToString(),
-            ExpiresIn = (int)jsonRes["expires_in"]!,
-        };
-        _context.UserServices.Add(userService);
-        await _context.SaveChangesAsync();
-        return new OkResult();
+            var jsonRes = JObject.Parse(result);
+            var userService = new UserServicesModel
+            {
+                ServiceId = _context.Services.First(service => service.Name == "Google").Id,
+                UserId = decodedUser.Id,
+                AccessToken = jsonRes["access_token"]!.ToString(),
+                RefreshToken = jsonRes["refresh_token"]!.ToString(),
+                ExpiresIn = (int)jsonRes["expires_in"]!,
+            };
+            _context.UserServices.Add(userService);
+            await _context.SaveChangesAsync();
+            return new OkResult();
+        }
+        catch
+        {
+            return new BadRequestObjectResult(result);
+        }
     }
 
     [HttpPost("mobile")]
@@ -65,18 +74,24 @@ public class GoogleController
             { "grant_type", "authorization_code" },
         };
         var result = await _client.PostAsync(_googleUrl, data, "application/x-www-forms-urlencoded", "");
-        var jsonRes = JObject.Parse(result);
-        Console.WriteLine(jsonRes);
-        var userService = new UserServicesModel
+        try
         {
-            ServiceId = _context.Services.First(service => service.Name == "Google").Id,
-            UserId = decodedUser.Id,
-            AccessToken = jsonRes["access_token"]!.ToString(),
-            RefreshToken = jsonRes["refresh_token"]!.ToString(),
-            ExpiresIn = (int)jsonRes["expires_in"]!,
-        };
-        _context.UserServices.Add(userService);
-        await _context.SaveChangesAsync();
-        return new OkResult();
+            var jsonRes = JObject.Parse(result);
+            var userService = new UserServicesModel
+            {
+                ServiceId = _context.Services.First(service => service.Name == "Google").Id,
+                UserId = decodedUser.Id,
+                AccessToken = jsonRes["access_token"]!.ToString(),
+                RefreshToken = jsonRes["refresh_token"]!.ToString(),
+                ExpiresIn = (int)jsonRes["expires_in"]!,
+            };
+            _context.UserServices.Add(userService);
+            await _context.SaveChangesAsync();
+            return new OkResult();
+        }
+        catch
+        {
+            return new BadRequestObjectResult(result);
+        }
     }
 }

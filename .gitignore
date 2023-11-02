@@ -1,0 +1,4 @@
+# basic files that SHOULD NOT be pushed
+.idea/
+.vscode/
+API/

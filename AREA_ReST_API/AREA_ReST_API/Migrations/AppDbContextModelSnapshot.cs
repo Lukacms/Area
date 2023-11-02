@@ -105,6 +105,10 @@ namespace AREA_ReST_API.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("ConnectionLinkMobile")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<string>("Endpoint")
                         .IsRequired()
                         .HasColumnType("longtext");

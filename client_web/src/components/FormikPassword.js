@@ -1,6 +1,10 @@
 import { Password } from 'primereact/password';
 import '../styles/components.css';
 
+/**
+ * Primereact password component adapted to formik
+ * @returns {HTML}
+ */
 const FormikPassword = ({ field, form, label, id, error, touched, ...props }) => {
   return (
     <div className='flex flex-column gap-2'>

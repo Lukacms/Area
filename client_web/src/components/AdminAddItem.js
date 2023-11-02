@@ -2,6 +2,14 @@ import { Button } from 'primereact/button';
 import { Field, Form, Formik } from 'formik';
 import { FormikChip, FormikDropdown, FormikInputArea, FormikInputtext } from '.';
 
+/**
+ * @param initalValues array<str>
+ * @param validate validation schema
+ * @param onSubmit what to do on submit
+ * @param services list of services
+ * @type Component
+ * @returns Html
+ */
 const AdminAddItem = ({ initalValues, validate, onSubmit, services }) => {
   return (
     <Formik

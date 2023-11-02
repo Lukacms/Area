@@ -3,6 +3,10 @@ import { useNavigate } from 'react-router';
 import { getServices, getUserServices } from '../../config/request';
 import secureLocalStorage from 'react-secure-storage';
 
+/**
+ * Retrieve necessary infos for SettingServices page
+ * @returns {{services: Array<{}>, navigate: NavigateFunction, loaded: boolean, isAdmin: boolean}}
+ */
 const useSettingServices = () => {
   const [services, setServices] = useState([]);
   const navigate = useNavigate();

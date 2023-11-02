@@ -1,29 +1,23 @@
-FROM ubuntu:22.04
+FROM ghcr.io/cirruslabs/flutter:3.13.5
 
-# Prerequisites
-RUN apt update && apt install -y curl git unzip xz-utils zip libglu1-mesa openjdk-8-jdk wget
+# Set environment variables for configuration
+ENV APP_NAME=FastR
+ENV APP_VERSION=1.0.0
 
-# Set up new user
-RUN useradd -ms /bin/bash developer
-USER developer
-WORKDIR /home/developer
+# Set the working directory inside the container
+WORKDIR /apk
 
-# Prepare Android directories and system variables
-RUN mkdir -p Android/sdk
-ENV ANDROID_SDK_ROOT /home/developer/Android/sdk
-RUN mkdir -p .android && touch .android/repositories.cfg
+# Copy the Flutter project files to the container
+COPY . .
 
-# Set up Android SDK
-RUN wget -O sdk-tools.zip https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip
-RUN unzip sdk-tools.zip && rm sdk-tools.zip
-RUN mv tools Android/sdk/tools
-RUN cd Android/sdk/tools/bin && yes | ./sdkmanager --licenses
-RUN cd Android/sdk/tools/bin && ./sdkmanager "build-tools;29.0.2" "patcher;v4" "platform-tools" "platforms;android-29" "sources;android-29"
-ENV PATH "$PATH:/home/developer/Android/sdk/platform-tools"
+# Run Flutter commands to build the APK
+RUN flutter pub get
+RUN flutter build apk --release
 
-# Download Flutter SDK
-RUN git clone https://github.com/flutter/flutter.git
-ENV PATH "$PATH:/home/developer/flutter/bin"
+# Copy the APK file to the /home/app directory
+RUN cp build/app/outputs/flutter-apk/app-release.apk /apk/${APP_NAME}-${APP_VERSION}.apk
 
-# Run basic check to download Dark SDK
-RUN flutter doctor
+# Set labels for better maintainability
+LABEL maintainer="Your Name <your.email@example.com>"
+LABEL version="${APP_VERSION}"
+LABEL description="Docker image for building Flutter APK for Android"

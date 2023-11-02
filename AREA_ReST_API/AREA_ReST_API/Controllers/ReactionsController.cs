@@ -28,7 +28,7 @@ public class ReactionsController
     }
 
     [HttpGet("{serviceId:int}")]
-    public ActionResult<List<ReactionsModel>> GetActionsByServiceId([AsParameters] int serviceId)
+    public ActionResult<List<ReactionsModel>> GetReactionsByServiceId([AsParameters] int serviceId)
     {
         var requestedActions = _context.Reactions.Where(action => action.ServiceId == serviceId).ToList();
         return new OkObjectResult(requestedActions);
@@ -79,7 +79,7 @@ public class ReactionsController
     }
 
     [HttpDelete("{reactionId:int}")]
-    public ActionResult DeleteAction([AsParameters] int reactionId, [FromHeader] string authorization)
+    public ActionResult DeleteReaction([AsParameters] int reactionId, [FromHeader] string authorization)
     {
         var decodedUser = JwtDecoder.Decode(authorization);
         var deletedReaction = _context.Reactions.FirstOrDefault(action => action.Id == reactionId);

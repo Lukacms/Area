@@ -4,6 +4,10 @@ import secureLocalStorage from 'react-secure-storage';
 import { getFirstInfos, loginGoogle } from '../../../config/request';
 import { getByValue } from '../../../config/commons';
 
+/**
+ * Elements and fetch needed by CallbackLogin page. Try to connect to google as soon as page is launched
+ * @returns {{ref: ref}} ref
+ */
 const useCallbackLogin = () => {
   const [searchParams /* , setSearchParams */] = useSearchParams();
   const ref = useRef(null);
@@ -41,7 +45,7 @@ const useCallbackLogin = () => {
     };
 
     connectGoogle();
-  }, []);
+  }, [navigate, searchParams]);
 
   return { ref };
 };

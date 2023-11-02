@@ -2,6 +2,13 @@ import { Button } from 'primereact/button';
 import { useNavigate } from 'react-router-dom';
 import '../styles/register.css';
 
+/**
+ * Back button to redirect either on precised path or previous page
+ * @returns {Button}
+ * @type Component
+ * @param label str
+ * @param path str
+ */
 const BackButton = ({ label, path }) => {
   const navigate = useNavigate();
   const onBackClick = () => {

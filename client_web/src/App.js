@@ -1,9 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import {
-  CallBackDiscord,
   CallBackGithub,
   CallBackGoogle,
-  CallBackOutlook,
   CallBackSpotify,
   CallbackLogin,
   Error,
@@ -43,10 +41,8 @@ function App() {
         <Route path='services'>
           <Route index element={<SettingServices />} />
           <Route path=':id' element={<SpecificService />} />
-          <Route path='discord' element={<CallBackDiscord />} />
           <Route path='github' element={<CallBackGithub />} />
           <Route path='google' element={<CallBackGoogle />} />
-          <Route path='outlook' element={<CallBackOutlook />} />
           <Route path='microsoft' element={<CallBackMicrosoft />} />
           <Route path='spotify' element={<CallBackSpotify />} />
         </Route>

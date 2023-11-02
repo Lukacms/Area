@@ -1,5 +1,10 @@
 import '../styles/login.css';
 
+/**
+ * display the background css in a component to not be redundant at each page
+ * @returns {HTML}
+ * @param children elements to place after background
+ */
 const Background = ({ children }) => {
   return (
     <div className='box'>

@@ -3,6 +3,11 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import secureLocalStorage from 'react-secure-storage';
 import { disconnectUserService } from '../../config/request';
 
+/**
+ * Provide SpecificService page everything needed. Is the connection to an external service
+ * @returns {{navigate: import('react-router-dom').NavigateFunction, item: Location.state,
+ * connect: Window.open, changeAccount: Function | Window.open, disconnect: Function, isAdmin: boolean}}
+ */
 const useSpecificService = () => {
   const navigate = useNavigate();
   const { state } = useLocation();

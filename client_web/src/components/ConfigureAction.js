@@ -3,6 +3,18 @@ import { InputNumber } from 'primereact/inputnumber';
 import { InputText } from 'primereact/inputtext';
 import '../styles/home.css';
 
+/**
+ * Configure the action when creating an Area - used in Home
+ * @returns {Dialog} display content in overlay window
+ * @param action Object
+ * @param onHide what happen when dialog is hidden
+ * @param status when the dialog should be visible
+ * @param footer HTML
+ * @param error error message to display
+ * @param setStatus param of onHide function
+ * @param changeValue fucntion to call on change
+ * @param setAction to call onChange of timer of action
+ */
 const ConfigureAction = ({
   action,
   onHide,
