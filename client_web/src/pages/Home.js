@@ -21,8 +21,9 @@ import '../styles/home.css';
 
 /**
  * HomePage
- * @param children (<Html/>) - if there are any sub-elements (cf settings) to display
- * @param publicPath (string) - the path to display images
+ * @param {{children: HTMLElement, publicPath: string}}
+ * @param children  if there are any sub-elements (cf settings) to display
+ * @param publicPath - the path to display images
  * @returns {Html}
  */
 function Home({ children, publicPath }) {

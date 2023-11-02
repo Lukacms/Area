@@ -4,6 +4,10 @@ import { ProgressSpinner } from 'primereact/progressspinner';
 import { Home } from '../';
 import { useCallbackGithub } from '../../hooks';
 
+/**
+ * callback page for github oauth
+ * @returns {HTMLElement}
+ */
 function CallBackGithub() {
   const { navigate, success, loading } = useCallbackGithub();
 

@@ -4,6 +4,10 @@ import { ProgressSpinner } from 'primereact/progressspinner';
 import { Home } from '../';
 import { useCallbackSpotify } from '../../hooks';
 
+/**
+ * callback page for spotify oauth
+ * @returns {HTMLElement}
+ */
 function CallBackSpotify() {
   const { navigate, success, loading } = useCallbackSpotify();
 

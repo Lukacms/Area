@@ -4,6 +4,10 @@ import { ProgressSpinner } from 'primereact/progressspinner';
 import { Home } from '../';
 import { useCallbackGoogle } from '../../hooks';
 
+/**
+ * callback page for google oauth
+ * @returns {HTMLElement}
+ */
 function CallBackGoogle() {
   const { navigate, success, loading } = useCallbackGoogle();
 

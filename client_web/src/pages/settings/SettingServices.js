@@ -5,6 +5,10 @@ import { ProgressSpinner } from 'primereact/progressspinner';
 import { Home } from '..';
 import { useSettingServices } from '../../hooks';
 
+/**
+ * Settings pages for services ; to handle the connections and oversee all the services that an user could be connected to
+ * @returns {HTMLElement}
+ */
 function SettingServices() {
   const { services, navigate, loaded, isAdmin } = useSettingServices();
 

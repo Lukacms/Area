@@ -4,6 +4,10 @@ import { Background } from '../../../components';
 import { useCallbackLogin } from '../../../hooks';
 import '../../../styles/components.css';
 
+/**
+ * page that is the redirection for the login with google
+ * @returns {HTMLElement}
+ */
 function CallbackLogin() {
   const { ref } = useCallbackLogin();
 

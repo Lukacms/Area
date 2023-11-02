@@ -4,6 +4,10 @@ import { ProgressSpinner } from 'primereact/progressspinner';
 import { Home } from '../';
 import { useCallbackMicrosoft } from '../../hooks';
 
+/**
+ * callback page for microsoft oauth
+ * @returns {HTMLElement}
+ */
 function CallBackMicrosoft() {
   const { navigate, success, loading } = useCallbackMicrosoft();
 

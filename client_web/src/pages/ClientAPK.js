@@ -2,6 +2,10 @@ import { Background } from '../components';
 import '../styles/components.css';
 import { Button } from 'primereact/button';
 
+/**
+ * Allow an user to download mobile apk to then build the app on their phone
+ * @returns {HTMLElement}
+ */
 function ClientAPK() {
   const fetchData = () => {
     fetch('/FastR-1.0.0.apk').then((response) => {
