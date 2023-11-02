@@ -3,20 +3,27 @@ import { Dialog } from 'primereact/dialog';
 import { useSpecificService } from '../../hooks';
 import { Home } from '..';
 
+/**
+ * Information about a specific service. Either allow user to connect or disconnect / change account.
+ * @returns {HTMLElement}
+ */
 function SpecificService() {
-  const { navigate, item, connect, changeAccount, disconnect } = useSpecificService();
+  const { navigate, item, connect, changeAccount, disconnect, isAdmin } = useSpecificService();
 
   const header = () => {
     return (
       <div className='flex flex-row' style={{ width: '110%' }}>
         <Button label='Services' disabled text severity='info' />
         <Button label='Settings' onClick={() => navigate('/settings')} text severity='info' />
+        {isAdmin ? (
+          <Button label='Admin' onClick={() => navigate('/settings/admin')} text severity='info' />
+        ) : null}
       </div>
     );
   };
 
   return (
-    <Home>
+    <Home publicPath='../../'>
       <Dialog
         header={header}
         style={{ minWidth: '30%', minHeight: '40%' }}

@@ -4,7 +4,11 @@ import { ProgressSpinner } from 'primereact/progressspinner';
 import { Home } from '../';
 import { useCallbackGoogle } from '../../hooks';
 
-function CallbackGoogle() {
+/**
+ * callback page for google oauth
+ * @returns {HTMLElement}
+ */
+function CallBackGoogle() {
   const { navigate, success, loading } = useCallbackGoogle();
 
   const header = () => {
@@ -44,7 +48,7 @@ function CallbackGoogle() {
         onHide={() => navigate('/home')}>
         <Button
           style={{ marginLeft: -10 }}
-          label='Discord'
+          label='Google'
           icon='pi pi-chevron-left'
           text
           severity='info'
@@ -56,4 +60,4 @@ function CallbackGoogle() {
   );
 }
 
-export default CallbackGoogle;
+export default CallBackGoogle;

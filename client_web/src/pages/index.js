@@ -4,11 +4,17 @@ import MailVerif from './MailVerif';
 import Home from './Home';
 import Error from './Error';
 import NotFound from './NotFound';
-import CallBackDiscord from './callbacks/CallbackDiscord';
-import CallbackGoogle from './callbacks/CallbackGoogle';
 import SettingsUser from './settings/SettingsUser';
 import SettingServices from './settings/SettingServices';
 import SpecificService from './settings/SpecificService';
+import SettingsAdmin from './settings/SettingsAdmin';
+import CallBackGoogle from './callbacks/CallbackGoogle';
+import CallBackGithub from './callbacks/CallbackGithub';
+import CallBackSpotify from './callbacks/CallbackSpotify';
+import CallBackMicrosoft from './callbacks/CallbackMicrosoft';
+import CallbackLogin from './callbacks/login/CallbackLogin';
+import About from './About';
+import ClientAPK from './ClientAPK';
 
 export {
   Login,
@@ -17,9 +23,15 @@ export {
   Home,
   Error,
   NotFound,
-  CallBackDiscord,
-  CallbackGoogle,
   SettingsUser,
   SettingServices,
   SpecificService,
+  SettingsAdmin,
+  CallBackGoogle,
+  CallBackSpotify,
+  CallBackGithub,
+  CallbackLogin,
+  CallBackMicrosoft,
+  About,
+  ClientAPK,
 };

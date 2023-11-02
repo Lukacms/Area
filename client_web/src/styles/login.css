@@ -9,9 +9,11 @@
 }
 
 .App {
-  background-color: rgba(255, 250, 251, 0.1);
+  background-color: rgba(255, 250, 251, 0.08);
   align-items: left;
   display: flex;
+  flex-direction: row;
+  position: relative;
   width: 80vw;
   border-radius: 50px;
   height: 80vh;
@@ -111,7 +113,6 @@
 }
 
 .textBox {
-  width: 20vw;
   margin-bottom: 5%;
 }
 
@@ -124,13 +125,17 @@
 }
 
 .divLogin {
-  margin-top: 10vh;
-  margin-left: 5vw;
-  padding: 5vh;
+  padding: 0vh 2vw 2vh 5vw;
+  margin-left: 6vw;
+  width: 50vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .buttonDiv {
-  width: 10vw;
+  margin-top: 1vh;
 }
 
 .divDiv {
@@ -149,15 +154,18 @@
   margin: 10%;
   box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.2);
   border-radius: 15px;
+  text-align: flex-start;
 }
 
 .title {
   font-size: 30px;
+  margin-bottom: 1vh;
 }
 
 .subTitle {
   font-size: 18px;
   text-align: left;
+  margin-bottom: 2vh;
 }
 
 .buttonDiv2 {
@@ -166,8 +174,15 @@
 }
 
 .img {
-  align-self: center;
+  margin-bottom: 3vh;
+}
+
+.googleSignIn {
+  margin-bottom: 2vh;
+  width: 15vw;
+}
+
+.signInContainer {
   display: flex;
-  justify-content: center;
-  margin-bottom: 7vh;
+  flex-direction: column;
 }

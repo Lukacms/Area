@@ -26,7 +26,7 @@ public class UserActionsController
             return new NotFoundObjectResult(new JsonObject { { "message", "UserAction not found" } });
         return new OkObjectResult(requestedUserAction);
     }
-    
+
     [HttpPost("")]
     public ActionResult CreateNewUserAction([FromBody] UserActionsModel newUserAction)
     {

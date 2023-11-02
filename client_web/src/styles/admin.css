@@ -1,0 +1,40 @@
+.globalDiv {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  width: 100vw;
+  height: 100vh;
+}
+
+.leftDiv {
+  grid-column: span 1;
+  z-index: 2;
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  background-color: rgba(50, 48, 63, 0.6);
+  flex-direction: column;
+  padding-top: 4vh;
+  padding-left: 1vw;
+  padding-right: 1vw;
+  gap: 2vh;
+}
+
+.topLeft {
+  display: flex;
+  flex-direction: row;
+  align-items: space-around;
+  justify-content: space-around;
+}
+
+.settingsButton {
+  align-self: center;
+}
+
+.centerAdmin {
+  grid-column: span 3;
+  z-index: 2;
+  width: 100%;
+  height: 100vh;
+  margin-top: 3vh;
+  margin-left: 3vw;
+}

@@ -18,18 +18,18 @@ public class AreasController
     {
         _context = context;
     }
-    
+
     [HttpGet("{userId:int}")]
     public ActionResult<List<AreaWithActionReaction>> GetAllAreasByUserId([AsParameters] int userId)
     {
         var requestedArea = _context.Areas.Where(area => area.UserId == userId).ToList();
-        var areasWithId = requestedArea.Select(areasModel => new AreaWithActionReaction 
+        var areasWithId = requestedArea.Select(areasModel => new AreaWithActionReaction
             {
                 Id = areasModel.Id,
                 Name = areasModel.Name,
                 UserId = areasModel.UserId,
                 Favorite = areasModel.Favorite,
-                UserAction = _context.UserActions.First(userAction => userAction.AreaId == areasModel.Id),
+                UserAction = _context.UserActions.FirstOrDefault(userAction => userAction.AreaId == areasModel.Id),
                 UserReactions = _context.UserReactions.Where(userReaction => userReaction.AreaId == areasModel.Id).ToList()
             }).ToList();
         return new OkObjectResult(areasWithId);
@@ -45,6 +45,45 @@ public class AreasController
         return new CreatedResult("Area successfully created", area.Entity);
     }
 
+    [HttpPost("full")]
+    public ActionResult CreateNewAreaWithActionAndReaction([FromBody] AreaWithActionReaction newArea)
+    {
+        if (newArea.Name.IsNullOrEmpty())
+            return new BadRequestObjectResult(new JsonObject { { "message", "Name cannot be null" } });
+        var onlyArea = new AreasModel
+        {
+            Name = newArea.Name,
+            Favorite = newArea.Favorite,
+            UserId = newArea.UserId
+        };
+        var registeredArea = _context.Areas.Add(onlyArea).Entity;
+        _context.SaveChanges();
+        UserActionsModel registeredAction = null!;
+        if (newArea.UserAction != null)
+        {
+            newArea.UserAction.AreaId = registeredArea.Id;
+            registeredAction = _context.UserActions.Add(newArea.UserAction).Entity;
+        }
+        var registeredReaction = newArea.UserReactions.Select(
+            reaction =>
+            {
+                reaction.AreaId = registeredArea.Id;
+                return _context.UserReactions.Add(reaction).Entity;
+            }
+    ).ToList();
+        _context.SaveChanges();
+        var createdArea = new AreaWithActionReaction
+        {
+            Id = registeredArea.Id,
+            Name = registeredArea.Name,
+            Favorite = registeredArea.Favorite,
+            UserId = registeredArea.UserId,
+            UserAction = registeredAction,
+            UserReactions = registeredReaction,
+        };
+        return new CreatedResult("Area successfully created", createdArea);
+    }
+
     [HttpDelete("{areaId:int}")]
     public ActionResult DeleteAreaWithActionAndReaction([AsParameters] int areaId)
     {
@@ -52,6 +91,8 @@ public class AreasController
         if (deletedArea == null)
             return new NotFoundObjectResult(new JsonObject { { "message", "Area not found" } });
         DeleteAllActionAndReactionByAreaId(deletedArea.Id);
+        _context.Areas.Remove(deletedArea);
+        _context.SaveChanges();
         return new OkObjectResult(new JsonObject { { "message", "Area successfully deleted" } });
     }
 
@@ -77,5 +118,32 @@ public class AreasController
         _context.Areas.Update(requestedArea);
         _context.SaveChanges();
         return new OkObjectResult(new JsonObject { { "message", "Area successfully updated" } });
+    }
+
+    [HttpGet("{userId:int}/full")]
+    public ActionResult<List<AreaWithActionReaction>> GetAllAreasFullByUserId([AsParameters] int userId)
+    {
+        var requestedArea = _context.Areas.Where(area => area.UserId == userId).ToList();
+        var fullAreas = requestedArea.Select(areasModel => new AreaFull
+        {
+            Id = areasModel.Id,
+            Name = areasModel.Name,
+            UserId = areasModel.UserId,
+            Favorite = areasModel.Favorite,
+        UserAction = _context.UserActions.Where(ua => ua.AreaId == areasModel.Id).Select(ua => new UserActionWithActionModel
+            {
+                Action = _context.Actions.First(a => a.Id == ua.ActionId),
+                AreaId = ua.AreaId,
+                Configuration = ua.Configuration,
+                Timer = ua.Timer
+            }).FirstOrDefault(),
+            UserReactions = _context.UserReactions.Where(ur => ur.AreaId == areasModel.Id).ToList().Select(ur => new UserReactionWithReactionModel
+            {
+                AreaId = ur.AreaId,
+                Configuration = ur.Configuration,
+                Reaction = _context.Reactions.First(r => r.Id == ur.ReactionId)
+            }).ToList()
+        }).ToList();
+        return new OkObjectResult(fullAreas);
     }
 }

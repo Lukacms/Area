@@ -1,3 +1,4 @@
+using AREA_ReST_API.Classes.Services;
 using AREA_ReST_API.Models;
 
 namespace AREA_ReST_API.Classes;
@@ -5,10 +6,19 @@ namespace AREA_ReST_API.Classes;
 public class ActionChecker : BackgroundService
 {
     private readonly IServiceProvider _serviceProvider;
-
+    private readonly Dictionary<string, Func<IService>> _services;
     public ActionChecker(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
+        _services = new Dictionary<string, Func<IService>>
+        {
+            { "Spotify", () => new SpotifyService() },
+            { "Google", () => new GoogleService() },
+            { "Github", () => new GithubService() },
+            { "Microsoft", () => new MicrosoftService() },
+            { "XIV Api", () => new XIVService() },
+            { "Weather", () => new WeatherService() }
+        };
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -22,19 +32,24 @@ public class ActionChecker : BackgroundService
             var areas = GetAreasWithActionAndReaction(context);
             foreach (var area in areas)
             {
-                var action = area.UserAction;
-                if (action == null)
+                var userAction = area.UserAction;
+                if (userAction == null)
                     continue;
-                if (action.Countdown > 0)
+                if (userAction.Countdown > 0)
                 {
-                    action.Countdown -= serverTimer;
-                    context.UserActions.Update(action);
+                    userAction.Countdown -= serverTimer;
+                    context.UserActions.Update(userAction);
+                    continue;
                 }
-                else
+                try
                 {
-                    ManageReactions(area, context);
-                    action.Countdown = action.Timer;
+                    await ManageActions(area.UserAction!, area, context);
                 }
+                catch
+                {
+                    // ignored
+                }
+                userAction.Countdown = userAction.Timer;
             }
             await context.SaveChangesAsync(stoppingToken);
         }
@@ -55,13 +70,36 @@ public class ActionChecker : BackgroundService
         return completeAreas;
     }
 
-    private void ManageReactions(AreaWithActionReaction area, AppDbContext context)
+    private async Task ManageReactions(AreaWithActionReaction area, AppDbContext context)
     {
-        var reactions = area.UserReactions;
-        foreach (var userReaction in reactions)
+        foreach (var userReaction in area.UserReactions)
         {
             var reaction = context.Reactions.First(x => x.Id == userReaction.ReactionId);
-            var service = context.UserServices.First(x => x.ServiceId == area.Id && x.UserId == area.UserId);
+            var service = context.Services.First(s => s.Id == reaction.ServiceId);
+            var userService = context.UserServices.First(s => s.ServiceId == service.Id && s.UserId == area.UserId);
+            var instance = _services[service.Name].Invoke();
+            try
+            {
+                await instance.ReactionSelector(userReaction, userService, context);
+            }
+            catch
+            {
+                Console.WriteLine("TRY CATCH FAILED");
+                return;
+            }
         }
+    }
+
+    private async Task ManageActions(UserActionsModel userAction, AreaWithActionReaction area, AppDbContext context)
+    {
+        var action = context.Actions.First(a => a.Id == userAction.ActionId);
+        var service = context.Services.First(s => s.Id == action.ServiceId);
+        var userService = context.UserServices.FirstOrDefault(s => s.ServiceId == action.ServiceId && s.UserId == area.UserId);
+        var instance = _services[service.Name].Invoke();
+        if (userService == null && service.IsConnectionNeeded == false)
+            if (await instance.ActionSelectorWithoutUserService(userAction, context))
+                await ManageReactions(area, context);
+        if (await instance.ActionSelector(userAction, userService, context))
+            await ManageReactions(area, context);
     }
 }

@@ -1,7 +1,9 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import {
-  CallBackDiscord,
-  CallbackGoogle,
+  CallBackGithub,
+  CallBackGoogle,
+  CallBackSpotify,
+  CallbackLogin,
   Error,
   Home,
   Login,
@@ -9,28 +11,42 @@ import {
   NotFound,
   Register,
   SettingServices,
+  SettingsAdmin,
   SettingsUser,
   SpecificService,
+  CallBackMicrosoft,
+  About,
+  ClientAPK,
 } from './pages';
 import 'primeicons/primeicons.css';
 import 'primereact/resources/themes/mdc-dark-deeppurple/theme.css';
 
+/**
+ * Main function of the application;
+ * Launch the visuals in single-page react app
+ */
 function App() {
   return (
     <Routes>
       <Route path='/' element={<Login />} />
+      <Route path='/about.json' element={<About />} />
+      <Route path='client.apk' element={<ClientAPK />} />
+      <Route path='/googleOauth' element={<CallbackLogin />} />
       <Route path='/register'>
         <Route index element={<Register />} />
         <Route path='verify' element={<MailVerif />} />
       </Route>
-      <Route path='/home' element={<Home />} />
+      <Route path='/home' element={<Home publicPath='' />} />
       <Route path='/settings'>
         <Route index element={<SettingsUser />} />
+        <Route path='admin' element={<SettingsAdmin />} />
         <Route path='services'>
           <Route index element={<SettingServices />} />
           <Route path=':id' element={<SpecificService />} />
-          <Route path='discord' element={<CallBackDiscord />} />
-          <Route path='google' element={<CallbackGoogle />} />
+          <Route path='github' element={<CallBackGithub />} />
+          <Route path='google' element={<CallBackGoogle />} />
+          <Route path='microsoft' element={<CallBackMicrosoft />} />
+          <Route path='spotify' element={<CallBackSpotify />} />
         </Route>
       </Route>
       <Route path='/error' element={<Error />} />
@@ -38,7 +54,6 @@ function App() {
       <Route path='*' element={<Navigate to='/notfound' />} />
     </Routes>
   );
-  // <Route index element={<SettingUser />} /> // TODO
 }
 
 export default App;

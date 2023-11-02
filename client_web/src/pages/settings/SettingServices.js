@@ -5,14 +5,21 @@ import { ProgressSpinner } from 'primereact/progressspinner';
 import { Home } from '..';
 import { useSettingServices } from '../../hooks';
 
+/**
+ * Settings pages for services ; to handle the connections and oversee all the services that an user could be connected to
+ * @returns {HTMLElement}
+ */
 function SettingServices() {
-  const { services, navigate, loaded } = useSettingServices();
+  const { services, navigate, loaded, isAdmin } = useSettingServices();
 
   const header = () => {
     return (
       <div className='flex flex-row' style={{ width: '110%' }}>
         <Button label='Services' disabled text severity='info' />
         <Button label='Settings' onClick={() => navigate('/settings')} text severity='info' />
+        {isAdmin ? (
+          <Button label='Admin' onClick={() => navigate('/settings/admin')} text severity='info' />
+        ) : null}
       </div>
     );
   };
@@ -28,7 +35,7 @@ function SettingServices() {
           raised
           text
           onClick={() => navigate('/settings/services/' + item.id, { state: { item } })}>
-          <Image src={`data:image/png;base64,${item.logo}`} width={50} alt='logo' />
+          <Image src={'data:image/png;base64 ' + item.logo} width={50} alt='logo' />
           <span>{item.name}</span>
           <i className='pi pi-chevron-right' />
         </Button>
@@ -37,14 +44,14 @@ function SettingServices() {
   };
 
   return (
-    <Home>
+    <Home publicPath='../../'>
       <Dialog
         header={header}
         style={{ minWidth: '30%', minHeight: '40%' }}
         visible
         onHide={() => navigate('/home')}
         maximizable>
-        {loaded ? services.map((item) => renderItem(item)) : <ProgressSpinner />}
+        {loaded ? services.map((item) => (item.oauth ? renderItem(item) : null)) : <ProgressSpinner />}
       </Dialog>
     </Home>
   );

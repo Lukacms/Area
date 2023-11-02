@@ -2,6 +2,7 @@ using System.Text.Json.Nodes;
 using AREA_ReST_API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 
 namespace AREA_ReST_API.Controllers;
 
@@ -11,7 +12,7 @@ namespace AREA_ReST_API.Controllers;
 [Route("api/[controller]")]
 
 public class UserReactionsController
-{   
+{
     private readonly AppDbContext _context;
 
     public UserReactionsController(AppDbContext context)
@@ -24,7 +25,7 @@ public class UserReactionsController
     {
         var userReaction = _context.UserReactions.Add(newUserReaction);
         _context.SaveChanges();
-        return new CreatedResult("UserReaction successfully created", userReaction.Entity);   
+        return new CreatedResult("UserReaction successfully created", userReaction.Entity);
     }
 
     [HttpGet("{areaId:int}")]
@@ -32,7 +33,7 @@ public class UserReactionsController
     {
         var requestedUserReaction =
             _context.UserReactions.Where(userReaction => userReaction.AreaId == areaId).ToList();
-        return requestedUserReaction;
+        return new OkObjectResult(requestedUserReaction);
     }
 
     [HttpGet("{userReactionId:int}")]

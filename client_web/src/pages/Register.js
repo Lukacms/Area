@@ -9,6 +9,14 @@ import { useRegister } from '../hooks';
 import '../styles/components.css';
 import '../styles/register.css';
 
+/**
+ * @summary web page to make an user register to the website with:
+ *  - name, surname
+ *  - username, email
+ *  - password
+ * The user must check their mail to confirm their account.
+ * @returns {Html}
+ */
 function Register() {
   const { initialValues, validate, registerUser, dialogue, setDialogue, successDialog, navigate } =
     useRegister();
