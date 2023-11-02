@@ -82,7 +82,7 @@ class AppServices {
       category: 'messageries',
       actions: ['Message', 'Call', 'Video'],
       oAuth:
-          "https://discord.com/api/oauth2/authorize?client_id=1158738215704985681&permissions=8&redirect_uri=http%3A%2F%2Flocalhost%3A8091%2Fsettings%2Fservices&response_type=code&scope=bot",
+          "https://discord.com/api/oauth2/authorize?client_id=1158738215704985681&permissions=8&redirect_uri=http%3A%2F%2Flocalhost%3A8081%2Fsettings%2Fservices&response_type=code&scope=bot",
     ),
     Service(
       name: "Google",
