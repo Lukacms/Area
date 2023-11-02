@@ -16,6 +16,7 @@ import {
   SpecificService,
   CallBackMicrosoft,
   About,
+  ClientAPK,
 } from './pages';
 import 'primeicons/primeicons.css';
 import 'primereact/resources/themes/mdc-dark-deeppurple/theme.css';
@@ -28,7 +29,8 @@ function App() {
   return (
     <Routes>
       <Route path='/' element={<Login />} />
-      <Route path='/about.json' element={<About />}/>
+      <Route path='/about.json' element={<About />} />
+      <Route path='client.apk' element={<ClientAPK />} />
       <Route path='/googleOauth' element={<CallbackLogin />} />
       <Route path='/register'>
         <Route index element={<Register />} />

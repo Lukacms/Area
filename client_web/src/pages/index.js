@@ -14,6 +14,7 @@ import CallBackSpotify from './callbacks/CallbackSpotify';
 import CallBackMicrosoft from './callbacks/CallbackMicrosoft';
 import CallbackLogin from './callbacks/login/CallbackLogin';
 import About from './About';
+import ClientAPK from './ClientAPK';
 
 export {
   Login,
@@ -32,4 +33,5 @@ export {
   CallbackLogin,
   CallBackMicrosoft,
   About,
+  ClientAPK,
 };
