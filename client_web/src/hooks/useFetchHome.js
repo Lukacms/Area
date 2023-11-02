@@ -90,6 +90,7 @@ const useFetchHome = () => {
                   items: actions.data?.map((action) => {
                     return {
                       label: action.name,
+                      desc: action.description,
                       id: action.id,
                       timer: 1,
                       logo: '',
@@ -110,6 +111,7 @@ const useFetchHome = () => {
                   items: reactions.data?.map((reaction) => {
                     return {
                       label: reaction.name,
+                      desc: reaction.description,
                       id: reaction.id,
                       logo: '',
                       configuration: reaction.defaultConfiguration

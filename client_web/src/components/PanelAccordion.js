@@ -10,6 +10,7 @@ const PanelAccordion = ({ baseList, onClick, status, setStatus }) => {
           label={item.label}
           key={item.id}
           text
+          tooltip={item.desc ? item.desc : ''}
           onClick={() => onClick(status, setStatus, item)}
         />
       </div>
