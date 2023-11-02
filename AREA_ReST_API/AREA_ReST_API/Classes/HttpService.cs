@@ -26,7 +26,7 @@ public class HttpService
         return await response.Content.ReadAsStringAsync();
     }
 
-    public async Task<string> PostAsync(string uri, Dictionary<string, string> data, string contentType, string? authentication)
+    public virtual async Task<string> PostAsync(string uri, Dictionary<string, string> data, string contentType, string? authentication)
     {
         var requestMessage = new HttpRequestMessage(HttpMethod.Post, uri);
 
@@ -37,7 +37,7 @@ public class HttpService
         return await response.Content.ReadAsStringAsync();
     }
 
-    public async Task<string> PostWithQueryAsync(string url, string query, string contentType, string accept)
+    public virtual async Task<string> PostWithQueryAsync(string url, string query, string contentType, string accept)
     {
       var request = new HttpRequestMessage(HttpMethod.Post, url + query);
 

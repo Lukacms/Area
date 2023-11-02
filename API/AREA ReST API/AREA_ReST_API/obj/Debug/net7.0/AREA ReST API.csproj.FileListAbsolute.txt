@@ -1,0 +1,62 @@
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/bin/Debug/net7.0/appsettings.Development.json
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/bin/Debug/net7.0/appsettings.json
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/bin/Debug/net7.0/AREA ReST API
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/bin/Debug/net7.0/AREA ReST API.deps.json
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/bin/Debug/net7.0/AREA ReST API.runtimeconfig.json
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/bin/Debug/net7.0/AREA ReST API.dll
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/bin/Debug/net7.0/AREA ReST API.pdb
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/bin/Debug/net7.0/Microsoft.AspNetCore.OpenApi.dll
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/bin/Debug/net7.0/Microsoft.OpenApi.dll
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/bin/Debug/net7.0/Swashbuckle.AspNetCore.Swagger.dll
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/bin/Debug/net7.0/Swashbuckle.AspNetCore.SwaggerGen.dll
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/bin/Debug/net7.0/Swashbuckle.AspNetCore.SwaggerUI.dll
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/obj/Debug/net7.0/AREA ReST API.csproj.AssemblyReference.cache
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/obj/Debug/net7.0/AREA ReST API.GeneratedMSBuildEditorConfig.editorconfig
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/obj/Debug/net7.0/AREA ReST API.AssemblyInfoInputs.cache
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/obj/Debug/net7.0/AREA ReST API.AssemblyInfo.cs
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/obj/Debug/net7.0/AREA ReST API.csproj.CoreCompileInputs.cache
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/obj/Debug/net7.0/AREA ReST API.MvcApplicationPartsAssemblyInfo.cs
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/obj/Debug/net7.0/AREA ReST API.MvcApplicationPartsAssemblyInfo.cache
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/obj/Debug/net7.0/staticwebassets/msbuild.AREA ReST API.Microsoft.AspNetCore.StaticWebAssets.props
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/obj/Debug/net7.0/staticwebassets/msbuild.build.AREA ReST API.props
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/obj/Debug/net7.0/staticwebassets/msbuild.buildMultiTargeting.AREA ReST API.props
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/obj/Debug/net7.0/staticwebassets/msbuild.buildTransitive.AREA ReST API.props
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/obj/Debug/net7.0/staticwebassets.pack.json
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/obj/Debug/net7.0/staticwebassets.build.json
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/obj/Debug/net7.0/staticwebassets.development.json
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/obj/Debug/net7.0/scopedcss/bundle/AREA ReST API.styles.css
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/obj/Debug/net7.0/AREA ReST API.csproj.CopyComplete
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/obj/Debug/net7.0/AREA ReST API.dll
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/obj/Debug/net7.0/refint/AREA ReST API.dll
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/obj/Debug/net7.0/AREA ReST API.pdb
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/obj/Debug/net7.0/AREA ReST API.genruntimeconfig.cache
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/obj/Debug/net7.0/ref/AREA ReST API.dll
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/bin/Debug/net7.0/EntityFramework.SqlServer.dll
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/bin/Debug/net7.0/EntityFramework.dll
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/bin/Debug/net7.0/Microsoft.EntityFrameworkCore.dll
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/bin/Debug/net7.0/Microsoft.EntityFrameworkCore.Abstractions.dll
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/bin/Debug/net7.0/Microsoft.EntityFrameworkCore.Relational.dll
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/bin/Debug/net7.0/Microsoft.Win32.SystemEvents.dll
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/bin/Debug/net7.0/MySqlConnector.dll
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/bin/Debug/net7.0/Pomelo.EntityFrameworkCore.MySql.dll
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/bin/Debug/net7.0/System.CodeDom.dll
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/bin/Debug/net7.0/System.Configuration.ConfigurationManager.dll
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/bin/Debug/net7.0/System.Data.SqlClient.dll
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/bin/Debug/net7.0/System.Drawing.Common.dll
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/bin/Debug/net7.0/System.Security.Cryptography.ProtectedData.dll
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/bin/Debug/net7.0/System.Security.Permissions.dll
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/bin/Debug/net7.0/System.Windows.Extensions.dll
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/bin/Debug/net7.0/runtimes/win/lib/netcoreapp3.0/Microsoft.Win32.SystemEvents.dll
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/bin/Debug/net7.0/runtimes/win-arm64/native/sni.dll
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/bin/Debug/net7.0/runtimes/win-x64/native/sni.dll
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/bin/Debug/net7.0/runtimes/win-x86/native/sni.dll
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/bin/Debug/net7.0/runtimes/unix/lib/netcoreapp2.1/System.Data.SqlClient.dll
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/bin/Debug/net7.0/runtimes/win/lib/netcoreapp2.1/System.Data.SqlClient.dll
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/bin/Debug/net7.0/runtimes/unix/lib/netcoreapp3.0/System.Drawing.Common.dll
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/bin/Debug/net7.0/runtimes/win/lib/netcoreapp3.0/System.Drawing.Common.dll
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/bin/Debug/net7.0/runtimes/win/lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/bin/Debug/net7.0/runtimes/win/lib/netcoreapp3.0/System.Windows.Extensions.dll
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/bin/Debug/net7.0/Humanizer.dll
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/bin/Debug/net7.0/Microsoft.EntityFrameworkCore.Design.dll
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/bin/Debug/net7.0/Microsoft.Extensions.DependencyModel.dll
+/home/kane/Epitech/3rd/AREA/API/AREA ReST API/AREA ReST API/bin/Debug/net7.0/Mono.TextTemplating.dll

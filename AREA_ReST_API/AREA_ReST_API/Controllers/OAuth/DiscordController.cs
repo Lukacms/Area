@@ -15,13 +15,15 @@ namespace AREA_ReST_API.Controllers.OAuth;
 public class DiscordController
 {
     private readonly AppDbContext _context;
-    private readonly HttpService _client;
+    private readonly HttpService _client = new ();
     private readonly string _discordUri = "https://discord.com/api/oauth2/token";
 
-    public DiscordController(AppDbContext context)
+    public DiscordController(AppDbContext context, HttpService? client = null!)
     {
         _context = context;
-        _client = new HttpService();
+        if (client == null)
+            return;
+        _client = client;
     }
 
     [HttpPost("")]

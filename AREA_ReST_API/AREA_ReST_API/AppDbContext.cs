@@ -5,8 +5,8 @@ namespace AREA_ReST_API;
 public class AppDbContext : DbContext
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
-    
-    
+
+
     public virtual DbSet<UsersModel> Users { get; set; }
     public virtual DbSet<UserServicesModel> UserServices { get; set; }
     public virtual DbSet<ServicesModel> Services { get; set; }
