@@ -3,6 +3,10 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { serviceCallbackGoogle } from '../../config/request';
 import { getByValue } from '../../config/commons';
 
+/**
+ * Fetch callback function from back for google login
+ * @returns {{navigate: NavigateFunction, success: boolean, loading: boolean}}
+ */
 const useCallbackGoogle = () => {
   const navigate = useNavigate();
   const [searchParams /* , setSearchParams */] = useSearchParams();
@@ -27,7 +31,7 @@ const useCallbackGoogle = () => {
       setLoading(false);
     };
     fetchCallback();
-  }, []);
+  }, [navigate, searchParams]);
 
   return { navigate, success, loading };
 };

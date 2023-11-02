@@ -3,6 +3,10 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { serviceCallbackMicrosoft } from '../../config/request';
 import { getByValue } from '../../config/commons';
 
+/**
+ * Fetch callback function from back for microsoft login
+ * @returns {{navigate: NavigateFunction, success: boolean, loading: boolean}}
+ */
 const useCallbackMicrosoft = () => {
   const navigate = useNavigate();
   const [searchParams /* , setSearchParams */] = useSearchParams();
@@ -26,7 +30,7 @@ const useCallbackMicrosoft = () => {
       setLoading(false);
     };
     fetchCallback();
-  }, []);
+  }, [navigate, searchParams]);
 
   return { navigate, success, loading };
 };

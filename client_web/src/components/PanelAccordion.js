@@ -2,6 +2,10 @@ import { Accordion, AccordionTab } from 'primereact/accordion';
 import { Button } from 'primereact/button';
 import '../styles/components.css';
 
+/**
+ * Reproduction of primereact PanelMenu component without the inconvenients
+ * @returns {Accordion}
+ */
 const PanelAccordion = ({ baseList, onClick, status, setStatus }) => {
   const renderItem = (item) => {
     return (

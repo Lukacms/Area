@@ -2,6 +2,11 @@ import axios from 'axios';
 import { getServices, getActionsByServiceId, getReactionsByServiceId } from '../config/request';
 import { useEffect, useState } from 'react';
 
+/**
+ * Give about object that is asked in subject. Should have been in backend, but is also here with custom css
+ * @returns {{about: {}, loaded: boolean,
+ * services: Array<{name: string, actions: Array<{name: string, description: string}>, reactions: Array<{name: string, description: string}>}}
+ */
 const useAbout = () => {
   const [about, setAbout] = useState({
     client: {

@@ -2,6 +2,17 @@ import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import '../styles/home.css';
 
+/**
+ * Configure the reaction when creating an Area - used in Home
+ * @returns {Dialog} display content in overlay window
+ * @param reaction Object
+ * @param status when the dialog should be visible
+ * @param setStatus param of onHide function
+ * @param onHide what happen when dialog is hidden
+ * @param onChangeValue fucntion to call on change
+ * @param error error message to display
+ * @param footer HTML
+ */
 const ConfigureReaction = ({
   reactions,
   status,

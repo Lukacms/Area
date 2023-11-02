@@ -2,6 +2,10 @@ import { useRef, useState } from 'react';
 import { delArea, postArea, postUserAction, postUserReaction, putArea } from '../config/request';
 import secureLocalStorage from 'react-secure-storage';
 
+/**
+ * Have all methods linked to area making, transformations, ...
+ * Is a complement of `useFetchHome` page
+ */
 const useHome = () => {
   const toast = useRef();
   const areaToast = useRef();

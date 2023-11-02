@@ -1,6 +1,10 @@
 import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 
+/**
+ * Give error message to Error page which show it in a prettier way
+ * @returns {{error_msgs: MutableRefObject<null>}}
+ */
 const useError = () => {
   const { state } = useLocation();
   const error_msgs = useRef(null);

@@ -3,6 +3,10 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { serviceCallbackSpotify } from '../../config/request';
 import { getByValue } from '../../config/commons';
 
+/**
+ * Fetch callback function from back for spotify login
+ * @returns {{navigate: NavigateFunction, success: boolean, loading: boolean}}
+ */
 const useCallbackSpotify = () => {
   const navigate = useNavigate();
   const [searchParams /* , setSearchParams */] = useSearchParams();
@@ -26,7 +30,7 @@ const useCallbackSpotify = () => {
       setLoading(false);
     };
     fetchCallback();
-  }, []);
+  }, [navigate, searchParams]);
 
   return { navigate, success, loading };
 };

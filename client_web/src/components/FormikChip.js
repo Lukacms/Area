@@ -1,6 +1,10 @@
 import { Chips } from 'primereact/chips';
 import '../styles/components.css';
 
+/**
+ * Primereact chip components adapted to formik
+ * @returns {HTML}
+ */
 const FormikChip = ({ field, form, label, id, error, touched, ...props }) => {
   return (
     <div className='flex flex-column gap-2'>

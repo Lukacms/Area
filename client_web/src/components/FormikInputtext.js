@@ -1,6 +1,10 @@
 import { InputText } from 'primereact/inputtext';
 import '../styles/components.css';
 
+/**
+ * InputText primereact component adapted to Formik
+ * @returns {HTML}
+ */
 const FormikInputtext = ({ field, form, label, id, error, touched, icon, lineBreak, ...props }) => {
   return (
     <div className='flex flex-column gap-2'>
@@ -9,7 +13,7 @@ const FormikInputtext = ({ field, form, label, id, error, touched, icon, lineBre
         <InputText id={id} {...props} />
         {label ? <label htmlFor={id}>{label}</label> : null}
       </span>
-      {lineBreak ? <br/> : null}
+      {lineBreak ? <br /> : null}
       {error && touched && <small className='p-error'>{error}</small>}
     </div>
   );

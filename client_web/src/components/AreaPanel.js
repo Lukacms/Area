@@ -4,6 +4,12 @@ import { Card } from 'primereact/card';
 import { InputText } from 'primereact/inputtext';
 import '../styles/panelArea.css';
 
+/**
+ * @type Component
+ * @param label str
+ * @param value str
+ * @param id unique key
+ */
 const AreaConfig = ({ label, value, id }) => {
   return (
     <div className='p-inputgroup flex-1' key={id} style={{margin: '1vh 0vw 1vh 0vw'}}>
@@ -13,6 +19,13 @@ const AreaConfig = ({ label, value, id }) => {
   );
 };
 
+/**
+ * @type Component
+ * @param name str
+ * @param action Object
+ * @param reactions Object
+ * @param status - Display footer
+ */
 const AreaPanelBuild = ({ name, action, reactions, status, onHide }) => {
   const footer = <Button label='Hide' onClick={() => onHide(null)} />;
 
@@ -49,6 +62,13 @@ const AreaPanelBuild = ({ name, action, reactions, status, onHide }) => {
   );
 };
 
+/**
+ * @type Component
+ * @param name str
+ * @param action Object
+ * @param reactions Object
+ * @param status - Display footer
+ */
 const AreaPanel = ({ name, action, reactions, status, onHide }) => {
   const footer = <Button label='Hide' onClick={() => onHide(null)} />;
   const actionConfig = action?.configuration ? JSON.parse(action.configuration) : '';

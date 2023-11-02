@@ -9,6 +9,9 @@ import {
   getReactionsByServiceId,
 } from '../config/request';
 
+/**
+ * Fetch data from back to give to Home page. Is a complement of `useHome` page
+ */
 const useFetchHome = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);

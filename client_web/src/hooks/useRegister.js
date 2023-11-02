@@ -2,7 +2,13 @@ import { useState } from 'react';
 import * as Yup from 'yup';
 import { register } from '../config/request';
 import { useNavigate } from 'react-router-dom';
+import { Dialog } from 'primereact/dialog';
 
+/**
+ * Variables and functions needed for Register page
+ * @returns {{initialValues: {}, validate: Yup.ObjectSchema, registerUser: Function,
+ * dialogue: boolean | Dialog, setDialogue: Function, successDialog: boolean, navigate: NavigateFunction}}
+ */
 const useRegister = () => {
   const [dialogue, setDialogue] = useState(false);
   const [successDialog, setSuccessDialog] = useState(false);

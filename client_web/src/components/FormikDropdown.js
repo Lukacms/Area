@@ -1,6 +1,10 @@
 import { Dropdown } from 'primereact/dropdown';
 import '../styles/components.css';
 
+/**
+ * Dropdown primereact component adapted to formik
+ * @returns {HTML}
+ */
 const FormikDropdown = ({ field, form, label, id, error, touched, ...props }) => {
   return (
     <div className='flex flex-column gap-2'>

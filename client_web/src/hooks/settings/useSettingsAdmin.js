@@ -17,6 +17,16 @@ import {
 import * as Yup from 'yup';
 import { listToJsonObject } from '../../config/commons';
 
+/**
+ * Provide SettingsAdmin page everything needed
+ * @returns {{
+ * navigate: NavigateFunction, label: string, setLabel: Function,
+ * actions: Array<{}>, reactions: Array<{}>, deleteAction: Function,
+ * deleteReaction: Function, services: Array<{}>, users: Array<{}>, initValues: {},
+ * validate: Function, submitAction: Function, submitReaction: Function, deleteAdmin: Function,
+ * addAdmin: Function, toast: MutableRefObject<null>, changeAction: Function, changeReaction: Function
+ * }}
+ */
 const useSettingsAdmin = () => {
   const navigate = useNavigate();
   const [actions, setActions] = useState([]);
