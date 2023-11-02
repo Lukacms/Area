@@ -58,7 +58,7 @@ const AreaPanel = ({ name, action, reactions, status, onHide }) => {
       <Card title={name} style={{ minWidth: '50vw' }} footer={status === 'Default' ? footer : null}>
         <Accordion multiple>
           <AccordionTab header={action.action?.name} key={0}>
-            <AreaConfig label='timer' value={action?.timer} />
+            <AreaConfig label='timer' value={action?.timer} key={1} />
             {actionConfig ? (
               Object.entries(actionConfig).map((item, key) => (
                 <AreaConfig label={item[0]} value={item[1]} id={key} />
@@ -72,7 +72,7 @@ const AreaPanel = ({ name, action, reactions, status, onHide }) => {
               ? JSON.parse(reaction.configuration)
               : '';
             return (
-              <AccordionTab header={reaction.reaction?.name} key={key + 1}>
+              <AccordionTab header={reaction.reaction?.name} key={key + 2}>
                 {reactionConfig && reactionConfig !== '' ? (
                   Object.entries(reactionConfig).map((item, pKey) => (
                     <AreaConfig label={item[0]} value={item[1]} id={pKey} />

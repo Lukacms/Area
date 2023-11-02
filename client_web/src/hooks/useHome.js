@@ -210,7 +210,7 @@ const useHome = () => {
             userId: userId,
             name: newAreaName,
             favorite: false,
-            userAction: { ...action, action: { name: newAction.label } },
+            userAction: { ...action, name: newAction.label },
             userReactions: reactions,
           },
         ][0],
