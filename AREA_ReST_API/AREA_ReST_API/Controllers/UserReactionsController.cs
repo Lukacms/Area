@@ -33,7 +33,7 @@ public class UserReactionsController
     {
         var requestedUserReaction =
             _context.UserReactions.Where(userReaction => userReaction.AreaId == areaId).ToList();
-        return requestedUserReaction;
+        return new OkObjectResult(requestedUserReaction);
     }
 
     [HttpGet("{userReactionId:int}")]

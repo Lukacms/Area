@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
-namespace TestProject2;
+namespace TestProject2.Controllers;
 
 public class TestsUserController
 {
@@ -360,7 +360,7 @@ public class TestsUserController
 
     [Test]
     public void TestGetUserAdmAvailableUser()
-    { 
+    {
         var user = new UsersModel
         {
             Admin = true,

@@ -36,7 +36,7 @@ public class AreasController
     }
 
     [HttpPost("")]
-    public ActionResult<object> CreateNewArea([FromBody] AreasModel newArea)
+    public ActionResult CreateNewArea([FromBody] AreasModel newArea)
     {
         if (newArea.Name.IsNullOrEmpty())
             return new BadRequestObjectResult(new JsonObject { { "message", "Name cannot be null" } });
@@ -46,7 +46,7 @@ public class AreasController
     }
 
     [HttpPost("full")]
-    public ActionResult<object> CreateNewAreaWithActionAndReaction([FromBody] AreaWithActionReaction newArea)
+    public ActionResult CreateNewAreaWithActionAndReaction([FromBody] AreaWithActionReaction newArea)
     {
         if (newArea.Name.IsNullOrEmpty())
             return new BadRequestObjectResult(new JsonObject { { "message", "Name cannot be null" } });
@@ -85,7 +85,7 @@ public class AreasController
     }
 
     [HttpDelete("{areaId:int}")]
-    public ActionResult<object> DeleteAreaWithActionAndReaction([AsParameters] int areaId)
+    public ActionResult DeleteAreaWithActionAndReaction([AsParameters] int areaId)
     {
         var deletedArea = _context.Areas.FirstOrDefault(area => area.Id == areaId);
         if (deletedArea == null)
@@ -108,7 +108,7 @@ public class AreasController
     }
 
     [HttpPut("")]
-    public ActionResult<object> ModifyArea([FromBody] AreasModel modifiedArea)
+    public ActionResult ModifyArea([FromBody] AreasModel modifiedArea)
     {
         var requestedArea = _context.Areas.FirstOrDefault(area => area.Id == modifiedArea.Id);
         if (requestedArea == null)

@@ -4,7 +4,7 @@ using AREA_ReST_API.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace TestProject2;
+namespace TestProject2.Controllers;
 
 public class ActionsControllerTests
 {
@@ -18,7 +18,7 @@ public class ActionsControllerTests
     public ActionsControllerTests()
     {
         var options = new DbContextOptionsBuilder<AppDbContext>()
-            .UseInMemoryDatabase(databaseName: "InMemoryDatabase")
+            .UseInMemoryDatabase(databaseName: "ActionControllerTest")
             .Options;
         _database = new AppDbContext(options);
         var service = new ServicesModel
@@ -35,27 +35,22 @@ public class ActionsControllerTests
         _controller = new ActionsController(_database);
     }
 
-    [SetUp]
-    public void Setup()
-    {
-    }
-
     [Test]
-    public void TestGetAllActions()
+    public void Test_GetAllActions()
     {
         var response = _controller.GetAllActions();
         Assert.That(response.Result, Is.TypeOf<OkObjectResult>());
     }
 
     [Test]
-    public void TestGetActionByServiceId()
+    public void Test_GetActionByServiceId()
     {
         var response = _controller.GetActionsByServiceId(1);
         Assert.That(response.Result, Is.TypeOf<OkObjectResult>());
     }
 
     [Test]
-    public void TestCreateNewAction_Valid()
+    public void Test_CreateNewAction_Valid()
     {
         var newAction = new ActionsModel
         {
@@ -71,7 +66,7 @@ public class ActionsControllerTests
     }
 
     [Test]
-    public void TestCreateNewAction_NotAdmin()
+    public void Test_CreateNewAction_NotAdmin()
     {
         var newAction = new ActionsModel
         {
@@ -87,7 +82,7 @@ public class ActionsControllerTests
     }
 
     [Test]
-    public void TestCreateNewAction_NotValidServiceId()
+    public void Test_CreateNewAction_NotValidServiceId()
     {
         var newAction = new ActionsModel
         {
@@ -103,7 +98,7 @@ public class ActionsControllerTests
     }
 
     [Test]
-    public void TestCreateNewAction_InvalidName()
+    public void Test_CreateNewAction_InvalidName()
     {
         var newAction = new ActionsModel
         {
@@ -119,7 +114,7 @@ public class ActionsControllerTests
     }
 
     [Test]
-    public void TestCreateNewAction_InvalidServiceId()
+    public void Test_CreateNewAction_InvalidServiceId()
     {
         var newAction = new ActionsModel
         {
@@ -135,7 +130,7 @@ public class ActionsControllerTests
     }
 
     [Test]
-    public void TestCreateNewAction_InvalidEndpoint()
+    public void Test_CreateNewAction_InvalidEndpoint()
     {
         var newAction = new ActionsModel
         {
@@ -151,7 +146,7 @@ public class ActionsControllerTests
     }
 
     [Test]
-    public void TestGetActionsByServiceId()
+    public void Test_GetActionsByServiceId()
     {
         var newAction = new ActionsModel
         {
@@ -171,7 +166,7 @@ public class ActionsControllerTests
     }
 
     [Test]
-    public void TestDeleteAction_AdminToken()
+    public void Test_DeleteAction_AdminToken()
     {
         var newAction = new ActionsModel
         {
@@ -189,7 +184,7 @@ public class ActionsControllerTests
     }
 
     [Test]
-    public void TestDeleteAction_NormalToken()
+    public void Test_DeleteAction_NormalToken()
     {
         var newAction = new ActionsModel
         {
@@ -207,7 +202,7 @@ public class ActionsControllerTests
     }
 
     [Test]
-    public void TestDeleteAction_ActionNotExist()
+    public void Test_DeleteAction_ActionNotExist()
     {
         var results = _controller.DeleteAction(0, "Bearer " + _adminToken);
         Assert.That(results.Result, Is.TypeOf<NotFoundObjectResult>());
