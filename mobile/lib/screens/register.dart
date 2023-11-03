@@ -20,6 +20,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController nameController = TextEditingController();
   TextEditingController surnameController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
+  Key usernameField = const Key('usernameField');
+  Key passwordField = const Key('passwordField');
+  Key registerButton = const Key('signupButton');
+  Key nameField = const Key('nameField');
+  Key surnameField = const Key('surnameField');
+  Key emailField = const Key('emailField');
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +84,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     width: blockWidth * 0.5,
                   ),
                   HalfLoginTextField(
+                      key: nameField,
                       description: "Prénom",
                       placeholder: 'Votre Prénom',
                       isPassword: false,
@@ -86,6 +93,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     width: blockWidth * 0.4,
                   ),
                   HalfLoginTextField(
+                      key: surnameField,
                       description: "Nom",
                       placeholder: 'Votre Nom',
                       isPassword: false,
@@ -96,6 +104,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 height: blockHeight * 5,
               ),
               LoginTextField(
+                  key: usernameField,
                   description: "Nom d'utilisateur",
                   placeholder: 'Votre Pseudonyme',
                   isPassword: false,
@@ -104,6 +113,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 height: blockHeight * 5,
               ),
               LoginTextField(
+                key: emailField,
                 description: "Adresse E-Mail",
                 placeholder: 'votreadresse@example.com',
                 isPassword: false,
@@ -114,6 +124,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 height: blockHeight * 5,
               ),
               LoginTextField(
+                key: passwordField,
                 description: "Mot de passe",
                 placeholder: '********',
                 isPassword: true,
@@ -128,6 +139,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   color: AppColors.greyBlue,
                 ),
                 child: TextButton(
+                  key: registerButton,
                   child: Text(
                     "Sign Up",
                     style: TextStyle(
@@ -150,7 +162,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       Navigator.of(context).pop();
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text("Successfully registered, please login."),
+                          content:
+                              Text("Successfully registered, please login."),
                           duration: Duration(seconds: 2),
                         ),
                       );

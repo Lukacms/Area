@@ -1,4 +1,7 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
+import 'package:mobile/back/api.dart';
 import 'package:mobile/back/services.dart';
 import 'package:mobile/main.dart';
 import 'package:mobile/screens/addingArea/area_build.dart';
@@ -10,6 +13,9 @@ class AreaCard extends StatelessWidget {
   final int userId;
   final int areasLength;
   final Function editAreaCallback;
+  final List<Service> services;
+  final List<AreaAction> actions;
+  final List<AreaAction> reactions;
   const AreaCard({
     super.key,
     required this.area,
@@ -17,6 +23,9 @@ class AreaCard extends StatelessWidget {
     required this.token,
     required this.userId,
     required this.areasLength,
+    required this.services,
+    required this.actions,
+    required this.reactions,
   });
 
   @override
@@ -31,27 +40,96 @@ class AreaCard extends StatelessWidget {
       child: Column(
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              IconButton(
+              area.favorite ? Padding(
+                padding: EdgeInsets.only(left: blockHeight),
+                child: const Icon(Icons.star, color: Colors.yellow),
+              ) : Container(),
+              PopupMenuButton(
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => AreaBuild(
+                              actions: actions,
+                              reactions: reactions,
+                              services: services,
+                              token: token,
+                              userId: userId,
+                              areasLenght: areasLength,
+                              isEdit: true,
+                              areaAdd: editAreaCallback,
+                              area: area,
+                            ),
+                          ),
+                        );
+                      },
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Modifier",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                          Icon(
+                            Icons.edit,
+                            color: Colors.black,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  PopupMenuItem(
+                    child: TextButton(
+                      onPressed: () {
+                        showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            title: const Text('Êtes-vous sûr.e ?'),
+                            content: const Text(
+                                'Toutes les données de l\'area seront perdues.'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: const Text('Annuler'),
+                              ),
+                              TextButton(
+                                onPressed: () async {
+                                  await serverDeleteArea(token, area.areaId);
+                                  editAreaCallback();
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                },
+                                child: const Text('Confirmer'),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Supprimer",
+                            style: TextStyle(color: Colors.red),
+                          ),
+                          Icon(
+                            Icons.delete,
+                            color: Colors.red,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
                 icon: Icon(
                   Icons.pending,
                   color: AppColors.white,
                 ),
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => AreaBuild(
-                        token: token,
-                        userId: userId,
-                        areasLenght: areasLength,
-                        isEdit: true,
-                        areaAdd: editAreaCallback,
-                        area: area,
-                      ),
-                    ),
-                  );
-                },
               )
             ],
           ),

@@ -40,6 +40,8 @@ dependencies:
   http: ^1.1.0
   webview_flutter: ^2.0.13
   google_sign_in: ^6.1.5
+  flutter_slidable: ^3.0.0
+  flutter_web_auth: ^0.5.0
 
 
 dev_dependencies:
@@ -74,6 +76,10 @@ flutter:
     - assets/serviceIcons/spotify.svg
     - assets/serviceIcons/connectors.svg
     - assets/serviceIcons/google.svg
+    - assets/serviceIcons/microsoft.svg
+    - assets/serviceIcons/weather.svg
+
+
   fonts:
     - family: Roboto
       fonts:

@@ -1,6 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:mobile/back/api.dart';
-import 'package:mobile/back/local_storage.dart';
 import 'package:mobile/back/services.dart';
 import 'package:mobile/components/background_gradient.dart';
 import 'package:mobile/main.dart';
@@ -22,10 +23,110 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   TextEditingController searchController = TextEditingController();
   List<Area> areas = [];
+  List<Service> services = [];
+  List<int> userServices = [];
+  List<AreaAction> actions = [];
+  List<AreaAction> reactions = [];
   @override
   void initState() {
     super.initState();
     loadAreas(widget.user['id'], widget.token);
+    loadServices(widget.token);
+    loadUserServices(widget.token);
+    loadActions(widget.token);
+    loadReactions(widget.token);
+  }
+
+  Future loadActions(String token) async {
+    List tmp = [];
+    var actionsData = await serverGetActions(token);
+    for (var action in actionsData) {
+      tmp.add(action);
+    }
+    setState(() {
+      actions = AppServices().actionParse(tmp);
+    });
+  }
+
+  Future loadReactions(String token) async {
+    List tmp = [];
+    var reactionsData = await serverGetReactions(token);
+    for (var reaction in reactionsData) {
+      tmp.add(reaction);
+    }
+    setState(() {
+      reactions = AppServices().actionParse(tmp);
+    });
+  }
+
+  Future loadServices(String token) async {
+    List tmp = [];
+    var servicesData = await serverGetServices(token);
+    for (var service in servicesData) {
+      tmp.add(service);
+    }
+    setState(() {
+      services = AppServices().serviceParse(tmp);
+    });
+  }
+
+  Future loadUserServices(String token) async {
+    List tmp = [];
+    var userServicesData =
+        await serverGetUserServices(token, widget.user['id']);
+    for (var service in userServicesData) {
+      tmp.add(service);
+    }
+    setState(() {
+      userServices = AppServices().userServicesParse(tmp);
+    });
+  }
+
+  List<AreaAction> reactionFromServer(List<dynamic> serverReaction) {
+    List<AreaAction> tmp = [];
+    List<int> existingIds = [];
+    for (var reaction in serverReaction) {
+      if (existingIds.contains(reaction['reaction']['id'])) {
+        continue;
+      }
+      tmp.add(AreaAction(
+        serviceId: reaction['reaction']['serviceId'] ?? -1,
+        id: reaction['reaction']['id'],
+        name: reaction['reaction']['name'] ?? "",
+        endpoint: reaction['reaction']['endpoint'] ?? "",
+        defaultConfiguration:
+            reaction['reaction']['defaultConfiguration'] != null &&
+                    reaction['reaction']['defaultConfiguration'].isNotEmpty
+                ? jsonDecode(reaction['reaction']['defaultConfiguration'])
+                : {},
+        configuration: reaction['reaction']['configuration'] != null &&
+                reaction['reaction']['configuration'].isNotEmpty
+            ? jsonDecode(reaction['reaction']['configuration'])
+            : {},
+        timer: reaction['reaction']['timer'] ?? 0,
+      ));
+      existingIds.add(reaction['reaction']['id']);
+    }
+    return tmp;
+  }
+
+  AreaAction actionFromServer(Map<String, dynamic> serverAction) {
+    return AreaAction(
+      serviceId: serverAction['action']['serviceId'] ?? -1,
+      id: serverAction['action']['id'],
+      name: serverAction['action']['name'] ?? "",
+      endpoint: serverAction['action']['endpoint'] ?? "",
+      defaultConfiguration:
+          serverAction['action']['defaultConfiguration'] != null &&
+                  serverAction['action']['defaultConfiguration'].isNotEmpty
+              ? jsonDecode(serverAction['action']['defaultConfiguration'])
+              : {},
+      configuration: serverAction['configuration'] != null &&
+              serverAction['configuration'].isNotEmpty
+          ? jsonDecode(serverAction['configuration'])
+          : {},
+      timer: serverAction['timer'] ?? 0,
+    );
   }
 
   Future<void> loadAreas(int id, String token) async {
@@ -34,10 +135,15 @@ class _HomePageState extends State<HomePage> {
     for (var area in areasData) {
       tmp.add(Area(
         userId: area['userId'],
-        action: area['userAction'],
-        reactions: area['userReaction'] ?? [],
+        action: area['userAction']['action'] != null
+            ? actionFromServer(area['userAction'])
+            : null,
+        reactions: area['userReactions'] != null
+            ? reactionFromServer(area['userReactions'])
+            : [],
         name: area['name'],
         favorite: area['favorite'],
+        areaId: area['id'],
       ));
     }
     setState(() {
@@ -59,7 +165,6 @@ class _HomePageState extends State<HomePage> {
       }
     }); */
     //serverAddArea(token, user['id'], 0, "Areatest");
-    getActions(widget.token);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
@@ -70,18 +175,21 @@ class _HomePageState extends State<HomePage> {
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) => AreaBuild(
-                  token: widget.token,
-                  userId: widget.user['id'],
-                  areasLenght: areas.length,
-                  isEdit: false,
-                  areaAdd: (Area value) {
-                    setState(
-                      () {
-                        loadAreas(widget.user['id'], widget.token);
-                      },
-                    );
-                  },
-                ),
+                    actions: actions,
+                    reactions: reactions,
+                    services: services,
+                    token: widget.token,
+                    userId: widget.user['id'],
+                    areasLenght: areas.length,
+                    isEdit: false,
+                    areaAdd: (Area value) async {
+                      await loadAreas(widget.user['id'], widget.token);
+                      setState(
+                        () {
+                          print("Je reload les areas");
+                        },
+                      );
+                    }),
               ),
             );
           },
@@ -103,7 +211,14 @@ class _HomePageState extends State<HomePage> {
                 return SizedBox(
                   height: MediaQuery.of(context).size.height * 0.8,
                   child: SettingsPage(
+                    services: services,
+                    userServices: userServices,
                     token: widget.token,
+                    reloadUserServices: () async {
+                      await loadUserServices(widget.token);
+                      setState(() {});
+                      print("Je reload les user services");
+                    },
                   ),
                 );
               },
@@ -113,33 +228,44 @@ class _HomePageState extends State<HomePage> {
       body: Stack(
         children: [
           const BackgroundGradient(),
-          Container(
-            margin: EdgeInsets.only(
-              top: safePadding +
-                  AppBar().preferredSize.height +
-                  (blockHeight * 15),
-            ),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: blockWidth / 4),
-              child: SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(
-                    parent: BouncingScrollPhysics()),
-                child: Column(
-                  children: [
-                    AreaLists(
-                      token: widget.token,
-                      userId: widget.user['id'],
-                      areasLength: areas.length,
-                      areas: areas,
-                      searchText: searchController.text,
-                      editAreaCallback: (value) {
-                        loadAreas(widget.user['id'], widget.token);
-                      },
-                    ),
-                    SizedBox(
-                      height: blockHeight * 15,
-                    )
-                  ],
+          RefreshIndicator(
+            onRefresh: () async {
+              await loadAreas(widget.user['id'], widget.token);
+              setState(() {});
+            },
+            child: Container(
+              margin: EdgeInsets.only(
+                top: safePadding +
+                    AppBar().preferredSize.height +
+                    (blockHeight * 15),
+              ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: blockWidth / 4),
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(
+                    parent: BouncingScrollPhysics(),
+                  ),
+                  child: Column(
+                    children: [
+                      AreaLists(
+                        actions: actions,
+                        reactions: reactions,
+                        services: services,
+                        token: widget.token,
+                        userId: widget.user['id'],
+                        areasLength: areas.length,
+                        areas: areas,
+                        searchText: searchController.text,
+                        editAreaCallback: () async {
+                          loadAreas(widget.user['id'], widget.token);
+                          setState(() {});
+                        },
+                      ),
+                      SizedBox(
+                        height: blockHeight * 15,
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),

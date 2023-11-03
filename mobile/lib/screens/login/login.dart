@@ -1,4 +1,8 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:flutter_svg/svg.dart';
 import 'package:mobile/back/local_storage.dart';
+import 'package:mobile/back/services.dart';
 import 'package:mobile/components/loginTextField.dart';
 import 'package:mobile/main.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +23,42 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  Key usernameField = const Key('usernameField');
+  Key passwordField = const Key('passwordField');
+  Key loginButton = const Key('loginButton');
+
+  void login(String token) async {
+    List res = [];
+    if (token.isEmpty) {
+      await serverLogin(emailController.text, passwordController.text)
+          .then((value) {
+        res = value;
+      });
+    } else {
+      res = [true, token];
+    }
+    if (res[0]) {
+      Map<String, dynamic> user = {};
+      await saveToken(res[1]);
+      await serverGetSelfInfos(res[1]).then((value) {
+        saveUser(value);
+        user = value;
+      });
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => HomePage(
+          user: user,
+          token: res[1],
+        ),
+      ));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Login failed. Please try again."),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: blockHeight * 5,
               ),
               LoginTextField(
+                  key: usernameField,
                   description: "E-Mail",
                   placeholder: 'yourname@example.com',
                   isPassword: false,
@@ -62,10 +103,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: blockHeight * 5,
               ),
               LoginTextField(
+                key: passwordField,
                 description: "Password",
                 placeholder: '********',
                 isPassword: true,
                 controller: passwordController,
+                onValidate: () {
+                  login("");
+                },
               ),
               Padding(padding: EdgeInsets.only(top: blockHeight * 2)),
               Row(
@@ -92,11 +137,12 @@ class _LoginScreenState extends State<LoginScreen> {
                             transitionsBuilder: (context, animation,
                                     secondaryAnimation, child) =>
                                 SlideTransition(
-                                    position: Tween<Offset>(
-                                      begin: const Offset(0, 1),
-                                      end: Offset.zero,
-                                    ).animate(animation),
-                                    child: child),
+                              position: Tween<Offset>(
+                                begin: const Offset(0, 1),
+                                end: Offset.zero,
+                              ).animate(animation),
+                              child: child,
+                            ),
                           ),
                         );
                       },
@@ -150,6 +196,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   color: AppColors.greyBlue,
                 ),
                 child: TextButton(
+                  key: loginButton,
                   child: Text(
                     "Sign In",
                     style: TextStyle(
@@ -157,34 +204,54 @@ class _LoginScreenState extends State<LoginScreen> {
                       fontSize: 20,
                     ),
                   ),
-                  onPressed: () async {
-                    List res = [];
-                    await serverLogin(
-                            emailController.text, passwordController.text)
-                        .then((value) {
-                      res = value;
-                    });
-                    if (res[0]) {
-                      Map<String, dynamic> user = {};
-                      await saveToken(res[1]);
-                      await serverGetSelfInfos(res[1]).then((value) {
-                        saveUser(value);
-                        user = value;
-                      });
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => HomePage(
-                          user: user,
-                          token: res[1],
+                  onPressed: () {
+                    login("");
+                  },
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: blockHeight * 5),
+                width: blockWidth * 3,
+                height: blockHeight * 8,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: AppColors.greyBlue,
+                ),
+                child: TextButton(
+                  key: loginButton,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(
+                        "Google Sign In",
+                        style: TextStyle(
+                          color: AppColors.white,
+                          fontSize: 20,
                         ),
-                      ));
-                    } else {
+                      ),
+                      SvgPicture.asset(
+                        'assets/serviceIcons/google.svg',
+                        width: 24,
+                        height: 24,
+                        // ignore: deprecated_member_use
+                        color: AppColors.white,
+                      ),
+                    ],
+                  ),
+                  onPressed: () async {
+                    //login();
+                    var token = await AppServices()
+                        .serviceLogInFunctions['GoogleLogin']!(context);
+                    if (token == null) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text("Login failed. Please try again."),
                           duration: Duration(seconds: 2),
                         ),
                       );
+                      return;
                     }
+                    login(token);
                   },
                 ),
               ),
