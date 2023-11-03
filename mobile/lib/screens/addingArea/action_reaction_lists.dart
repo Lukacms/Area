@@ -170,12 +170,6 @@ class ActionReactionLists extends StatelessWidget {
             shrinkWrap: true,
             children: getCategoryServices(),
           ),
-          TextButton(
-            child: const Text("Prout"),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          )
         ],
       ),
     );

@@ -95,6 +95,7 @@ enum ServiceCategories {
   connecteurs,
   lieu,
   medias,
+  autres,
 }
 
 class AppServices {
