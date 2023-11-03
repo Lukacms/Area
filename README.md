@@ -13,7 +13,7 @@ The project is divided into 3 parts:
 The *Web* and *Mobile* clients must only serve as an user interface, and redirect request from/to App server.
 
 ## API
-The Application Server Interface (or API) has the following functionnalities:
+The Application Server (or API) has the following functionnalities:
 * Register user on the app to obtain an account
 * Confirm their enrollement before being able to use it (via email)
 * User can subscribe to [Services](#Services)
