@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/back/local_storage.dart';
+import 'package:mobile/ip_selector.dart';
 import 'package:mobile/screens/home/home_page.dart';
 import 'package:mobile/screens/login/login.dart';
 import 'package:mobile/theme/style.dart';
@@ -49,8 +50,16 @@ class _MyAppState extends State<MyApp> {
       theme: appTheme(),
       routes: {
         '/': (context) => userToken.isEmpty
-            ? const LoginScreen()
-            : HomePage(token: userToken, user: user),
+            ? const IPSelector(
+                type: 0,
+                userToken: "",
+                user: {},
+              ) /* const LoginScreen() */
+            : IPSelector(
+                type: 1,
+                userToken: userToken,
+                user: user,
+              ) /* HomePage(token: userToken, user: user), */,
         '/login': (context) => const LoginScreen(),
         '/home': (context) => HomePage(token: userToken, user: user),
       },
