@@ -62,6 +62,9 @@ class _HomePageState extends State<HomePage> {
   Future loadServices(String token) async {
     List tmp = [];
     var servicesData = await serverGetServices(token);
+    if (servicesData == null) {
+      return;
+    }
     for (var service in servicesData) {
       tmp.add(service);
     }

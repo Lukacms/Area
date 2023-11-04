@@ -32,7 +32,9 @@ class _IPSelectorState extends State<IPSelector> {
   void initState() {
     super.initState();
     _ipController.addListener(_ipListener);
+    _ipController.text = "192.168.122.1";
     _portController.addListener(_portListener);
+    _portController.text = "8080";
   }
 
   @override
