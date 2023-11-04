@@ -112,7 +112,16 @@ class ActionReactionLists extends StatelessWidget {
                                       );
                                       Navigator.of(context).pop();
                                     }
-                                  : null,
+                                  : () {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                              "Please connect to the service first"),
+                                          duration: Duration(seconds: 2),
+                                        ),
+                                      );
+                                    },
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
