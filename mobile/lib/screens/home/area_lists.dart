@@ -11,6 +11,7 @@ class AreaLists extends StatefulWidget {
   final int userId;
   final int areasLength;
   final List<Service> services;
+  final List<int> userServices;
   final List<AreaAction> actions;
   final List<AreaAction> reactions;
   const AreaLists({
@@ -22,6 +23,7 @@ class AreaLists extends StatefulWidget {
     required this.userId,
     required this.areasLength,
     required this.services,
+    required this.userServices,
     required this.actions,
     required this.reactions,
   });
@@ -58,6 +60,7 @@ class _AreaListsState extends State<AreaLists> {
                   actions: widget.actions,
                   reactions: widget.reactions,
                   services: widget.services,
+                  userServices: widget.userServices,
                   token: widget.token,
                   userId: widget.userId,
                   areasLength: widget.areasLength,
@@ -69,6 +72,7 @@ class _AreaListsState extends State<AreaLists> {
                   actions: widget.actions,
                   reactions: widget.reactions,
                   services: widget.services,
+                  userServices: widget.userServices,
                   token: widget.token,
                   userId: widget.userId,
                   areasLength: widget.areasLength,
@@ -84,6 +88,7 @@ class _AreaListsState extends State<AreaLists> {
                   actions: widget.actions,
                   reactions: widget.reactions,
                   services: widget.services,
+                  userServices: widget.userServices,
                   token: widget.token,
                   userId: widget.userId,
                   areasLength: widget.areasLength,

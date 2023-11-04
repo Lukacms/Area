@@ -136,6 +136,11 @@ class AppServices {
           serviceTmp.iconColor = Colors.grey;
           serviceTmp.category = 'messageries';
           break;
+        case 'XIV Api':
+          serviceTmp.svgIcon = 'assets/serviceIcons/fflogo.svg';
+          serviceTmp.iconColor = Colors.grey;
+          serviceTmp.category = 'messageries';
+          break;
       }
       tmp.add(serviceTmp);
     }

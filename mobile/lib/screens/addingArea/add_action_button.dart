@@ -7,6 +7,7 @@ class AddActionButton extends StatelessWidget {
   final Function addActionCallback;
   final bool isReaction;
   final List<Service> services;
+  final List<int> userServices;
   final List<AreaAction> actions;
   final List<AreaAction> reactions;
   const AddActionButton({
@@ -14,6 +15,7 @@ class AddActionButton extends StatelessWidget {
     required this.addActionCallback,
     required this.isReaction,
     required this.services,
+    required this.userServices,
     required this.actions,
     required this.reactions,
   });
@@ -44,6 +46,7 @@ class AddActionButton extends StatelessWidget {
                 builder: (BuildContext context) {
                   return AddArea(
                     services: services,
+                    userServices: userServices,
                     actions: actions,
                     reactions: reactions,
                     parentContext: context,

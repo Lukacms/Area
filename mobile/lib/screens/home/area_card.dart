@@ -14,6 +14,7 @@ class AreaCard extends StatelessWidget {
   final int areasLength;
   final Function editAreaCallback;
   final List<Service> services;
+  final List<int> userServices;
   final List<AreaAction> actions;
   final List<AreaAction> reactions;
   const AreaCard({
@@ -24,6 +25,7 @@ class AreaCard extends StatelessWidget {
     required this.userId,
     required this.areasLength,
     required this.services,
+    required this.userServices,
     required this.actions,
     required this.reactions,
   });
@@ -58,6 +60,7 @@ class AreaCard extends StatelessWidget {
                               actions: actions,
                               reactions: reactions,
                               services: services,
+                              userServices: userServices,
                               token: token,
                               userId: userId,
                               areasLenght: areasLength,

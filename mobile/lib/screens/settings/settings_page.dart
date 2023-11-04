@@ -173,7 +173,10 @@ class _SettingsPageState extends State<SettingsPage> {
                                               Icons.check,
                                               color: AppColors.lightBlue,
                                             )
-                                          : Container(),
+                                          : Icon(
+                                              Icons.close,
+                                              color: AppColors.lightBlue,
+                                            ),
                                     ],
                                   ),
                                 ),

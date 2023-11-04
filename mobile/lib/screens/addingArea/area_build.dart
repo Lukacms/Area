@@ -16,6 +16,7 @@ class AreaBuild extends StatefulWidget {
   final int userId;
   final int areasLenght;
   final List<Service> services;
+  final List<int> userServices;
   final List<AreaAction> actions;
   final List<AreaAction> reactions;
   const AreaBuild({
@@ -27,6 +28,7 @@ class AreaBuild extends StatefulWidget {
     required this.userId,
     required this.areasLenght,
     required this.services,
+    required this.userServices,
     required this.actions,
     required this.reactions,
   });
@@ -165,6 +167,7 @@ class _AreaBuildState extends State<AreaBuild> {
                         actions: widget.actions,
                         reactions: widget.reactions,
                         services: widget.services,
+                        userServices: widget.userServices,
                         isReaction: false,
                         addActionCallback: (value) {
                           setState(
@@ -198,6 +201,7 @@ class _AreaBuildState extends State<AreaBuild> {
                             actions: widget.actions,
                             reactions: widget.reactions,
                             services: widget.services,
+                            userServices: widget.userServices,
                             isReaction: true,
                             addActionCallback: (value) {
                               setState(

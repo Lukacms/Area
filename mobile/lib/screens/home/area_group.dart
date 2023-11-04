@@ -12,6 +12,7 @@ class AreaGroup extends StatelessWidget {
   final int userId;
   final int areasLength;
   final List<Service> services;
+  final List<int> userServices;
   final List<AreaAction> actions;
   final List<AreaAction> reactions;
   const AreaGroup({
@@ -23,6 +24,7 @@ class AreaGroup extends StatelessWidget {
     required this.userId,
     required this.areasLength,
     required this.services,
+    required this.userServices,
     required this.actions,
     required this.reactions,
   });
@@ -57,6 +59,7 @@ class AreaGroup extends StatelessWidget {
                   actions: actions,
                   reactions: reactions,
                   services: services,
+                  userServices: userServices,
                   area: group[index],
                   editAreaCallback: editAreaCallback,
                   token: token,
