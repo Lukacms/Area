@@ -23,11 +23,11 @@ class ActionReactionLists extends StatelessWidget {
     required this.type,
   });
 
-  bool checkActiveInactive(int id) {
-    if (userServices.contains(id)) {
+  bool checkActiveInactive(Service service) {
+    if (userServices.contains(service.id)) {
       return true;
     }
-    return false;
+    return !service.isOauth;
   }
 
   List<Widget> getCategoryServices() {
@@ -84,7 +84,7 @@ class ActionReactionLists extends StatelessWidget {
                           child: Padding(
                             padding: EdgeInsets.only(left: blockWidth / 4),
                             child: TextButton(
-                              onPressed: checkActiveInactive(service.id)
+                              onPressed: checkActiveInactive(service)
                                   ? () {
                                       addActionCallback(
                                         AreaAction(
@@ -133,14 +133,14 @@ class ActionReactionLists extends StatelessWidget {
                                             ? actions[index].name
                                             : reactions[index].name,
                                         style: TextStyle(
-                                          color: checkActiveInactive(service.id)
+                                          color: checkActiveInactive(service)
                                               ? AppColors.white
                                               : Colors.grey,
                                         ),
                                       ),
                                     ],
                                   ),
-                                  checkActiveInactive(service.id)
+                                  checkActiveInactive(service)
                                       ? const SizedBox.shrink()
                                       : const Icon(
                                           Icons.lock,
