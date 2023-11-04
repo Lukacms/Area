@@ -36,7 +36,9 @@ class _AreaListsState extends State<AreaLists> {
   List<Area> searchAreas() {
     List<Area> searchAreas = [];
     for (var area in widget.areas) {
-      if (area.name.contains(widget.searchText)) {
+      String lowercaseName = area.name.toLowerCase();
+      String lowercaseSearchText = widget.searchText.toLowerCase();
+      if (lowercaseName.contains(lowercaseSearchText)) {
         searchAreas.add(area);
       }
     }

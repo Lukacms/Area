@@ -117,7 +117,8 @@ class ActionReactionLists extends StatelessWidget {
                                           .showSnackBar(
                                         const SnackBar(
                                           content: Text(
-                                              "Please connect to the service first"),
+                                            "Please connect to the service first",
+                                          ),
                                           duration: Duration(seconds: 2),
                                         ),
                                       );
