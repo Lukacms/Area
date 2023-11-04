@@ -27,6 +27,11 @@ class _HomePageState extends State<HomePage> {
   List<int> userServices = [];
   List<AreaAction> actions = [];
   List<AreaAction> reactions = [];
+
+  searchListenner() {
+    setState(() {});
+  }
+
   @override
   void initState() {
     super.initState();
@@ -35,6 +40,7 @@ class _HomePageState extends State<HomePage> {
     loadUserServices(widget.token);
     loadActions(widget.token);
     loadReactions(widget.token);
+    searchController.addListener(searchListenner);
   }
 
   Future loadActions(String token) async {
