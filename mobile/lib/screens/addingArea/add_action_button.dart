@@ -1,14 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/back/services.dart';
 import 'package:mobile/screens/addingArea/add_area.dart';
 import 'package:mobile/theme/style.dart';
 
 class AddActionButton extends StatelessWidget {
   final Function addActionCallback;
   final bool isReaction;
+  final List<Service> services;
+  final List<int> userServices;
+  final List<AreaAction> actions;
+  final List<AreaAction> reactions;
   const AddActionButton({
     super.key,
     required this.addActionCallback,
     required this.isReaction,
+    required this.services,
+    required this.userServices,
+    required this.actions,
+    required this.reactions,
   });
 
   @override
@@ -36,6 +45,10 @@ class AddActionButton extends StatelessWidget {
                 barrierColor: Colors.transparent,
                 builder: (BuildContext context) {
                   return AddArea(
+                    services: services,
+                    userServices: userServices,
+                    actions: actions,
+                    reactions: reactions,
                     parentContext: context,
                     addActionCallback: addActionCallback,
                     isReaction: isReaction,

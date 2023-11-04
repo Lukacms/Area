@@ -1,58 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mobile/back/api.dart';
-import 'package:mobile/back/local_storage.dart';
 import 'package:mobile/back/services.dart';
 import 'package:mobile/main.dart';
-import 'package:mobile/screens/login/login.dart';
+import 'package:mobile/screens/settings/settings.dart';
 import 'package:mobile/theme/style.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:mobile/screens/settings/webview/oauth_webview.dart';
 
 class SettingsPage extends StatefulWidget {
   final String token;
-  const SettingsPage({super.key, required this.token});
+  final List<Service> services;
+  final List<int> userServices;
+  final Function reloadUserServices;
+  const SettingsPage({
+    super.key,
+    required this.token,
+    required this.services,
+    required this.userServices,
+    required this.reloadUserServices,
+  });
 
   @override
   State<SettingsPage> createState() => _SettingsPageState();
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+  TextEditingController editProfileController = TextEditingController();
   TextEditingController searchController = TextEditingController();
-  List<Area> areas = [];
+  List localUserServices = [];
+  List<Service> oauthServices = [];
+  Map selfInfos = {};
   String selectedSegment = "Services";
-
-  Future handleSignIn() async {
-    print("AOJODOJDOEK");
-    final GoogleSignIn googleSignIn = GoogleSignIn(
-      scopes: [
-        'https://www.googleapis.com/auth/gmail.modify',
-        'openid',
-        'https://Fwww.googleapis.com/Fauth/calendar',
-      ],
-      serverClientId:
-          '315267877885-2np97bt3qq9s6er73549ldrfme2b67pi.apps.googleusercontent.com',
-    );
-    try {
-      final googleUser = await googleSignIn.signIn();
-      final googleAuth = await googleUser?.authentication;
-      if (googleAuth != null) {
-        print(googleAuth.accessToken);
-        final String? token = googleAuth.accessToken;
-        print(token);
-      } else {
-        print('User not signed in');
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
+  List isDrawerOpen = [false, ''];
 
   @override
   void initState() {
     super.initState();
-    areas = getAreas();
+    for (var element in widget.services) {
+      if (element.isOauth) {
+        oauthServices.add(element);
+      }
+    }
+    serverGetSelfInfos(widget.token).then((value) {
+      setState(() {
+        selfInfos = value;
+      });
+    });
+    localUserServices = widget.userServices;
   }
 
   @override
@@ -62,7 +57,15 @@ class _SettingsPageState extends State<SettingsPage> {
     screenWidth = screenSize.width;
     blockWidth = screenWidth / 5;
     blockHeight = screenHeight / 100;
+
+    print("Dans settings");
+    for (var element in widget.services) {
+      print(element.name);
+      print(element.connectionLink);
+      print(element.endpoint);
+    }
     return Scaffold(
+      key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
       backgroundColor: AppColors.darkBlue,
@@ -96,16 +99,18 @@ class _SettingsPageState extends State<SettingsPage> {
                           "Services": Text(
                             "Services",
                             style: TextStyle(
-                                color: selectedSegment == "Services"
-                                    ? Colors.black
-                                    : AppColors.white),
+                              color: selectedSegment == "Services"
+                                  ? Colors.black
+                                  : AppColors.white,
+                            ),
                           ),
                           "Reglages": Text(
                             "Reglages",
                             style: TextStyle(
-                                color: selectedSegment == "Reglages"
-                                    ? Colors.black
-                                    : AppColors.white),
+                              color: selectedSegment == "Reglages"
+                                  ? Colors.black
+                                  : AppColors.white,
+                            ),
                           ),
                         },
                         onValueChanged: (value) {
@@ -129,150 +134,152 @@ class _SettingsPageState extends State<SettingsPage> {
                           width: screenWidth * 0.9,
                           child: ListView.builder(
                             physics: const AlwaysScrollableScrollPhysics(
-                                parent: BouncingScrollPhysics()),
+                              parent: BouncingScrollPhysics(),
+                            ),
                             shrinkWrap: true,
-                            itemCount: AppServices().services.length,
+                            itemCount: oauthServices.length,
                             itemBuilder: (context, index) {
                               return TextButton(
                                 child: SizedBox(
                                   height: blockHeight * 6,
                                   child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      SizedBox(
-                                        height: 24,
-                                        width: 24,
-                                        child: SvgPicture.asset(
-                                          AppServices().services[index].svgIcon,
-                                          // ignore: deprecated_member_use
-                                          color: AppServices()
-                                              .services[index]
-                                              .iconColor,
-                                        ),
+                                      Row(
+                                        children: [
+                                          SizedBox(
+                                            height: 24,
+                                            width: 24,
+                                            child: SvgPicture.asset(
+                                              oauthServices[index].svgIcon,
+                                              // ignore: deprecated_member_use
+                                              color: widget
+                                                  .services[index].iconColor,
+                                            ),
+                                          ),
+                                          SizedBox(width: blockHeight * 2),
+                                          Text(
+                                            oauthServices[index].name,
+                                            style: TextStyle(
+                                              color: AppColors.lightBlue,
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      SizedBox(width: blockHeight * 2),
-                                      Text(
-                                        AppServices().services[index].name,
-                                        style: TextStyle(
-                                            color: AppColors.lightBlue),
-                                      ),
+                                      localUserServices.contains(
+                                              widget.services[index].id)
+                                          ? Icon(
+                                              Icons.check,
+                                              color: AppColors.lightBlue,
+                                            )
+                                          : Icon(
+                                              Icons.close,
+                                              color: AppColors.lightBlue,
+                                            ),
                                     ],
                                   ),
                                 ),
-                                onPressed: () {
-                                  /*  if (AppServices().services[index].oAuth !=
-                                      "null") {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => OauthWebView(
-                                          index: index,
-                                          url: AppServices()
-                                              .services[index]
-                                              .oAuth,
-                                        ),
-                                      ),
-                                    );
-                                  } */
-                                  handleSignIn();
+                                onPressed: () async {
+                                  if (oauthServices[index] != "null") {
+                                    await AppServices().serviceLogInFunctions[
+                                            widget.services[index].name]!(
+                                        context, widget.token);
+                                    setState(() {
+                                      localUserServices
+                                          .add(widget.services[index].id);
+                                    });
+                                    widget.reloadUserServices();
+                                  }
                                 },
                               );
                             },
                           ),
                         )
-                      : SizedBox(
-                          width: screenWidth * 0.9,
-                          child: ListView(
-                            shrinkWrap: true,
-                            children: [
-                              Row(
-                                children: [
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      TextButton(
-                                        onPressed: () {},
-                                        style: ButtonStyle(
-                                          foregroundColor:
-                                              MaterialStateProperty.all<Color>(
-                                                  AppColors.lightBlue),
-                                        ),
-                                        child: const Align(
-                                          alignment: Alignment.centerLeft,
-                                          child:
-                                              Text("Modifier mon mot de passe"),
-                                        ),
-                                      ),
-                                      TextButton(
-                                        onPressed: () {},
-                                        style: ButtonStyle(
-                                          foregroundColor:
-                                              MaterialStateProperty.all<Color>(
-                                                  AppColors.lightBlue),
-                                        ),
-                                        child: const Align(
-                                          alignment: Alignment.centerLeft,
-                                          child:
-                                              Text("Gérer mes notifications"),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              TextButton(
-                                onPressed: () => showDialog<String>(
-                                  context: context,
-                                  builder: (BuildContext context) =>
-                                      AlertDialog(
-                                    title: const Text('Êtes-vous sûr.e ?'),
-                                    content: const Text(
-                                        'Vous devrez vous reconnecter pour utiliser l\'application.'),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        onPressed: () => Navigator.pop(context),
-                                        child: const Text('Annuler'),
-                                      ),
-                                      TextButton(
-                                        onPressed: () {
-                                          saveToken('');
-                                          saveUser({});
-                                          Navigator.pushNamedAndRemoveUntil(
-                                            context,
-                                            '/login',
-                                            (route) => false,
-                                          );
-                                        },
-                                        child: const Text('Confirmer'),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                style: ButtonStyle(
-                                  foregroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                    Colors.red,
-                                  ),
-                                ),
-                                child: SizedBox(
-                                  width: blockWidth * 2,
-                                  height: blockHeight * 6,
-                                  child: const Center(
-                                    child: Text(
-                                      "Deconnexion",
-                                      style: TextStyle(fontSize: 20),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                      : Settings(
+                          token: widget.token,
+                          onSettingsEdit: (value) {
+                            setState(() {
+                              isDrawerOpen = [true, value];
+                            });
+                            _scaffoldKey.currentState!.openEndDrawer();
+                          },
+                          selfInfos: selfInfos,
+                        )
                 ],
               ),
             ],
           ),
         ],
       ),
+      onEndDrawerChanged: (isOpened) {
+        if (!isOpened) {
+          setState(() {
+            isDrawerOpen = [false, ''];
+          });
+        }
+      },
+      endDrawer: isDrawerOpen[0]
+          ? Container(
+              width: screenWidth,
+              color: AppColors.darkBlue,
+              child: Padding(
+                padding: EdgeInsets.only(left: blockHeight * 2),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Edit ${isDrawerOpen[1]}",
+                      style: TextStyle(color: AppColors.white, fontSize: 20),
+                    ),
+                    Center(
+                      child: SizedBox(
+                        width: screenWidth * 0.8,
+                        child: TextField(
+                          controller: editProfileController,
+                          style: TextStyle(color: AppColors.white),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: blockHeight * 2,
+                    ),
+                    Center(
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                          backgroundColor: AppColors.white,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: blockWidth * 2,
+                            vertical: blockHeight,
+                          ),
+                        ),
+                        child: Text(
+                          "Enregistrer",
+                          style: TextStyle(color: AppColors.darkBlue),
+                        ),
+                        onPressed: () {
+                          String uncapitalize(String text) {
+                            if (text.isEmpty) {
+                              return text;
+                            }
+                            return text[0].toLowerCase() + text.substring(1);
+                          }
+
+                          selfInfos[uncapitalize(isDrawerOpen[1])] =
+                              editProfileController.text;
+                          serverEditSelfInfos(widget.token, selfInfos);
+                          setState(() {
+                            isDrawerOpen = [false, ''];
+                          });
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            )
+          : null,
     );
   }
 }

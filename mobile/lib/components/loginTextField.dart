@@ -7,6 +7,7 @@ class LoginTextField extends StatefulWidget {
   final String placeholder;
   final bool isPassword;
   final bool isEmail;
+  final Function? onValidate;
   final TextEditingController controller;
   const LoginTextField({
     super.key,
@@ -15,6 +16,7 @@ class LoginTextField extends StatefulWidget {
     required this.isPassword,
     required this.controller,
     this.isEmail = false,
+    this.onValidate,
   });
 
   @override
@@ -75,6 +77,11 @@ class _LoginTextFieldState extends State<LoginTextField> {
                 setState(() {
                   isEmailValid = isValidEmail(value);
                 });
+              }
+            },
+            onSubmitted: (String value) {
+              if (widget.onValidate != null) {
+                widget.onValidate!();
               }
             },
           ),

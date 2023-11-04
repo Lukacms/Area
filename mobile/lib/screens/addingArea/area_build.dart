@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/back/api.dart';
 import 'package:mobile/back/services.dart';
@@ -14,6 +15,10 @@ class AreaBuild extends StatefulWidget {
   final String token;
   final int userId;
   final int areasLenght;
+  final List<Service> services;
+  final List<int> userServices;
+  final List<AreaAction> actions;
+  final List<AreaAction> reactions;
   const AreaBuild({
     super.key,
     this.area,
@@ -22,6 +27,10 @@ class AreaBuild extends StatefulWidget {
     required this.token,
     required this.userId,
     required this.areasLenght,
+    required this.services,
+    required this.userServices,
+    required this.actions,
+    required this.reactions,
   });
 
   @override
@@ -30,7 +39,8 @@ class AreaBuild extends StatefulWidget {
 
 class _AreaBuildState extends State<AreaBuild> {
   TextEditingController areaNameController = TextEditingController();
-  Area newArea = Area(action: null, reactions: [], name: "", userId: -1);
+  Area newArea =
+      Area(action: null, reactions: [], name: "", userId: -1, areaId: -1);
   List actionsList = [];
   Area? savedArea;
   bool isNamed = true;
@@ -103,27 +113,36 @@ class _AreaBuildState extends State<AreaBuild> {
       floatingActionButton: newArea.action == null
           ? null
           : TextButton(
-              onPressed: () {
+              onPressed: () async {
                 if (newArea.name.isEmpty) {
                   setState(() {
                     isNamed = false;
                   });
                   return;
                 }
-                widget.areaAdd(newArea);
                 if (!widget.isEdit) {
-                  /* serverAddFullArea(
-                      widget.token,
-                      widget.userId,
-                      widget.areasLenght - 1,
-                      newArea.name,
-                      newArea.action!,
-                      newArea.reactions); */
-                  serverAddArea(widget.token, widget.userId,
-                      widget.areasLenght - 1, newArea.name);
+                  await serverAddFullArea(
+                    widget.token,
+                    widget.userId,
+                    widget.areasLenght - 1,
+                    newArea.name,
+                    newArea.action!,
+                    newArea.reactions,
+                    newArea.favorite
+                  );
                 } else {
-                  editArea(newArea, savedArea!);
+                  await serverDeleteArea(widget.token, newArea.areaId);
+                  await serverAddFullArea(
+                    widget.token,
+                    widget.userId,
+                    widget.areasLenght - 1,
+                    newArea.name,
+                    newArea.action!,
+                    newArea.reactions,
+                    newArea.favorite
+                  );
                 }
+                widget.areaAdd(newArea);
                 Navigator.of(context).pop();
               },
               style: TextButton.styleFrom(
@@ -145,6 +164,10 @@ class _AreaBuildState extends State<AreaBuild> {
                 padding: EdgeInsets.only(top: safePadding + blockHeight * 11),
                 child: newArea.action == null
                     ? AddActionButton(
+                        actions: widget.actions,
+                        reactions: widget.reactions,
+                        services: widget.services,
+                        userServices: widget.userServices,
                         isReaction: false,
                         addActionCallback: (value) {
                           setState(
@@ -157,11 +180,28 @@ class _AreaBuildState extends State<AreaBuild> {
                     : Column(
                         children: [
                           ActionBlockList(
+                            services: widget.services,
                             action: newArea.action!,
                             reactions: newArea.reactions,
+                            removeActionCallback: () {
+                              setState(() {
+                                newArea.action = null;
+                                newArea.reactions = [];
+                              });
+                            },
+                            removeReactionCallback: (value) {
+                              setState(() {
+                                newArea.reactions
+                                    .remove(newArea.reactions[value]);
+                              });
+                            },
                           ),
                           SizedBox(height: blockHeight * 4),
                           AddActionButton(
+                            actions: widget.actions,
+                            reactions: widget.reactions,
+                            services: widget.services,
+                            userServices: widget.userServices,
                             isReaction: true,
                             addActionCallback: (value) {
                               setState(
@@ -178,6 +218,28 @@ class _AreaBuildState extends State<AreaBuild> {
           ),
         ],
       ),
+      persistentFooterAlignment: AlignmentDirectional.center,
+      persistentFooterButtons: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(left: blockHeight),
+              child: Text(
+                "Favorite",
+                style: TextStyle(color: AppColors.white, fontSize: 18),
+              ),
+            ),
+            CupertinoSwitch(
+                value: newArea.favorite,
+                onChanged: (value) {
+                  setState(() {
+                    newArea.favorite = value;
+                  });
+                })
+          ],
+        )
+      ],
     );
   }
 }

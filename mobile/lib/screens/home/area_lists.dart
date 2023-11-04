@@ -10,6 +10,10 @@ class AreaLists extends StatefulWidget {
   final String token;
   final int userId;
   final int areasLength;
+  final List<Service> services;
+  final List<int> userServices;
+  final List<AreaAction> actions;
+  final List<AreaAction> reactions;
   const AreaLists({
     super.key,
     required this.areas,
@@ -18,6 +22,10 @@ class AreaLists extends StatefulWidget {
     required this.token,
     required this.userId,
     required this.areasLength,
+    required this.services,
+    required this.userServices,
+    required this.actions,
+    required this.reactions,
   });
 
   @override
@@ -28,7 +36,9 @@ class _AreaListsState extends State<AreaLists> {
   List<Area> searchAreas() {
     List<Area> searchAreas = [];
     for (var area in widget.areas) {
-      if (area.name.contains(widget.searchText)) {
+      String lowercaseName = area.name.toLowerCase();
+      String lowercaseSearchText = widget.searchText.toLowerCase();
+      if (lowercaseName.contains(lowercaseSearchText)) {
         searchAreas.add(area);
       }
     }
@@ -49,6 +59,10 @@ class _AreaListsState extends State<AreaLists> {
           ? Column(
               children: [
                 AreaGroup(
+                  actions: widget.actions,
+                  reactions: widget.reactions,
+                  services: widget.services,
+                  userServices: widget.userServices,
                   token: widget.token,
                   userId: widget.userId,
                   areasLength: widget.areasLength,
@@ -57,6 +71,10 @@ class _AreaListsState extends State<AreaLists> {
                   editAreaCallback: widget.editAreaCallback,
                 ),
                 AreaGroup(
+                  actions: widget.actions,
+                  reactions: widget.reactions,
+                  services: widget.services,
+                  userServices: widget.userServices,
                   token: widget.token,
                   userId: widget.userId,
                   areasLength: widget.areasLength,
@@ -69,6 +87,10 @@ class _AreaListsState extends State<AreaLists> {
           : Column(
               children: [
                 AreaGroup(
+                  actions: widget.actions,
+                  reactions: widget.reactions,
+                  services: widget.services,
+                  userServices: widget.userServices,
                   token: widget.token,
                   userId: widget.userId,
                   areasLength: widget.areasLength,
