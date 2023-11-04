@@ -3,6 +3,11 @@ import { Background } from '../components';
 import { useAbout } from '../hooks';
 import '../styles/components.css';
 
+/**
+ * About page. Is from a mismatch (should be in backend).
+ * Show ip adress of client, as well as time, and services with actions and reactions available
+ * @returns {HTMLElement}
+ */
 function About() {
   const { about, loaded, services } = useAbout();
 

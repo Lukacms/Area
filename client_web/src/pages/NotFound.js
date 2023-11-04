@@ -2,6 +2,10 @@ import { BackButton, Background } from '../components';
 import '../styles/errors.css';
 import '../styles/components.css';
 
+/**
+ * Page that user is redirected if url is invalid
+ * @returns {HTMLElement}
+ */
 function NotFound() {
   return (
     <Background>

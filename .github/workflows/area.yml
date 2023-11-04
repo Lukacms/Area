@@ -31,6 +31,7 @@ jobs:
 
   build_docker:
     runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'pull_request' }}
     needs: check_repository_cleanliness
     steps:
       - name: install and setup docker
@@ -59,7 +60,7 @@ jobs:
     strategy:
       matrix:
         dotnet-version: [ '3.1.x', '6.0.x' ]
-    needs: build_docker
+    needs: check_repository_cleanliness
     steps:
     - uses: actions/checkout@v4
     - name: Setup dotnet

@@ -3,6 +3,10 @@ import { Dialog } from 'primereact/dialog';
 import { useSpecificService } from '../../hooks';
 import { Home } from '..';
 
+/**
+ * Information about a specific service. Either allow user to connect or disconnect / change account.
+ * @returns {HTMLElement}
+ */
 function SpecificService() {
   const { navigate, item, connect, changeAccount, disconnect, isAdmin } = useSpecificService();
 

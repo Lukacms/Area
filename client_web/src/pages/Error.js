@@ -3,6 +3,10 @@ import { BackButton, Background } from '../components';
 import { useError } from '../hooks';
 import '../styles/components.css';
 
+/**
+ * Error page. If an error occurs (wrong fetch, ...) the user will be redirected here.
+ * @returns {HTMLElement}
+ */
 function Error() {
   const { error_msgs } = useError();
 

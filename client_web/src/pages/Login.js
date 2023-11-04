@@ -7,6 +7,10 @@ import { useLogin } from '../hooks/';
 import { Background, FormikInputtext, FormikPassword } from '../components';
 import '../styles/login.css';
 
+/**
+ * Login page
+ * @returns {HTMLElement}
+ */
 function Login() {
   const { loginUser, navigate, initialValues, validate, loading, error, setError, googleSignIn } =
     useLogin();

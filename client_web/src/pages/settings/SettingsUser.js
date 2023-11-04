@@ -9,6 +9,10 @@ import '../../styles/settings.css';
 import { useState } from 'react';
 import { Toast } from 'primereact/toast';
 
+/**
+ * Page that allow an user to modify their password, or log out
+ * @returns {HTMLElement}
+ */
 function SettingsUser() {
   const { navigate, passwordValues, validation, changePassword, logout, buttonEl, isAdmin, toast } =
     useSettingsUser();

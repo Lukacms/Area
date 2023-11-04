@@ -11,6 +11,10 @@ import { AdminAddItem, Background } from '../../components';
 import { useSettingsAdmin } from '../../hooks';
 import '../../styles/admin.css';
 
+/**
+ * Page accessible only by admin people. Allow them to modify users, actions and reactions
+ * @returns {HTMLElement}
+ */
 function SettingsAdmin() {
   const {
     navigate,

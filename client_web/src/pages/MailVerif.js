@@ -3,6 +3,10 @@ import { BackButton, Background } from '../components';
 import { useMailVerif } from '../hooks';
 import '../styles/components.css';
 
+/**
+ * Page that is used to check email of user. A link to this page is sent in an email after account creation
+ * @returns {HTMLElement}
+ */
 function MailVerif() {
   const { verified, error } = useMailVerif();
 
