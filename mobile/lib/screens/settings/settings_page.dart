@@ -28,6 +28,7 @@ class _SettingsPageState extends State<SettingsPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   TextEditingController editProfileController = TextEditingController();
   TextEditingController searchController = TextEditingController();
+  List localUserServices = [];
   List<Service> oauthServices = [];
   Map selfInfos = {};
   String selectedSegment = "Services";
@@ -36,16 +37,17 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   void initState() {
     super.initState();
-    widget.services.forEach((element) {
+    for (var element in widget.services) {
       if (element.isOauth) {
         oauthServices.add(element);
       }
-    });
+    }
     serverGetSelfInfos(widget.token).then((value) {
       setState(() {
         selfInfos = value;
       });
     });
+    localUserServices = widget.userServices;
   }
 
   @override
@@ -57,11 +59,11 @@ class _SettingsPageState extends State<SettingsPage> {
     blockHeight = screenHeight / 100;
 
     print("Dans settings");
-    widget.services.forEach((element) {
+    for (var element in widget.services) {
       print(element.name);
       print(element.connectionLink);
       print(element.endpoint);
-    });
+    }
     return Scaffold(
       key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
@@ -165,7 +167,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                           ),
                                         ],
                                       ),
-                                      widget.userServices.contains(
+                                      localUserServices.contains(
                                               widget.services[index].id)
                                           ? Icon(
                                               Icons.check,
@@ -180,6 +182,10 @@ class _SettingsPageState extends State<SettingsPage> {
                                     await AppServices().serviceLogInFunctions[
                                             widget.services[index].name]!(
                                         context, widget.token);
+                                    setState(() {
+                                      localUserServices
+                                          .add(widget.services[index].id);
+                                    });
                                     widget.reloadUserServices();
                                   }
                                 },
