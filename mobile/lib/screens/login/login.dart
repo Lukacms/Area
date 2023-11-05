@@ -53,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text("Login failed. Please try again."),
+          content: Text("Login failed. Please try again.\nYou may need to verify your email."),
           duration: Duration(seconds: 2),
         ),
       );
@@ -218,7 +218,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   color: AppColors.greyBlue,
                 ),
                 child: TextButton(
-                  key: loginButton,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [

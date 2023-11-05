@@ -21,6 +21,7 @@ class ActionBlock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(action.configuration);
     return Slidable(
       startActionPane: ActionPane(
         motion: const ScrollMotion(),
