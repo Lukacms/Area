@@ -30,9 +30,32 @@ class ActionReactionLists extends StatelessWidget {
     return !service.isOauth;
   }
 
+  List serviceActions(Service service) {
+    List<AreaAction> serviceActions = [];
+
+    if (type == 'actions') {
+      for (var action in actions) {
+        if (action.serviceId == service.id) {
+          serviceActions.add(action);
+        }
+      }
+      return serviceActions;
+    } else if (type == 'reactions') {
+      for (var reaction in reactions) {
+        if (reaction.serviceId == service.id) {
+          serviceActions.add(reaction);
+        }
+      }
+      return serviceActions;
+    }
+    return [];
+  }
+
   List<Widget> getCategoryServices() {
     List<Widget> serviceGroups = [];
     for (var service in services) {
+      List actionsByService = [];
+      actionsByService = serviceActions(service);
       serviceGroups.add(
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,9 +71,7 @@ class ActionReactionLists extends StatelessWidget {
                 ),
               ),
             ),
-            (type == 'actions' ? actions : reactions)
-                    .where((element) => element.serviceId == service.id)
-                    .isEmpty
+            actionsByService.isEmpty
                 ? Padding(
                     padding: EdgeInsets.symmetric(vertical: blockHeight),
                     child: Center(
@@ -69,9 +90,7 @@ class ActionReactionLists extends StatelessWidget {
                       vertical: blockHeight * 2,
                     ),
                     shrinkWrap: true,
-                    itemCount: (type == 'actions' ? actions : reactions)
-                        .where((element) => element.serviceId == service.id)
-                        .length,
+                    itemCount: actionsByService.length,
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: EdgeInsets.only(bottom: blockHeight * 2),
@@ -88,27 +107,18 @@ class ActionReactionLists extends StatelessWidget {
                                   ? () {
                                       addActionCallback(
                                         AreaAction(
-                                            id: type == 'actions'
-                                                ? actions[index].id
-                                                : reactions[index].id,
-                                            serviceId: service.id,
-                                            name: type == 'actions'
-                                                ? actions[index].name
-                                                : reactions[index].name,
-                                            endpoint: type == 'actions'
-                                                ? actions[index].endpoint
-                                                : reactions[index].endpoint,
-                                            defaultConfiguration:
-                                                type == 'actions'
-                                                    ? actions[index]
-                                                        .defaultConfiguration
-                                                    : reactions[index]
-                                                        .defaultConfiguration,
-                                            configuration: type == 'actions'
-                                                ? actions[index].configuration
-                                                : reactions[index]
-                                                    .configuration,
-                                            timer: 0),
+                                          id: actionsByService[index].id,
+                                          serviceId: service.id,
+                                          name: actionsByService[index].name,
+                                          endpoint:
+                                              actionsByService[index].endpoint,
+                                          defaultConfiguration:
+                                              actionsByService[index]
+                                                  .defaultConfiguration,
+                                          configuration: actionsByService[index]
+                                              .configuration,
+                                          timer: 0,
+                                        ),
                                       );
                                       Navigator.of(context).pop();
                                     }
@@ -139,9 +149,7 @@ class ActionReactionLists extends StatelessWidget {
                                       ),
                                       SizedBox(width: blockHeight),
                                       Text(
-                                        type == 'actions'
-                                            ? actions[index].name
-                                            : reactions[index].name,
+                                        actionsByService[index].name,
                                         style: TextStyle(
                                           color: checkActiveInactive(service)
                                               ? AppColors.white
