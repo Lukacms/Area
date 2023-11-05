@@ -5,6 +5,22 @@ import 'package:mobile/main.dart';
 import 'package:mobile/screens/login/sent_reset_password.dart';
 import 'package:mobile/theme/style.dart';
 
+// This is the ForgotPassword widget, which is a StatefulWidget that displays 
+// the forgot password screen of the app. It has a Stack widget as its body,
+//  which contains a BackgroundCircles widget and a RefreshIndicator widget.
+//   The RefreshIndicator widget allows the user to refresh the list of areas
+//    by pulling down on the screen.
+
+// The ForgotPassword widget also has a Column widget as its child, which 
+// contains a LoginTextField widget for entering the user's email address
+//  and a TextButton widget for resetting the user's password. The LoginTextField 
+//  widget takes in several parameters including a description, a placeholder, a 
+//  isPassword flag, a isEmail flag, and a controller. The TextButton widget takes
+//   in a child and an onPressed function that sends a reset password email to the user's email address.
+
+// The ForgotPassword widget also has an isValidEmail function that checks if the 
+// user's email address is valid using a regular expression.
+
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({super.key});
 

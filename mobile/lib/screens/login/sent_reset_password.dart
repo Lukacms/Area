@@ -3,6 +3,15 @@ import 'package:mobile/components/backgroundCircles.dart';
 import 'package:mobile/main.dart';
 import 'package:mobile/theme/style.dart';
 
+// This is the sent_reset_password.dart file, which contains the SentResetPassword widget.
+//  This widget displays a screen informing the user that an email has been sent to reset
+//   their password. It takes in a mail parameter, which is the email address that the reset
+//    password email was sent to. The widget has a Stack widget as its body, which contains a 
+//    BackgroundCircles widget and a Column widget. The Column widget contains a message informing 
+//    the user that an email has been sent to reset their password, and a message reminding the user
+//     to check their inbox and spam folder. The widget also has a TextButton widget for resending 
+//     the reset password email.
+
 class SentResetPassword extends StatelessWidget {
   final String mail;
   const SentResetPassword({
