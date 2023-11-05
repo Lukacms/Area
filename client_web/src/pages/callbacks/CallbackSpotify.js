@@ -40,7 +40,7 @@ function CallBackSpotify() {
   };
 
   return (
-    <Home>
+    <Home publicPath='../../'>
       <Dialog
         header={header}
         style={{ minWidth: '30%', minHeight: '40%' }}

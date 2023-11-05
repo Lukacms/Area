@@ -43,7 +43,10 @@ function SettingsUser() {
           <Formik
             initialValues={passwordValues}
             validationSchema={validation}
-            onSubmit={changePassword}>
+            onSubmit={(values, { resetForm }) => {
+              changePassword(values);
+              resetForm();
+            }}>
             {(props) => (
               <Form>
                 <p style={{ textAlign: 'start', display: 'flex' }}>Change your password.</p>

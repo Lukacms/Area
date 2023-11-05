@@ -65,14 +65,6 @@ function Login() {
                     />
                   </div>
                   <Button
-                    label='I forgot my password'
-                    link
-                    size='small'
-                    severity='info'
-                    type='button'
-                    onClick={() => navigate('/login#forgot')}
-                  />
-                  <Button
                     label='Log In'
                     type='submit'
                     icon={loading ? 'pi' : 'pi pi-check'}

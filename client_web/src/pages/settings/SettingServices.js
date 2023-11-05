@@ -1,6 +1,5 @@
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
-import { Image } from 'primereact/image';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { Home } from '..';
 import { useSettingServices } from '../../hooks';
@@ -31,11 +30,10 @@ function SettingServices() {
           severity='info'
           icon={item.userConnected ? 'pi pi-check' : 'pi pi-times'}
           className='gap-10'
-          style={{ minWidth: '50%', gap: '5%', justifyContent: 'space-evenly' }}
+          style={{ minWidth: '50%', gap: '5%', justifyContent: 'space-between', paddingLeft: '1vw', paddingRight: '1vw' }}
           raised
           text
           onClick={() => navigate('/settings/services/' + item.id, { state: { item } })}>
-          <Image src={'data:image/png;base64 ' + item.logo} width={50} alt='logo' />
           <span>{item.name}</span>
           <i className='pi pi-chevron-right' />
         </Button>
