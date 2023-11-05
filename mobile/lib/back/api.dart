@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, non_constant_identifier_names
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -27,7 +27,10 @@ void setCurrentPort(int port) {
 /// Throws an exception if there was an error sending the login request.
 Future<List> serverLogin(String mail, String password) async {
   var url = Uri(
-      scheme: 'http', host: CURRENT_IP, port: CURRENT_PORT, path: '/api/Users/login');
+      scheme: 'http',
+      host: CURRENT_IP,
+      port: CURRENT_PORT,
+      path: '/api/Users/login');
   var headers = {
     'Content-Type': 'application/json',
     'accept': '*/*',
@@ -79,6 +82,27 @@ Future<bool> serverRegister(
   return false;
 }
 
+Future serverVerifyEmail(String mail) async {
+  var url = Uri(
+      scheme: 'http',
+      host: CURRENT_IP,
+      port: CURRENT_PORT,
+      path: '/api/Users/verifyMail');
+  var headers = {
+    'Content-Type': 'application/json',
+    'accept': '*/*',
+  };
+  var body = jsonEncode({
+    'email': mail,
+  });
+  var response = await http.post(url, headers: headers, body: body);
+  print("Verify email status code: ${response.statusCode}");
+  if (response.statusCode == 201) {
+    return true;
+  }
+  return false;
+}
+
 /// Sends a login request to the server with the specified email and password.
 ///
 /// Returns a list containing a boolean value indicating whether the login was successful,
@@ -86,8 +110,11 @@ Future<bool> serverRegister(
 ///
 ///Throws an exception if there was an error sending the login request.
 Future serverGetSelfInfos(String token) async {
-  var url =
-      Uri(scheme: 'http', host: CURRENT_IP, port: CURRENT_PORT, path: '/api/Users/me');
+  var url = Uri(
+      scheme: 'http',
+      host: CURRENT_IP,
+      port: CURRENT_PORT,
+      path: '/api/Users/me');
   var headers = {
     'accept': '*/*',
     'Authorization': 'Bearer $token',
@@ -135,7 +162,6 @@ Future serverEditSelfInfos(String token, Map selfInfos) async {
     return jsonResponse;
   }
 }
-
 
 //
 // SERVICES
@@ -236,7 +262,6 @@ Future serverServiceAuth(String code, String token, String service) async {
   return null;
 }
 
-
 //
 // AREAS, ACTIONS AND REACTIONS
 //
@@ -328,10 +353,10 @@ Future<bool> serverAddFullArea(String token, int userId, int id, String name,
     bodyReactions.add({
       'id': i,
       'reactionId': reaction.id,
-      'serviceId': reaction.serviceId,
       'areaId': id,
-      'configuration':
-          reaction.configuration.isEmpty ? "{}" : reaction.configuration,
+      'configuration': reaction.configuration.isEmpty
+          ? "{}"
+          : jsonEncode(reaction.configuration),
     });
     i++;
   }
@@ -354,7 +379,6 @@ Future<bool> serverAddFullArea(String token, int userId, int id, String name,
     'userAction': bodyAction,
     'userReactions': bodyReactions,
   });
-  print(name);
   var response = await http.post(url, headers: headers, body: body);
   print("Add area status code ${response.statusCode}");
   if (response.statusCode == 201 || response.statusCode == 200) {
@@ -443,7 +467,6 @@ Future serverGetReactions(String token) async {
     return jsonResponse;
   }
 }
-
 
 //
 // SERVICES

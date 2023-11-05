@@ -267,8 +267,8 @@ class _HomePageState extends State<HomePage> {
                         areasLength: areas.length,
                         areas: areas,
                         searchText: searchController.text,
-                        editAreaCallback: () async {
-                          loadAreas(widget.user['id'], widget.token);
+                        editAreaCallback: (String value) async {
+                          await loadAreas(widget.user['id'], widget.token);
                           setState(() {});
                         },
                       ),

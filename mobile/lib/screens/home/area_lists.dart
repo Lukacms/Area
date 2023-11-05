@@ -68,7 +68,9 @@ class _AreaListsState extends State<AreaLists> {
                   areasLength: widget.areasLength,
                   group: favorites,
                   groupName: "Mes Favoris",
-                  editAreaCallback: widget.editAreaCallback,
+                  editAreaCallback: (value) {
+                    widget.editAreaCallback(value);
+                  },
                 ),
                 AreaGroup(
                   actions: widget.actions,

@@ -61,7 +61,9 @@ class AreaGroup extends StatelessWidget {
                   services: services,
                   userServices: userServices,
                   area: group[index],
-                  editAreaCallback: editAreaCallback,
+                  editAreaCallback: (value) {
+                    editAreaCallback(value);
+                  },
                   token: token,
                   userId: userId,
                   areasLength: areasLength,

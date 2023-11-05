@@ -29,10 +29,12 @@ class AreaCard extends StatelessWidget {
     required this.actions,
     required this.reactions,
   });
-
   @override
   Widget build(BuildContext context) {
+    const Key editKey = Key('edit');
+    const Key cardKey = Key('card');
     return Container(
+      key: cardKey,
       width: blockWidth,
       height: blockHeight * 0.5,
       decoration: BoxDecoration(
@@ -44,10 +46,12 @@ class AreaCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              area.favorite ? Padding(
-                padding: EdgeInsets.only(left: blockHeight),
-                child: const Icon(Icons.star, color: Colors.yellow),
-              ) : Container(),
+              area.favorite
+                  ? Padding(
+                      padding: EdgeInsets.only(left: blockHeight),
+                      child: const Icon(Icons.star, color: Colors.yellow),
+                    )
+                  : Container(),
               PopupMenuButton(
                 itemBuilder: (context) => [
                   PopupMenuItem(
@@ -65,7 +69,9 @@ class AreaCard extends StatelessWidget {
                               userId: userId,
                               areasLenght: areasLength,
                               isEdit: true,
-                              areaAdd: editAreaCallback,
+                              areaAdd: (value) {
+                                editAreaCallback(value);
+                              },
                               area: area,
                             ),
                           ),
@@ -87,6 +93,7 @@ class AreaCard extends StatelessWidget {
                     ),
                   ),
                   PopupMenuItem(
+                    key: editKey,
                     child: TextButton(
                       onPressed: () {
                         showDialog<String>(
@@ -103,7 +110,7 @@ class AreaCard extends StatelessWidget {
                               TextButton(
                                 onPressed: () async {
                                   await serverDeleteArea(token, area.areaId);
-                                  editAreaCallback();
+                                  editAreaCallback("");
                                   Navigator.pop(context);
                                   Navigator.pop(context);
                                 },
