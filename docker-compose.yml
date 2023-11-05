@@ -34,7 +34,6 @@ services:
     volumes:
       - clients:/data
       - apk:/apk/
-    restart: always
 
   client_web:
     build: ./client_web

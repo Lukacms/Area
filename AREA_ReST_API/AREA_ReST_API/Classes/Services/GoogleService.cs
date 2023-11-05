@@ -45,6 +45,7 @@ public class GoogleService : IService
             { "grant_type", "refresh_token" },
         };
         var result = await client.PostAsync(uri, data, "application/x-www-forms-urlencoded", "");
+        Console.WriteLine(result);
         var jsonRes = JObject.Parse(result);
         userService.AccessToken = jsonRes["access_token"]!.ToString();
         userService.ExpiresIn = (int)jsonRes["expires_in"]!;

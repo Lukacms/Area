@@ -81,6 +81,7 @@ public class MicrosoftService : IService
             { "client_secret", "eHV8Q~MgohheH_~OxgTyRgbht8RvdEIZ5MkWQc50" }
         };
         var result = await client.PostAsync(uri, data, "application/x-www-forms-urlencoded", "");
+        Console.WriteLine(result);
         var jsonRes = JObject.Parse(result);
 
         userService.AccessToken = jsonRes["access_token"]!.ToString();

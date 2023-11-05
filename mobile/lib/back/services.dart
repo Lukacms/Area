@@ -245,6 +245,7 @@ class AppServices {
         'redirect_uri': '$callbackUrlScheme:/',
         'scope':
             'email https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/gmail.modify',
+
       });
       final result = await FlutterWebAuth.authenticate(
           url: url.toString(), callbackUrlScheme: callbackUrlScheme);
@@ -263,7 +264,7 @@ class AppServices {
                 serverServiceAuth(code, token, 'Spotify');
               },
               authUrl:
-                  'https://accounts.spotify.com/authorize?client_id=834ee184a29945b2a2a3dc8108a5bbf4&response_type=code&redirect_uri=area://oauth2redirect&scope=user-read-private%20user-read-email',
+                  'https://accounts.spotify.com/authorize?client_id=834ee184a29945b2a2a3dc8108a5bbf4&response_type=code&redirect_uri=area://oauth2redirect&scope=user-read-playback-state,app-remote-control,user-modify-playback-state,user-follow-read,user-read-currently-playing&redirect_uri',
             );
           },
         ),

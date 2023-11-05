@@ -11,8 +11,7 @@ public class GithubService : IService
         var action = context.Actions.First(a => a.Id == userAction.ActionId);
         return action.Name switch
         {
-            // "Get Recent Mail" => await GetRecentMail(userAction, userService),
-            // "Get Calendar" => await GetFollowerAndCompare(userAction, userService),
+            "Get Repository Stars" => await GetRepositoryStars(userAction, userService, context),
             _ => false
         };
     }
@@ -20,7 +19,6 @@ public class GithubService : IService
     public override async Task ReactionSelector(UserReactionsModel userReaction, UserServicesModel userService, AppDbContext context)
     {
         var reaction = context.Reactions.First(r => r.Id == userReaction.ReactionId);
-        Console.WriteLine($"GITHUB IN : {reaction.Name}");
         switch (reaction.Name)
         {
             case "Fork A Repository":
@@ -41,6 +39,7 @@ public class GithubService : IService
         requestMessage.Headers.Add("Accept", "application/json");
         var response = await client.SendAsync(requestMessage);
         var responseText = await response.Content.ReadAsStringAsync();
+        Console.WriteLine(responseText);
         var responseJson = JObject.Parse(responseText);
 
         userService.AccessToken = responseJson["access_token"]!.ToString();
@@ -48,6 +47,28 @@ public class GithubService : IService
         userService.ExpiresIn = (int)responseJson["expires_in"]!;
         context.UserServices.Update(userService);
         await context.SaveChangesAsync();
+    }
+
+    private async Task<bool> GetRepositoryStars(UserActionsModel userAction, UserServicesModel userService, AppDbContext context)
+    {
+        var client = new HttpClient();
+        var uri = "https://api.github.com/repos/";
+
+        var config = JObject.Parse(userAction.Configuration);
+        uri += config["owner"]! + "/" + config["repo"]!;
+        var requestMessage = new HttpRequestMessage(HttpMethod.Get, uri);
+        requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", userService.AccessToken);
+        requestMessage.Headers.UserAgent.Add(new ProductInfoHeaderValue("Area", "1.0"));
+        var response = await client.SendAsync(requestMessage);
+        var content = await response.Content.ReadAsStringAsync();
+        var responseJson = JObject.Parse(await response.Content.ReadAsStringAsync());
+        var repo_stargazers = (int)responseJson["stargazers_count"]!;
+        var stargazers = (int)config["current_stargazers"]!;
+        var result = repo_stargazers > stargazers;
+        config["current_stargazers"] = repo_stargazers;
+        userAction.Configuration = config.ToString();
+        context.UserActions.Update(userAction);
+        return result;
     }
 
     private async Task ForkRepository(UserReactionsModel userReaction, UserServicesModel userService)
