@@ -7,6 +7,12 @@ import 'package:mobile/main.dart';
 import 'package:mobile/screens/addingArea/area_build.dart';
 import 'package:mobile/theme/style.dart';
 
+// The AreaCard widget displays an area with its name and favorite status. It has a
+//  PopupMenuButton that allows the user to edit or delete the area. The widget takes 
+//  several parameters including an Area object, a token, a user ID, the length of the areas list,
+//   a function to edit an area, a list of services, a list of user services, a list of area actions, 
+//   and a list of area reactions.
+
 class AreaCard extends StatelessWidget {
   final Area area;
   final String token;
