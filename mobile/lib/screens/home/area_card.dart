@@ -110,7 +110,7 @@ class AreaCard extends StatelessWidget {
                               TextButton(
                                 onPressed: () async {
                                   await serverDeleteArea(token, area.areaId);
-                                  editAreaCallback("");
+                                  editAreaCallback(area);
                                   Navigator.pop(context);
                                   Navigator.pop(context);
                                 },
