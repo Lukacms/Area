@@ -108,9 +108,9 @@ class _HomePageState extends State<HomePage> {
                     reaction['reaction']['defaultConfiguration'].isNotEmpty
                 ? jsonDecode(reaction['reaction']['defaultConfiguration'])
                 : {},
-        configuration: reaction['reaction']['configuration'] != null &&
-                reaction['reaction']['configuration'].isNotEmpty
-            ? jsonDecode(reaction['reaction']['configuration'])
+        configuration: reaction['configuration'] != null &&
+                reaction['configuration'].isNotEmpty
+            ? jsonDecode(reaction['configuration'])
             : {},
         timer: reaction['reaction']['timer'] ?? 0,
       ));
@@ -168,12 +168,6 @@ class _HomePageState extends State<HomePage> {
     screenWidth = screenSize.width;
     blockWidth = screenWidth / 5;
     blockHeight = screenHeight / 100;
-    /* retrieveToken().then((value) {
-      if (widget.token.isEmpty && value.isEmpty) {
-        Navigator.of(context).pushReplacementNamed('/login');
-      }
-    }); */
-    //serverAddArea(token, user['id'], 0, "Areatest");
     return Scaffold(
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
@@ -267,7 +261,7 @@ class _HomePageState extends State<HomePage> {
                         areasLength: areas.length,
                         areas: areas,
                         searchText: searchController.text,
-                        editAreaCallback: (String value) async {
+                        editAreaCallback: (Area value) async {
                           await loadAreas(widget.user['id'], widget.token);
                           setState(() {});
                         },
