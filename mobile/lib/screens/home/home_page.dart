@@ -27,6 +27,11 @@ class _HomePageState extends State<HomePage> {
   List<int> userServices = [];
   List<AreaAction> actions = [];
   List<AreaAction> reactions = [];
+
+  searchListenner() {
+    setState(() {});
+  }
+
   @override
   void initState() {
     super.initState();
@@ -35,6 +40,7 @@ class _HomePageState extends State<HomePage> {
     loadUserServices(widget.token);
     loadActions(widget.token);
     loadReactions(widget.token);
+    searchController.addListener(searchListenner);
   }
 
   Future loadActions(String token) async {
@@ -62,6 +68,9 @@ class _HomePageState extends State<HomePage> {
   Future loadServices(String token) async {
     List tmp = [];
     var servicesData = await serverGetServices(token);
+    if (servicesData == null) {
+      return;
+    }
     for (var service in servicesData) {
       tmp.add(service);
     }
@@ -99,9 +108,9 @@ class _HomePageState extends State<HomePage> {
                     reaction['reaction']['defaultConfiguration'].isNotEmpty
                 ? jsonDecode(reaction['reaction']['defaultConfiguration'])
                 : {},
-        configuration: reaction['reaction']['configuration'] != null &&
-                reaction['reaction']['configuration'].isNotEmpty
-            ? jsonDecode(reaction['reaction']['configuration'])
+        configuration: reaction['configuration'] != null &&
+                reaction['configuration'].isNotEmpty
+            ? jsonDecode(reaction['configuration'])
             : {},
         timer: reaction['reaction']['timer'] ?? 0,
       ));
@@ -159,12 +168,6 @@ class _HomePageState extends State<HomePage> {
     screenWidth = screenSize.width;
     blockWidth = screenWidth / 5;
     blockHeight = screenHeight / 100;
-    /* retrieveToken().then((value) {
-      if (widget.token.isEmpty && value.isEmpty) {
-        Navigator.of(context).pushReplacementNamed('/login');
-      }
-    }); */
-    //serverAddArea(token, user['id'], 0, "Areatest");
     return Scaffold(
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
@@ -178,6 +181,7 @@ class _HomePageState extends State<HomePage> {
                     actions: actions,
                     reactions: reactions,
                     services: services,
+                    userServices: userServices,
                     token: widget.token,
                     userId: widget.user['id'],
                     areasLenght: areas.length,
@@ -251,13 +255,14 @@ class _HomePageState extends State<HomePage> {
                         actions: actions,
                         reactions: reactions,
                         services: services,
+                        userServices: userServices,
                         token: widget.token,
                         userId: widget.user['id'],
                         areasLength: areas.length,
                         areas: areas,
                         searchText: searchController.text,
-                        editAreaCallback: () async {
-                          loadAreas(widget.user['id'], widget.token);
+                        editAreaCallback: (Area value) async {
+                          await loadAreas(widget.user['id'], widget.token);
                           setState(() {});
                         },
                       ),

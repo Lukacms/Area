@@ -11,6 +11,7 @@ class AddArea extends StatefulWidget {
   final Function addActionCallback;
   final bool isReaction;
   final List<Service> services;
+  final List<int> userServices;
   final List<AreaAction> actions;
   final List<AreaAction> reactions;
   const AddArea({
@@ -19,6 +20,7 @@ class AddArea extends StatefulWidget {
     required this.addActionCallback,
     required this.isReaction,
     required this.services,
+    required this.userServices,
     required this.actions,
     required this.reactions,
   });
@@ -31,8 +33,59 @@ class _AddAreaState extends State<AddArea> {
   TextEditingController searchController = TextEditingController();
   String selectedSegment = "Actions";
   String selectedCategory = "";
+  List<AreaAction> filteredActions = [];
+  List<AreaAction> filteredReactions = [];
+  List<Service> filteredServices = [];
+
+  searchFieldListenner() {
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    searchController.addListener(searchFieldListenner);
+    filteredActions = widget.actions;
+    filteredReactions = widget.reactions;
+    filteredServices = widget.services;
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (searchController.text.isNotEmpty) {
+      filteredActions = [];
+      filteredReactions = [];
+      filteredServices = [];
+      for (var service in widget.services) {
+        if (service.name.toLowerCase().contains(searchController.text)) {
+          filteredServices.add(service);
+        }
+      }
+      print(filteredServices);
+      if (filteredServices.isEmpty) {
+        filteredServices = widget.services;
+        if (selectedSegment == "Actions") {
+          for (var action in widget.actions) {
+            if (action.name.toLowerCase().contains(searchController.text)) {
+              filteredActions.add(action);
+            }
+          }
+        } else {
+          for (var reaction in widget.reactions) {
+            if (reaction.name.toLowerCase().contains(searchController.text)) {
+              filteredReactions.add(reaction);
+            }
+          }
+        }
+      } else {
+        filteredActions = widget.actions;
+        filteredReactions = widget.reactions;
+      }
+    } else {
+      filteredActions = widget.actions;
+      filteredReactions = widget.reactions;
+      filteredServices = widget.services;
+    }
     if (widget.isReaction) {
       selectedSegment = "Reactions";
     }
@@ -51,111 +104,44 @@ class _AddAreaState extends State<AddArea> {
             Padding(
               padding: EdgeInsets.symmetric(vertical: blockHeight * 2),
               child: CupertinoSlidingSegmentedControl(
-                  groupValue: selectedSegment,
-                  children: {
-                    "Actions": Text(
-                      "Actions",
-                      style: TextStyle(
-                          color: selectedSegment == "Actions"
-                              ? Colors.black
-                              : AppColors.white),
+                groupValue: selectedSegment,
+                children: {
+                  "Actions": Text(
+                    "Actions",
+                    style: TextStyle(
+                        color: selectedSegment == "Actions"
+                            ? Colors.black
+                            : AppColors.white),
+                  ),
+                  "Reactions": Text(
+                    "Reactions",
+                    style: TextStyle(
+                      color: selectedSegment == "Reactions"
+                          ? Colors.black
+                          : AppColors.white,
                     ),
-                    "Reactions": Text(
-                      "Reactions",
-                      style: TextStyle(
-                          color: selectedSegment == "Reactions"
-                              ? Colors.black
-                              : AppColors.white),
-                    ),
-                  },
-                  onValueChanged: (value) {
-                    setState(() {
-                      selectedSegment = value.toString();
-                    });
-                  }),
+                  ),
+                },
+                onValueChanged: (value) {
+                  setState(() {
+                    selectedSegment = value.toString();
+                  });
+                },
+              ),
             ),
             Container(width: screenWidth, height: 1, color: AppColors.white),
-            selectedSegment == "Actions"
-                ? GridView.count(
-                    shrinkWrap: true,
-                    crossAxisCount: 2,
-                    childAspectRatio: blockWidth / (blockHeight * 2),
-                    padding: EdgeInsets.only(
-                        left: blockHeight * 2, top: blockHeight),
-                    children: List.generate(
-                      AppServices().categories.length,
-                      (index) {
-                        return Builder(builder: (context) {
-                          return TextButton(
-                            style:
-                                TextButton.styleFrom(padding: EdgeInsets.zero),
-                            onPressed: () {
-                              setState(() {
-                                selectedCategory =
-                                    AppServices().categories[index][0];
-                              });
-                              Scaffold.of(context).openEndDrawer();
-                            },
-                            child: Row(
-                              children: [
-                                AppServices().categories[index][1],
-                                SizedBox(width: blockHeight),
-                                Text(
-                                  AppServices().categories[index][0],
-                                  style: TextStyle(color: AppColors.lightBlue),
-                                ),
-                              ],
-                            ),
-                          );
-                        });
-                      },
-                    ),
-                  )
-                : GridView.count(
-                    shrinkWrap: true,
-                    crossAxisCount: 1,
-                    childAspectRatio: blockWidth / (blockHeight * 2),
-                    padding: EdgeInsets.only(
-                        left: blockHeight * 2, top: blockHeight),
-                    children: List.generate(
-                      AppServices().categories.length,
-                      (index) {
-                        return Builder(builder: (context) {
-                          return TextButton(
-                            style:
-                                TextButton.styleFrom(padding: EdgeInsets.zero),
-                            onPressed: () {
-                              setState(() {
-                                selectedCategory =
-                                    AppServices().categories[index][0];
-                              });
-                              Scaffold.of(context).openEndDrawer();
-                            },
-                            child: Row(
-                              children: [
-                                AppServices().categories[index][1],
-                                SizedBox(width: blockHeight),
-                                Text(
-                                  AppServices().categories[index][0],
-                                  style: TextStyle(color: AppColors.lightBlue),
-                                ),
-                              ],
-                            ),
-                          );
-                        });
-                      },
-                    ),
-                  )
+            Expanded(
+              child: ActionReactionLists(
+                type: selectedSegment.toLowerCase(),
+                actions: filteredActions,
+                reactions: filteredReactions,
+                services: filteredServices,
+                userServices: widget.userServices,
+                parentContext: widget.parentContext,
+                addActionCallback: widget.addActionCallback,
+              ),
+            )
           ],
-        ),
-        endDrawer: ActionReactionLists(
-          type: selectedSegment.toLowerCase(),
-          actions: widget.actions,
-          reactions: widget.reactions,
-          services: widget.services,
-          category: selectedCategory,
-          parentContext: widget.parentContext,
-          addActionCallback: widget.addActionCallback,
         ),
       ),
     );

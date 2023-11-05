@@ -50,6 +50,7 @@ public class SpotifyService : IService
             { "grant_type", "refresh_token" },
         };
         var result = await client.PostAsync(uri, data, "application/x-www-forms-urlencoded", base64str);
+        Console.WriteLine(result);
         var jsonRes = JObject.Parse(result);
         userService.AccessToken = jsonRes["access_token"]!.ToString();
         userService.ExpiresIn = (int)jsonRes["expires_in"]!;
@@ -67,6 +68,7 @@ public class SpotifyService : IService
         requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", userService.AccessToken);
 
         var response = await client.SendAsync(requestMessage);
+        Console.WriteLine(await response.Content.ReadAsStringAsync());
         var responseJson = JObject.Parse(await response.Content.ReadAsStringAsync());
         var currentTrack = responseJson["item"]!["name"]!.ToString().ToUpper();
         var seekedTrack = config["track_name"]!.ToString().ToUpper();

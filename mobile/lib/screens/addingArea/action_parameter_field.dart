@@ -24,8 +24,10 @@ class _ActionParameterFieldState extends State<ActionParameterField> {
   @override
   void initState() {
     super.initState();
-    textEditingController.text =
-        widget.action.configuration[widget.fieldName] ?? "";
+    widget.fieldName == "Timer"
+        ? textEditingController.text = widget.action.timer.toString()
+        : textEditingController.text =
+            widget.action.configuration[widget.fieldName] ?? "";
   }
 
   @override

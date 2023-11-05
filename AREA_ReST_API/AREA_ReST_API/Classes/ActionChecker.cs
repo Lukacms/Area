@@ -96,6 +96,7 @@ public class ActionChecker : BackgroundService
         var service = context.Services.First(s => s.Id == action.ServiceId);
         var userService = context.UserServices.FirstOrDefault(s => s.ServiceId == action.ServiceId && s.UserId == area.UserId);
         var instance = _services[service.Name].Invoke();
+        Console.WriteLine("HERE'S " + action.Name);
         if (userService == null && service.IsConnectionNeeded == false)
             if (await instance.ActionSelectorWithoutUserService(userAction, context))
                 await ManageReactions(area, context);

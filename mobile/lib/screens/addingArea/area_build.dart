@@ -16,6 +16,7 @@ class AreaBuild extends StatefulWidget {
   final int userId;
   final int areasLenght;
   final List<Service> services;
+  final List<int> userServices;
   final List<AreaAction> actions;
   final List<AreaAction> reactions;
   const AreaBuild({
@@ -27,6 +28,7 @@ class AreaBuild extends StatefulWidget {
     required this.userId,
     required this.areasLenght,
     required this.services,
+    required this.userServices,
     required this.actions,
     required this.reactions,
   });
@@ -165,6 +167,7 @@ class _AreaBuildState extends State<AreaBuild> {
                         actions: widget.actions,
                         reactions: widget.reactions,
                         services: widget.services,
+                        userServices: widget.userServices,
                         isReaction: false,
                         addActionCallback: (value) {
                           setState(
@@ -174,41 +177,47 @@ class _AreaBuildState extends State<AreaBuild> {
                           );
                         },
                       )
-                    : Column(
-                        children: [
-                          ActionBlockList(
-                            services: widget.services,
-                            action: newArea.action!,
-                            reactions: newArea.reactions,
-                            removeActionCallback: () {
-                              setState(() {
-                                newArea.action = null;
-                                newArea.reactions = [];
-                              });
-                            },
-                            removeReactionCallback: (value) {
-                              setState(() {
-                                newArea.reactions
-                                    .remove(newArea.reactions[value]);
-                              });
-                            },
-                          ),
-                          SizedBox(height: blockHeight * 4),
-                          AddActionButton(
-                            actions: widget.actions,
-                            reactions: widget.reactions,
-                            services: widget.services,
-                            isReaction: true,
-                            addActionCallback: (value) {
-                              setState(
-                                () {
-                                  newArea.reactions.add(value);
-                                },
-                              );
-                            },
-                          )
-                        ],
-                      ),
+                    : SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(
+                            parent: BouncingScrollPhysics()),
+
+                      child: Column(
+                          children: [
+                            ActionBlockList(
+                              services: widget.services,
+                              action: newArea.action!,
+                              reactions: newArea.reactions,
+                              removeActionCallback: () {
+                                setState(() {
+                                  newArea.action = null;
+                                  newArea.reactions = [];
+                                });
+                              },
+                              removeReactionCallback: (value) {
+                                setState(() {
+                                  newArea.reactions
+                                      .remove(newArea.reactions[value]);
+                                });
+                              },
+                            ),
+                            SizedBox(height: blockHeight * 4),
+                            AddActionButton(
+                              actions: widget.actions,
+                              reactions: widget.reactions,
+                              services: widget.services,
+                              userServices: widget.userServices,
+                              isReaction: true,
+                              addActionCallback: (value) {
+                                setState(
+                                  () {
+                                    newArea.reactions.add(value);
+                                  },
+                                );
+                              },
+                            )
+                          ],
+                        ),
+                    ),
               ),
             ],
           ),

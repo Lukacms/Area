@@ -1,10 +1,19 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, non_constant_identifier_names
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:mobile/back/services.dart';
 
-String CURRENT_IP = '192.168.122.1';
+String CURRENT_IP = '';
+int CURRENT_PORT = -1;
+
+void setCurrentIp(String ip) {
+  CURRENT_IP = ip;
+}
+
+void setCurrentPort(int port) {
+  CURRENT_PORT = port;
+}
 
 //
 // USERS
@@ -18,7 +27,10 @@ String CURRENT_IP = '192.168.122.1';
 /// Throws an exception if there was an error sending the login request.
 Future<List> serverLogin(String mail, String password) async {
   var url = Uri(
-      scheme: 'http', host: CURRENT_IP, port: 8080, path: '/api/Users/login');
+      scheme: 'http',
+      host: CURRENT_IP,
+      port: CURRENT_PORT,
+      path: '/api/Users/login');
   var headers = {
     'Content-Type': 'application/json',
     'accept': '*/*',
@@ -50,7 +62,7 @@ Future<bool> serverRegister(
   var url = Uri(
       scheme: 'http',
       host: CURRENT_IP,
-      port: 8080,
+      port: CURRENT_PORT,
       path: '/api/Users/register');
   var headers = {
     'Content-Type': 'application/json',
@@ -70,6 +82,27 @@ Future<bool> serverRegister(
   return false;
 }
 
+Future serverVerifyEmail(String mail) async {
+  var url = Uri(
+      scheme: 'http',
+      host: CURRENT_IP,
+      port: CURRENT_PORT,
+      path: '/api/Users/verifyMail');
+  var headers = {
+    'Content-Type': 'application/json',
+    'accept': '*/*',
+  };
+  var body = jsonEncode({
+    'email': mail,
+  });
+  var response = await http.post(url, headers: headers, body: body);
+  print("Verify email status code: ${response.statusCode}");
+  if (response.statusCode == 201) {
+    return true;
+  }
+  return false;
+}
+
 /// Sends a login request to the server with the specified email and password.
 ///
 /// Returns a list containing a boolean value indicating whether the login was successful,
@@ -77,8 +110,11 @@ Future<bool> serverRegister(
 ///
 ///Throws an exception if there was an error sending the login request.
 Future serverGetSelfInfos(String token) async {
-  var url =
-      Uri(scheme: 'http', host: CURRENT_IP, port: 8080, path: '/api/Users/me');
+  var url = Uri(
+      scheme: 'http',
+      host: CURRENT_IP,
+      port: CURRENT_PORT,
+      path: '/api/Users/me');
   var headers = {
     'accept': '*/*',
     'Authorization': 'Bearer $token',
@@ -110,7 +146,7 @@ Future serverEditSelfInfos(String token, Map selfInfos) async {
   var url = Uri(
     scheme: 'http',
     host: CURRENT_IP,
-    port: 8080,
+    port: CURRENT_PORT,
     path: '/api/Users/partialModif',
   );
   var headers = {
@@ -126,7 +162,6 @@ Future serverEditSelfInfos(String token, Map selfInfos) async {
     return jsonResponse;
   }
 }
-
 
 //
 // SERVICES
@@ -160,7 +195,7 @@ Future serverGoogleAuth(
   var url = Uri(
     scheme: 'http',
     host: CURRENT_IP,
-    port: 8080,
+    port: CURRENT_PORT,
     path: redirectUrl.isEmpty
         ? '/oauth/Google/mobile'
         : '/api/Users/googleLoginMobile',
@@ -211,7 +246,7 @@ Future serverServiceAuth(String code, String token, String service) async {
   var url = Uri(
       scheme: 'http',
       host: CURRENT_IP,
-      port: 8080,
+      port: CURRENT_PORT,
       path: '/oauth/$service/mobile');
   var headers = {
     'Content-Type': 'application/json',
@@ -227,7 +262,6 @@ Future serverServiceAuth(String code, String token, String service) async {
   return null;
 }
 
-
 //
 // AREAS, ACTIONS AND REACTIONS
 //
@@ -242,7 +276,7 @@ Future<List> serverGetAreas(int id, String token) async {
   var url = Uri(
     scheme: 'http',
     host: CURRENT_IP,
-    port: 8080,
+    port: CURRENT_PORT,
     path: '/api/Areas/$id/full',
   );
   var headers = {
@@ -269,7 +303,7 @@ Future<bool> serverAddArea(
   var url = Uri(
     scheme: 'http',
     host: CURRENT_IP,
-    port: 8080,
+    port: CURRENT_PORT,
     path: '/api/Areas',
   );
   var headers = {
@@ -319,17 +353,17 @@ Future<bool> serverAddFullArea(String token, int userId, int id, String name,
     bodyReactions.add({
       'id': i,
       'reactionId': reaction.id,
-      'serviceId': reaction.serviceId,
       'areaId': id,
-      'configuration':
-          reaction.configuration.isEmpty ? "{}" : reaction.configuration,
+      'configuration': reaction.configuration.isEmpty
+          ? "{}"
+          : jsonEncode(reaction.configuration),
     });
     i++;
   }
   var url = Uri(
     scheme: 'http',
     host: CURRENT_IP,
-    port: 8080,
+    port: CURRENT_PORT,
     path: '/api/Areas/full',
   );
   var headers = {
@@ -345,7 +379,6 @@ Future<bool> serverAddFullArea(String token, int userId, int id, String name,
     'userAction': bodyAction,
     'userReactions': bodyReactions,
   });
-  print(name);
   var response = await http.post(url, headers: headers, body: body);
   print("Add area status code ${response.statusCode}");
   if (response.statusCode == 201 || response.statusCode == 200) {
@@ -362,7 +395,7 @@ Future<bool> serverDeleteArea(String token, int areaId) async {
   final uri = Uri(
     scheme: 'http',
     host: CURRENT_IP,
-    port: 8080,
+    port: CURRENT_PORT,
     path: '/api/Areas/$areaId',
   );
   final response = await http.delete(
@@ -388,7 +421,7 @@ Future serverGetActions(String token) async {
   var url = Uri(
     scheme: 'http',
     host: CURRENT_IP,
-    port: 8080,
+    port: CURRENT_PORT,
     path: '/api/Actions',
   );
   var headers = {
@@ -420,7 +453,7 @@ Future serverGetReactions(String token) async {
   var url = Uri(
     scheme: 'http',
     host: CURRENT_IP,
-    port: 8080,
+    port: CURRENT_PORT,
     path: '/api/Reactions',
   );
   var headers = {
@@ -435,7 +468,6 @@ Future serverGetReactions(String token) async {
   }
 }
 
-
 //
 // SERVICES
 //
@@ -447,7 +479,7 @@ Future serverGetServices(String token) async {
   var url = Uri(
     scheme: 'http',
     host: CURRENT_IP,
-    port: 8080,
+    port: CURRENT_PORT,
     path: '/api/Services',
   );
   var headers = {
@@ -468,7 +500,7 @@ Future serverGetUserServices(String token, int userId) async {
   var url = Uri(
     scheme: 'http',
     host: CURRENT_IP,
-    port: 8080,
+    port: CURRENT_PORT,
     path: '/api/UserServices/$userId',
   );
   var headers = {

@@ -14,6 +14,7 @@ class AreaCard extends StatelessWidget {
   final int areasLength;
   final Function editAreaCallback;
   final List<Service> services;
+  final List<int> userServices;
   final List<AreaAction> actions;
   final List<AreaAction> reactions;
   const AreaCard({
@@ -24,13 +25,16 @@ class AreaCard extends StatelessWidget {
     required this.userId,
     required this.areasLength,
     required this.services,
+    required this.userServices,
     required this.actions,
     required this.reactions,
   });
-
   @override
   Widget build(BuildContext context) {
+    const Key editKey = Key('edit');
+    const Key cardKey = Key('card');
     return Container(
+      key: cardKey,
       width: blockWidth,
       height: blockHeight * 0.5,
       decoration: BoxDecoration(
@@ -42,10 +46,12 @@ class AreaCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              area.favorite ? Padding(
-                padding: EdgeInsets.only(left: blockHeight),
-                child: const Icon(Icons.star, color: Colors.yellow),
-              ) : Container(),
+              area.favorite
+                  ? Padding(
+                      padding: EdgeInsets.only(left: blockHeight),
+                      child: const Icon(Icons.star, color: Colors.yellow),
+                    )
+                  : Container(),
               PopupMenuButton(
                 itemBuilder: (context) => [
                   PopupMenuItem(
@@ -58,11 +64,14 @@ class AreaCard extends StatelessWidget {
                               actions: actions,
                               reactions: reactions,
                               services: services,
+                              userServices: userServices,
                               token: token,
                               userId: userId,
                               areasLenght: areasLength,
                               isEdit: true,
-                              areaAdd: editAreaCallback,
+                              areaAdd: (value) {
+                                editAreaCallback(value);
+                              },
                               area: area,
                             ),
                           ),
@@ -84,6 +93,7 @@ class AreaCard extends StatelessWidget {
                     ),
                   ),
                   PopupMenuItem(
+                    key: editKey,
                     child: TextButton(
                       onPressed: () {
                         showDialog<String>(
@@ -100,7 +110,7 @@ class AreaCard extends StatelessWidget {
                               TextButton(
                                 onPressed: () async {
                                   await serverDeleteArea(token, area.areaId);
-                                  editAreaCallback();
+                                  editAreaCallback(area);
                                   Navigator.pop(context);
                                   Navigator.pop(context);
                                 },

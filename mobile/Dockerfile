@@ -11,6 +11,7 @@ WORKDIR /apk
 COPY . .
 
 # Run Flutter commands to build the APK
+RUN flutter clean
 RUN flutter pub get
 RUN flutter build apk --release
 
