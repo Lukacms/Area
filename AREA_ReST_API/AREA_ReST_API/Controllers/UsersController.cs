@@ -206,7 +206,7 @@ public class UsersController : ControllerBase
     {
         var decodedUser = JwtDecoder.Decode(authorization);
 
-        if (!decodedUser.Admin)
+        if (!decodedUser.Admin && decodedUser.Id != modifiedUser.Id)
             return new UnauthorizedObjectResult(new JsonObject
                 { { "message", "You are not authorized to modify this user" } });
         if (modifiedUser.Name.IsNullOrEmpty())

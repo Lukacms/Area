@@ -30,7 +30,8 @@ const useSettingsUser = () => {
   const changePassword = async (values) => {
     try {
       const user =  await getFirstInfos(secureLocalStorage.getItem('token'));
-      await changeUser({...user.data, password: values.password});
+      const res = await changeUser({...user.data, password: values.password});
+      console.log(res?.data);
       toast.current.show({ severity: 'success', summary: 'Success' });
     } catch (e) {
       toast.current.show({
