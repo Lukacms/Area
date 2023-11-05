@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+//this file contains the implementation of the hexToColor function and the AppColors class.
+
 Color hexToColor(String hexString) {
   final buffer = StringBuffer();
   if (hexString.length == 6 || hexString.length == 7) buffer.write('ff');

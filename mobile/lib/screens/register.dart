@@ -7,6 +7,33 @@ import 'package:mobile/components/backgroundCircles.dart';
 import 'package:mobile/screens/login/login.dart';
 import 'package:mobile/theme/style.dart';
 
+// This is the RegisterScreen widget, which displays the registration screen
+//  for a new user. It takes in several parameters including TextEditingController
+//   objects for the user's email, password, name, surname, and username, as well 
+//   as several Key objects for the various text fields and buttons.
+
+// The widget has a Scaffold widget as its parent, which provides the basic structure 
+// for the page. The Scaffold widget has a Stack widget as its child, which allows 
+// for layering of widgets.
+
+// The Stack widget contains a Column widget, which contains the main content of 
+// the page. The Column widget has a Padding widget as its child, which adds some 
+// padding to the content.
+
+// The content of the page is divided into several sections, each containing a 
+// LoginTextField or HalfLoginTextField widget for entering user information.
+//  The LoginTextField and HalfLoginTextField widgets take in several parameters 
+//  including a Key object, a String for the field's label, a String for the field's 
+//  placeholder text, a bool indicating whether the field is a password field, a
+//   TextEditingController object for the field's text, and a bool indicating whether
+//    the field is an email field.
+
+// The widget also has a "Sign Up" button, which registers the user when pressed. 
+// When the button is pressed, the serverRegister function is called with the
+//  user's email, password, name, surname, and username. If the registration is 
+//  successful, the user is redirected to the login screen and a success message 
+//  is displayed. If the registration fails, an error message is displayed.
+
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
 

@@ -3,6 +3,21 @@ import 'package:mobile/back/local_storage.dart';
 import 'package:mobile/main.dart';
 import 'package:mobile/screens/settings/profile_edit_tile.dart';
 
+// This is the Settings widget, which displays the user's settings. 
+// It takes in several parameters including a String for the user's token,
+//  a function to call when a setting is edited, and a map of the user's profile information.
+
+// The widget has a SizedBox widget as its parent, which sets the 
+// width of the widget to 90% of the screen width. The SizedBox widget 
+// contains a ListView widget, which displays the user's profile information as a list of ProfileEditTile widgets.
+
+// Each ProfileEditTile widget displays a single editable field in the 
+// user's profile. It takes in a Function to call when the tile is tapped,
+//  a String for the tile's label, and a String for the tile's value.
+
+// The widget also has a "Deconnexion" button, which logs the user out 
+// of the application when pressed.
+
 class Settings extends StatelessWidget {
   final String token;
   final Function onSettingsEdit;
