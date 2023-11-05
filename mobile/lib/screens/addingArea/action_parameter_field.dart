@@ -3,6 +3,13 @@ import 'package:mobile/back/services.dart';
 import 'package:mobile/main.dart';
 import 'package:mobile/theme/style.dart';
 
+// This file contains the implementation of the ActionParameterField widget,
+// which is a stateful widget that displays a single parameter field for an 
+// AreaAction object. The ActionParameterField widget takes in an AreaAction object,
+// a field name, and a callback function to update the field value. The widget displays the
+// field name and a TextField widget to edit the field value. The ActionParameterField 
+// widget is used to display a single parameter field for an action block in the mobile app.
+
 class ActionParameterField extends StatefulWidget {
   final AreaAction action;
   final String fieldName;

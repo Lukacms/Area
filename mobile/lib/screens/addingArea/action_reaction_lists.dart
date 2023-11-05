@@ -4,6 +4,12 @@ import 'package:mobile/back/services.dart';
 import 'package:mobile/main.dart';
 import 'package:mobile/theme/style.dart';
 
+// This file contains the implementation of the Service class,
+// which represents a service that can be connected to in the mobile app.
+// The Service class has properties such as id, name, svgIcon, iconColor, and isOauth. 
+// The Service class is used to store information about a service, such as its name, icon, 
+// and whether it requires OAuth authentication.
+
 class ActionReactionLists extends StatelessWidget {
   final String type;
   final BuildContext parentContext;

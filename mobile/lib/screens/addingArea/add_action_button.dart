@@ -3,6 +3,15 @@ import 'package:mobile/back/services.dart';
 import 'package:mobile/screens/addingArea/add_area.dart';
 import 'package:mobile/theme/style.dart';
 
+// This file contains the implementation of the AddActionButton widget, which is 
+// a stateless widget that displays a button to add a new action or reaction block. 
+// The AddActionButton widget takes in several parameters, including a callback function 
+// to add a new action or reaction block, a boolean value to determine whether the block is an 
+// action or a reaction, and lists of services, user services, actions, and reactions. When the 
+// button is pressed, the widget displays a modal bottom sheet that allows the user to select a 
+// service and configure the new action or reaction block. The AddActionButton widget is used to
+//  display a button to add a new action or reaction block in the mobile app.
+
 class AddActionButton extends StatelessWidget {
   final Function addActionCallback;
   final bool isReaction;
