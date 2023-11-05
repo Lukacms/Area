@@ -13,6 +13,24 @@ import 'package:mobile/theme/style.dart';
 import 'package:mobile/back/api.dart';
 import 'package:mobile/screens/register.dart';
 
+// This is the LoginScreen widget, which displays the login screen of the app.
+//  It has a Stack widget as its body, which contains a BackgroundCircles widget
+//   and a RefreshIndicator widget. The RefreshIndicator widget allows the user to
+//    refresh the list of areas by pulling down on the screen.
+
+// The LoginScreen widget also has a Column widget as its child, which contains
+//  two LoginTextField widgets for entering the user's email address and password,
+//   a TextButton widget for signing in, and a TextButton widget for registering a new account.
+
+// The LoginScreen widget has a login function that sends the user's email address 
+// and password to the server to authenticate the user. If the authentication is successful, 
+// the user's token is saved to local storage and the HomePage widget is displayed. If the authentication fails, an error message is displayed using a SnackBar widget.
+
+// The LoginScreen widget also has a GoogleLogin function that logs the user in using 
+// their Google account. If the authentication is successful, the user's token is saved 
+// to local storage and the HomePage widget is displayed. If the authentication fails, an 
+// error message is displayed using a SnackBar widget.
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 

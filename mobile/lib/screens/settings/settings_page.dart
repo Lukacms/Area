@@ -7,6 +7,35 @@ import 'package:mobile/screens/settings/settings.dart';
 import 'package:mobile/theme/style.dart';
 import 'package:flutter/cupertino.dart';
 
+// This is the SettingsPage widget, which displays the user's settings.
+//  It takes in several parameters including a String for the user's token,
+//   a list of Service objects for the available services, a list of int for
+//    the user's selected services, and a function to reload the user's services.
+
+// The widget has a Scaffold widget as its parent, which provides the basic
+//  structure for the page. The Scaffold widget has a Stack widget as its child,
+//   which allows for layering of widgets.
+
+// The Stack widget contains a Column widget, which contains the main content
+//  of the page. The Column widget has a Padding widget as its child, which adds some padding to the content.
+
+// The content of the page is divided into two segments: "Services" and "Reglages"
+// . The currently selected segment is stored in the selectedSegment variable.
+
+// If the "Services" segment is selected, the widget displays a list of available
+//  services. Each service is displayed as a TextButton widget with the service's
+//   name and icon. If the user has already selected the service, a checkmark icon
+//    is displayed next to the service's name.
+
+// If the "Reglages" segment is selected, the widget displays the Settings widget,
+//  which allows the user to edit their profile information.
+
+// The widget also has an end drawer, which is used to display a form for 
+// editing the user's profile information. The end drawer is opened when 
+// the user taps on a profile field in the Settings widget. The form is displayed as
+//  a Column widget with a TextField widget for entering the new value and a 
+//  "Enregistrer" button for saving the changes.
+
 class SettingsPage extends StatefulWidget {
   final String token;
   final List<Service> services;

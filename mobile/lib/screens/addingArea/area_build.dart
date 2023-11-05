@@ -8,6 +8,14 @@ import 'package:mobile/screens/addingArea/action_blocks_list.dart';
 import 'package:mobile/screens/addingArea/add_action_button.dart';
 import 'package:mobile/theme/style.dart';
 
+// This file contains the implementation of the AreaBuild widget, which is a 
+// stateful widget that displays a screen to create or edit an area in the mobile app. 
+// The AreaBuild widget takes in several parameters, including an Area object,
+// a callback function to add a new area, a boolean value to determine whether the
+// a list of actions, and a list of reactions. The widget displays a text field to enter
+// the area name, a list of action and reaction blocks, and a switch to mark the area as a 
+// favorite. The AreaBuild widget is used to display a screen to create or edit an area in the mobile app.
+
 class AreaBuild extends StatefulWidget {
   final Area? area;
   final Function areaAdd;

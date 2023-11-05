@@ -11,6 +11,29 @@ import 'package:mobile/screens/home/home_appbar.dart';
 import 'package:mobile/theme/style.dart';
 import 'package:mobile/screens/settings/settings_page.dart';
 
+// This is the HomePage widget, which is a StatefulWidget that displays the home screen of the
+// app. It takes in a token and user as parameters.
+
+// The HomePage widget has a HomeAppBar widget as its appBar, which is a custom AppBar
+//  with a transparent background, a search field, and two IconButton widgets for opening
+//   the settings screen and adding a new area.
+
+// The HomePage widget also has a Stack widget as its body, which contains a BackgroundGradient 
+// widget and a RefreshIndicator widget. The RefreshIndicator widget allows the user to refresh 
+// the list of areas by pulling down on the screen.
+
+// The HomePage widget has several lists of data, including areas, services, userServices, 
+// actions, and reactions. These lists are loaded from the server using various load functions 
+// in the initState method.
+
+// The HomePage widget also has a SingleChildScrollView widget with a Column widget as its
+//  child. The Column widget contains an AreaLists widget, which displays the list of areas. 
+//  The AreaLists widget takes in the various lists of data as parameters and filters the 
+//  areas based on the search text entered by the user.
+
+// When the user taps on an area, the editAreaCallback function is called, which updates
+//  the list of areas by calling the loadAreas function.
+
 class HomePage extends StatefulWidget {
   final String token;
   final Map<String, dynamic> user;

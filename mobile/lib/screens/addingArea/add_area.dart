@@ -6,6 +6,16 @@ import 'package:mobile/main.dart';
 import 'package:mobile/screens/addingArea/action_reaction_lists.dart';
 import 'package:mobile/theme/style.dart';
 
+// This file contains the implementation of the AddArea widget, which is a 
+// stateful widget that displays a modal bottom sheet to add a new area in the 
+// mobile app. The AddArea widget takes in several parameters, including a callback 
+// function to add a new action or reaction block, a boolean value to determine whether 
+// the block is an action or a reaction, and lists of services, user services, actions, 
+// and reactions. The widget displays a search field to filter the list of services, a 
+// segmented control to switch between actions and reactions, and a list of action and 
+// reaction blocks. The AddArea widget is used to display a modal bottom sheet to add a
+//  new area in the mobile app.
+
 class AddArea extends StatefulWidget {
   final BuildContext parentContext;
   final Function addActionCallback;

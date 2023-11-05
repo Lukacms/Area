@@ -4,6 +4,12 @@ import 'package:mobile/main.dart';
 import 'package:mobile/screens/addingArea/action_block.dart';
 import 'package:mobile/theme/style.dart';
 
+// This file contains the implementation of the ActionBlockList widget, which is a stateful
+// widget that displays a list of ActionBlock widgets. The ActionBlockList widget takes in a
+// list of AreaAction objects, a list of Service objects, and two callback functions to remove
+// an action or a reaction. The ActionBlockList widget is used to display the list of actions
+// and reactions for a specific area in the mobile app.
+
 class ActionBlockList extends StatefulWidget {
   final AreaAction action;
   final List<AreaAction> reactions;

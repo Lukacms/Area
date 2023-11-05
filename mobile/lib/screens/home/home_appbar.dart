@@ -3,6 +3,13 @@ import 'package:mobile/components/search_field.dart';
 import 'package:mobile/main.dart';
 import 'package:mobile/theme/style.dart';
 
+// The HomeAppBar widget is a custom AppBar used in the home screen of the app. 
+// It has a transparent background and no leading widget. It contains a SearchField
+//  widget for searching areas and two IconButton widgets as actions: one for opening 
+//  the settings screen and one for adding a new area. It takes several parameters 
+//  including a TextEditingController for the search field, a BuildContext, a function 
+//  to add an area, and a function to open the settings screen.
+
 class HomeAppBar extends AppBar {
   final TextEditingController searchController;
   final BuildContext context;

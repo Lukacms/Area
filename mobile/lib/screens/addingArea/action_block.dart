@@ -6,6 +6,12 @@ import 'package:mobile/main.dart';
 import 'package:mobile/screens/addingArea/action_parameter_field.dart';
 import 'package:mobile/theme/style.dart';
 
+// This file contains the implementation of the ActionBlock widget, which is a stateless
+// widget that displays an action or a reaction block. The ActionBlock widget takes in
+// an AreaAction object, a Service object, a callback function to delete the block,
+// and a boolean value to determine whether the block is an action or a reaction.
+// The ActionBlock widget is used to display an action or a reaction block in the ActionBlockList widget.
+
 class ActionBlock extends StatelessWidget {
   final AreaAction action;
   final Service service;
