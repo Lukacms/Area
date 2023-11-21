@@ -75,10 +75,10 @@ public class MicrosoftService : IService
         var client = new HttpService();
         var data = new Dictionary<string, string>
         {
-            { "client_id", "5731d8cc-7d4b-47dc-812f-f4615f65b38d" },
+            { "client_id", "client id" }, // NOTE to change when building app
             { "refresh_token", userService.RefreshToken },
             { "grant_type", "refresh_token" },
-            { "client_secret", "eHV8Q~MgohheH_~OxgTyRgbht8RvdEIZ5MkWQc50" }
+            { "client_secret", "client secret" }
         };
         var result = await client.PostAsync(uri, data, "application/x-www-forms-urlencoded", "");
         Console.WriteLine(result);

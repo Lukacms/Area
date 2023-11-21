@@ -33,7 +33,7 @@ public class GithubService : IService
     public override async Task RefreshToken(UserServicesModel userService, AppDbContext context)
     {
         const string uri = "https://github.com/login/oauth/access_token";
-        var query = $"?client_id=Iv1.f47bfd491f94b532&client_secret=c8f7c650f3d4c47462ddbf0ca06b1113478c9f6e&grant_type=refresh_token&refresh_token={userService.RefreshToken}";
+        var query = $"?client_id=client id&client_secret=client secret&grant_type=refresh_token&refresh_token={userService.RefreshToken}";  // NOTE to change when building app
         var client = new HttpClient();
         var requestMessage = new HttpRequestMessage(HttpMethod.Post, uri + query);
         requestMessage.Headers.Add("Accept", "application/json");
