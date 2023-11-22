@@ -41,7 +41,7 @@ public class SpotifyService : IService
     public override async Task RefreshToken(UserServicesModel userService, AppDbContext context)
     {
         const string uri = "https://accounts.spotify.com/api/token";
-        var authentication = $"834ee184a29945b2a2a3dc8108a5bbf4:b589f784bb3f4b3897337acbfdd80f0d";
+        var authentication = $"authentication"; // NOTE to change when building app
         var base64str = Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(authentication));
         var client = new HttpService();
         var data = new Dictionary<string, string>

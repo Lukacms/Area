@@ -33,7 +33,7 @@ public class SpotifyController
     {
         var decodedUser = JwtDecoder.Decode(authorization);
         var callbackUri = "http://localhost:8081/settings/services/spotify";
-        var authentication = $"834ee184a29945b2a2a3dc8108a5bbf4:b589f784bb3f4b3897337acbfdd80f0d";
+        var authentication = $"834ee184a29945b2a2a3dc8108a5bbf4:b589f784bb3f4b3897337acbfdd80f0d";  // NOTE to be changed when wanting program to really connect
         var base64str = Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(authentication));
         var data = new Dictionary<string, string>
         {
@@ -70,7 +70,7 @@ public class SpotifyController
     {
         var decodedUser = JwtDecoder.Decode(authorization);
         var callbackUri = "area://oauth2redirect";
-        var authentication = $"834ee184a29945b2a2a3dc8108a5bbf4:b589f784bb3f4b3897337acbfdd80f0d";
+        var authentication = $"authentication"; // NOTE to be changed when wanting program to really connect
         var base64str = Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(authentication));
         var data = new Dictionary<string, string>
         {

@@ -37,8 +37,8 @@ public class MicrosoftController
         var base64str = Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(authentication));
         var data = new Dictionary<string, string>()
         {
-            {"client_id", "5731d8cc-7d4b-47dc-812f-f4615f65b38d"},
-            {"client_secret", "eHV8Q~MgohheH_~OxgTyRgbht8RvdEIZ5MkWQc50"},
+            {"client_id", "client id"}, // NOTE to be changed when wanting program to really connect
+            {"client_secret", "client secret"}, // NOTE to be changed when wanting program to really connect
             {"grant_type", "authorization_code"},
             {"code", microsoftCode.Code},
             {"redirect_uri", callbackUri}
@@ -76,7 +76,7 @@ public class MicrosoftController
         var base64str = Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(authentication));
         var data = new Dictionary<string, string>()
         {
-            {"client_id", "5731d8cc-7d4b-47dc-812f-f4615f65b38d"},
+            {"client_id", "client id"}, // NOTE to be changed when wanting program to really connect
             {"grant_type", "authorization_code"},
             {"code", microsoftCode.Code},
             {"redirect_uri", callbackUri}

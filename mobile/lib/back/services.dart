@@ -219,7 +219,7 @@ class AppServices {
   Map<String, Function> serviceLogInFunctions = {
     'Google': (BuildContext context, String token) async {
       const googleClientId =
-          '315267877885-lkqq49r6v587fi9pduggbdh9dr1j69me.apps.googleusercontent.com';
+          'some client id'; // NOTE to be changed when wanting program to really connect
       const callbackUrlScheme =
           'com.googleusercontent.apps.315267877885-lkqq49r6v587fi9pduggbdh9dr1j69me';
       final url = Uri.https('accounts.google.com', '/o/oauth2/v2/auth', {
@@ -236,7 +236,7 @@ class AppServices {
     },
     'GoogleLogin': (BuildContext context) async {
       const googleClientId =
-          '315267877885-lkqq49r6v587fi9pduggbdh9dr1j69me.apps.googleusercontent.com';
+          'some client id'; // NOTE to be changed when wanting program to really connect
       const callbackUrlScheme =
           'com.googleusercontent.apps.315267877885-lkqq49r6v587fi9pduggbdh9dr1j69me';
       final url = Uri.https('accounts.google.com', '/o/oauth2/v2/auth', {
@@ -258,8 +258,8 @@ class AppServices {
         MaterialPageRoute(
           builder: (context) {
             return AuthWebView(
-              clientId: '834ee184a29945b2a2a3dc8108a5bbf4',
-              clientSecret: 'b589f784bb3f4b3897337acbfdd80f0d',
+              clientId: 'client id', // NOTE to be changed when wanting program to really connect
+              clientSecret: 'client secret', // NOTE to be changed when wanting program to really connect
               serverOauth: (code) {
                 serverServiceAuth(code, token, 'Spotify');
               },
@@ -275,8 +275,8 @@ class AppServices {
         MaterialPageRoute(
           builder: (context) {
             return AuthWebView(
-              clientId: 'Iv1.f47bfd491f94b532',
-              clientSecret: 'c8f7c650f3d4c47462ddbf0ca06b1113478c9f6e',
+              clientId: 'client secret', // NOTE to be changed when wanting program to really connect
+              clientSecret: 'client secret', // NOTE to be changed when wanting program to really connect
               serverOauth: (code) {
                 serverServiceAuth(code, token, 'Github');
               },
@@ -292,8 +292,8 @@ class AppServices {
         MaterialPageRoute(
           builder: (context) {
             return AuthWebView(
-              clientId: '5731d8cc-7d4b-47dc-812f-f4615f65b38d',
-              clientSecret: 'eHV8Q~MgohheH_~OxgTyRgbht8RvdEIZ5MkWQc50',
+              clientId: 'client id', // NOTE to be changed when wanting program to really connect
+              clientSecret: 'client secret', // NOTE to be changed when wanting program to really connect
               serverOauth: (code) {
                 serverServiceAuth(code, token, 'Microsoft');
               },

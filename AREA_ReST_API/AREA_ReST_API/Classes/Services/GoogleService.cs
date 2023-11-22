@@ -39,8 +39,8 @@ public class GoogleService : IService
         var client = new HttpService();
         var data = new Dictionary<string, string>
         {
-            { "client_id", "315267877885-2np97bt3qq9s6er73549ldrfme2b67pi.apps.googleusercontent.com" },
-            { "client_secret", "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" },
+            { "client_id", "client id" }, // NOTE to change when building app
+            { "client_secret", "client secret" }, // NOTE to change when building app
             { "refresh_token", userService.RefreshToken},
             { "grant_type", "refresh_token" },
         };

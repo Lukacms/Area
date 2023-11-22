@@ -35,8 +35,8 @@ public class DiscordController
         var base64str = Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(authentication));
         var data = new Dictionary<string, string>()
         {
-          {"client_id", "1158738215704985681"},
-          {"client_secret", "RKMdtaTvRUZ9Hoz9QUyM_t_d3jiPQz4N"},
+          {"client_id", "some id"}, // NOTE to be changed when wanting program to really connect
+          {"client_secret", "some secret"}, // NOTE to be changed when wanting program to really connect
           {"grant_type", "authorization_code"},
           {"code", discordCode.Code},
           {"redirect_uri", callbackUri},

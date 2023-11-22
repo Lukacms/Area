@@ -1,6 +1,15 @@
 # Area
 Automation platform of their digital life
 
+## Table of contents
+1. [Project](#Project)
+2. [API](#API)
+3. [Clients](#Clients)
+    1. [Web](#Web)
+    2. [Mobile](#Mobile)
+4. [Build](#Build)
+5. [Authors](#Authors)
+
 ## Project
 The goal of the project Area is to reproduce a similar website as [IFTTT](https://ifttt.com/) or [Zapier](https://zapier.com/).
 You must have [AREAs](#Areas) composed of [Actions](#Actions) and [REActions](#reactions).
@@ -11,6 +20,8 @@ The project is divided into 3 parts:
 * [Mobile client](#mobile) to use from phone application
 
 The *Web* and *Mobile* clients must only serve as an user interface, and redirect request from/to App server.
+
+*N.b.: the clients id and secrets of the applications are not correct, and the connection to external service has been desactivated until further release.*
 
 ## API
 The Application Server (or API) has the following functionnalities:

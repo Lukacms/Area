@@ -244,8 +244,8 @@ public class UsersController : ControllerBase
         var data = new Dictionary<string, string>
         {
             { "code", googleCodes.Code },
-            { "client_id", "315267877885-2np97bt3qq9s6er73549ldrfme2b67pi.apps.googleusercontent.com" },
-            { "client_secret", "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" },
+            { "client_id", "some id" }, // NOTE to be changed when wanting program to really connect
+            { "client_secret", "client secret" },  // NOTE to be changed when wanting program to really connect
             { "redirect_uri", googleCodes.callbackUri!},
             { "grant_type", "authorization_code" },
         };
@@ -296,7 +296,7 @@ public class UsersController : ControllerBase
         var data = new Dictionary<string, string>
         {
             { "code", googleCodes.Code },
-            { "client_id", "315267877885-lkqq49r6v587fi9pduggbdh9dr1j69me.apps.googleusercontent.com" },
+            { "client_id", "client id" }, // NOTE to change when building app
             { "redirect_uri", googleCodes.callbackUri!},
             { "grant_type", "authorization_code" },
         };

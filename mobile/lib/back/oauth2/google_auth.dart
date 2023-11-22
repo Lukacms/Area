@@ -13,9 +13,9 @@ import 'dart:convert' show jsonDecode;
 class _GoogleAuthState extends State<GoogleAuth> {
   Future login() async {
     const googleClientId =
-        '315267877885-7b6hvo4ibh0ms9lmt4fe1dvp9asqchdj.apps.googleusercontent.com';
+        'client id';
     const callbackUrlScheme =
-        'com.googleusercontent.apps.315267877885-7b6hvo4ibh0ms9lmt4fe1dvp9asqchdj';
+        'client secret';
 
     // Construct the url
     final url = Uri.https('accounts.google.com', '/o/oauth2/v2/auth', {
